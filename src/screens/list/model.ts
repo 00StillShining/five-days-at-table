@@ -6,6 +6,7 @@
 // needs — ingId, label, qty, packG, aisle, price — already lives on the row).
 import type { TripEnvelope, TripKind, TripRow, TripShop } from "../../engine/tripCodec";
 import type { PriceChecks, ShopTicks } from "../../state/types";
+import { formatPackG } from "../../state/format";
 
 export const MARKET_SHOP_CODE = "X";
 
@@ -182,15 +183,7 @@ export function kindLabel(kind: TripKind): string {
  */
 export function formatQty(qty: number, packG: number): string {
   if (qty > 1) return `× ${qty}`;
-  return formatGrams(packG);
-}
-
-function formatGrams(g: number): string {
-  if (g >= 1000) {
-    const kg = g / 1000;
-    return `${Number.isInteger(kg) ? kg : kg.toFixed(1)}kg`;
-  }
-  return `${g}g`;
+  return formatPackG(packG);
 }
 
 /** "£042.35" style split for the odometer's rolling digit drums — 3

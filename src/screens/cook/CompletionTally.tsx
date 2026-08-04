@@ -8,6 +8,8 @@ import { getIngredient, ingIdForYield } from "../../data";
 import type { LeftoverEntry } from "../../state/types";
 import type { Cover, Meal, PrepSession, Week } from "../../data/types";
 import type { Macros } from "../../data/types";
+import { formatShortDate } from "../../state/london";
+import { prepProgramDisplayName } from "./programGroups";
 
 function StatusScene({ ok }: { ok: boolean }) {
   // Flat, no gradients (Phase 2 law). A single settle-in pulse via
@@ -27,6 +29,11 @@ export interface MealTallyProps {
   meal: Meal;
   cover: Cover;
   macros: Macros;
+  /** Steps that never got their own individual "done ▸" tap before the
+   * final step closed the program out — cook-authority means finishing
+   * doesn't force going back for them (orchestrator ruling, FIX round item
+   * 4), but the tally still names the gap rather than silently hiding it. */
+  skippedCount: number;
   onDone: () => void;
 }
 
@@ -35,6 +42,7 @@ export interface PrepTallyProps {
   week: Week;
   session: PrepSession;
   newLeftovers: LeftoverEntry[];
+  skippedCount: number;
   onDone: () => void;
 }
 
@@ -52,7 +60,16 @@ export function CompletionTally(props: CompletionTallyProps) {
   );
 }
 
-function MealSummary({ meal, macros }: MealTallyProps) {
+function SkippedNote({ skippedCount }: { skippedCount: number }) {
+  if (skippedCount <= 0) return null;
+  return (
+    <p className="scr-cook-tally-skipped">
+      {skippedCount} step{skippedCount === 1 ? "" : "s"} skipped
+    </p>
+  );
+}
+
+function MealSummary({ meal, macros, skippedCount }: MealTallyProps) {
   return (
     <div className="scr-cook-tally-body">
       <p className="scr-cook-eyebrow">complete</p>
@@ -61,6 +78,7 @@ function MealSummary({ meal, macros }: MealTallyProps) {
       <p className="scr-cook-tally-macros">
         {macros.kcal} kcal · {macros.protein}g protein · {macros.netCarb}g carb · {macros.fat}g fat
       </p>
+      <SkippedNote skippedCount={skippedCount} />
       <a className="fd5-control scr-cook-tally-link" href="#/today">
         {"→"} today
       </a>
@@ -68,7 +86,7 @@ function MealSummary({ meal, macros }: MealTallyProps) {
   );
 }
 
-function PrepSummary({ week, session, newLeftovers }: PrepTallyProps) {
+function PrepSummary({ week, session, newLeftovers, skippedCount }: PrepTallyProps) {
   const stampedIngredients = session.yields
     .map((y) => {
       const ingId = ingIdForYield(week, y.component);
@@ -81,10 +99,12 @@ function PrepSummary({ week, session, newLeftovers }: PrepTallyProps) {
   return (
     <div className="scr-cook-tally-body">
       <p className="scr-cook-eyebrow">complete</p>
-      <h1 className="scr-cook-tally-title">{session.sessionName}</h1>
+      <h1 className="scr-cook-tally-title">{prepProgramDisplayName(week)}</h1>
+      <p className="scr-cook-tally-subtitle">{session.sessionName}</p>
       <p className="scr-cook-tally-line">
         {stampedIngredients.length} stamped into stores · {leftoverCount} leftover{leftoverCount === 1 ? "" : "s"} logged
       </p>
+      <SkippedNote skippedCount={skippedCount} />
 
       {stampedIngredients.length > 0 && (
         <ul className="scr-cook-tally-list">
@@ -100,7 +120,7 @@ function PrepSummary({ week, session, newLeftovers }: PrepTallyProps) {
         <ul className="scr-cook-tally-list">
           {newLeftovers.map((l) => (
             <li key={l.id}>
-              {l.ref} {"→"} leftovers · use by {l.useBy}
+              {l.ref} {"→"} leftovers · use by {formatShortDate(new Date(l.useBy))}
             </li>
           ))}
         </ul>

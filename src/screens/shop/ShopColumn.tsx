@@ -43,9 +43,9 @@ export function ShopColumn({ displayName, rows, subtotal, verifyNominees, priceC
                   <td className="scr-shop-row-name">
                     {el.line.product}
                     {alt && (
-                      <span className="scr-shop-row-alt" title={alt}>
+                      <span className="scr-shop-row-alt" title={market ? undefined : alt}>
                         {" — alt: "}
-                        {truncate(alt, market ? 60 : 42)}
+                        {market ? alt : truncate(alt, 42)}
                       </span>
                     )}
                   </td>
@@ -53,7 +53,8 @@ export function ShopColumn({ displayName, rows, subtotal, verifyNominees, priceC
                     {el.effectivePacks} × {formatPackG(el.line.packG)}
                   </td>
                   <td className="scr-shop-row-price">
-                    {el.line.estimate && <EstimateMark />}£{el.effectiveCost.toFixed(2)}
+                    £{el.effectiveCost.toFixed(2)}
+                    {el.line.estimate && <EstimateMark />}
                     {isNominee && !checked && (
                       <span className="scr-shop-chip" aria-label="price verify nominee">
                         [verify]

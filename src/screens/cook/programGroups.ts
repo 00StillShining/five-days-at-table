@@ -3,6 +3,7 @@
 // meal (grouped list)"). Pure functions only — index.tsx wires them to state.
 import { getMeal, mealsByWeek, prepSessionForWeek, prepSessionId } from "../../data";
 import type { Meal, PrepSession, Week } from "../../data/types";
+import { getProgram } from "../../engine/programs";
 import type { StartByDuty } from "../../state/selectors";
 import { dutyStack } from "../../state/selectors";
 import type { AppState } from "../../state/types";
@@ -20,10 +21,36 @@ export function tonightDuty(state: AppState, now: Date): StartByDuty | null {
   return duties.find((d): d is StartByDuty => d.kind === "start-by") ?? null;
 }
 
+/**
+ * `prep.json`'s `sessionName` field is prose ("one session, ninety-five
+ * minutes, mostly waiting"), not a title — it reads fine as a secondary
+ * description but is wrong as the program's NAME (coordinator FIX round,
+ * item 2: the picker/tally were showing that prose where a name belongs).
+ * This is the one proper name every prep program display should use.
+ */
+export function prepProgramDisplayName(week: Week): string {
+  return `Week ${week} Sunday session`;
+}
+
+/** The `Week` a prep programId belongs to, or null for a meal id. */
+export function prepWeekForProgramId(programId: string): Week | null {
+  if (programId === "prep-a") return "A";
+  if (programId === "prep-b") return "B";
+  return null;
+}
+
 export interface PrepSessionOption {
   week: Week;
   programId: string;
   session: PrepSession;
+  /** The COMPILED program's total (engine/programs.ts's `criticalPathMinutes`
+   * over every op's clockStart+minutes) — NOT `session.totalMin` (the
+   * authored figure, e.g. 95 for week A's session, vs. a compiled 100). The
+   * picker and the running reel must show the same one number for the same
+   * program (coordinator FIX round, item 2), so this is sourced from the
+   * same compiled Program the reel itself reads its total from. Falls back
+   * to `session.totalMin` only if compilation somehow fails (defensive). */
+  totalMinutes: number;
 }
 
 /** The two Sunday batch sessions, in a fixed A-then-B order (both always
@@ -32,7 +59,10 @@ export function prepSessionOptions(): PrepSessionOption[] {
   return (["A", "B"] as Week[])
     .map((week) => {
       const session = prepSessionForWeek(week);
-      return session ? { week, programId: prepSessionId(session), session } : null;
+      if (!session) return null;
+      const programId = prepSessionId(session);
+      const program = getProgram(programId);
+      return { week, programId, session, totalMinutes: program?.totalMinutes ?? session.totalMin };
     })
     .filter((x): x is PrepSessionOption => x != null);
 }

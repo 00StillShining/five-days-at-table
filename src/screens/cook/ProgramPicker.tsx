@@ -4,7 +4,7 @@
 import { mealMacros } from "../../state/selectors";
 import type { AppState } from "../../state/types";
 import type { Meal } from "../../data/types";
-import { groupedMealOptions, prepSessionOptions, resolveTonightMeal, tonightDuty } from "./programGroups";
+import { groupedMealOptions, prepProgramDisplayName, prepSessionOptions, resolveTonightMeal, tonightDuty } from "./programGroups";
 
 const SLOT_LABEL: Record<string, string> = { breakfast: "breakfast", lunch: "lunch", dinner: "dinner", snack: "snack" };
 
@@ -49,12 +49,14 @@ export function ProgramPicker({ state, now, onLoad }: ProgramPickerProps) {
           sunday sessions
         </h2>
         <ul className="scr-cook-picker-session-list">
-          {sessions.map(({ week, programId, session }) => (
+          {sessions.map(({ week, programId, session, totalMinutes }) => (
             <li key={programId}>
               <button type="button" className="fd5-control scr-cook-picker-session" onClick={() => onLoad(programId)}>
-                <span className="scr-cook-picker-session-week">week {week.toLowerCase()}</span>
-                <span className="scr-cook-picker-session-name">{session.sessionName}</span>
-                <span className="scr-cook-picker-session-meta">{session.totalMin} min</span>
+                <span className="scr-cook-picker-session-text">
+                  <span className="scr-cook-picker-session-name">{prepProgramDisplayName(week)}</span>
+                  <span className="scr-cook-picker-session-desc">{session.sessionName}</span>
+                </span>
+                <span className="scr-cook-picker-session-meta">{totalMinutes} min</span>
               </button>
             </li>
           ))}

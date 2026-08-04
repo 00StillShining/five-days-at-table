@@ -8,9 +8,10 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { SceneProps } from "../../app/router";
 import { useStore } from "../../state/store";
 import { useNow } from "../../state/useNow";
-import { arbiterFor } from "../../engine/arbiter";
+import { arbiterFor, type ArbiterDuty } from "../../engine/arbiter";
 import { ArbiterSlot } from "../../components/ArbiterSlot";
 import type { TripEnvelope, TripRow } from "../../engine/tripCodec";
+import type { PriceChecks } from "../../state/types";
 import { resolveInitialTrip } from "./tripIntake";
 import {
   activeVerifyIngId,
@@ -29,11 +30,50 @@ import { AisleSection } from "./AisleSection";
 import { ThumbBar } from "./ThumbBar";
 import { NumericPad } from "./NumericPad";
 import { TripSummary } from "./TripSummary";
-import { useReducedMotion } from "./useReducedMotion";
+import { useReducedMotion } from "../../state/useReducedMotion";
 import "./list.css";
 
 type PaneMode = "shop" | "market";
 type ViewMode = "list" | "summary";
+
+/**
+ * Guard the arbiter's rank1 against the loaded trip envelope (final review
+ * item 2 — "the one live break in the whole-app loop test"). arbiterFor()'s
+ * verify-nominee candidate comes from a LIVE tripBuild() against this
+ * device's CURRENT inventory (engine/arbiter.ts), never from the trip
+ * envelope this screen actually has loaded — those two can legitimately
+ * disagree (e.g. an item was deduped out of the trip at the desk against a
+ * different inventory snapshot, but the phone's live inventory still
+ * qualifies it for a verify nomination today). Left unguarded, the slot
+ * would show a DIFFERENT item than this screen's own [verify] chip
+ * (`activeVerifyIngId`, used below for the row-level chip) — self-
+ * disagreement on one screen — and its "act ->" would fall through to
+ * arbiter.ts's verify-nominee `target: { screen: "shop" }`, sending the
+ * shopper to #/shop mid-store.
+ *
+ * Fix: a verify-nominee rank1 is only trusted as-is when its ingId is
+ * actually a verify-flagged row of THIS envelope. Otherwise it's replaced
+ * with the envelope's own current nominee — the exact same ingId
+ * `activeVerifyIngId` already gives the row-level chip — so the slot and
+ * chip can never disagree, and the substituted duty carries no `target` at
+ * all (handleArbiterActivate below resolves it via `findRowAndShop`, a row
+ * guaranteed to exist in the loaded trip, never via a screen hop). If the
+ * envelope has no outstanding nominee of its own to substitute, the
+ * candidate is dropped entirely (falls to idle) rather than ever letting a
+ * mismatched verify-nominee's `target` carry this screen away from LIST.
+ */
+function resolveListRank1(rank1: ArbiterDuty | null, trip: TripEnvelope | null, priceChecks: PriceChecks): ArbiterDuty | null {
+  if (!rank1 || !trip || rank1.kind !== "verify-nominee") return rank1;
+
+  const nominated = findRowAndShop(trip, rank1.id);
+  if (nominated && nominated.row.verify) return rank1; // matches this envelope's own verify rows — trustworthy as-is
+
+  const ownIngId = activeVerifyIngId(trip, priceChecks);
+  if (!ownIngId) return null; // nothing of THIS trip's own to substitute — idle, never a stale/foreign nominee
+  const own = findRowAndShop(trip, ownIngId);
+  if (!own) return null;
+  return { kind: "verify-nominee", id: ownIngId, text: `verify price · ${own.row.label}` };
+}
 
 export default function ListScene({ route }: SceneProps) {
   const { state, dispatch } = useStore();
@@ -153,7 +193,10 @@ export default function ListScene({ route }: SceneProps) {
 
   const tripDay = trip ? inferTripDayFromKind(trip.kind) : undefined;
   const arbiter = arbiterFor("list", state, now, tripDay !== undefined ? { tripDay } : {});
-  const rank1 = arbiter.rank1;
+  // resolveListRank1 (above): never trust arbiterFor()'s verify-nominee at
+  // face value while a trip is loaded — it's computed from LIVE inventory,
+  // not from the trip envelope this screen actually has.
+  const rank1 = resolveListRank1(arbiter.rank1, trip, state.priceChecks);
 
   function handleArbiterActivate() {
     if (!rank1) return;
@@ -168,7 +211,16 @@ export default function ListScene({ route }: SceneProps) {
       handleNextAisle();
       return;
     }
-    if (rank1.target) window.location.hash = `#/${rank1.target.screen}`;
+    // Belt-and-suspenders (final review item 2, stated explicitly): LIST
+    // must NEVER hand off to #/shop while a trip is active. resolveListRank1
+    // already guarantees a verify-nominee rank1 reaching this point always
+    // has a matching row (so the branch above always returns first) — this
+    // guard covers any other future rank1 kind that might carry a "shop"
+    // target so that invariant can't quietly regress.
+    if (rank1.target) {
+      if (trip && rank1.target.screen === "shop") return;
+      window.location.hash = `#/${rank1.target.screen}`;
+    }
   }
 
   // Migrated to the preferred `rank1` API (wave-1 integration review: every

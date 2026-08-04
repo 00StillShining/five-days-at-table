@@ -19,6 +19,11 @@ export type ReelStatus = "idle" | "running" | "paused" | "complete";
 
 export interface ReelProps {
   title: string;
+  /** Secondary line under the title — prep programs' authored prose
+   * ("one session, ninety-five minutes, mostly waiting") lives here now
+   * that `title` itself is a proper name ("Week A Sunday session"), not
+   * that prose (coordinator FIX round, item 2). Omitted for meal programs. */
+  subtitle?: string;
   elapsedMin: number;
   totalMin: number;
   status: ReelStatus;
@@ -52,6 +57,7 @@ function Spokes() {
 
 export function Reel({
   title,
+  subtitle,
   elapsedMin,
   totalMin,
   status,
@@ -108,6 +114,7 @@ export function Reel({
         <p id={labelId} className="scr-cook-hero-title">
           {title}
         </p>
+        {subtitle && <p className="scr-cook-hero-subtitle">{subtitle}</p>}
         <p className="scr-cook-hero-clock">
           <span className="scr-cook-hero-clock-elapsed">{formatMinutesAsClock(elapsedMin)}</span>
           <span aria-hidden="true"> / </span>

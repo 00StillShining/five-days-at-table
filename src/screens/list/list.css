@@ -329,6 +329,8 @@
 
 .scr-list-next {
   flex: 0 0 auto;
+  min-block-size: var(--fd-target-list); /* 56px house target for LIST — was missing, fell back to the
+    generic 44px .fd5-control default (final review item 1) */
   padding-inline: 1rem;
   font-weight: 600;
   text-transform: lowercase;

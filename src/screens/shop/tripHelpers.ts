@@ -3,9 +3,15 @@
 // src/state/selectors.ts's tripBuild(), per PHASE2-CONTRACT.
 import { ingredientsById, planShops } from "../../data";
 import type { Shop } from "../../data/types";
+import { formatPackG } from "../../state/format";
 import type { TripBuild, TripLine } from "../../state/selectors";
 import type { InventoryLevel } from "../../state/types";
 import type { TripEnvelope, TripKind, TripRow, TripShop } from "../../engine/tripCodec";
+
+// Re-exported so ShopColumn.tsx's existing `import { formatPackG } from
+// "./tripHelpers"` keeps working unchanged (F2's shared-helper adoption —
+// the canonical implementation now lives in src/state/format.ts).
+export { formatPackG };
 
 /** Three costed columns, in the order PLAN §6.8 lists them: "Morrisons /
  * Sainsbury's / market ticket". */
@@ -50,14 +56,6 @@ export function shopSubtotal(lines: EffectiveLine[], shop: Shop): number {
 
 export function overallTotal(lines: EffectiveLine[]): number {
   return SHOP_ORDER.reduce((sum, shop) => sum + shopSubtotal(lines, shop), 0);
-}
-
-export function formatPackG(g: number): string {
-  if (g >= 1000) {
-    const kg = g / 1000;
-    return `${Number.isInteger(kg) ? kg : kg.toFixed(1)}kg`;
-  }
-  return `${g}g`;
 }
 
 // ---- alternatives (render only if the ingredient's own data carries one) --
@@ -136,7 +134,7 @@ export function plainTextList(envelope: TripEnvelope): string {
     lines.push("", shop.name.toUpperCase());
     for (const row of shop.rows) {
       const qtyText = row.qty > 1 ? `× ${row.qty}` : formatPackG(row.packG);
-      const priceText = `${row.estimate ? "≈" : ""}£${(row.qty * row.price).toFixed(2)}`;
+      const priceText = `£${(row.qty * row.price).toFixed(2)}${row.estimate ? " ≈" : ""}`;
       lines.push(`  [ ] ${row.label} ${qtyText} — ${priceText}${row.verify ? " [verify]" : ""}`);
     }
   }

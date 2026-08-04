@@ -12,6 +12,7 @@
 // reachable both ways (the edge's own "resume" AND the corner popover),
 // which is deliberate redundancy, not a spec conflict.
 import { useEffect, useRef, useState } from "react";
+import { prefersReducedMotion } from "../../state/useReducedMotion";
 
 export type PrimaryAction = { label: string; onActivate: () => void; disabled?: boolean };
 
@@ -27,18 +28,6 @@ export interface ControlsProps {
 }
 
 const HOLD_MS = 600;
-
-/** tokens.css's global `[data-motion]` rule only neutralises CSS
- * animations/transitions — it cannot stop a JS-driven per-frame style
- * mutation, which is exactly what the requestAnimationFrame progress fill
- * below is. So reduced-motion is checked here directly: under it, the hold
- * still functionally times out at HOLD_MS (the gesture itself isn't
- * motion), but the visual becomes one instant state swap (0 -> full) rather
- * than a continuously animating fill, per PLAN §6.1's reduced-motion rule. */
-function prefersReducedMotion(): boolean {
-  if (typeof window === "undefined" || !window.matchMedia) return false;
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-}
 
 function HoldToPause({ canPause, canResume, onPause, onResume }: Pick<ControlsProps, "canPause" | "canResume" | "onPause" | "onResume">) {
   const [holdProgress, setHoldProgress] = useState(0);

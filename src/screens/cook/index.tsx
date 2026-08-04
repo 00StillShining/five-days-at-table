@@ -21,7 +21,6 @@ import { useStore } from "../../state/store";
 import { useProgram } from "../../engine/timers";
 import { mealMacros } from "../../state/selectors";
 import { getMeal, prepSessionForWeek } from "../../data";
-import type { Week } from "../../data/types";
 import { useNow } from "../../state/useNow";
 import { useChime } from "./useChime";
 import { ProgramPicker } from "./ProgramPicker";
@@ -30,6 +29,7 @@ import { TrackLanes } from "./TrackLanes";
 import { Controls, type PrimaryAction } from "./Controls";
 import { CompletionTally } from "./CompletionTally";
 import { formatMinutesAsClock, formatScrubOffset } from "./format";
+import { prepProgramDisplayName, prepWeekForProgramId } from "./programGroups";
 import "./cook.css";
 
 const SCRUB_BOUND_MIN = 20;
@@ -92,6 +92,14 @@ export default function CookScene(_props: SceneProps) {
 
   const lastStepN = program.steps.length ? Math.max(...program.steps.map((s) => s.n)) : null;
 
+  // Prep programs' proper name/description split (coordinator FIX round,
+  // item 2) — computed once, shared by both the running Reel's header and
+  // the complete-state tally below, so the two can never disagree.
+  const prepWeek = program.kind === "prep" ? prepWeekForProgramId(program.id) : null;
+  const prepSession = prepWeek ? prepSessionForWeek(prepWeek) : null;
+  const heroTitle = prepWeek ? prepProgramDisplayName(prepWeek) : program.title;
+  const heroSubtitle = prepWeek ? prepSession?.sessionName : undefined;
+
   function handleDoneStep(stepN: number) {
     const isFinal = stepN === lastStepN;
     if (isFinal && program!.kind === "prep") {
@@ -106,23 +114,40 @@ export default function CookScene(_props: SceneProps) {
 
   // ---- complete: the tally scene (PLAN §6.0's one playful touch) ----------
   if (derived.status === "complete") {
+    // Cook-authority (orchestrator ruling, FIX round item 4): finishing the
+    // final step never forces confirming every earlier one, but any step
+    // that never got its own "done ▸" tap is named here rather than hidden.
+    const skippedCount = program.steps.length - derived.doneSteps.length;
+
     if (program.kind === "meal") {
       const meal = getMeal(program.id);
       if (!meal) return null; // defensive: stale programId, shouldn't occur
       const macros = mealMacros(meal.id, state.prefs.cover, state.prefs.scale);
       return (
         <div className="fd5 scr-cook" data-language="precision-industrial">
-          <CompletionTally kind="meal" meal={meal} cover={state.prefs.cover} macros={macros} onDone={backToPicker} />
+          <CompletionTally
+            kind="meal"
+            meal={meal}
+            cover={state.prefs.cover}
+            macros={macros}
+            skippedCount={skippedCount}
+            onDone={backToPicker}
+          />
         </div>
       );
     }
-    const week: Week = program.id === "prep-a" ? "A" : "B";
-    const session = prepSessionForWeek(week);
-    if (!session) return null; // defensive
+    if (!prepWeek || !prepSession) return null; // defensive
     const newLeftovers = leftoverBaseline ? state.leftovers.filter((l) => !leftoverBaseline.has(l.id)) : [];
     return (
       <div className="fd5 scr-cook" data-language="precision-industrial">
-        <CompletionTally kind="prep" week={week} session={session} newLeftovers={newLeftovers} onDone={backToPicker} />
+        <CompletionTally
+          kind="prep"
+          week={prepWeek}
+          session={prepSession}
+          newLeftovers={newLeftovers}
+          skippedCount={skippedCount}
+          onDone={backToPicker}
+        />
       </div>
     );
   }
@@ -148,12 +173,21 @@ export default function CookScene(_props: SceneProps) {
   // Scrub-preview is a look-AHEAD only: `derived` above (and everything it
   // feeds — the reel readout, NOW/next, track lanes, the alarm banner) is
   // deliberately preview-shifted, so scrubbing forward can show what a due
-  // alarm will look like before it really happens. But `stepNow` is ALSO
-  // preview-shifted, and `done ▸` must never silently complete a step that
-  // hasn't actually arrived yet just because the user was peeking ahead —
-  // so the primary action (and +1 min, which extends a real timer) are
-  // simply disabled while a preview offset is active, rather than trying to
-  // keep two parallel "true vs. previewed" step pointers in sync.
+  // alarm will look like before it really happens. But `stepNow`/`dueStep`
+  // are ALSO preview-shifted, and `done ▸` must never silently complete a
+  // step that hasn't actually arrived yet just because the user was peeking
+  // ahead — so the primary action (and +1 min, which extends a real timer)
+  // are simply disabled while a preview offset is active, rather than
+  // trying to keep two parallel "true vs. previewed" step pointers in sync.
+  //
+  // Orchestrator ruling (FIX round item 4): when something is overdue,
+  // `done ▸` targets the SAME step the alarm banner names (`dueStep`, the
+  // earliest-deadline overdue one) — the alarm is COOK's act-now slot, and
+  // "done" must clear what it shouts about, not whatever `stepNow` happens
+  // to be pointing at for "what to focus on" purposes. When nothing is
+  // overdue, `dueStep` is undefined and this falls back to `stepNow` exactly
+  // as before.
+  const doneTarget = dueStep ?? stepNow;
   const primary: PrimaryAction =
     status === "idle"
       ? { label: "start ▸", onActivate: () => { chime.unlock(); prog.start(); }, disabled: isPreviewing }
@@ -161,8 +195,8 @@ export default function CookScene(_props: SceneProps) {
         ? { label: "resume ▸", onActivate: () => { chime.unlock(); prog.resume(); }, disabled: isPreviewing }
         : {
             label: "done ▸",
-            onActivate: () => stepNow && handleDoneStep(stepNow.n),
-            disabled: isPreviewing || !stepNow,
+            onActivate: () => doneTarget && handleDoneStep(doneTarget.n),
+            disabled: isPreviewing || !doneTarget,
           };
 
   const nowText =
@@ -185,7 +219,8 @@ export default function CookScene(_props: SceneProps) {
         )}
 
         <Reel
-          title={program.title}
+          title={heroTitle}
+          subtitle={heroSubtitle}
           elapsedMin={derived.elapsedMin}
           totalMin={derived.totalMin}
           status={status}
