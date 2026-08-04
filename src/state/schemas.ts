@@ -71,6 +71,10 @@ export const TimerSliceStateSchema = z.object({
   doneSteps: z.array(z.number()),
 });
 
+/** P2-PLAN-001: planned meal id -> replacement meal id. See state/types.ts's
+ * `Swaps` doc for the keying rationale. */
+export const SwapsSchema = z.record(z.string(), z.string());
+
 export const AppStateSchema = z.object({
   prefs: PrefsSchema,
   inventory: InventorySchema,
@@ -80,6 +84,7 @@ export const AppStateSchema = z.object({
   waste: WasteSchema,
   priceChecks: PriceChecksSchema,
   timers: TimerSliceStateSchema,
+  swaps: SwapsSchema,
 });
 
 /** Per-slice schema lookup, keyed exactly like AppState / the fd5.v1.<slice> keys. */
@@ -92,6 +97,7 @@ export const SLICE_SCHEMAS = {
   waste: WasteSchema,
   priceChecks: PriceChecksSchema,
   timers: TimerSliceStateSchema,
+  swaps: SwapsSchema,
 } as const;
 
 /** Versioned export envelope for the settings-drawer JSON export/import. */

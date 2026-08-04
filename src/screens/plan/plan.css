@@ -287,12 +287,30 @@
   text-transform: lowercase;
 }
 
+.scr-plan-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
 .scr-plan-swap-btn {
   align-self: flex-start;
   padding-inline: 0.75rem;
   min-block-size: 2.75rem; /* fd5-control already guarantees this; explicit for clarity */
   font-size: var(--sol-text-label);
   text-transform: lowercase;
+}
+
+/* Guarded-action undo (Sol rule: reversible -> undo, not a confirm dialog).
+   Visually quieter than the primary "swap" action but the same target size. */
+.scr-plan-card-undo {
+  align-self: flex-start;
+  padding-inline: 0.75rem;
+  min-block-size: 2.75rem;
+  font-size: var(--sol-text-label);
+  text-transform: lowercase;
+  border-style: dashed;
+  color: var(--sol-text-muted);
 }
 
 /* --- swap deck (inside the shared Sheet) --- */
@@ -352,10 +370,6 @@
 
 .scr-plan-swapdeck-commit {
   font-weight: 700;
-}
-
-.scr-plan-swapdeck-note {
-  margin-top: 0.75rem;
 }
 
 /* --- mobile: grid becomes a day-stacked list, order preserved --- */

@@ -7,9 +7,9 @@ import { useEffect, useState } from "react";
 import { EstimateMark } from "../../components/EstimateMark";
 import { Sheet } from "../../components/Sheet";
 import type { Cover, Slot, Week } from "../../data/types";
-import type { Inventory } from "../../state/types";
-import { candidatesForSlot, effectiveMeal, fmtSigned, mealForSlot, newlyOverBand, swapDelta, MACRO_LABEL } from "./helpers";
-import type { SwapMap } from "./swapStore";
+import { mealMacros } from "../../state/selectors";
+import type { Inventory, Swaps } from "../../state/types";
+import { candidatesForSlot, effectiveMeal, fmtSigned, mealForSlot, previewOverBand, swapDelta, MACRO_LABEL } from "./helpers";
 
 export interface SwapDeckProps {
   open: boolean;
@@ -20,8 +20,12 @@ export interface SwapDeckProps {
   slot: Slot;
   cover: Cover;
   inventory: Inventory;
-  swaps: SwapMap;
-  onCommit: (candidateMealId: string) => void;
+  swaps: Swaps;
+  /** `plannedMealId` is the slot's originally-authored meal id — the key the
+   * real `swaps` AppState slice is keyed by (state/types.ts's Swaps doc) —
+   * SwapDeck already has it in scope (via mealForSlot below) so the caller
+   * doesn't need to re-derive it. */
+  onCommit: (plannedMealId: string, candidateMealId: string) => void;
 }
 
 export function SwapDeck({ open, onClose, week, day, dayLabel, slot, cover, inventory, swaps, onCommit }: SwapDeckProps) {
@@ -51,12 +55,13 @@ export function SwapDeck({ open, onClose, week, day, dayLabel, slot, cover, inve
   }
 
   const current = effectiveMeal(week, day, slot, original, swaps);
+  const currentMacros = mealMacros(current.id, cover);
   const candidate = candidates[index];
 
   return (
     <Sheet open={open} onClose={onClose} title={`swap · ${dayLabel.slice(0, 3).toLowerCase()} ${slot}`}>
       <p className="scr-plan-swapdeck-current">
-        currently: <strong>{current.name}</strong> · {Math.round(current.macros[cover].kcal)} kcal
+        currently: <strong>{current.name}</strong> · {Math.round(currentMacros.kcal)} kcal
       </p>
       {candidates.length === 0 || !candidate ? (
         <p>no {slot} candidates found in the other week.</p>
@@ -77,7 +82,7 @@ export function SwapDeck({ open, onClose, week, day, dayLabel, slot, cover, inve
               <p className="scr-plan-swapdeck-candidate-coverage">
                 <EstimateMark /> {Math.round(candidate.coverage * 100)}% in stock
               </p>
-              <CandidateDelta week={week} day={day} cover={cover} swaps={swaps} current={current} candidate={candidate.meal} />
+              <CandidateDelta week={week} day={day} cover={cover} swaps={swaps} plannedMealId={original.id} currentMealId={current.id} candidateMealId={candidate.meal.id} />
               <p className="scr-plan-swapdeck-position">
                 {index + 1} of {candidates.length}
               </p>
@@ -93,16 +98,13 @@ export function SwapDeck({ open, onClose, week, day, dayLabel, slot, cover, inve
             </button>
           </div>
           <div className="scr-plan-swapdeck-actions">
-            <button type="button" className="fd5-control scr-plan-swapdeck-commit" onClick={() => onCommit(candidate.meal.id)}>
+            <button type="button" className="fd5-control scr-plan-swapdeck-commit" onClick={() => onCommit(original.id, candidate.meal.id)}>
               commit swap
             </button>
             <button type="button" className="fd5-control" onClick={onClose}>
               cancel
             </button>
           </div>
-          <p className="fd5-note scr-plan-swapdeck-note">
-            note: swaps apply for this browsing session only — they are not saved between visits yet.
-          </p>
         </>
       )}
     </Sheet>
@@ -113,14 +115,15 @@ interface CandidateDeltaProps {
   week: Week;
   day: number;
   cover: Cover;
-  swaps: SwapMap;
-  current: ReturnType<typeof effectiveMeal>;
-  candidate: ReturnType<typeof effectiveMeal>;
+  swaps: Swaps;
+  plannedMealId: string;
+  currentMealId: string;
+  candidateMealId: string;
 }
 
-function CandidateDelta({ week, day, cover, swaps, current, candidate }: CandidateDeltaProps) {
-  const delta = swapDelta(current, candidate, cover);
-  const over = newlyOverBand(week, day, cover, swaps, current, candidate);
+function CandidateDelta({ week, day, cover, swaps, plannedMealId, currentMealId, candidateMealId }: CandidateDeltaProps) {
+  const delta = swapDelta(currentMealId, candidateMealId, cover);
+  const over = previewOverBand(week, day, cover, swaps, plannedMealId, candidateMealId);
   return (
     <p className="scr-plan-swapdeck-delta">
       Δkcal {fmtSigned(delta.kcal, "kcal")} · Δprotein {fmtSigned(delta.protein, "protein")}

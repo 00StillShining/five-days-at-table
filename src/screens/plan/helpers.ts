@@ -1,11 +1,10 @@
 // Pure domain + presentation helpers for the PLAN screen only (no food facts
 // invented — everything here reads through src/data's typed accessors and
 // src/state/selectors.ts's exported pure functions, per PHASE2-CONTRACT).
-import { getMeal, mealForSlot, mealsByWeek, mealsByWeekDay } from "../../data";
+import { mealForSlot, mealsByWeek } from "../../data";
 import type { Band, Cover, Macros, Meal, Slot, Week } from "../../data/types";
-import { bands, coverageForMeal, overBandMacros } from "../../state/selectors";
-import type { Eaten, Inventory } from "../../state/types";
-import { swapKeyOf, type SwapMap } from "./swapStore";
+import { bands, coverageForMeal, dayMacros, effectiveMealForSlot, mealMacros, overBandMacros } from "../../state/selectors";
+import type { Eaten, Inventory, Swaps } from "../../state/types";
 
 // ---------------------------------------------------------------------------
 // Macro group presentation (the hero's four dials — PLAN §6.4: "kcal/protein/
@@ -42,73 +41,22 @@ export function fmtSigned(value: number, key: keyof Macros): string {
 }
 
 // ---------------------------------------------------------------------------
-// Swap resolution — reading src/screens/plan/swapStore.ts's session-only map
-// (see data/raw/decision-request.plan.json for why this isn't real AppState).
+// Swap resolution — P2-PLAN-001's real `swaps` AppState slice landed
+// (state/selectors.ts's effectiveMealForSlot/dayMacros/mealMacros); this
+// screen no longer holds any swap state of its own (swapStore.ts deleted).
 // ---------------------------------------------------------------------------
 
-/** The meal actually shown in a slot: the swap candidate if one is
- * committed for this exact (week, day, slot), else the originally planned
- * meal. Falls back to `original` defensively if a stored candidate id
- * somehow no longer resolves (should not happen — candidates are only ever
- * written from ids this module itself looked up). */
-export function effectiveMeal(week: Week, day: number, slot: Slot, original: Meal, swaps: SwapMap): Meal {
-  const candidateId = swaps[swapKeyOf(week, day, slot)];
-  if (!candidateId) return original;
-  return getMeal(candidateId) ?? original;
+/** The meal actually shown in a slot, honoring any committed swap. Falls
+ * back to `original` only in the defensive case where the slot itself
+ * doesn't resolve (shouldn't happen — callers only ever pass a slot they
+ * already know has a planned meal). Thin wrapper so call sites don't need
+ * to know effectiveMealForSlot's `Pick<AppState,"swaps">` shape. */
+export function effectiveMeal(week: Week, day: number, slot: Slot, original: Meal, swaps: Swaps): Meal {
+  return effectiveMealForSlot(week, day, slot, { swaps }) ?? original;
 }
 
-// ---------------------------------------------------------------------------
-// Macro totals with swaps applied
-// ---------------------------------------------------------------------------
-
-const ZERO_MACROS: Macros = { kcal: 0, protein: 0, netCarb: 0, fat: 0, fibre: 0 };
-
-function addMacros(a: Macros, b: Macros): Macros {
-  return {
-    kcal: a.kcal + b.kcal,
-    protein: a.protein + b.protein,
-    netCarb: a.netCarb + b.netCarb,
-    fat: a.fat + b.fat,
-    fibre: a.fibre + b.fibre,
-  };
-}
-
-function subMacros(a: Macros, b: Macros): Macros {
-  return {
-    kcal: a.kcal - b.kcal,
-    protein: a.protein - b.protein,
-    netCarb: a.netCarb - b.netCarb,
-    fat: a.fat - b.fat,
-    fibre: a.fibre - b.fibre,
-  };
-}
-
-/**
- * A day's macro total, honoring any committed swaps. Deliberately sums each
- * shown meal's own precomputed `macros[cover]` field rather than
- * re-summing ingredient covers the way state/selectors.ts's dayMacros()
- * does: PLAN never applies MEAL's portion-scale knob, so at scale=1 the two
- * approaches agree to well within a rounding unit (verified against
- * dayMacros() during build — the two ways of summing round distinct
- * intermediate values, e.g. day totals can differ by ~1 kcal from summing
- * five already-rounded per-meal figures vs rounding one raw sum, which is
- * cosmetic, not a food-fact error). Reusing the field lets a swapped-in
- * candidate (which may come from the *other* week) contribute correctly
- * without a scale-aware recompute helper — and dayMacros() itself has no
- * hook to substitute one meal's covers for another's, so it can't take a
- * hypothetical swap as input at all.
- */
-export function dayMacrosWithSwaps(week: Week, day: number, cover: Cover, swaps: SwapMap): Macros {
-  let total = ZERO_MACROS;
-  for (const meal of mealsByWeekDay(week, day)) {
-    const shown = effectiveMeal(week, day, meal.slot, meal, swaps);
-    total = addMacros(total, shown.macros[cover]);
-  }
-  return total;
-}
-
-export function dayOverBand(week: Week, day: number, cover: Cover, swaps: SwapMap): (keyof Macros)[] {
-  const macros = dayMacrosWithSwaps(week, day, cover, swaps);
+export function dayOverBand(week: Week, day: number, cover: Cover, swaps: Swaps): (keyof Macros)[] {
+  const macros = dayMacros(week, day, cover, 1, swaps);
   return overBandMacros(macros, bands(week, cover));
 }
 
@@ -122,10 +70,10 @@ export function weekBand(week: Week, cover: Cover, days: number): Record<MacroGr
   };
 }
 
-export function weekTotals(week: Week, cover: Cover, swaps: SwapMap, days: number): Record<MacroGroup, number> {
+export function weekTotals(week: Week, cover: Cover, swaps: Swaps, days: number): Record<MacroGroup, number> {
   const totals: Record<MacroGroup, number> = { kcal: 0, protein: 0, fat: 0, netCarb: 0 };
   for (let day = 1; day <= days; day++) {
-    const m = dayMacrosWithSwaps(week, day, cover, swaps);
+    const m = dayMacros(week, day, cover, 1, swaps);
     totals.kcal += m.kcal;
     totals.protein += m.protein;
     totals.fat += m.fat;
@@ -137,17 +85,31 @@ export function weekTotals(week: Week, cover: Cover, swaps: SwapMap, days: numbe
 /** The Δ this specific swap causes to the day's totals (kcal/protein only —
  * PLAN §6.4: "each showing band impact (Δkcal/ΔP for the day)"). Since only
  * one meal in the day changes, the day-level delta is exactly the two
- * meals' own macro difference — no need to re-sum the whole day. */
-export function swapDelta(current: Meal, candidate: Meal, cover: Cover): Macros {
-  return subMacros(candidate.macros[cover], current.macros[cover]);
+ * meals' own macro difference — no need to re-sum the whole day. Uses
+ * mealMacros() (state/selectors.ts) rather than a meal's raw `.macros[cover]`
+ * field, so this agrees exactly with whatever TODAY/SHOP compute for the
+ * same ids. */
+export function swapDelta(currentMealId: string, candidateMealId: string, cover: Cover): Macros {
+  const cur = mealMacros(currentMealId, cover);
+  const cand = mealMacros(candidateMealId, cover);
+  return {
+    kcal: cand.kcal - cur.kcal,
+    protein: cand.protein - cur.protein,
+    netCarb: cand.netCarb - cur.netCarb,
+    fat: cand.fat - cur.fat,
+    fibre: cand.fibre - cur.fibre,
+  };
 }
 
-/** Which macros this candidate would newly push over band (excludes macros
- * that were already over band before the swap — the swap deck should only
- * warn about damage *this* swap causes, not pre-existing overage). */
-export function newlyOverBand(week: Week, day: number, cover: Cover, swaps: SwapMap, current: Meal, candidate: Meal): (keyof Macros)[] {
-  const before = dayMacrosWithSwaps(week, day, cover, swaps);
-  const after = addMacros(before, swapDelta(current, candidate, cover));
+/** Which macros committing this candidate (replacing `plannedMealId`'s
+ * current slot) would newly push over the day's band — excludes macros
+ * already over band before the hypothetical swap, so the deck only warns
+ * about damage *this* swap would cause. Builds the hypothetical `swaps` map
+ * and re-runs the real dayMacros() rather than doing delta arithmetic by
+ * hand, so swapping an already-swapped slot is handled correctly for free. */
+export function previewOverBand(week: Week, day: number, cover: Cover, swaps: Swaps, plannedMealId: string, candidateMealId: string): (keyof Macros)[] {
+  const before = dayMacros(week, day, cover, 1, swaps);
+  const after = dayMacros(week, day, cover, 1, { ...swaps, [plannedMealId]: candidateMealId });
   const b = bands(week, cover);
   const wasOver = new Set(overBandMacros(before, b));
   return overBandMacros(after, b).filter((k) => !wasOver.has(k));

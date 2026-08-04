@@ -11,8 +11,8 @@
 // (prefers-reduced-motion -> transition-duration: 0.01ms) makes it jump
 // instantly, with no gauge-specific CSS needed for that behavior.
 import type { Band, Cover, Week } from "../../data/types";
+import type { Swaps } from "../../state/types";
 import { MACRO_GROUPS, MACRO_LABEL, MACRO_UNIT, describeArc, fmtMacro, gaugeAngle, gaugeDisplayRange, weekBand, weekTotals, type MacroGroup } from "./helpers";
-import type { SwapMap } from "./swapStore";
 
 const DAYS_PER_WEEK = 5; // Mon-Fri plated days (PLAN §1) — weekends carry duties, not banded plates.
 
@@ -26,7 +26,7 @@ const MACRO_COLOR_VAR: Record<MacroGroup, string> = {
 export interface AdherenceGaugeProps {
   week: Week;
   cover: Cover;
-  swaps: SwapMap;
+  swaps: Swaps;
 }
 
 interface DialProps {

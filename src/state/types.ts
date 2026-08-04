@@ -143,4 +143,7 @@ export type Action =
   | { type: "timers/doneStep"; step: number }
   | { type: "timers/reset" }
   | { type: "prep/completeSession"; week: Week; at?: string }
+  | { type: "swaps/commit"; slotMealId: string; replacementMealId: string }
+  | { type: "swaps/clear"; slotMealId: string }
+  | { type: "swaps/clearAll" }
   | { type: "state/replace"; state: AppState }; // used by importExport

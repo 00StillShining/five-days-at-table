@@ -23,6 +23,7 @@ export const defaultState: AppState = {
   waste: [],
   priceChecks: {},
   timers: defaultTimers,
+  swaps: {},
 };
 
 export function reducer(state: AppState, action: Action): AppState {
@@ -140,6 +141,20 @@ export function reducer(state: AppState, action: Action): AppState {
       if (!result) return state; // defensive: unknown week
       return { ...state, inventory: result.inventory, leftovers: [...state.leftovers, ...result.newLeftovers] };
     }
+
+    // P2-PLAN-001: PLAN §6.4 swap deck. See state/types.ts's `Swaps` doc for
+    // the keying rationale (planned meal id -> replacement meal id).
+    case "swaps/commit":
+      return { ...state, swaps: { ...state.swaps, [action.slotMealId]: action.replacementMealId } };
+
+    case "swaps/clear": {
+      const next = { ...state.swaps };
+      delete next[action.slotMealId];
+      return { ...state, swaps: next };
+    }
+
+    case "swaps/clearAll":
+      return { ...state, swaps: {} };
 
     case "state/replace":
       return action.state;

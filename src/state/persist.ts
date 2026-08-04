@@ -116,6 +116,7 @@ export function hydrateAll(defaults: AppState): AppState {
     waste: hydrateSlice("waste", defaults.waste),
     priceChecks: hydrateSlice("priceChecks", defaults.priceChecks),
     timers: hydrateSlice("timers", defaults.timers),
+    swaps: hydrateSlice("swaps", defaults.swaps),
   };
 }
 

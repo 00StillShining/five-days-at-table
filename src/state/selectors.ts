@@ -11,12 +11,12 @@
 // tripBuild() therefore always read Week A's meals/calendar, independent of
 // `prefs.week`. dayMacros/bands take `week` explicitly because PLAN needs to
 // show both weeks' figures side by side.
-import type { Band, Cover, Macros, Week } from "../data/types";
-import { bandsFor, canonicalCalendar, ingredientsById, ingredientsList, mealForSlot, mealsByWeek, mealsByWeekDay, referenceUnitG, requireMeal } from "../data";
+import type { Band, Cover, Macros, Meal, Slot, Week } from "../data/types";
+import { bandsFor, canonicalCalendar, getMeal, ingredientsById, ingredientsList, mealForSlot, mealsByWeek, mealsByWeekDay, referenceUnitG, requireMeal } from "../data";
 import { operativeLifeDays } from "../data/lifeEstimate";
 import { criticalPathMinutes } from "../engine/programs";
 import { addCalendarDays, londonCalendarDaysBetween, londonDateIso, londonParts, londonWallTimeToEpochMs } from "./london";
-import type { AppState, Inventory } from "./types";
+import type { AppState, Inventory, Swaps } from "./types";
 
 const FORTNIGHT_DAYS = 14;
 const DEFROST_DUE_HOUR = 18; // "by 18:00" — PLAN §6.3's own worked example; see dutyStack doc below.
@@ -59,7 +59,33 @@ export function todayInfo(now: Date, cycleStartSaturday: string | null): TodayIn
 }
 
 // ---------------------------------------------------------------------------
-// dayMacros / bands
+// swaps (P2-PLAN-001 / PLAN §6.4) — resolving what's actually planned
+// ---------------------------------------------------------------------------
+
+/** The meal that actually occupies `planned`'s slot: the swap replacement if
+ * one is committed, else the plan as authored. A swap pointing at an id that
+ * no longer resolves (stale data) falls back to the planned meal rather than
+ * throwing. */
+function effectiveMeal(planned: Meal, swaps: Swaps): Meal {
+  const replacementId = swaps[planned.id];
+  if (!replacementId) return planned;
+  return getMeal(replacementId) ?? planned;
+}
+
+/**
+ * The meal actually shown/cooked for a given week/day/slot, honoring any
+ * committed swap (contract addition P2-PLAN-001: PLAN §6.4's swap deck).
+ * Returns undefined only when the slot itself doesn't exist (defensive —
+ * every real week/day/slot combination in the dataset has a meal).
+ */
+export function effectiveMealForSlot(week: Week, day: number, slot: Slot, state: Pick<AppState, "swaps">): Meal | undefined {
+  const planned = mealForSlot(week, day, slot);
+  if (!planned) return undefined;
+  return effectiveMeal(planned, state.swaps);
+}
+
+// ---------------------------------------------------------------------------
+// dayMacros / mealMacros / bands
 // ---------------------------------------------------------------------------
 
 function roundMacros(m: Macros): Macros {
@@ -72,25 +98,58 @@ function roundMacros(m: Macros): Macros {
   };
 }
 
-/** Recomputed (never read from Meal.macros directly) from covers x
- * per100g, so it stays correct under future portion scaling. netCarb is
- * derived (carb - fibre) at the ingredient level, per PLAN §2's join rule. */
-export function dayMacros(week: Week, dayNo: number, cover: Cover, scale = 1): Macros {
-  const meals = mealsByWeekDay(week, dayNo);
+/** Unrounded macro totals for one gram table (a single meal's `covers[cover]`,
+ * scaled). The one place per-ingredient macro math happens — mealMacros and
+ * dayMacros both build on this so the formula can't drift between "one meal"
+ * and "a whole day" (this used to be duplicated per-screen; MEAL's own local
+ * `scaledMealMacros` used the identical formula, now hoisted here). */
+function macrosFromCovers(covers: Record<string, number>, scale: number): Macros {
+  const totals: Macros = { kcal: 0, protein: 0, netCarb: 0, fat: 0, fibre: 0 };
+  for (const [ingId, g] of Object.entries(covers)) {
+    const ing = ingredientsById[ingId];
+    if (!ing) continue; // defensive; join verified complete (data/validation.json)
+    const factor = (g * scale) / 100;
+    const carb = ing.per100g.carb * factor;
+    const fibre = ing.per100g.fibre * factor;
+    totals.kcal += ing.per100g.kcal * factor;
+    totals.protein += ing.per100g.protein * factor;
+    totals.fat += ing.per100g.fat * factor;
+    totals.fibre += fibre;
+    totals.netCarb += carb - fibre;
+  }
+  return totals;
+}
+
+/** Recomputed (never read from Meal.macros directly) from covers x per100g,
+ * so it stays correct under future portion scaling. netCarb is derived
+ * (carb - fibre) at the ingredient level, per PLAN §2's join rule. Scaled
+ * macros for exactly ONE meal — MEAL's portion knob (§6.5) and PLAN's swap
+ * band-impact preview (§6.4, "Δkcal/ΔP before committing") both want this
+ * atomic unit rather than a whole day. */
+export function mealMacros(mealId: string, cover: Cover, scale = 1): Macros {
+  const meal = requireMeal(mealId);
+  return roundMacros(macrosFromCovers(meal.covers[cover], scale));
+}
+
+/**
+ * `swaps` (default {}, fully backward compatible with every existing 3-arg
+ * call site) resolves each of the day's four slots through
+ * `effectiveMealForSlot` before summing — a committed swap changes the day's
+ * macro totals, which is exactly PLAN §6.4's "recompute the day's ladders."
+ * Always Week A in practice (the only week actually executed, D5), but this
+ * takes `week` explicitly since PLAN also shows Week B's own (unswapped)
+ * figures for comparison.
+ */
+export function dayMacros(week: Week, dayNo: number, cover: Cover, scale = 1, swaps: Swaps = {}): Macros {
+  const meals = mealsByWeekDay(week, dayNo).map((planned) => effectiveMeal(planned, swaps));
   const totals: Macros = { kcal: 0, protein: 0, netCarb: 0, fat: 0, fibre: 0 };
   for (const meal of meals) {
-    for (const [ingId, g] of Object.entries(meal.covers[cover])) {
-      const ing = ingredientsById[ingId];
-      if (!ing) continue; // defensive; join verified complete (data/validation.json)
-      const factor = (g * scale) / 100;
-      const carb = ing.per100g.carb * factor;
-      const fibre = ing.per100g.fibre * factor;
-      totals.kcal += ing.per100g.kcal * factor;
-      totals.protein += ing.per100g.protein * factor;
-      totals.fat += ing.per100g.fat * factor;
-      totals.fibre += fibre;
-      totals.netCarb += carb - fibre;
-    }
+    const m = macrosFromCovers(meal.covers[cover], scale);
+    totals.kcal += m.kcal;
+    totals.protein += m.protein;
+    totals.fat += m.fat;
+    totals.fibre += m.fibre;
+    totals.netCarb += m.netCarb;
   }
   return roundMacros(totals);
 }
@@ -235,8 +294,11 @@ export function dutyStack(state: AppState, now: Date): Duty[] {
   }
 
   if (info.anchored && info.dayNo !== "weekend") {
-    // Always Week A — see module doc: the executing fortnight is Week A twice.
-    const dinner = mealForSlot("A", info.dayNo as number, "dinner");
+    // Always Week A — see module doc: the executing fortnight is Week A
+    // twice. effectiveMealForSlot (not the raw mealForSlot) so a committed
+    // swap changes what "tonight's cook" actually points at — its method's
+    // own critical path drives the start-by time, per P2-PLAN-001.
+    const dinner = effectiveMealForSlot("A", info.dayNo as number, "dinner", state);
     if (dinner) {
       const criticalPath = criticalPathMinutes(dinner.method.steps);
       const startByMin = timeToMinutes(state.prefs.serveTime) - criticalPath;
@@ -315,9 +377,22 @@ export function coverageForMeal(inventory: Inventory, mealId: string, cover: Cov
   return { mealId, coverage, byIngredient };
 }
 
-/** Cook-from-stock strip (STORES §6.7): every meal ranked by coverage %. */
-export function coverageForAllMeals(inventory: Inventory, cover: Cover): MealCoverage[] {
-  return mealsByWeek("A")
+/**
+ * Cook-from-stock strip (STORES §6.7): every meal ranked by coverage %.
+ *
+ * `weeks` (default `["A"]`, preserving every existing call site's behavior
+ * unchanged): which week(s)' meals to rank. STORES' cook-from-stock strip
+ * wants BOTH — Week B is the swap/variety pool (D5), and "what can I cook
+ * from what's in the fridge right now" is a genuine question about Week B
+ * dishes too, not just the executing Week-A plan (unlike dutyStack/tripBuild,
+ * which stay Week-A-only because they drive the actual shop/defrost/cook
+ * loop — see this module's top doc). Pass `["A", "B"]` to rank across both;
+ * a sibling function wasn't worth it since the only difference is which
+ * `mealsByWeek` calls get concatenated.
+ */
+export function coverageForAllMeals(inventory: Inventory, cover: Cover, weeks: Week[] = ["A"]): MealCoverage[] {
+  return weeks
+    .flatMap((week) => mealsByWeek(week))
     .map((m) => coverageForMeal(inventory, m.id, cover))
     .sort((a, b) => b.coverage - a.coverage);
 }
@@ -364,13 +439,26 @@ export interface TripBuild {
  * are doubled (the a-twice cycle cooks Week A twice from one bulk shop, per
  * D5); day-7 needs one pass's worth only. `sharedSkuWith` pairs (greek_yog/
  * skyr, raspberries/blueberries) merge onto one shopping line, need summed.
+ *
+ * `swaps` (default {}, backward compatible): P2-PLAN-001's shopping-deltas
+ * requirement — every slot's need is read through `effectiveMeal`, so a
+ * committed swap's ingredients replace the originally-planned meal's in the
+ * `need` totals below. There's no separate "delta" structure: tripBuild
+ * always recomputes the full list from scratch, so a swap's effect is simply
+ * that `needG`/`buyG` (and therefore `packsToBuy`/`lineCost`/`verifyNominees`/
+ * `subtotal`) come out different — ingredients only the swapped-OUT meal used
+ * drop in needG (possibly to 0, removing the line entirely once nothing else
+ * needs it), ingredients only the swapped-IN meal uses appear/increase. This
+ * IS "recompute the shopping deltas" (PLAN §6.4) — the recomputed trip is the
+ * delta view.
  */
-export function tripBuild(inventory: Inventory, tripDay: TripDay): TripBuild {
+export function tripBuild(inventory: Inventory, tripDay: TripDay, swaps: Swaps = {}): TripBuild {
   const classesForTrip = tripDay === 0 ? ["buy-once", "freeze-day0", "buy-frozen"] : ["topup", "stagger"];
   const passMultiplier = tripDay === 0 ? 2 : 1;
 
   const need: Record<string, number> = {};
-  for (const meal of mealsByWeek("A")) {
+  for (const planned of mealsByWeek("A")) {
+    const meal = effectiveMeal(planned, swaps);
     for (const cover of ["w", "m"] as Cover[]) {
       for (const [ingId, g] of Object.entries(meal.covers[cover])) {
         need[ingId] = (need[ingId] ?? 0) + g;

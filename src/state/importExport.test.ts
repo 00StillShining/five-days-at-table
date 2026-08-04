@@ -31,6 +31,7 @@ function nonTrivialState(): AppState {
     waste: [{ id: "waste_1", ref: "a-d2d", g: 150, price: 0.9, date: "2026-08-03", note: "binned, went off" }],
     priceChecks: { avocado: { price: 1.15, on: "2026-08-01" } },
     timers: { programId: "prep-a", startedAt: 1_754_000_000_000, pausedAt: null, accumulatedPauseMs: 60_000, extraMs: 0, doneSteps: [1, 2, 3] },
+    swaps: { "a-d2d": "b-d2d" },
   };
 }
 

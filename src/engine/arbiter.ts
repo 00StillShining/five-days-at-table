@@ -144,7 +144,7 @@ export function arbiterFor(screen: ScreenId, state: AppState, now: Date, ctx: Ar
   if (info.dayNo !== "weekend") {
     const dayNo = info.anchored ? (info.dayNo as number) : null;
     if (dayNo != null) {
-      const macros = dayMacros("A", dayNo, state.prefs.cover); // always Week A — see selectors.ts module doc
+      const macros = dayMacros("A", dayNo, state.prefs.cover, 1, state.swaps); // always Week A; swaps-aware (P2-PLAN-001)
       const macroBands = bands("A", state.prefs.cover);
       const over = overBandMacros(macros, macroBands);
       if (over.length > 0) {
@@ -162,7 +162,7 @@ export function arbiterFor(screen: ScreenId, state: AppState, now: Date, ctx: Ar
   // excluding anything already recorded in priceChecks.
   const tripDay = ctx.tripDay ?? inferTripDay(state, now);
   if (tripDay != null) {
-    const trip = tripBuild(state.inventory, tripDay);
+    const trip = tripBuild(state.inventory, tripDay, state.swaps); // swaps-aware (P2-PLAN-001)
     const outstanding = trip.verifyNominees.filter((ingId) => !state.priceChecks[ingId]);
     if (outstanding.length > 0) {
       candidates.push({

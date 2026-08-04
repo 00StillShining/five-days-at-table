@@ -11,10 +11,10 @@ import type { AppState, Action, SliceKey } from "./types";
 import { reducer, defaultState } from "./reducer";
 import { hydrateAll, persistSlice } from "./persist";
 
-export type { AppState, Action, Prefs, Inventory, InventoryEntry, InventoryLevel, Eaten, EatenTick, ShopTicks, ShopTick, LeftoverEntry, WasteEntry, PriceChecks, PriceCheck, TimerSliceState } from "./types";
+export type { AppState, Action, Prefs, Inventory, InventoryEntry, InventoryLevel, Eaten, EatenTick, ShopTicks, ShopTick, LeftoverEntry, WasteEntry, PriceChecks, PriceCheck, TimerSliceState, Swaps } from "./types";
 export type { Cover, Week } from "../data/types";
 
-const SLICE_KEYS: SliceKey[] = ["prefs", "inventory", "eaten", "shopTicks", "leftovers", "waste", "priceChecks", "timers"];
+const SLICE_KEYS: SliceKey[] = ["prefs", "inventory", "eaten", "shopTicks", "leftovers", "waste", "priceChecks", "timers", "swaps"];
 
 interface StoreContextValue {
   state: AppState;

@@ -8,6 +8,11 @@
 // executing fortnight is always Week A twice (D5); prefs.week here is purely
 // the browsing toggle PHASE2-CONTRACT documents, exactly as SOL-BRIEF's key
 // fact states.
+//
+// Swap commits now go through the real `swaps` AppState slice
+// (state/types.ts, landed to unblock data/raw/decision-request.plan.json /
+// P2-PLAN-001) — reload-persistent, dispatched via useStore() like every
+// other slice. No screen-local swap store anymore.
 import { useState } from "react";
 import type { SceneProps } from "../../app/router";
 import { ArbiterSlot } from "../../components/ArbiterSlot";
@@ -15,13 +20,13 @@ import { mealsByWeekDay, planDays, planThemes } from "../../data";
 import type { Slot } from "../../data/types";
 import type { ArbiterDuty } from "../../engine/arbiter";
 import { arbiterFor } from "../../engine/arbiter";
+import { dayMacros } from "../../state/selectors";
 import { useStore } from "../../state/store";
 import { AdherenceGauge } from "./AdherenceGauge";
-import { dayMacrosWithSwaps, dayOverBand, MACRO_LABEL } from "./helpers";
+import { dayOverBand, MACRO_LABEL } from "./helpers";
 import "./plan.css";
 import { EmptySlotCard, SlotCard } from "./SlotCard";
 import { SwapDeck } from "./SwapDeck";
-import { commitSwap, swapKeyOf, useSwaps } from "./swapStore";
 
 const SLOTS: Slot[] = ["breakfast", "lunch", "dinner", "snack"];
 
@@ -31,9 +36,9 @@ function navigateTo(target: ArbiterDuty["target"]): void {
 }
 
 export default function PlanScreen(_props: SceneProps) {
-  const { state } = useStore();
+  const { state, dispatch } = useStore();
   const { week, cover } = state.prefs;
-  const swaps = useSwaps();
+  const swaps = state.swaps;
 
   // swapTarget stays defined once initialized (defaults harmlessly to day 1
   // breakfast, never shown until sheetOpen flips true) rather than resetting
@@ -81,7 +86,7 @@ export default function PlanScreen(_props: SceneProps) {
           const day = i + 1;
           const theme = planThemes[i];
           const mealBySlot = new Map(mealsByWeekDay(week, day).map((m) => [m.slot, m]));
-          const dayTotals = dayMacrosWithSwaps(week, day, cover, swaps);
+          const dayTotals = dayMacros(week, day, cover, 1, swaps);
           const over = dayOverBand(week, day, cover, swaps);
 
           return (
@@ -137,8 +142,8 @@ export default function PlanScreen(_props: SceneProps) {
         cover={cover}
         inventory={state.inventory}
         swaps={swaps}
-        onCommit={(candidateId) => {
-          commitSwap(swapKeyOf(week, swapTarget.day, swapTarget.slot), candidateId);
+        onCommit={(plannedMealId, candidateMealId) => {
+          dispatch({ type: "swaps/commit", slotMealId: plannedMealId, replacementMealId: candidateMealId });
           setSheetOpen(false);
         }}
       />
