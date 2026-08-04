@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Five Days at Table — a bill of fare</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+ --paper:#f4ecda; --paper2:#efe4cd; --ink:#2a1d12; --ink2:#5a4630;
+ --gold:#9d7a2a; --gold2:#c2a15a; --blood:#6c1420; --rule:#c8b48a;
+}
+html{scroll-behavior:smooth}
+body{
+ background:#1b120b;
+ font-family:'Cormorant Garamond','EB Garamond',Georgia,serif;
+ color:var(--ink); -webkit-font-smoothing:antialiased;
+ font-size:18px; line-height:1.6;
+ padding:26px 14px 60px;
+}
+.sheet{
+ max-width:1000px;margin:0 auto;position:relative;
+ background:
+   radial-gradient(ellipse 120% 60% at 50% 0%,rgba(255,255,255,.45),transparent 60%),
+   radial-gradient(ellipse 100% 70% at 50% 100%,rgba(120,86,40,.14),transparent 60%),
+   linear-gradient(160deg,#f6efdf 0%,#f1e6cd 45%,#ecdfc4 100%);
+ box-shadow:0 0 0 1px #6a4f24, 0 0 0 9px #241708, 0 0 0 10px #7d5d29,
+            0 40px 90px rgba(0,0,0,.65);
+ padding:clamp(28px,5vw,64px) clamp(20px,5vw,72px) 64px;
+}
+.sheet:before{
+ content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+ background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/><feColorMatrix type='saturate' values='0'/></filter><rect width='180' height='180' filter='url(%23n)' opacity='.16'/></svg>");
+ mix-blend-mode:multiply;
+}
+.sheet>*{position:relative;z-index:1}
+.frame{position:absolute;inset:14px;border:1px solid var(--rule);pointer-events:none;z-index:0}
+.frame:after{content:"";position:absolute;inset:5px;border:.5px solid rgba(157,122,42,.45)}
+.corner{position:absolute;width:52px;height:52px;color:var(--gold);opacity:.9}
+.c1{top:20px;left:20px}
+.c2{top:20px;right:20px;transform:scaleX(-1)}
+.c3{bottom:20px;left:20px;transform:scaleY(-1)}
+.c4{bottom:20px;right:20px;transform:scale(-1)}
+
+.fleuron{display:block;width:min(300px,70%);height:auto;margin:18px auto;color:var(--gold)}
+.sfleuron{display:block;width:120px;height:auto;margin:10px auto;color:var(--gold2)}
+
+.cap{font-family:'Cinzel',Georgia,serif;text-transform:uppercase}
+.script{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic}
+
+/* ---------- HEAD ---------- */
+header{text-align:center;padding:26px 0 8px}
+.est{font-size:12px;letter-spacing:.42em;color:var(--gold);margin-bottom:22px}
+h1{font-family:'Cinzel',Georgia,serif;font-weight:600;line-height:1.06;
+   font-size:clamp(34px,7.2vw,68px);letter-spacing:.06em;color:var(--ink)}
+h1 .amp{display:block;font-family:'Cormorant Garamond',serif;font-style:italic;
+   text-transform:none;letter-spacing:.01em;font-size:.42em;color:var(--blood);margin:10px 0 6px;font-weight:500}
+.tagline{font-style:italic;font-size:clamp(17px,2.1vw,21px);color:var(--ink2);max-width:640px;margin:6px auto 0}
+.anno{margin-top:20px;font-size:11.5px;letter-spacing:.34em;color:var(--gold)}
+
+.preamble{max-width:660px;margin:26px auto 0;text-align:justify;hyphens:auto;font-size:18.5px;color:#3b2b1c}
+.preamble:first-letter{
+ font-family:'Cinzel',serif;float:left;font-size:63px;line-height:.82;
+ padding:6px 12px 0 0;color:var(--blood)}
+
+/* ---------- COVERS ---------- */
+.covers{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:36px auto 0;max-width:760px;
+ border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.cover{padding:22px 26px;text-align:center}
+.cover+.cover{border-left:1px solid var(--rule)}
+.cover .t{font-size:11px;letter-spacing:.3em;color:var(--gold)}
+.cover .n{font-family:'Cinzel',serif;font-size:22px;letter-spacing:.08em;margin:8px 0 12px}
+.cover dl{display:flex;justify-content:center;gap:18px;flex-wrap:wrap}
+.cover dt{font-size:10.5px;letter-spacing:.2em;color:var(--ink2);text-transform:uppercase}
+.cover dd{font-family:'Cinzel',serif;font-size:15px;margin-top:3px}
+.cover dd.hi{color:var(--blood)}
+.cover .note{font-style:italic;font-size:14.5px;color:var(--ink2);margin-top:14px;line-height:1.45}
+
+/* ---------- SERVED FOR ---------- */
+.served{text-align:center;position:sticky;top:0;z-index:40;
+ margin:34px -14px 0;padding:14px;background:linear-gradient(180deg,#f4ecda 72%,rgba(244,236,218,0));}
+.served .l{font-size:10.5px;letter-spacing:.3em;color:var(--gold);display:block;margin-bottom:9px}
+.tabs{display:inline-flex;border:1px solid var(--gold);background:rgba(255,255,255,.4)}
+.tabs button{font-family:'Cinzel',serif;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;
+ background:none;border:0;padding:11px 22px;color:var(--ink2);cursor:pointer;transition:.2s}
+.tabs button+button{border-left:1px solid var(--rule)}
+.tabs button:hover{color:var(--blood)}
+body.mode-w .tabs button[data-m="w"], body.mode-m .tabs button[data-m="m"]{
+ background:var(--blood);color:#f4ecda}
+
+/* ---------- SECTION ---------- */
+.sec{margin-top:56px}
+.sectitle{text-align:center}
+.sectitle .r{font-size:11px;letter-spacing:.34em;color:var(--gold)}
+.sectitle h2{font-family:'Cinzel',serif;font-weight:600;font-size:clamp(22px,3.6vw,30px);
+ letter-spacing:.14em;margin-top:8px}
+.sectitle .s{font-style:italic;color:var(--ink2);font-size:16.5px;margin-top:6px}
+
+/* ---------- DAY ---------- */
+.day{margin-top:46px;break-inside:avoid}
+.dayhead{text-align:center;margin-bottom:6px}
+.dayhead .ord{font-style:italic;font-size:16px;color:var(--blood)}
+.dayhead h3{font-family:'Cinzel',serif;font-weight:600;font-size:clamp(24px,4.4vw,36px);
+ letter-spacing:.16em;margin:4px 0 3px}
+.dayhead .sub{font-size:12px;letter-spacing:.24em;color:var(--gold);text-transform:uppercase}
+.reckon{display:flex;flex-wrap:wrap;margin-top:14px;border-top:1px solid var(--rule);
+ border-bottom:1px solid var(--rule);background:rgba(255,255,255,.3)}
+.rk{flex:1 1 auto;min-width:118px;text-align:center;padding:11px 12px 10px;border-right:1px solid rgba(157,122,42,.35)}
+.rk:last-child{border-right:0}
+.rk em{display:block;font-style:normal;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.rk b{font-family:'Cinzel',serif;font-size:16px;font-weight:600}
+.rk.hi b{color:var(--blood)}
+.legend{display:flex;justify-content:flex-end;font-size:10px;letter-spacing:.22em;
+ color:var(--gold);text-transform:uppercase;margin:22px 0 2px;border-bottom:1px solid var(--rule);padding-bottom:6px}
+
+.item{padding:18px 0 16px;border-bottom:1px dotted rgba(157,122,42,.55)}
+.item:last-child{border-bottom:0}
+.crow{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:5px}
+.crow .c{font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--blood)}
+.crow .alt{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold2)}
+.crow .org{font-style:italic;font-size:14.5px;color:var(--ink2)}
+.crow .org:before{content:"— "}
+.crow .prep{margin-left:auto;font-style:italic;font-size:14px;color:var(--ink2)}
+.nrow{display:flex;align-items:baseline;gap:10px}
+.nrow h4{font-family:'Cinzel',serif;font-weight:600;font-size:clamp(17px,2.4vw,21px);
+ letter-spacing:.045em;flex:0 1 auto}
+.dots{flex:1 1 auto;border-bottom:1.5px dotted rgba(90,70,48,.5);transform:translateY(-5px);min-width:24px}
+.tally{font-family:'Cinzel',serif;font-size:13px;letter-spacing:.02em;white-space:nowrap;color:var(--ink)}
+.tally i{font-style:normal;color:var(--blood)}
+.macros{display:flex;flex-wrap:wrap;gap:0;margin:12px 0 14px;border-top:1px solid var(--rule);
+ border-bottom:1px solid var(--rule)}
+.mc{flex:1 1 auto;min-width:112px;padding:8px 14px 7px;border-right:1px solid rgba(157,122,42,.35)}
+.mc:last-child{border-right:0}
+.mc em{display:block;font-style:normal;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
+ color:var(--gold);margin-bottom:3px}
+.mc b{font-family:'Cinzel',serif;font-size:14px;font-weight:600;letter-spacing:.01em}
+.mc.hi b{color:var(--blood)}
+.ing{list-style:none;column-count:2;column-gap:38px;margin:0 0 12px}
+@media(max-width:720px){.ing{column-count:1}}
+.ing li{display:flex;align-items:baseline;gap:7px;font-size:16.5px;color:#4a3826;padding:2.5px 0;break-inside:avoid}
+.ing li .n{flex:0 1 auto}
+.ing li .wt{font-style:normal;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold2)}
+.ing li .d{flex:1 1 auto;border-bottom:1px dotted rgba(157,122,42,.55);transform:translateY(-4px);min-width:14px}
+.ing li .q{white-space:nowrap;text-align:right}
+.ing li .q b{font-family:'Cinzel',serif;font-size:12.5px;font-weight:600;color:var(--ink)}
+.ing li .q em{font-size:14px;color:#8a7457;margin-left:6px}
+.ing li .q em:empty{display:none}
+.ings{font-style:italic;font-size:17px;color:#4a3826;margin-top:7px;line-height:1.5}
+.ings b{font-style:normal;font-weight:600;font-family:'Cinzel',serif;font-size:12.5px;letter-spacing:.02em;color:var(--gold)}
+.method{font-size:16.5px;color:#5a4630;margin-top:8px;line-height:1.58;max-width:74ch}
+
+/* ---------- PREP / PROVISIONS / REMARKS ---------- */
+.steps{max-width:760px;margin:0 auto}
+.step{display:flex;gap:20px;padding:16px 0;border-bottom:1px dotted rgba(157,122,42,.5)}
+.step:last-child{border-bottom:0}
+.step .no{font-family:'Cinzel',serif;font-size:26px;color:var(--gold);line-height:1;min-width:44px;text-align:center}
+.step .w{flex:1}
+.step .when{font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--blood);margin-bottom:5px}
+.step p{font-size:17px;color:#4a3826;line-height:1.56}
+
+.prov{column-count:3;column-gap:34px;margin-top:6px}
+@media(max-width:860px){.prov{column-count:2}}
+@media(max-width:560px){.prov{column-count:1}}
+.pcol{break-inside:avoid;display:inline-block;width:100%;margin-bottom:26px}
+.pcol h3{font-family:'Cinzel',serif;font-size:12.5px;letter-spacing:.2em;color:var(--blood);
+ text-align:center;padding-bottom:7px;border-bottom:1px solid var(--rule);margin-bottom:8px}
+.pcol li{list-style:none;display:flex;align-items:baseline;gap:7px;font-size:16.5px;padding:3px 0;color:#4a3826}
+.pcol li .d{flex:1;border-bottom:1px dotted rgba(157,122,42,.6);transform:translateY(-4px)}
+.pcol li span{font-family:'Cinzel',serif;font-size:12px;color:var(--ink);white-space:nowrap}
+
+.larder{margin-top:6px}
+.lgroup{margin-bottom:34px}
+.lgroup h3{font-family:'Cinzel',serif;font-size:13px;letter-spacing:.2em;color:var(--blood);
+ text-align:center;padding-bottom:8px;border-bottom:1px solid var(--rule);margin-bottom:4px}
+table.lt{width:100%;border-collapse:collapse;font-size:15.5px}
+table.lt thead th{font-family:'Cinzel',serif;font-weight:600;font-size:9.5px;letter-spacing:.16em;
+ text-transform:uppercase;color:var(--gold);padding:9px 6px;border-bottom:1px solid rgba(157,122,42,.45);
+ text-align:right;white-space:nowrap}
+table.lt thead th.l{text-align:left}
+table.lt td{padding:7px 6px;border-bottom:1px dotted rgba(157,122,42,.4);text-align:right;
+ color:#4a3826;white-space:nowrap;font-variant-numeric:tabular-nums}
+table.lt td.l{text-align:left;white-space:normal;color:var(--ink)}
+table.lt td .wt{font-style:normal;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold2)}
+table.lt td.tot{font-family:'Cinzel',serif;font-size:12.5px;font-weight:600;color:var(--blood)}
+table.lt tbody tr:last-child td{border-bottom:0}
+@media(max-width:760px){table.lt{font-size:13.5px}table.lt .opt{display:none}}
+.remarks{max-width:760px;margin:0 auto}
+.rem{padding:16px 0;border-bottom:1px dotted rgba(157,122,42,.5)}
+.rem:last-child{border-bottom:0}
+.rem h4{font-family:'Cinzel',serif;font-size:14px;letter-spacing:.12em;margin-bottom:6px}
+.rem p{font-size:17px;color:#4a3826;line-height:1.58}
+.rem p b{font-style:italic;font-weight:400;color:var(--blood)}
+
+.colophon{max-width:640px;margin:52px auto 0;text-align:center;font-style:italic;
+ font-size:14.5px;color:#6a563d;line-height:1.6}
+
+.pw,.pm{display:none}
+body.mode-w .pw{display:inline}
+body.mode-m .pm{display:inline}
+
+@media(max-width:640px){
+ body{font-size:17px;padding:12px 6px 40px}
+ .covers{grid-template-columns:1fr}
+ .cover+.cover{border-left:0;border-top:1px solid var(--rule)}
+ .corner{width:38px;height:38px}
+ .crow .prep{margin-left:0;width:100%}
+ .legend{justify-content:flex-start}
+}
+@media print{
+ body{background:#fff;padding:0}
+ .sheet{box-shadow:none;max-width:none}
+ .served{display:none}
+}
+</style>
+</head>
+<body class="mode-w">
+<div class="sheet">
+  <div class="frame"></div>
+  <svg class="corner c1" viewBox="0 0 70 70" aria-hidden="true">
+<g fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round">
+<path d="M3 67 V26 C3 12 12 3 26 3 H67"/>
+<path d="M11 67 V29 C11 18 18 11 29 11 H67"/>
+<path d="M11 40 C24 40 30 33 27 26 C24.6 20.4 17 22 18.6 28"/>
+<path d="M40 11 C40 24 33 30 26 27 C20.4 24.6 22 17 28 18.6"/>
+</g><g fill="currentColor"><circle cx="27" cy="27" r="2.4"/></g></svg>
+  <svg class="corner c2" viewBox="0 0 70 70" aria-hidden="true">
+<g fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round">
+<path d="M3 67 V26 C3 12 12 3 26 3 H67"/>
+<path d="M11 67 V29 C11 18 18 11 29 11 H67"/>
+<path d="M11 40 C24 40 30 33 27 26 C24.6 20.4 17 22 18.6 28"/>
+<path d="M40 11 C40 24 33 30 26 27 C20.4 24.6 22 17 28 18.6"/>
+</g><g fill="currentColor"><circle cx="27" cy="27" r="2.4"/></g></svg>
+  <svg class="corner c3" viewBox="0 0 70 70" aria-hidden="true">
+<g fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round">
+<path d="M3 67 V26 C3 12 12 3 26 3 H67"/>
+<path d="M11 67 V29 C11 18 18 11 29 11 H67"/>
+<path d="M11 40 C24 40 30 33 27 26 C24.6 20.4 17 22 18.6 28"/>
+<path d="M40 11 C40 24 33 30 26 27 C20.4 24.6 22 17 28 18.6"/>
+</g><g fill="currentColor"><circle cx="27" cy="27" r="2.4"/></g></svg>
+  <svg class="corner c4" viewBox="0 0 70 70" aria-hidden="true">
+<g fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round">
+<path d="M3 67 V26 C3 12 12 3 26 3 H67"/>
+<path d="M11 67 V29 C11 18 18 11 29 11 H67"/>
+<path d="M11 40 C24 40 30 33 27 26 C24.6 20.4 17 22 18.6 28"/>
+<path d="M40 11 C40 24 33 30 26 27 C20.4 24.6 22 17 28 18.6"/>
+</g><g fill="currentColor"><circle cx="27" cy="27" r="2.4"/></g></svg>
+
+  <header>
+    <div class="est cap">Composed for two covers</div>
+    <h1>Five Days<span class="amp">at</span>Table</h1>
+    <p class="tagline">Drawn from the carts of New York, the fires of Jamaica, the kitchens of Nigeria
+      &amp; the comfort foods of everywhere &mdash; rebuilt lean, and set down for the reduction of fat,
+      the preservation of muscle, and four days of labour under the bar.</p>
+    <div class="anno cap">Anno MMXXVI</div>
+    <svg class="fleuron" viewBox="0 0 300 30" aria-hidden="true">
+<g fill="none" stroke="currentColor" stroke-width="1.05" stroke-linecap="round">
+<path d="M6 15 H112"/>
+<path d="M112 15 C122 15 126 5.5 135 7.5 C142.5 9 141.5 18.5 133 18.5 C126 18.5 123 12 130 8.6"/>
+<path d="M188 15 C178 15 174 5.5 165 7.5 C157.5 9 158.5 18.5 167 18.5 C174 18.5 177 12 170 8.6"/>
+<path d="M188 15 H294"/>
+</g>
+<g fill="currentColor">
+<path d="M150 5.5 L157.5 15 L150 24.5 L142.5 15 Z"/>
+<circle cx="138.5" cy="15" r="1.7"/><circle cx="161.5" cy="15" r="1.7"/>
+<circle cx="6" cy="15" r="1.5"/><circle cx="294" cy="15" r="1.5"/>
+</g></svg>
+    <p class="preamble">A pizza, a burger, a wrap, a plate of pasta and a breakfast sandwich, alongside efo riro,
+      pepper soup, jerk salmon, a katsu curry and a halal-cart plate &mdash; every one of them rebuilt so that it
+      fits the numbers rather than pretending to. The starch is halved throughout: rice cut with cauliflower,
+      a pizza base made of chicken rather than flour, spaghetti pressed from edamame. One Sunday's labour
+      furnishes four luncheons; the rest is cooked fresh and fast. Two sizes of portion are given &mdash;
+      select yours below, and every weight and reckoning upon the card will follow.</p>
+    <div class="covers"><div class="cover">
+      <div class="t">Her cover</div>
+      <div class="n">70 kg</div>
+      <dl>
+        <div><dt>Calories</dt><dd>1,650-1,695</dd></div>
+        <div><dt>Protein</dt><dd class="hi">105-116 g</dd></div>
+        <div><dt>Fat</dt><dd>53-83 g</dd></div>
+        <div><dt>Net carbs</dt><dd>91-161 g</dd></div>
+        <div><dt>Fibre</dt><dd>40-44 g</dd></div>
+      </dl>
+      <p class="note">Roughly a 400 calorie daily deficit against an estimated 2,050 maintenance.</p>
+    </div><div class="cover">
+      <div class="t">His cover</div>
+      <div class="n">85 kg</div>
+      <dl>
+        <div><dt>Calories</dt><dd>2,145-2,225</dd></div>
+        <div><dt>Protein</dt><dd class="hi">139-148 g</dd></div>
+        <div><dt>Fat</dt><dd>73-112 g</dd></div>
+        <div><dt>Net carbs</dt><dd>114-217 g</dd></div>
+        <div><dt>Fibre</dt><dd>51-54 g</dd></div>
+      </dl>
+      <p class="note">Roughly a 450 calorie daily deficit against an estimated 2,650 maintenance.</p>
+    </div></div>
+  </header>
+
+  <div class="served">
+    <span class="l cap">Served for</span>
+    <div class="tabs">
+      <button data-m="w">Her &middot; 70 kg</button>
+      <button data-m="m">Him &middot; 85 kg</button>
+    </div>
+  </div>
+
+  <section class="sec">
+    <div class="sectitle">
+      <div class="r cap">Part the First</div>
+      <h2>The Sunday Labour</h2>
+      <p class="s">Some fifty-five minutes, the greater part of it spent waiting.</p>
+      <svg class="sfleuron" viewBox="0 0 120 18" aria-hidden="true">
+<g fill="none" stroke="currentColor" stroke-width=".9" stroke-linecap="round">
+<path d="M4 9 H44"/><path d="M76 9 H116"/>
+<path d="M44 9 C50 9 52 3.5 57 5 C61 6 60.5 12 55.5 12 C51.5 12 50 8 54 5.8"/>
+<path d="M76 9 C70 9 68 3.5 63 5 C59 6 59.5 12 64.5 12 C68.5 12 70 8 66 5.8"/>
+</g><g fill="currentColor"><path d="M60 4 L64 9 L60 14 L56 9 Z"/></g></svg>
+    </div>
+    <div class="steps"><div class="step"><div class="no">I</div><div class="w"><div class="when">Sunday &nbsp;&mdash;&nbsp; ~55 min, mostly waiting</div><p>A tray of chicken breasts seasoned with nothing but salt, garlic and onion powder, into a 200°C oven for twenty-five minutes. This one tray becomes three lunches — the character arrives later, at the plate, as halal-cart spice, as efo riro, as shawarma.</p></div></div><div class="step"><div class="no">II</div><div class="w"><div class="when">Sunday &nbsp;&mdash;&nbsp; the same oven</div><p>Beside it, chickpeas tossed in oil and jerk seasoning, roasted until they rattle. Peppers and onions for the week's bowls on a third tray if there is room.</p></div></div><div class="step"><div class="no">III</div><div class="w"><div class="when">Sunday &nbsp;&mdash;&nbsp; 35 min on the hob</div><p>Three pans. The chipotle beef: mince browned hard with chipotle, cumin and oregano. The efo riro base: peppers, tomato and onion blended and cooked down with egusi until the oil separates. The bolognese: turkey mince, passata, grated carrot and courgette, left to mumble for half an hour while you do the rest.</p></div></div><div class="step"><div class="no">IV</div><div class="w"><div class="when">Sunday &nbsp;&mdash;&nbsp; 15 min</div><p>The small things that make the week quick. Six eggs boiled eight minutes. Two heads of cauliflower riced in the processor and bagged raw. Cabbage and carrot shredded for the slaws. Garlic yoghurt shaken up in a jar and used three separate times.</p></div></div><div class="step"><div class="no">V</div><div class="w"><div class="when">Wednesday &nbsp;&mdash;&nbsp; 10 min</div><p>A short top-up. Fish and prawns bought fresh, more salad, more fruit. Nothing that keeps badly is bought on Sunday.</p></div></div></div>
+  </section>
+
+  <svg class="fleuron" viewBox="0 0 300 30" aria-hidden="true">
+<g fill="none" stroke="currentColor" stroke-width="1.05" stroke-linecap="round">
+<path d="M6 15 H112"/>
+<path d="M112 15 C122 15 126 5.5 135 7.5 C142.5 9 141.5 18.5 133 18.5 C126 18.5 123 12 130 8.6"/>
+<path d="M188 15 C178 15 174 5.5 165 7.5 C157.5 9 158.5 18.5 167 18.5 C174 18.5 177 12 170 8.6"/>
+<path d="M188 15 H294"/>
+</g>
+<g fill="currentColor">
+<path d="M150 5.5 L157.5 15 L150 24.5 L142.5 15 Z"/>
+<circle cx="138.5" cy="15" r="1.7"/><circle cx="161.5" cy="15" r="1.7"/>
+<circle cx="6" cy="15" r="1.5"/><circle cx="294" cy="15" r="1.5"/>
+</g></svg>
+
+  <section class="sec">
+    <div class="sectitle">
+      <div class="r cap">Part the Second</div>
+      <h2>The Bill of Fare</h2>
+      <p class="s">Five days, four courses to each, taken in order.</p>
+      <svg class="sfleuron" viewBox="0 0 120 18" aria-hidden="true">
+<g fill="none" stroke="currentColor" stroke-width=".9" stroke-linecap="round">
+<path d="M4 9 H44"/><path d="M76 9 H116"/>
+<path d="M44 9 C50 9 52 3.5 57 5 C61 6 60.5 12 55.5 12 C51.5 12 50 8 54 5.8"/>
+<path d="M76 9 C70 9 68 3.5 63 5 C59 6 59.5 12 64.5 12 C68.5 12 70 8 66 5.8"/>
+</g><g fill="currentColor"><path d="M60 4 L64 9 L60 14 L56 9 Z"/></g></svg>
+    </div>
+    
+    <section class="day">
+      <div class="dayhead">
+        <div class="ord">The First Day &mdash; Carts, Crusts & Chilli</div>
+        <h3>Monday</h3>
+        <div class="sub">Under the bar — pressing</div>
+        <svg class="sfleuron" viewBox="0 0 120 18" aria-hidden="true">
+<g fill="none" stroke="currentColor" stroke-width=".9" stroke-linecap="round">
+<path d="M4 9 H44"/><path d="M76 9 H116"/>
+<path d="M44 9 C50 9 52 3.5 57 5 C61 6 60.5 12 55.5 12 C51.5 12 50 8 54 5.8"/>
+<path d="M76 9 C70 9 68 3.5 63 5 C59 6 59.5 12 64.5 12 C68.5 12 70 8 66 5.8"/>
+</g><g fill="currentColor"><path d="M60 4 L64 9 L60 14 L56 9 Z"/></g></svg>
+      </div>
+      <div class="reckon">
+        <div class="rk"><em>Calories</em><b><i class="pw">1,678</i><i class="pm">2,146</i></b></div>
+        <div class="rk hi"><em>Protein</em><b><i class="pw">114</i><i class="pm">142</i> g</b></div>
+        <div class="rk"><em>Fat</em><b><i class="pw">71</i><i class="pm">90</i> g</b></div>
+        <div class="rk"><em>Net carbs</em><b><i class="pw">124</i><i class="pm">168</i> g</b></div>
+        <div class="rk"><em>Fibre</em><b><i class="pw">43.7</i><i class="pm">54.4</i> g</b></div>
+        <div class="rk"><em>At the stove</em><b>40 min</b></div>
+      </div>
+      
+      <article class="item">
+        <div class="crow"><span class="c">To Begin</span><span class="alt">Breakfast</span><span class="org">New York</span>
+          <span class="prep">Made fresh · 7 min</span></div>
+        <div class="nrow"><h4>Bodega egg &amp; cheese</h4><span class="dots"></span>
+          <span class="tally"><i class="pw">426</i><i class="pm">502</i> kcal</span></div>
+        <div class="macros">
+          <span class="mc hi"><em>Protein</em><b><i class="pw">27</i><i class="pm">31</i> g</b></span>
+          <span class="mc"><em>Fat</em><b><i class="pw">26</i><i class="pm">32</i> g</b></span>
+          <span class="mc"><em>Net carbs</em><b><i class="pw">14</i><i class="pm">16</i> g</b></span>
+          <span class="mc"><em>Fibre</em><b><i class="pw">15.4</i><i class="pm">17.9</i> g</b></span>
+        </div>
+        <ul class="ing"><li><span class="n">Eggs, medium, shell off <i class="wt">shelled</i></span><span class="d"></span><span class="q"><b><span class="pw">100 g</span><span class="pm">100 g</span></b><em><span class="pw">(2 eggs)</span><span class="pm">(2 eggs)</span></em></span></li><li><span class="n">Cheddar, reduced fat (~14%)</span><span class="d"></span><span class="q"><b><span class="pw">15 g</span><span class="pm">20 g</span></b><em><span class="pw">(¾ thin slice)</span><span class="pm">(1 thin slice)</span></em></span></li><li><span class="n">Tortilla, high-protein low-carb</span><span class="d"></span><span class="q"><b><span class="pw">45 g</span><span class="pm">50 g</span></b><em><span class="pw">(1 tortilla)</span><span class="pm">(1 tortilla)</span></em></span></li><li><span class="n">Spinach, ugu or callaloo <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">100 g</span><span class="pm">120 g</span></b><em><span class="pw">(3½ handfuls)</span><span class="pm">(4 handfuls)</span></em></span></li><li><span class="n">Tomatoes, ripe <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">80 g</span><span class="pm">100 g</span></b><em><span class="pw">(1 tomato)</span><span class="pm">(1 tomato)</span></em></span></li><li><span class="n">Avocado <i class="wt">flesh only</i></span><span class="d"></span><span class="q"><b><span class="pw">35 g</span><span class="pm">45 g</span></b><em><span class="pw">(¼ of a avocado)</span><span class="pm">(⅓ of a avocado)</span></em></span></li><li><span class="n">Extra virgin olive oil</span><span class="d"></span><span class="q"><b><span class="pw">5 g</span><span class="pm">8 g</span></b><em><span class="pw">(1 tsp)</span><span class="pm">(1¾ tsp)</span></em></span></li></ul>
+        <p class="method">Wilt the spinach in the pan, pour the beaten eggs over, fold into one soft slab and lay the cheese on top to melt under a lid. Folded into a warmed tortilla rather than a roll — same sandwich, a third of the starch. Tomato, black pepper, and enough hot sauce to make it count.</p>
+      </article>
+      <article class="item">
+        <div class="crow"><span class="c">At Midday</span><span class="alt">Luncheon</span><span class="org">New York</span>
+          <span class="prep">From Sunday's preparation · 6 min</span></div>
+        <div class="nrow"><h4>Halal cart chicken over rice</h4><span class="dots"></span>
+          <span class="tally"><i class="pw">528</i><i class="pm">716</i> kcal</span></div>
+        <div class="macros">
+          <span class="mc hi"><em>Protein</em><b><i class="pw">37</i><i class="pm">49</i> g</b></span>
+          <span class="mc"><em>Fat</em><b><i class="pw">11</i><i class="pm">15</i> g</b></span>
+          <span class="mc"><em>Net carbs</em><b><i class="pw">62</i><i class="pm">86</i> g</b></span>
+          <span class="mc"><em>Fibre</em><b><i class="pw">12.7</i><i class="pm">16.3</i> g</b></span>
+        </div>
+        <ul class="ing"><li><span class="n">Chicken breast, skinless <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">75 g</span><span class="pm">100 g</span></b><em><span class="pw">(½ of a breast)</span><span class="pm">(½ of a breast)</span></em></span></li><li><span class="n">Brown rice, long grain <i class="wt">dry</i></span><span class="d"></span><span class="q"><b><span class="pw">55 g</span><span class="pm">80 g</span></b><em><span class="pw">(4 tbsp)</span><span class="pm">(5½ tbsp)</span></em></span></li><li><span class="n">Cauliflower, riced</span><span class="d"></span><span class="q"><b><span class="pw">130 g</span><span class="pm">160 g</span></b><em><span class="pw">(¼ of a head)</span><span class="pm">(¼ of a head)</span></em></span></li><li><span class="n">Chickpeas, tinned <i class="wt">drained</i></span><span class="d"></span><span class="q"><b><span class="pw">70 g</span><span class="pm">90 g</span></b><em><span class="pw">(⅓ of a tin)</span><span class="pm">(⅓ of a tin)</span></em></span></li><li><span class="n">Little gem or romaine <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">70 g</span><span class="pm">80 g</span></b><em><span class="pw">(2¼ handfuls)</span><span class="pm">(2¾ handfuls)</span></em></span></li><li><span class="n">Tomatoes, ripe <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">80 g</span><span class="pm">100 g</span></b><em><span class="pw">(1 tomato)</span><span class="pm">(1 tomato)</span></em></span></li><li><span class="n">Greek yoghurt, 0% fat</span><span class="d"></span><span class="q"><b><span class="pw">50 g</span><span class="pm">65 g</span></b></span></li><li><span class="n">Red onion, peeled</span><span class="d"></span><span class="q"><b><span class="pw">30 g</span><span class="pm">40 g</span></b><em><span class="pw">(¼ onion)</span><span class="pm">(⅓ onion)</span></em></span></li><li><span class="n">Extra virgin olive oil</span><span class="d"></span><span class="q"><b><span class="pw">6 g</span><span class="pm">8 g</span></b><em><span class="pw">(1¼ tsp)</span><span class="pm">(1¾ tsp)</span></em></span></li></ul>
+        <p class="method">Sunday's chicken chopped and warmed through with oregano, cumin and turmeric. Underneath, rice cut half-and-half with cauliflower — riced, dry-fried, and honestly indistinguishable once the sauce is on. Chickpeas, shredded lettuce and tomato around the edge. White sauce: yoghurt, grated garlic, lemon, a great deal of black pepper.</p>
+      </article>
+      <article class="item">
+        <div class="crow"><span class="c">In the Evening</span><span class="alt">Dinner</span><span class="org">Naples, reconsidered</span>
+          <span class="prep">Made fresh · 25 min</span></div>
+        <div class="nrow"><h4>Chicken-crust pizza</h4><span class="dots"></span>
+          <span class="tally"><i class="pw">462</i><i class="pm">571</i> kcal</span></div>
+        <div class="macros">
+          <span class="mc hi"><em>Protein</em><b><i class="pw">38</i><i class="pm">46</i> g</b></span>
+          <span class="mc"><em>Fat</em><b><i class="pw">26</i><i class="pm">32</i> g</b></span>
+          <span class="mc"><em>Net carbs</em><b><i class="pw">15</i><i class="pm">19</i> g</b></span>
+          <span class="mc"><em>Fibre</em><b><i class="pw">8.5</i><i class="pm">10.9</i> g</b></span>
+        </div>
+        <ul class="ing"><li><span class="n">Chicken breast mince, 2-3% fat <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">65 g</span><span class="pm">75 g</span></b></span></li><li><span class="n">Parmesan, finely grated</span><span class="d"></span><span class="q"><b><span class="pw">12 g</span><span class="pm">15 g</span></b><em><span class="pw">(1½ tbsp)</span><span class="pm">(2 tbsp)</span></em></span></li><li><span class="n">Eggs, medium, shell off <i class="wt">shelled</i></span><span class="d"></span><span class="q"><b><span class="pw">25 g</span><span class="pm">25 g</span></b><em><span class="pw">(½ egg)</span><span class="pm">(½ egg)</span></em></span></li><li><span class="n">Mozzarella, reduced fat, block</span><span class="d"></span><span class="q"><b><span class="pw">30 g</span><span class="pm">40 g</span></b><em><span class="pw">(¼ of a ball)</span><span class="pm">(⅓ of a ball)</span></em></span></li><li><span class="n">Passata, plain</span><span class="d"></span><span class="q"><b><span class="pw">100 g</span><span class="pm">120 g</span></b><em><span class="pw">(6½ tbsp)</span><span class="pm">(8 tbsp)</span></em></span></li><li><span class="n">Red pepper, deseeded</span><span class="d"></span><span class="q"><b><span class="pw">90 g</span><span class="pm">110 g</span></b><em><span class="pw">(⅔ pepper)</span><span class="pm">(¾ pepper)</span></em></span></li><li><span class="n">Chestnut mushrooms <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">90 g</span><span class="pm">110 g</span></b><em><span class="pw">(4½ mushrooms)</span><span class="pm">(5½ mushrooms)</span></em></span></li><li><span class="n">Spinach, ugu or callaloo <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">60 g</span><span class="pm">80 g</span></b><em><span class="pw">(2 handfuls)</span><span class="pm">(2¾ handfuls)</span></em></span></li><li><span class="n">Red onion, peeled</span><span class="d"></span><span class="q"><b><span class="pw">30 g</span><span class="pm">40 g</span></b><em><span class="pw">(¼ onion)</span><span class="pm">(⅓ onion)</span></em></span></li><li><span class="n">Little gem or romaine <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">40 g</span><span class="pm">50 g</span></b><em><span class="pw">(1¼ handful)</span><span class="pm">(1¾ handfuls)</span></em></span></li><li><span class="n">Avocado <i class="wt">flesh only</i></span><span class="d"></span><span class="q"><b><span class="pw">25 g</span><span class="pm">35 g</span></b><em><span class="pm">(¼ of a avocado)</span></em></span></li><li><span class="n">Extra virgin olive oil</span><span class="d"></span><span class="q"><b><span class="pw">9 g</span><span class="pm">11 g</span></b><em><span class="pw">(2 tsp)</span><span class="pm">(2½ tsp)</span></em></span></li></ul>
+        <p class="method">The base is the trick: chicken mince pressed thin with parmesan and egg, baked fifteen minutes at 220°C until it firms and browns. Passata over it, mozzarella, mushrooms, peppers, onion and spinach, then back in for eight. It carves like a pizza, lifts like a pizza, and does it without a gram of flour.</p>
+      </article>
+      <article class="item">
+        <div class="crow"><span class="c">A Trifle Besides</span><span class="alt">Snack</span><span class="org">New York</span>
+          <span class="prep">Made fresh · 2 min</span></div>
+        <div class="nrow"><h4>Mango, lime &amp; chilli skyr cup</h4><span class="dots"></span>
+          <span class="tally"><i class="pw">262</i><i class="pm">357</i> kcal</span></div>
+        <div class="macros">
+          <span class="mc hi"><em>Protein</em><b><i class="pw">12</i><i class="pm">16</i> g</b></span>
+          <span class="mc"><em>Fat</em><b><i class="pw">8</i><i class="pm">11</i> g</b></span>
+          <span class="mc"><em>Net carbs</em><b><i class="pw">33</i><i class="pm">47</i> g</b></span>
+          <span class="mc"><em>Fibre</em><b><i class="pw">7.1</i><i class="pm">9.3</i> g</b></span>
+        </div>
+        <ul class="ing"><li><span class="n">Skyr, plain natural</span><span class="d"></span><span class="q"><b><span class="pw">60 g</span><span class="pm">80 g</span></b></span></li><li><span class="n">Mango <i class="wt">flesh only</i></span><span class="d"></span><span class="q"><b><span class="pw">220 g</span><span class="pm">320 g</span></b><em><span class="pw">(1 mango)</span><span class="pm">(1½ mangoes)</span></em></span></li><li><span class="n">Chia seeds <i class="wt">dry</i></span><span class="d"></span><span class="q"><b><span class="pw">8 g</span><span class="pm">9 g</span></b><em><span class="pw">(2 tsp)</span><span class="pm">(2¼ tsp)</span></em></span></li><li><span class="n">Pumpkin seeds <i class="wt">dry</i></span><span class="d"></span><span class="q"><b><span class="pw">6 g</span><span class="pm">8 g</span></b><em><span class="pw">(⅔ tbsp)</span><span class="pm">(1 tbsp)</span></em></span></li><li><span class="n">Coconut, desiccated unsweetened <i class="wt">dry</i></span><span class="d"></span><span class="q"><b><span class="pw">3 g</span><span class="pm">4 g</span></b><em><span class="pw">(¾ tsp)</span><span class="pm">(1 tsp)</span></em></span></li></ul>
+        <p class="method">Mango cubed over skyr, lime squeezed hard, chilli and salt over the top the way the fruit carts do it. Chia stirred through.</p>
+      </article>
+    </section>
+    <section class="day">
+      <div class="dayhead">
+        <div class="ord">The Second Day &mdash; Bowls, Batter & Panko</div>
+        <h3>Tuesday</h3>
+        <div class="sub">A day of rest</div>
+        <svg class="sfleuron" viewBox="0 0 120 18" aria-hidden="true">
+<g fill="none" stroke="currentColor" stroke-width=".9" stroke-linecap="round">
+<path d="M4 9 H44"/><path d="M76 9 H116"/>
+<path d="M44 9 C50 9 52 3.5 57 5 C61 6 60.5 12 55.5 12 C51.5 12 50 8 54 5.8"/>
+<path d="M76 9 C70 9 68 3.5 63 5 C59 6 59.5 12 64.5 12 C68.5 12 70 8 66 5.8"/>
+</g><g fill="currentColor"><path d="M60 4 L64 9 L60 14 L56 9 Z"/></g></svg>
+      </div>
+      <div class="reckon">
+        <div class="rk"><em>Calories</em><b><i class="pw">1,660</i><i class="pm">2,226</i></b></div>
+        <div class="rk hi"><em>Protein</em><b><i class="pw">105</i><i class="pm">139</i> g</b></div>
+        <div class="rk"><em>Fat</em><b><i class="pw">53</i><i class="pm">73</i> g</b></div>
+        <div class="rk"><em>Net carbs</em><b><i class="pw">161</i><i class="pm">217</i> g</b></div>
+        <div class="rk"><em>Fibre</em><b><i class="pw">43.8</i><i class="pm">53.6</i> g</b></div>
+        <div class="rk"><em>At the stove</em><b>39 min</b></div>
+      </div>
+      
+      <article class="item">
+        <div class="crow"><span class="c">To Begin</span><span class="alt">Breakfast</span><span class="org">The gym canteen</span>
+          <span class="prep">Made fresh · 10 min</span></div>
+        <div class="nrow"><h4>Protein pancakes with berries</h4><span class="dots"></span>
+          <span class="tally"><i class="pw">419</i><i class="pm">582</i> kcal</span></div>
+        <div class="macros">
+          <span class="mc hi"><em>Protein</em><b><i class="pw">25</i><i class="pm">36</i> g</b></span>
+          <span class="mc"><em>Fat</em><b><i class="pw">15</i><i class="pm">22</i> g</b></span>
+          <span class="mc"><em>Net carbs</em><b><i class="pw">38</i><i class="pm">51</i> g</b></span>
+          <span class="mc"><em>Fibre</em><b><i class="pw">10.0</i><i class="pm">12.4</i> g</b></span>
+        </div>
+        <ul class="ing"><li><span class="n">Porridge oats <i class="wt">dry</i></span><span class="d"></span><span class="q"><b><span class="pw">40 g</span><span class="pm">58 g</span></b><em><span class="pw">(4½ tbsp)</span><span class="pm">(6½ tbsp)</span></em></span></li><li><span class="n">Whey protein, unflavoured <i class="wt">dry</i></span><span class="d"></span><span class="q"><b><span class="pw">5 g</span><span class="pm">8 g</span></b><em><span class="pm">(¼ scoop)</span></em></span></li><li><span class="n">Eggs, medium, shell off <i class="wt">shelled</i></span><span class="d"></span><span class="q"><b><span class="pw">50 g</span><span class="pm">75 g</span></b><em><span class="pw">(1 egg)</span><span class="pm">(1½ egg)</span></em></span></li><li><span class="n">Skyr, plain natural</span><span class="d"></span><span class="q"><b><span class="pw">60 g</span><span class="pm">80 g</span></b></span></li><li><span class="n">Raspberries</span><span class="d"></span><span class="q"><b><span class="pw">60 g</span><span class="pm">60 g</span></b><em><span class="pw">(1½ handful)</span><span class="pm">(1½ handful)</span></em></span></li><li><span class="n">Blueberries</span><span class="d"></span><span class="q"><b><span class="pw">60 g</span><span class="pm">75 g</span></b><em><span class="pw">(1½ handful)</span><span class="pm">(2 handfuls)</span></em></span></li><li><span class="n">Peanut butter, 100% nuts</span><span class="d"></span><span class="q"><b><span class="pw">8 g</span><span class="pm">11 g</span></b><em><span class="pw">(½ tbsp)</span><span class="pm">(⅔ tbsp)</span></em></span></li><li><span class="n">Extra virgin olive oil</span><span class="d"></span><span class="q"><b><span class="pw">3 g</span><span class="pm">4 g</span></b><em><span class="pw">(⅔ tsp)</span><span class="pm">(1 tsp)</span></em></span></li></ul>
+        <p class="method">Oats blitzed to flour with the whey, egg and half the skyr, then dropped in small rounds into a dry non-stick pan — small ones hold together, large ones do not. Stacked with the remaining skyr and a great heap of berries.</p>
+      </article>
+      <article class="item">
+        <div class="crow"><span class="c">At Midday</span><span class="alt">Luncheon</span><span class="org">Tex-Mex</span>
+          <span class="prep">From Sunday's preparation · 5 min</span></div>
+        <div class="nrow"><h4>Chipotle burrito bowl</h4><span class="dots"></span>
+          <span class="tally"><i class="pw">510</i><i class="pm">707</i> kcal</span></div>
+        <div class="macros">
+          <span class="mc hi"><em>Protein</em><b><i class="pw">32</i><i class="pm">42</i> g</b></span>
+          <span class="mc"><em>Fat</em><b><i class="pw">9</i><i class="pm">13</i> g</b></span>
+          <span class="mc"><em>Net carbs</em><b><i class="pw">60</i><i class="pm">87</i> g</b></span>
+          <span class="mc"><em>Fibre</em><b><i class="pw">18.0</i><i class="pm">22.2</i> g</b></span>
+        </div>
+        <ul class="ing"><li><span class="n">Beef mince, 5% fat <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">70 g</span><span class="pm">95 g</span></b></span></li><li><span class="n">Black beans, tinned <i class="wt">drained</i></span><span class="d"></span><span class="q"><b><span class="pw">95 g</span><span class="pm">105 g</span></b><em><span class="pw">(⅓ of a tin)</span><span class="pm">(½ of a tin)</span></em></span></li><li><span class="n">Brown rice, long grain <i class="wt">dry</i></span><span class="d"></span><span class="q"><b><span class="pw">40 g</span><span class="pm">70 g</span></b><em><span class="pw">(2¾ tbsp)</span><span class="pm">(5 tbsp)</span></em></span></li><li><span class="n">Cauliflower, riced</span><span class="d"></span><span class="q"><b><span class="pw">120 g</span><span class="pm">155 g</span></b><em><span class="pw">(¼ of a head)</span><span class="pm">(¼ of a head)</span></em></span></li><li><span class="n">Red pepper, deseeded</span><span class="d"></span><span class="q"><b><span class="pw">70 g</span><span class="pm">90 g</span></b><em><span class="pw">(½ pepper)</span><span class="pm">(⅔ pepper)</span></em></span></li><li><span class="n">Red onion, peeled</span><span class="d"></span><span class="q"><b><span class="pw">30 g</span><span class="pm">40 g</span></b><em><span class="pw">(¼ onion)</span><span class="pm">(⅓ onion)</span></em></span></li><li><span class="n">Sweetcorn</span><span class="d"></span><span class="q"><b><span class="pw">25 g</span><span class="pm">30 g</span></b><em><span class="pw">(1¾ tbsp)</span><span class="pm">(2 tbsp)</span></em></span></li><li><span class="n">Tomato salsa, no added sugar</span><span class="d"></span><span class="q"><b><span class="pw">60 g</span><span class="pm">70 g</span></b><em><span class="pw">(4 tbsp)</span><span class="pm">(4½ tbsp)</span></em></span></li><li><span class="n">Little gem or romaine <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">50 g</span><span class="pm">60 g</span></b><em><span class="pw">(1¾ handfuls)</span><span class="pm">(2 handfuls)</span></em></span></li><li><span class="n">Avocado <i class="wt">flesh only</i></span><span class="d"></span><span class="q"><b><span class="pw">20 g</span><span class="pm">28 g</span></b><em><span class="pm">(¼ of a avocado)</span></em></span></li></ul>
+        <p class="method">Sunday's chipotle beef over rice cut with cauliflower, with black beans, roast peppers and onion, sweetcorn, salsa, shredded lettuce and a restrained scoop of guacamole. Lime over the lot.</p>
+      </article>
+      <article class="item">
+        <div class="crow"><span class="c">In the Evening</span><span class="alt">Dinner</span><span class="org">Japan</span>
+          <span class="prep">Made fresh · 22 min</span></div>
+        <div class="nrow"><h4>Chicken katsu curry</h4><span class="dots"></span>
+          <span class="tally"><i class="pw">484</i><i class="pm">615</i> kcal</span></div>
+        <div class="macros">
+          <span class="mc hi"><em>Protein</em><b><i class="pw">36</i><i class="pm">45</i> g</b></span>
+          <span class="mc"><em>Fat</em><b><i class="pw">12</i><i class="pm">15</i> g</b></span>
+          <span class="mc"><em>Net carbs</em><b><i class="pw">53</i><i class="pm">68</i> g</b></span>
+          <span class="mc"><em>Fibre</em><b><i class="pw">10.4</i><i class="pm">12.7</i> g</b></span>
+        </div>
+        <ul class="ing"><li><span class="n">Chicken breast, skinless <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">85 g</span><span class="pm">110 g</span></b><em><span class="pw">(½ of a breast)</span><span class="pm">(⅔ of a breast)</span></em></span></li><li><span class="n">Panko breadcrumbs <i class="wt">dry</i></span><span class="d"></span><span class="q"><b><span class="pw">20 g</span><span class="pm">25 g</span></b><em><span class="pw">(2¾ tbsp)</span><span class="pm">(3½ tbsp)</span></em></span></li><li><span class="n">Eggs, medium, shell off <i class="wt">shelled</i></span><span class="d"></span><span class="q"><b><span class="pw">25 g</span><span class="pm">25 g</span></b><em><span class="pw">(½ egg)</span><span class="pm">(½ egg)</span></em></span></li><li><span class="n">Brown rice, long grain <i class="wt">dry</i></span><span class="d"></span><span class="q"><b><span class="pw">30 g</span><span class="pm">42 g</span></b><em><span class="pw">(2¼ tbsp)</span><span class="pm">(3 tbsp)</span></em></span></li><li><span class="n">Cauliflower, riced</span><span class="d"></span><span class="q"><b><span class="pw">130 g</span><span class="pm">160 g</span></b><em><span class="pw">(¼ of a head)</span><span class="pm">(¼ of a head)</span></em></span></li><li><span class="n">Broccoli florets <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">140 g</span><span class="pm">165 g</span></b><em><span class="pw">(⅓ of a head)</span><span class="pm">(½ of a head)</span></em></span></li><li><span class="n">Red onion, peeled</span><span class="d"></span><span class="q"><b><span class="pw">40 g</span><span class="pm">50 g</span></b><em><span class="pw">(⅓ onion)</span><span class="pm">(⅓ onion)</span></em></span></li><li><span class="n">Carrots, peeled</span><span class="d"></span><span class="q"><b><span class="pw">60 g</span><span class="pm">70 g</span></b><em><span class="pw">(¾ carrot)</span><span class="pm">(1 carrot)</span></em></span></li><li><span class="n">Extra virgin olive oil</span><span class="d"></span><span class="q"><b><span class="pw">6 g</span><span class="pm">8 g</span></b><em><span class="pw">(1¼ tsp)</span><span class="pm">(1¾ tsp)</span></em></span></li></ul>
+        <p class="method">Chicken flattened thin, through beaten egg then panko, baked at 220°C for eighteen minutes and turned once — it crisps properly without a fryer. The sauce is onion and carrot cooked soft with curry powder and then blitzed smooth, which thickens it without flour. Rice cut with cauliflower, broccoli steamed.</p>
+      </article>
+      <article class="item">
+        <div class="crow"><span class="c">A Trifle Besides</span><span class="alt">Snack</span><span class="org">Nigeria</span>
+          <span class="prep">From Sunday's preparation · 2 min</span></div>
+        <div class="nrow"><h4>Suya-spiced eggs &amp; carrots</h4><span class="dots"></span>
+          <span class="tally"><i class="pw">247</i><i class="pm">322</i> kcal</span></div>
+        <div class="macros">
+          <span class="mc hi"><em>Protein</em><b><i class="pw">12</i><i class="pm">16</i> g</b></span>
+          <span class="mc"><em>Fat</em><b><i class="pw">17</i><i class="pm">23</i> g</b></span>
+          <span class="mc"><em>Net carbs</em><b><i class="pw">10</i><i class="pm">11</i> g</b></span>
+          <span class="mc"><em>Fibre</em><b><i class="pw">5.4</i><i class="pm">6.3</i> g</b></span>
+        </div>
+        <ul class="ing"><li><span class="n">Eggs, medium, shell off <i class="wt">shelled</i></span><span class="d"></span><span class="q"><b><span class="pw">50 g</span><span class="pm">75 g</span></b><em><span class="pw">(1 egg)</span><span class="pm">(1½ egg)</span></em></span></li><li><span class="n">Carrots, peeled</span><span class="d"></span><span class="q"><b><span class="pw">100 g</span><span class="pm">100 g</span></b><em><span class="pw">(1½ carrot)</span><span class="pm">(1½ carrot)</span></em></span></li><li><span class="n">Peanut butter, 100% nuts</span><span class="d"></span><span class="q"><b><span class="pw">16 g</span><span class="pm">20 g</span></b><em><span class="pw">(1 tbsp)</span><span class="pm">(1¼ tbsp)</span></em></span></li><li><span class="n">Avocado <i class="wt">flesh only</i></span><span class="d"></span><span class="q"><b><span class="pw">25 g</span><span class="pm">35 g</span></b><em><span class="pm">(¼ of a avocado)</span></em></span></li></ul>
+        <p class="method">Sunday's boiled eggs halved and dusted heavily with suya — ground peanut, chilli, ginger, stock powder. Carrot sticks to scoop with.</p>
+      </article>
+    </section>
+    <section class="day">
+      <div class="dayhead">
+        <div class="ord">The Third Day &mdash; Nigeria, Start to Finish</div>
+        <h3>Wednesday</h3>
+        <div class="sub">Under the bar — pulling</div>
+        <svg class="sfleuron" viewBox="0 0 120 18" aria-hidden="true">
+<g fill="none" stroke="currentColor" stroke-width=".9" stroke-linecap="round">
+<path d="M4 9 H44"/><path d="M76 9 H116"/>
+<path d="M44 9 C50 9 52 3.5 57 5 C61 6 60.5 12 55.5 12 C51.5 12 50 8 54 5.8"/>
+<path d="M76 9 C70 9 68 3.5 63 5 C59 6 59.5 12 64.5 12 C68.5 12 70 8 66 5.8"/>
+</g><g fill="currentColor"><path d="M60 4 L64 9 L60 14 L56 9 Z"/></g></svg>
+      </div>
+      <div class="reckon">
+        <div class="rk"><em>Calories</em><b><i class="pw">1,670</i><i class="pm">2,151</i></b></div>
+        <div class="rk hi"><em>Protein</em><b><i class="pw">112</i><i class="pm">142</i> g</b></div>
+        <div class="rk"><em>Fat</em><b><i class="pw">59</i><i class="pm">75</i> g</b></div>
+        <div class="rk"><em>Net carbs</em><b><i class="pw">156</i><i class="pm">206</i> g</b></div>
+        <div class="rk"><em>Fibre</em><b><i class="pw">40.4</i><i class="pm">51.1</i> g</b></div>
+        <div class="rk"><em>At the stove</em><b>39 min</b></div>
+      </div>
+      
+      <article class="item">
+        <div class="crow"><span class="c">To Begin</span><span class="alt">Breakfast</span><span class="org">Nigeria</span>
+          <span class="prep">Made fresh · 12 min</span></div>
+        <div class="nrow"><h4>Nigerian egg sauce with plantain</h4><span class="dots"></span>
+          <span class="tally"><i class="pw">429</i><i class="pm">541</i> kcal</span></div>
+        <div class="macros">
+          <span class="mc hi"><em>Protein</em><b><i class="pw">24</i><i class="pm">29</i> g</b></span>
+          <span class="mc"><em>Fat</em><b><i class="pw">21</i><i class="pm">25</i> g</b></span>
+          <span class="mc"><em>Net carbs</em><b><i class="pw">35</i><i class="pm">49</i> g</b></span>
+          <span class="mc"><em>Fibre</em><b><i class="pw">6.7</i><i class="pm">8.9</i> g</b></span>
+        </div>
+        <ul class="ing"><li><span class="n">Eggs, medium, shell off <i class="wt">shelled</i></span><span class="d"></span><span class="q"><b><span class="pw">150 g</span><span class="pm">175 g</span></b><em><span class="pw">(3 eggs)</span><span class="pm">(3½ eggs)</span></em></span></li><li><span class="n">Tomatoes, ripe <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">100 g</span><span class="pm">120 g</span></b><em><span class="pw">(1 tomato)</span><span class="pm">(1¼ tomato)</span></em></span></li><li><span class="n">Red pepper, deseeded</span><span class="d"></span><span class="q"><b><span class="pw">80 g</span><span class="pm">100 g</span></b><em><span class="pw">(½ pepper)</span><span class="pm">(⅔ pepper)</span></em></span></li><li><span class="n">Red onion, peeled</span><span class="d"></span><span class="q"><b><span class="pw">40 g</span><span class="pm">50 g</span></b><em><span class="pw">(⅓ onion)</span><span class="pm">(⅓ onion)</span></em></span></li><li><span class="n">Spinach, ugu or callaloo <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">60 g</span><span class="pm">80 g</span></b><em><span class="pw">(2 handfuls)</span><span class="pm">(2¾ handfuls)</span></em></span></li><li><span class="n">Plantain, ripe <i class="wt">peeled</i></span><span class="d"></span><span class="q"><b><span class="pw">80 g</span><span class="pm">120 g</span></b><em><span class="pw">(⅔ of a plantain)</span><span class="pm">(1 of a plantain)</span></em></span></li><li><span class="n">Extra virgin olive oil</span><span class="d"></span><span class="q"><b><span class="pw">5 g</span><span class="pm">6 g</span></b><em><span class="pw">(1 tsp)</span><span class="pm">(1¼ tsp)</span></em></span></li></ul>
+        <p class="method">Onion, pepper and tomato cooked down hard until the oil separates, then the eggs stirred through in ribbons rather than scrambled to dust. Spinach folded in at the end. Plantain sliced thick and griddled dry, not fried, which is the whole difference.</p>
+      </article>
+      <article class="item">
+        <div class="crow"><span class="c">At Midday</span><span class="alt">Luncheon</span><span class="org">Nigeria</span>
+          <span class="prep">From Sunday's preparation · 6 min</span></div>
+        <div class="nrow"><h4>Efo riro with chicken &amp; jollof</h4><span class="dots"></span>
+          <span class="tally"><i class="pw">500</i><i class="pm">649</i> kcal</span></div>
+        <div class="macros">
+          <span class="mc hi"><em>Protein</em><b><i class="pw">37</i><i class="pm">47</i> g</b></span>
+          <span class="mc"><em>Fat</em><b><i class="pw">15</i><i class="pm">20</i> g</b></span>
+          <span class="mc"><em>Net carbs</em><b><i class="pw">47</i><i class="pm">62</i> g</b></span>
+          <span class="mc"><em>Fibre</em><b><i class="pw">12.0</i><i class="pm">15.0</i> g</b></span>
+        </div>
+        <ul class="ing"><li><span class="n">Chicken breast, skinless <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">85 g</span><span class="pm">110 g</span></b><em><span class="pw">(½ of a breast)</span><span class="pm">(⅔ of a breast)</span></em></span></li><li><span class="n">Spinach, ugu or callaloo <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">200 g</span><span class="pm">240 g</span></b><em><span class="pw">(6½ handfuls)</span><span class="pm">(8 handfuls)</span></em></span></li><li><span class="n">Egusi, ground melon seed <i class="wt">dry</i></span><span class="d"></span><span class="q"><b><span class="pw">12 g</span><span class="pm">15 g</span></b><em><span class="pw">(1¼ tbsp)</span><span class="pm">(1½ tbsp)</span></em></span></li><li><span class="n">Passata, plain</span><span class="d"></span><span class="q"><b><span class="pw">100 g</span><span class="pm">120 g</span></b><em><span class="pw">(6½ tbsp)</span><span class="pm">(8 tbsp)</span></em></span></li><li><span class="n">Red pepper, deseeded</span><span class="d"></span><span class="q"><b><span class="pw">70 g</span><span class="pm">90 g</span></b><em><span class="pw">(½ pepper)</span><span class="pm">(⅔ pepper)</span></em></span></li><li><span class="n">Red onion, peeled</span><span class="d"></span><span class="q"><b><span class="pw">40 g</span><span class="pm">50 g</span></b><em><span class="pw">(⅓ onion)</span><span class="pm">(⅓ onion)</span></em></span></li><li><span class="n">Brown rice, long grain <i class="wt">dry</i></span><span class="d"></span><span class="q"><b><span class="pw">40 g</span><span class="pm">55 g</span></b><em><span class="pw">(2¾ tbsp)</span><span class="pm">(4 tbsp)</span></em></span></li><li><span class="n">Cauliflower, riced</span><span class="d"></span><span class="q"><b><span class="pw">110 g</span><span class="pm">140 g</span></b><em><span class="pw">(¼ of a head)</span><span class="pm">(¼ of a head)</span></em></span></li><li><span class="n">Extra virgin olive oil</span><span class="d"></span><span class="q"><b><span class="pw">6 g</span><span class="pm">8 g</span></b><em><span class="pw">(1¼ tsp)</span><span class="pm">(1¾ tsp)</span></em></span></li></ul>
+        <p class="method">Sunday's efo riro reheated — peppers, tomato and onion cooked down with egusi until it thickens, a mountain of spinach wilted through, the chicken in at the end. Beside it, jollof made half with rice and half with cauliflower, which takes the colour perfectly well.</p>
+      </article>
+      <article class="item">
+        <div class="crow"><span class="c">In the Evening</span><span class="alt">Dinner</span><span class="org">Nigeria</span>
+          <span class="prep">Made fresh · 20 min</span></div>
+        <div class="nrow"><h4>Catfish pepper soup with okra</h4><span class="dots"></span>
+          <span class="tally"><i class="pw">463</i><i class="pm">605</i> kcal</span></div>
+        <div class="macros">
+          <span class="mc hi"><em>Protein</em><b><i class="pw">37</i><i class="pm">48</i> g</b></span>
+          <span class="mc"><em>Fat</em><b><i class="pw">10</i><i class="pm">13</i> g</b></span>
+          <span class="mc"><em>Net carbs</em><b><i class="pw">55</i><i class="pm">72</i> g</b></span>
+          <span class="mc"><em>Fibre</em><b><i class="pw">12.0</i><i class="pm">15.1</i> g</b></span>
+        </div>
+        <ul class="ing"><li><span class="n">Catfish or tilapia fillet <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">100 g</span><span class="pm">130 g</span></b><em><span class="pw">(⅔ fillet)</span><span class="pm">(¾ fillet)</span></em></span></li><li><span class="n">King prawns, peeled <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">40 g</span><span class="pm">55 g</span></b><em><span class="pw">(6½ prawns)</span><span class="pm">(9 prawns)</span></em></span></li><li><span class="n">Okra</span><span class="d"></span><span class="q"><b><span class="pw">100 g</span><span class="pm">120 g</span></b><em><span class="pw">(10 pods)</span><span class="pm">(12 pods)</span></em></span></li><li><span class="n">Spinach, ugu or callaloo <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">120 g</span><span class="pm">150 g</span></b><em><span class="pw">(4 handfuls)</span><span class="pm">(5 handfuls)</span></em></span></li><li><span class="n">Tomatoes, ripe <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">80 g</span><span class="pm">100 g</span></b><em><span class="pw">(1 tomato)</span><span class="pm">(1 tomato)</span></em></span></li><li><span class="n">Red onion, peeled</span><span class="d"></span><span class="q"><b><span class="pw">40 g</span><span class="pm">50 g</span></b><em><span class="pw">(⅓ onion)</span><span class="pm">(⅓ onion)</span></em></span></li><li><span class="n">Red pepper, deseeded</span><span class="d"></span><span class="q"><b><span class="pw">60 g</span><span class="pm">80 g</span></b><em><span class="pw">(⅓ pepper)</span><span class="pm">(½ pepper)</span></em></span></li><li><span class="n">Plantain, ripe <i class="wt">peeled</i></span><span class="d"></span><span class="q"><b><span class="pw">140 g</span><span class="pm">185 g</span></b><em><span class="pw">(1 plantain)</span><span class="pm">(1½ plantain)</span></em></span></li><li><span class="n">Extra virgin olive oil</span><span class="d"></span><span class="q"><b><span class="pw">6 g</span><span class="pm">8 g</span></b><em><span class="pw">(1¼ tsp)</span><span class="pm">(1¾ tsp)</span></em></span></li></ul>
+        <p class="method">Stock brought up with pepper soup spice, onion, scotch bonnet and tomato. Okra in for five minutes, fish laid on top and poached gently for eight, prawns for the last three, spinach wilted through at the end. Plantain on the side. Very light on calories and very heavy on flavour, which is exactly what a Wednesday needs.</p>
+      </article>
+      <article class="item">
+        <div class="crow"><span class="c">A Trifle Besides</span><span class="alt">Snack</span><span class="org">Jamaica</span>
+          <span class="prep">From Sunday's preparation · 1 min</span></div>
+        <div class="nrow"><h4>Jerk-roasted chickpeas with skyr</h4><span class="dots"></span>
+          <span class="tally"><i class="pw">278</i><i class="pm">356</i> kcal</span></div>
+        <div class="macros">
+          <span class="mc hi"><em>Protein</em><b><i class="pw">14</i><i class="pm">18</i> g</b></span>
+          <span class="mc"><em>Fat</em><b><i class="pw">13</i><i class="pm">17</i> g</b></span>
+          <span class="mc"><em>Net carbs</em><b><i class="pw">19</i><i class="pm">23</i> g</b></span>
+          <span class="mc"><em>Fibre</em><b><i class="pw">9.7</i><i class="pm">12.1</i> g</b></span>
+        </div>
+        <ul class="ing"><li><span class="n">Chickpeas, tinned <i class="wt">drained</i></span><span class="d"></span><span class="q"><b><span class="pw">110 g</span><span class="pm">135 g</span></b><em><span class="pw">(½ of a tin)</span><span class="pm">(½ of a tin)</span></em></span></li><li><span class="n">Skyr, plain natural</span><span class="d"></span><span class="q"><b><span class="pw">50 g</span><span class="pm">70 g</span></b></span></li><li><span class="n">Avocado <i class="wt">flesh only</i></span><span class="d"></span><span class="q"><b><span class="pw">20 g</span><span class="pm">28 g</span></b><em><span class="pm">(¼ of a avocado)</span></em></span></li><li><span class="n">Extra virgin olive oil</span><span class="d"></span><span class="q"><b><span class="pw">7 g</span><span class="pm">9 g</span></b><em><span class="pw">(1½ tsp)</span><span class="pm">(2 tsp)</span></em></span></li></ul>
+        <p class="method">Chickpeas tossed in oil and jerk seasoning on Sunday and roasted thirty minutes until they rattle on the tray. Eaten by the handful with skyr to cool it.</p>
+      </article>
+    </section>
+    <section class="day">
+      <div class="dayhead">
+        <div class="ord">The Fourth Day &mdash; Bologna Meets the Bodega</div>
+        <h3>Thursday</h3>
+        <div class="sub">Under the bar — legs</div>
+        <svg class="sfleuron" viewBox="0 0 120 18" aria-hidden="true">
+<g fill="none" stroke="currentColor" stroke-width=".9" stroke-linecap="round">
+<path d="M4 9 H44"/><path d="M76 9 H116"/>
+<path d="M44 9 C50 9 52 3.5 57 5 C61 6 60.5 12 55.5 12 C51.5 12 50 8 54 5.8"/>
+<path d="M76 9 C70 9 68 3.5 63 5 C59 6 59.5 12 64.5 12 C68.5 12 70 8 66 5.8"/>
+</g><g fill="currentColor"><path d="M60 4 L64 9 L60 14 L56 9 Z"/></g></svg>
+      </div>
+      <div class="reckon">
+        <div class="rk"><em>Calories</em><b><i class="pw">1,650</i><i class="pm">2,150</i></b></div>
+        <div class="rk hi"><em>Protein</em><b><i class="pw">116</i><i class="pm">148</i> g</b></div>
+        <div class="rk"><em>Fat</em><b><i class="pw">83</i><i class="pm">112</i> g</b></div>
+        <div class="rk"><em>Net carbs</em><b><i class="pw">91</i><i class="pm">118</i> g</b></div>
+        <div class="rk"><em>Fibre</em><b><i class="pw">43.9</i><i class="pm">52.3</i> g</b></div>
+        <div class="rk"><em>At the stove</em><b>33 min</b></div>
+      </div>
+      
+      <article class="item">
+        <div class="crow"><span class="c">To Begin</span><span class="alt">Breakfast</span><span class="org">New York</span>
+          <span class="prep">Made fresh · 10 min</span></div>
+        <div class="nrow"><h4>Steak &amp; egg breakfast sandwich</h4><span class="dots"></span>
+          <span class="tally"><i class="pw">421</i><i class="pm">518</i> kcal</span></div>
+        <div class="macros">
+          <span class="mc hi"><em>Protein</em><b><i class="pw">30</i><i class="pm">36</i> g</b></span>
+          <span class="mc"><em>Fat</em><b><i class="pw">27</i><i class="pm">34</i> g</b></span>
+          <span class="mc"><em>Net carbs</em><b><i class="pw">10</i><i class="pm">12</i> g</b></span>
+          <span class="mc"><em>Fibre</em><b><i class="pw">10.6</i><i class="pm">12.7</i> g</b></span>
+        </div>
+        <ul class="ing"><li><span class="n">Sirloin steak, lean, trimmed <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">55 g</span><span class="pm">58 g</span></b><em><span class="pw">(⅓ of a steak)</span><span class="pm">(⅓ of a steak)</span></em></span></li><li><span class="n">Eggs, medium, shell off <i class="wt">shelled</i></span><span class="d"></span><span class="q"><b><span class="pw">50 g</span><span class="pm">75 g</span></b><em><span class="pw">(1 egg)</span><span class="pm">(1½ egg)</span></em></span></li><li><span class="n">Seeded low-carb loaf</span><span class="d"></span><span class="q"><b><span class="pw">45 g</span><span class="pm">50 g</span></b><em><span class="pw">(1 slice)</span><span class="pm">(1 slice)</span></em></span></li><li><span class="n">Spinach, ugu or callaloo <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">60 g</span><span class="pm">80 g</span></b><em><span class="pw">(2 handfuls)</span><span class="pm">(2¾ handfuls)</span></em></span></li><li><span class="n">Tomatoes, ripe <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">60 g</span><span class="pm">80 g</span></b><em><span class="pw">(⅔ tomato)</span><span class="pm">(1 tomato)</span></em></span></li><li><span class="n">Red onion, peeled</span><span class="d"></span><span class="q"><b><span class="pw">20 g</span><span class="pm">25 g</span></b><em><span class="pm">(¼ onion)</span></em></span></li><li><span class="n">Avocado <i class="wt">flesh only</i></span><span class="d"></span><span class="q"><b><span class="pw">25 g</span><span class="pm">35 g</span></b><em><span class="pm">(¼ of a avocado)</span></em></span></li><li><span class="n">Extra virgin olive oil</span><span class="d"></span><span class="q"><b><span class="pw">9 g</span><span class="pm">11 g</span></b><em><span class="pw">(2 tsp)</span><span class="pm">(2½ tsp)</span></em></span></li></ul>
+        <p class="method">Sirloin seasoned hard, seared two minutes a side and rested while the eggs fry in the same pan. Stacked on toasted seeded bread with wilted spinach and tomato. The bread is the low-carb seeded sort, which toasts far better than it has any right to.</p>
+      </article>
+      <article class="item">
+        <div class="crow"><span class="c">At Midday</span><span class="alt">Luncheon</span><span class="org">Bologna, reconsidered</span>
+          <span class="prep">From Sunday's preparation · 8 min</span></div>
+        <div class="nrow"><h4>Turkey bolognese with edamame spaghetti</h4><span class="dots"></span>
+          <span class="tally"><i class="pw">467</i><i class="pm">612</i> kcal</span></div>
+        <div class="macros">
+          <span class="mc hi"><em>Protein</em><b><i class="pw">35</i><i class="pm">43</i> g</b></span>
+          <span class="mc"><em>Fat</em><b><i class="pw">22</i><i class="pm">32</i> g</b></span>
+          <span class="mc"><em>Net carbs</em><b><i class="pw">26</i><i class="pm">30</i> g</b></span>
+          <span class="mc"><em>Fibre</em><b><i class="pw">14.4</i><i class="pm">16.2</i> g</b></span>
+        </div>
+        <ul class="ing"><li><span class="n">Turkey breast mince, 5% fat <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">50 g</span><span class="pm">70 g</span></b></span></li><li><span class="n">Edamame spaghetti <i class="wt">dry</i></span><span class="d"></span><span class="q"><b><span class="pw">34 g</span><span class="pm">38 g</span></b></span></li><li><span class="n">Passata, plain</span><span class="d"></span><span class="q"><b><span class="pw">190 g</span><span class="pm">210 g</span></b><em><span class="pw">(12½ tbsp)</span><span class="pm">(14 tbsp)</span></em></span></li><li><span class="n">Courgette <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">150 g</span><span class="pm">180 g</span></b><em><span class="pw">(¾ of a courgette)</span><span class="pm">(1 of a courgette)</span></em></span></li><li><span class="n">Carrots, peeled</span><span class="d"></span><span class="q"><b><span class="pw">65 g</span><span class="pm">70 g</span></b><em><span class="pw">(1 carrot)</span><span class="pm">(1 carrot)</span></em></span></li><li><span class="n">Red onion, peeled</span><span class="d"></span><span class="q"><b><span class="pw">40 g</span><span class="pm">50 g</span></b><em><span class="pw">(⅓ onion)</span><span class="pm">(⅓ onion)</span></em></span></li><li><span class="n">Parmesan, finely grated</span><span class="d"></span><span class="q"><b><span class="pw">10 g</span><span class="pm">14 g</span></b><em><span class="pw">(1¼ tbsp)</span><span class="pm">(1¾ tbsp)</span></em></span></li><li><span class="n">Extra virgin olive oil</span><span class="d"></span><span class="q"><b><span class="pw">13 g</span><span class="pm">21 g</span></b><em><span class="pw">(3 tsp)</span><span class="pm">(4½ tsp)</span></em></span></li></ul>
+        <p class="method">Sunday's bolognese — turkey mince browned properly, passata, grated carrot and courgette cooked down for half an hour — over edamame spaghetti, which takes seven minutes and brings more protein and far more fibre to the plate than any wheat pasta could. Parmesan over.</p>
+      </article>
+      <article class="item">
+        <div class="crow"><span class="c">In the Evening</span><span class="alt">Dinner</span><span class="org">New York</span>
+          <span class="prep">Made fresh · 14 min</span></div>
+        <div class="nrow"><h4>Smash burger with slaw</h4><span class="dots"></span>
+          <span class="tally"><i class="pw">492</i><i class="pm">618</i> kcal</span></div>
+        <div class="macros">
+          <span class="mc hi"><em>Protein</em><b><i class="pw">36</i><i class="pm">44</i> g</b></span>
+          <span class="mc"><em>Fat</em><b><i class="pw">26</i><i class="pm">35</i> g</b></span>
+          <span class="mc"><em>Net carbs</em><b><i class="pw">20</i><i class="pm">23</i> g</b></span>
+          <span class="mc"><em>Fibre</em><b><i class="pw">14.0</i><i class="pm">16.4</i> g</b></span>
+        </div>
+        <ul class="ing"><li><span class="n">Beef mince, 5% fat <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">72 g</span><span class="pm">85 g</span></b></span></li><li><span class="n">Cheddar, reduced fat (~14%)</span><span class="d"></span><span class="q"><b><span class="pw">16 g</span><span class="pm">25 g</span></b><em><span class="pw">(1 thin slice)</span><span class="pm">(1½ thin slice)</span></em></span></li><li><span class="n">Seeded low-carb loaf</span><span class="d"></span><span class="q"><b><span class="pw">45 g</span><span class="pm">50 g</span></b><em><span class="pw">(1 slice)</span><span class="pm">(1 slice)</span></em></span></li><li><span class="n">Red cabbage, shredded</span><span class="d"></span><span class="q"><b><span class="pw">90 g</span><span class="pm">95 g</span></b><em><span class="pw">(2¼ handfuls)</span><span class="pm">(2½ handfuls)</span></em></span></li><li><span class="n">Carrots, peeled</span><span class="d"></span><span class="q"><b><span class="pw">55 g</span><span class="pm">65 g</span></b><em><span class="pw">(¾ carrot)</span><span class="pm">(1 carrot)</span></em></span></li><li><span class="n">Greek yoghurt, 0% fat</span><span class="d"></span><span class="q"><b><span class="pw">35 g</span><span class="pm">45 g</span></b></span></li><li><span class="n">Little gem or romaine <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">40 g</span><span class="pm">50 g</span></b><em><span class="pw">(1¼ handful)</span><span class="pm">(1¾ handfuls)</span></em></span></li><li><span class="n">Tomatoes, ripe <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">60 g</span><span class="pm">80 g</span></b><em><span class="pw">(⅔ tomato)</span><span class="pm">(1 tomato)</span></em></span></li><li><span class="n">Red onion, peeled</span><span class="d"></span><span class="q"><b><span class="pw">30 g</span><span class="pm">40 g</span></b><em><span class="pw">(¼ onion)</span><span class="pm">(⅓ onion)</span></em></span></li><li><span class="n">Avocado <i class="wt">flesh only</i></span><span class="d"></span><span class="q"><b><span class="pw">30 g</span><span class="pm">40 g</span></b><em><span class="pw">(¼ of a avocado)</span><span class="pm">(¼ of a avocado)</span></em></span></li><li><span class="n">Extra virgin olive oil</span><span class="d"></span><span class="q"><b><span class="pw">9 g</span><span class="pm">13 g</span></b><em><span class="pw">(2 tsp)</span><span class="pm">(3 tsp)</span></em></span></li></ul>
+        <p class="method">Mince divided into two thin balls, pressed hard onto a screaming pan and left alone until the crust forms, then flipped with the cheese on. Seeded bun toasted in the fat. Lettuce, tomato, raw onion. Slaw of red cabbage, carrot and yoghurt alongside to keep it honest.</p>
+      </article>
+      <article class="item">
+        <div class="crow"><span class="c">A Trifle Besides</span><span class="alt">Snack</span><span class="org">Caribbean</span>
+          <span class="prep">Made fresh · 1 min</span></div>
+        <div class="nrow"><h4>Pineapple, coconut &amp; Greek yoghurt</h4><span class="dots"></span>
+          <span class="tally"><i class="pw">270</i><i class="pm">402</i> kcal</span></div>
+        <div class="macros">
+          <span class="mc hi"><em>Protein</em><b><i class="pw">15</i><i class="pm">25</i> g</b></span>
+          <span class="mc"><em>Fat</em><b><i class="pw">8</i><i class="pm">11</i> g</b></span>
+          <span class="mc"><em>Net carbs</em><b><i class="pw">35</i><i class="pm">53</i> g</b></span>
+          <span class="mc"><em>Fibre</em><b><i class="pw">4.9</i><i class="pm">7.0</i> g</b></span>
+        </div>
+        <ul class="ing"><li><span class="n">Greek yoghurt, 0% fat</span><span class="d"></span><span class="q"><b><span class="pw">110 g</span><span class="pm">185 g</span></b></span></li><li><span class="n">Pineapple <i class="wt">flesh only</i></span><span class="d"></span><span class="q"><b><span class="pw">260 g</span><span class="pm">380 g</span></b><em><span class="pw">(3½ thick rings)</span><span class="pm">(5 thick rings)</span></em></span></li><li><span class="n">Coconut, desiccated unsweetened <i class="wt">dry</i></span><span class="d"></span><span class="q"><b><span class="pw">5 g</span><span class="pm">6 g</span></b><em><span class="pw">(1¼ tsp)</span><span class="pm">(1½ tsp)</span></em></span></li><li><span class="n">Pumpkin seeds <i class="wt">dry</i></span><span class="d"></span><span class="q"><b><span class="pw">8 g</span><span class="pm">12 g</span></b><em><span class="pw">(1 tbsp)</span><span class="pm">(1¼ tbsp)</span></em></span></li></ul>
+        <p class="method">Pineapple over yoghurt, toasted coconut scattered. Two minutes under the grill for the pineapple if you want it caramelised.</p>
+      </article>
+    </section>
+    <section class="day">
+      <div class="dayhead">
+        <div class="ord">The Fifth Day &mdash; Wraps, Jerk & Char</div>
+        <h3>Friday</h3>
+        <div class="sub">Under the bar — the whole frame</div>
+        <svg class="sfleuron" viewBox="0 0 120 18" aria-hidden="true">
+<g fill="none" stroke="currentColor" stroke-width=".9" stroke-linecap="round">
+<path d="M4 9 H44"/><path d="M76 9 H116"/>
+<path d="M44 9 C50 9 52 3.5 57 5 C61 6 60.5 12 55.5 12 C51.5 12 50 8 54 5.8"/>
+<path d="M76 9 C70 9 68 3.5 63 5 C59 6 59.5 12 64.5 12 C68.5 12 70 8 66 5.8"/>
+</g><g fill="currentColor"><path d="M60 4 L64 9 L60 14 L56 9 Z"/></g></svg>
+      </div>
+      <div class="reckon">
+        <div class="rk"><em>Calories</em><b><i class="pw">1,694</i><i class="pm">2,209</i></b></div>
+        <div class="rk hi"><em>Protein</em><b><i class="pw">111</i><i class="pm">140</i> g</b></div>
+        <div class="rk"><em>Fat</em><b><i class="pw">68</i><i class="pm">87</i> g</b></div>
+        <div class="rk"><em>Net carbs</em><b><i class="pw">146</i><i class="pm">198</i> g</b></div>
+        <div class="rk"><em>Fibre</em><b><i class="pw">41.6</i><i class="pm">52.7</i> g</b></div>
+        <div class="rk"><em>At the stove</em><b>44 min</b></div>
+      </div>
+      
+      <article class="item">
+        <div class="crow"><span class="c">To Begin</span><span class="alt">Breakfast</span><span class="org">Jamaica</span>
+          <span class="prep">Made fresh · 14 min</span></div>
+        <div class="nrow"><h4>Callaloo &amp; egg skillet</h4><span class="dots"></span>
+          <span class="tally"><i class="pw">455</i><i class="pm">582</i> kcal</span></div>
+        <div class="macros">
+          <span class="mc hi"><em>Protein</em><b><i class="pw">26</i><i class="pm">32</i> g</b></span>
+          <span class="mc"><em>Fat</em><b><i class="pw">19</i><i class="pm">23</i> g</b></span>
+          <span class="mc"><em>Net carbs</em><b><i class="pw">42</i><i class="pm">59</i> g</b></span>
+          <span class="mc"><em>Fibre</em><b><i class="pw">10.4</i><i class="pm">13.4</i> g</b></span>
+        </div>
+        <ul class="ing"><li><span class="n">Eggs, medium, shell off <i class="wt">shelled</i></span><span class="d"></span><span class="q"><b><span class="pw">125 g</span><span class="pm">150 g</span></b><em><span class="pw">(2½ eggs)</span><span class="pm">(3 eggs)</span></em></span></li><li><span class="n">Spinach, ugu or callaloo <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">130 g</span><span class="pm">160 g</span></b><em><span class="pw">(4½ handfuls)</span><span class="pm">(5½ handfuls)</span></em></span></li><li><span class="n">Tomatoes, ripe <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">80 g</span><span class="pm">100 g</span></b><em><span class="pw">(1 tomato)</span><span class="pm">(1 tomato)</span></em></span></li><li><span class="n">Red onion, peeled</span><span class="d"></span><span class="q"><b><span class="pw">30 g</span><span class="pm">40 g</span></b><em><span class="pw">(¼ onion)</span><span class="pm">(⅓ onion)</span></em></span></li><li><span class="n">Black beans, tinned <i class="wt">drained</i></span><span class="d"></span><span class="q"><b><span class="pw">45 g</span><span class="pm">55 g</span></b><em><span class="pw">(¼ of a tin)</span><span class="pm">(¼ of a tin)</span></em></span></li><li><span class="n">Plantain, ripe <i class="wt">peeled</i></span><span class="d"></span><span class="q"><b><span class="pw">95 g</span><span class="pm">140 g</span></b><em><span class="pw">(¾ of a plantain)</span><span class="pm">(1 plantain)</span></em></span></li><li><span class="n">Extra virgin olive oil</span><span class="d"></span><span class="q"><b><span class="pw">5 g</span><span class="pm">6 g</span></b><em><span class="pw">(1 tsp)</span><span class="pm">(1¼ tsp)</span></em></span></li></ul>
+        <p class="method">Onion, tomato and thyme cooked down, spinach and black beans folded in, wells made for the eggs and a lid on for five minutes. Plantain griddled dry on the diagonal until it blackens at the edges.</p>
+      </article>
+      <article class="item">
+        <div class="crow"><span class="c">At Midday</span><span class="alt">Luncheon</span><span class="org">Levant, by way of everywhere</span>
+          <span class="prep">From Sunday's preparation · 8 min</span></div>
+        <div class="nrow"><h4>Chicken shawarma wrap</h4><span class="dots"></span>
+          <span class="tally"><i class="pw">438</i><i class="pm">551</i> kcal</span></div>
+        <div class="macros">
+          <span class="mc hi"><em>Protein</em><b><i class="pw">38</i><i class="pm">46</i> g</b></span>
+          <span class="mc"><em>Fat</em><b><i class="pw">20</i><i class="pm">26</i> g</b></span>
+          <span class="mc"><em>Net carbs</em><b><i class="pw">22</i><i class="pm">26</i> g</b></span>
+          <span class="mc"><em>Fibre</em><b><i class="pw">15.6</i><i class="pm">19.2</i> g</b></span>
+        </div>
+        <ul class="ing"><li><span class="n">Chicken breast, skinless <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">95 g</span><span class="pm">110 g</span></b><em><span class="pw">(½ of a breast)</span><span class="pm">(⅔ of a breast)</span></em></span></li><li><span class="n">Tortilla, high-protein low-carb</span><span class="d"></span><span class="q"><b><span class="pw">45 g</span><span class="pm">55 g</span></b><em><span class="pw">(1 tortilla)</span><span class="pm">(1¼ tortilla)</span></em></span></li><li><span class="n">Red cabbage, shredded</span><span class="d"></span><span class="q"><b><span class="pw">70 g</span><span class="pm">80 g</span></b><em><span class="pw">(1¾ handfuls)</span><span class="pm">(2 handfuls)</span></em></span></li><li><span class="n">Carrots, peeled</span><span class="d"></span><span class="q"><b><span class="pw">50 g</span><span class="pm">60 g</span></b><em><span class="pw">(¾ carrot)</span><span class="pm">(¾ carrot)</span></em></span></li><li><span class="n">Cucumber <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">60 g</span><span class="pm">70 g</span></b><em><span class="pw">(¼ of a cucumber)</span><span class="pm">(¼ of a cucumber)</span></em></span></li><li><span class="n">Greek yoghurt, 0% fat</span><span class="d"></span><span class="q"><b><span class="pw">60 g</span><span class="pm">80 g</span></b></span></li><li><span class="n">Little gem or romaine <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">40 g</span><span class="pm">50 g</span></b><em><span class="pw">(1¼ handful)</span><span class="pm">(1¾ handfuls)</span></em></span></li><li><span class="n">Avocado <i class="wt">flesh only</i></span><span class="d"></span><span class="q"><b><span class="pw">25 g</span><span class="pm">35 g</span></b><em><span class="pm">(¼ of a avocado)</span></em></span></li><li><span class="n">Extra virgin olive oil</span><span class="d"></span><span class="q"><b><span class="pw">11 g</span><span class="pm">15 g</span></b><em><span class="pw">(2½ tsp)</span><span class="pm">(3½ tsp)</span></em></span></li></ul>
+        <p class="method">Sunday's chicken tossed in shawarma spice and flashed in a hot dry pan. Cabbage, carrot and cucumber shredded with lemon. Rolled in a high-fibre tortilla with garlic yoghurt — one wrap, not two, because these are large and they are dense.</p>
+      </article>
+      <article class="item">
+        <div class="crow"><span class="c">In the Evening</span><span class="alt">Dinner</span><span class="org">Jamaica</span>
+          <span class="prep">Made fresh · 18 min</span></div>
+        <div class="nrow"><h4>Jerk salmon, rice &amp; red beans</h4><span class="dots"></span>
+          <span class="tally"><i class="pw">550</i><i class="pm">752</i> kcal</span></div>
+        <div class="macros">
+          <span class="mc hi"><em>Protein</em><b><i class="pw">30</i><i class="pm">40</i> g</b></span>
+          <span class="mc"><em>Fat</em><b><i class="pw">17</i><i class="pm">23</i> g</b></span>
+          <span class="mc"><em>Net carbs</em><b><i class="pw">61</i><i class="pm">87</i> g</b></span>
+          <span class="mc"><em>Fibre</em><b><i class="pw">11.6</i><i class="pm">15.2</i> g</b></span>
+        </div>
+        <ul class="ing"><li><span class="n">Salmon fillet, skinless <i class="wt">raw</i></span><span class="d"></span><span class="q"><b><span class="pw">80 g</span><span class="pm">105 g</span></b><em><span class="pw">(⅔ fillet)</span><span class="pm">(¾ fillet)</span></em></span></li><li><span class="n">Red kidney beans, tinned <i class="wt">drained</i></span><span class="d"></span><span class="q"><b><span class="pw">70 g</span><span class="pm">90 g</span></b><em><span class="pw">(⅓ of a tin)</span><span class="pm">(⅓ of a tin)</span></em></span></li><li><span class="n">Brown rice, long grain <i class="wt">dry</i></span><span class="d"></span><span class="q"><b><span class="pw">45 g</span><span class="pm">70 g</span></b><em><span class="pw">(3 tbsp)</span><span class="pm">(5 tbsp)</span></em></span></li><li><span class="n">Cauliflower, riced</span><span class="d"></span><span class="q"><b><span class="pw">120 g</span><span class="pm">150 g</span></b><em><span class="pw">(¼ of a head)</span><span class="pm">(¼ of a head)</span></em></span></li><li><span class="n">Red cabbage, shredded</span><span class="d"></span><span class="q"><b><span class="pw">80 g</span><span class="pm">100 g</span></b><em><span class="pw">(2 handfuls)</span><span class="pm">(2½ handfuls)</span></em></span></li><li><span class="n">Pineapple <i class="wt">flesh only</i></span><span class="d"></span><span class="q"><b><span class="pw">70 g</span><span class="pm">90 g</span></b><em><span class="pw">(1 thick ring)</span><span class="pm">(1¼ thick ring)</span></em></span></li><li><span class="n">Spring onions, trimmed</span><span class="d"></span><span class="q"><b><span class="pw">20 g</span><span class="pm">25 g</span></b><em><span class="pw">(1¼ spring onion)</span><span class="pm">(1¾ spring onions)</span></em></span></li><li><span class="n">Extra virgin olive oil</span><span class="d"></span><span class="q"><b><span class="pw">4 g</span><span class="pm">5 g</span></b><em><span class="pw">(1 tsp)</span><span class="pm">(1 tsp)</span></em></span></li></ul>
+        <p class="method">Salmon rubbed with jerk paste and grilled ten to twelve minutes. Rice cooked with the kidney beans, thyme and a spoonful of coconut, then cauliflower stirred through at the end. Slaw of red cabbage and charred pineapple with lime, which is the part that makes the plate work.</p>
+      </article>
+      <article class="item">
+        <div class="crow"><span class="c">A Trifle Besides</span><span class="alt">Snack</span><span class="org">Street corner</span>
+          <span class="prep">Made fresh · 4 min</span></div>
+        <div class="nrow"><h4>Elote-style corn cup</h4><span class="dots"></span>
+          <span class="tally"><i class="pw">251</i><i class="pm">324</i> kcal</span></div>
+        <div class="macros">
+          <span class="mc hi"><em>Protein</em><b><i class="pw">17</i><i class="pm">22</i> g</b></span>
+          <span class="mc"><em>Fat</em><b><i class="pw">12</i><i class="pm">15</i> g</b></span>
+          <span class="mc"><em>Net carbs</em><b><i class="pw">21</i><i class="pm">26</i> g</b></span>
+          <span class="mc"><em>Fibre</em><b><i class="pw">4.0</i><i class="pm">4.9</i> g</b></span>
+        </div>
+        <ul class="ing"><li><span class="n">Sweetcorn</span><span class="d"></span><span class="q"><b><span class="pw">100 g</span><span class="pm">120 g</span></b><em><span class="pw">(6½ tbsp)</span><span class="pm">(8 tbsp)</span></em></span></li><li><span class="n">Cottage cheese, natural</span><span class="d"></span><span class="q"><b><span class="pw">80 g</span><span class="pm">110 g</span></b></span></li><li><span class="n">Greek yoghurt, 0% fat</span><span class="d"></span><span class="q"><b><span class="pw">30 g</span><span class="pm">40 g</span></b></span></li><li><span class="n">Avocado <i class="wt">flesh only</i></span><span class="d"></span><span class="q"><b><span class="pw">20 g</span><span class="pm">25 g</span></b></span></li><li><span class="n">Extra virgin olive oil</span><span class="d"></span><span class="q"><b><span class="pw">6 g</span><span class="pm">8 g</span></b><em><span class="pw">(1¼ tsp)</span><span class="pm">(1¾ tsp)</span></em></span></li></ul>
+        <p class="method">Sweetcorn charred in a dry pan until it blisters, stirred into cottage cheese loosened with yoghurt, then chilli, lime and coriander over the top.</p>
+      </article>
+    </section>
+  </section>
+
+  <svg class="fleuron" viewBox="0 0 300 30" aria-hidden="true">
+<g fill="none" stroke="currentColor" stroke-width="1.05" stroke-linecap="round">
+<path d="M6 15 H112"/>
+<path d="M112 15 C122 15 126 5.5 135 7.5 C142.5 9 141.5 18.5 133 18.5 C126 18.5 123 12 130 8.6"/>
+<path d="M188 15 C178 15 174 5.5 165 7.5 C157.5 9 158.5 18.5 167 18.5 C174 18.5 177 12 170 8.6"/>
+<path d="M188 15 H294"/>
+</g>
+<g fill="currentColor">
+<path d="M150 5.5 L157.5 15 L150 24.5 L142.5 15 Z"/>
+<circle cx="138.5" cy="15" r="1.7"/><circle cx="161.5" cy="15" r="1.7"/>
+<circle cx="6" cy="15" r="1.5"/><circle cx="294" cy="15" r="1.5"/>
+</g></svg>
+
+  <section class="sec">
+    <div class="sectitle">
+      <div class="r cap">Part the Third</div>
+      <h2>The Larder</h2>
+      <p class="s">Every ingredient, exactly specified. The middle columns are per 100 g as purchased;
+        the last is the total for both covers across all five days.</p>
+      <svg class="sfleuron" viewBox="0 0 120 18" aria-hidden="true">
+<g fill="none" stroke="currentColor" stroke-width=".9" stroke-linecap="round">
+<path d="M4 9 H44"/><path d="M76 9 H116"/>
+<path d="M44 9 C50 9 52 3.5 57 5 C61 6 60.5 12 55.5 12 C51.5 12 50 8 54 5.8"/>
+<path d="M76 9 C70 9 68 3.5 63 5 C59 6 59.5 12 64.5 12 C68.5 12 70 8 66 5.8"/>
+</g><g fill="currentColor"><path d="M60 4 L64 9 L60 14 L56 9 Z"/></g></svg>
+    </div>
+    <div class="larder"><div class="lgroup"><h3>From the Butcher & Fishmonger</h3><table class="lt"><thead><tr><th class="l">Ingredient</th><th class="l opt">Weighed</th><th class="opt">kcal</th><th class="opt">Prot</th><th class="opt">Fat</th><th class="opt">Carb</th><th class="opt">Fibre</th><th>Week total</th></tr></thead><tbody><tr><td class="l">Eggs, medium, shell off</td><td class="l opt"><span class="wt">Shelled</span></td><td class="opt">143</td><td class="opt">12.6</td><td class="opt">9.9</td><td class="opt">0.7</td><td class="opt">0</td><td class="tot">26 eggs</td></tr><tr><td class="l">Chicken breast, skinless</td><td class="l opt"><span class="wt">Raw</span></td><td class="opt">106</td><td class="opt">24</td><td class="opt">1.1</td><td class="opt">0</td><td class="opt">0</td><td class="tot">770 g</td></tr><tr><td class="l">Beef mince, 5% fat</td><td class="l opt"><span class="wt">Raw</span></td><td class="opt">137</td><td class="opt">21</td><td class="opt">5</td><td class="opt">0</td><td class="opt">0</td><td class="tot">322 g</td></tr><tr><td class="l">Catfish or tilapia fillet</td><td class="l opt"><span class="wt">Raw</span></td><td class="opt">96</td><td class="opt">20.1</td><td class="opt">1.7</td><td class="opt">0</td><td class="opt">0</td><td class="tot">230 g</td></tr><tr><td class="l">Salmon fillet, skinless</td><td class="l opt"><span class="wt">Raw</span></td><td class="opt">208</td><td class="opt">20.4</td><td class="opt">13.6</td><td class="opt">0</td><td class="opt">0</td><td class="tot">185 g</td></tr><tr><td class="l">Chicken breast mince, 2-3% fat</td><td class="l opt"><span class="wt">Raw</span></td><td class="opt">110</td><td class="opt">23.5</td><td class="opt">2</td><td class="opt">0</td><td class="opt">0</td><td class="tot">140 g</td></tr><tr><td class="l">Turkey breast mince, 5% fat</td><td class="l opt"><span class="wt">Raw</span></td><td class="opt">132</td><td class="opt">21.5</td><td class="opt">5</td><td class="opt">0</td><td class="opt">0</td><td class="tot">120 g</td></tr><tr><td class="l">Sirloin steak, lean, trimmed</td><td class="l opt"><span class="wt">Raw</span></td><td class="opt">130</td><td class="opt">21.5</td><td class="opt">4.5</td><td class="opt">0</td><td class="opt">0</td><td class="tot">113 g</td></tr><tr><td class="l">King prawns, peeled</td><td class="l opt"><span class="wt">Raw</span></td><td class="opt">85</td><td class="opt">20.1</td><td class="opt">1</td><td class="opt">0</td><td class="opt">0</td><td class="tot">95 g</td></tr></tbody></table></div><div class="lgroup"><h3>From the Dairy</h3><table class="lt"><thead><tr><th class="l">Ingredient</th><th class="l opt">Weighed</th><th class="opt">kcal</th><th class="opt">Prot</th><th class="opt">Fat</th><th class="opt">Carb</th><th class="opt">Fibre</th><th>Week total</th></tr></thead><tbody><tr><td class="l">Greek yoghurt, 0% fat</td><td class="l opt"><span class="wt">As it comes</span></td><td class="opt">57</td><td class="opt">10.3</td><td class="opt">0.2</td><td class="opt">4</td><td class="opt">0</td><td class="tot">700 g</td></tr><tr><td class="l">Skyr, plain natural</td><td class="l opt"><span class="wt">As it comes</span></td><td class="opt">63</td><td class="opt">11</td><td class="opt">0.2</td><td class="opt">4</td><td class="opt">0</td><td class="tot">400 g</td></tr><tr><td class="l">Cottage cheese, natural</td><td class="l opt"><span class="wt">As it comes</span></td><td class="opt">79</td><td class="opt">12.6</td><td class="opt">1.8</td><td class="opt">3.6</td><td class="opt">0</td><td class="tot">190 g</td></tr><tr><td class="l">Cheddar, reduced fat (~14%)</td><td class="l opt"><span class="wt">As it comes</span></td><td class="opt">251</td><td class="opt">30</td><td class="opt">14</td><td class="opt">0.5</td><td class="opt">0</td><td class="tot">76 g</td></tr><tr><td class="l">Mozzarella, reduced fat, block</td><td class="l opt"><span class="wt">As it comes</span></td><td class="opt">254</td><td class="opt">24.3</td><td class="opt">16</td><td class="opt">2.8</td><td class="opt">0</td><td class="tot">70 g</td></tr><tr><td class="l">Parmesan, finely grated</td><td class="l opt"><span class="wt">As it comes</span></td><td class="opt">402</td><td class="opt">36</td><td class="opt">29</td><td class="opt">0</td><td class="opt">0</td><td class="tot">51 g</td></tr></tbody></table></div><div class="lgroup"><h3>From the Market Stall</h3><table class="lt"><thead><tr><th class="l">Ingredient</th><th class="l opt">Weighed</th><th class="opt">kcal</th><th class="opt">Prot</th><th class="opt">Fat</th><th class="opt">Carb</th><th class="opt">Fibre</th><th>Week total</th></tr></thead><tbody><tr><td class="l">Spinach, ugu or callaloo</td><td class="l opt"><span class="wt">Raw</span></td><td class="opt">23</td><td class="opt">2.9</td><td class="opt">0.4</td><td class="opt">3.6</td><td class="opt">2.2</td><td class="tot">1.6 kg</td></tr><tr><td class="l">Cauliflower, riced</td><td class="l opt"><span class="wt">Prepared</span></td><td class="opt">25</td><td class="opt">1.9</td><td class="opt">0.3</td><td class="opt">5</td><td class="opt">2</td><td class="tot">1.4 kg</td></tr><tr><td class="l">Tomatoes, ripe</td><td class="l opt"><span class="wt">Raw</span></td><td class="opt">18</td><td class="opt">0.9</td><td class="opt">0.2</td><td class="opt">3.9</td><td class="opt">1.2</td><td class="tot">1.2 kg</td></tr><tr><td class="l">Red onion, peeled</td><td class="l opt"><span class="wt">Prepared</span></td><td class="opt">40</td><td class="opt">1.1</td><td class="opt">0.1</td><td class="opt">9.3</td><td class="opt">1.7</td><td class="tot">845 g</td></tr><tr><td class="l">Red pepper, deseeded</td><td class="l opt"><span class="wt">Prepared</span></td><td class="opt">31</td><td class="opt">1</td><td class="opt">0.3</td><td class="opt">6</td><td class="opt">2.1</td><td class="tot">840 g</td></tr><tr><td class="l">Pineapple</td><td class="l opt"><span class="wt">Flesh only</span></td><td class="opt">50</td><td class="opt">0.5</td><td class="opt">0.1</td><td class="opt">13</td><td class="opt">1.4</td><td class="tot">800 g</td></tr><tr><td class="l">Plantain, ripe</td><td class="l opt"><span class="wt">Peeled</span></td><td class="opt">122</td><td class="opt">1.3</td><td class="opt">0.4</td><td class="opt">32</td><td class="opt">2.3</td><td class="tot">760 g</td></tr><tr><td class="l">Carrots, peeled</td><td class="l opt"><span class="wt">Prepared</span></td><td class="opt">41</td><td class="opt">0.9</td><td class="opt">0.2</td><td class="opt">9.6</td><td class="opt">2.8</td><td class="tot">695 g</td></tr><tr><td class="l">Mango</td><td class="l opt"><span class="wt">Flesh only</span></td><td class="opt">60</td><td class="opt">0.8</td><td class="opt">0.4</td><td class="opt">15</td><td class="opt">1.6</td><td class="tot">540 g</td></tr><tr><td class="l">Avocado</td><td class="l opt"><span class="wt">Flesh only</span></td><td class="opt">160</td><td class="opt">2</td><td class="opt">14.7</td><td class="opt">8.5</td><td class="opt">6.7</td><td class="tot">531 g</td></tr><tr><td class="l">Little gem or romaine</td><td class="l opt"><span class="wt">Raw</span></td><td class="opt">17</td><td class="opt">1.2</td><td class="opt">0.2</td><td class="opt">3.3</td><td class="opt">2.1</td><td class="tot">530 g</td></tr><tr><td class="l">Red cabbage, shredded</td><td class="l opt"><span class="wt">Prepared</span></td><td class="opt">31</td><td class="opt">1.4</td><td class="opt">0.2</td><td class="opt">7.4</td><td class="opt">2.1</td><td class="tot">515 g</td></tr><tr><td class="l">Courgette</td><td class="l opt"><span class="wt">Raw</span></td><td class="opt">17</td><td class="opt">1.2</td><td class="opt">0.3</td><td class="opt">3.1</td><td class="opt">1</td><td class="tot">330 g</td></tr><tr><td class="l">Broccoli florets</td><td class="l opt"><span class="wt">Raw</span></td><td class="opt">34</td><td class="opt">2.8</td><td class="opt">0.4</td><td class="opt">7</td><td class="opt">2.6</td><td class="tot">305 g</td></tr><tr><td class="l">Okra</td><td class="l opt"><span class="wt">Fresh or frozen</span></td><td class="opt">33</td><td class="opt">1.9</td><td class="opt">0.2</td><td class="opt">7.5</td><td class="opt">3.2</td><td class="tot">220 g</td></tr><tr><td class="l">Chestnut mushrooms</td><td class="l opt"><span class="wt">Raw</span></td><td class="opt">22</td><td class="opt">3.1</td><td class="opt">0.3</td><td class="opt">3.3</td><td class="opt">1</td><td class="tot">200 g</td></tr><tr><td class="l">Blueberries</td><td class="l opt"><span class="wt">Fresh or frozen</span></td><td class="opt">57</td><td class="opt">0.7</td><td class="opt">0.3</td><td class="opt">14.5</td><td class="opt">2.4</td><td class="tot">135 g</td></tr><tr><td class="l">Cucumber</td><td class="l opt"><span class="wt">Raw</span></td><td class="opt">15</td><td class="opt">0.7</td><td class="opt">0.1</td><td class="opt">3.6</td><td class="opt">0.5</td><td class="tot">130 g</td></tr><tr><td class="l">Raspberries</td><td class="l opt"><span class="wt">Fresh or frozen</span></td><td class="opt">52</td><td class="opt">1.2</td><td class="opt">0.7</td><td class="opt">11.9</td><td class="opt">6.5</td><td class="tot">120 g</td></tr><tr><td class="l">Spring onions, trimmed</td><td class="l opt"><span class="wt">Prepared</span></td><td class="opt">32</td><td class="opt">1.8</td><td class="opt">0.2</td><td class="opt">7.3</td><td class="opt">2.6</td><td class="tot">45 g</td></tr></tbody></table></div><div class="lgroup"><h3>From the Ice House</h3><table class="lt"><thead><tr><th class="l">Ingredient</th><th class="l opt">Weighed</th><th class="opt">kcal</th><th class="opt">Prot</th><th class="opt">Fat</th><th class="opt">Carb</th><th class="opt">Fibre</th><th>Week total</th></tr></thead><tbody><tr><td class="l">Sweetcorn</td><td class="l opt"><span class="wt">Frozen or tinned</span></td><td class="opt">86</td><td class="opt">3.2</td><td class="opt">1.2</td><td class="opt">19</td><td class="opt">2.7</td><td class="tot">275 g</td></tr></tbody></table></div><div class="lgroup"><h3>From the Store Room</h3><table class="lt"><thead><tr><th class="l">Ingredient</th><th class="l opt">Weighed</th><th class="opt">kcal</th><th class="opt">Prot</th><th class="opt">Fat</th><th class="opt">Carb</th><th class="opt">Fibre</th><th>Week total</th></tr></thead><tbody><tr><td class="l">Passata, plain</td><td class="l opt"><span class="wt">As it comes</span></td><td class="opt">30</td><td class="opt">1.4</td><td class="opt">0.2</td><td class="opt">6</td><td class="opt">1.4</td><td class="tot">840 g</td></tr><tr><td class="l">Brown rice, long grain</td><td class="l opt"><span class="wt">Dry</span></td><td class="opt">362</td><td class="opt">7.5</td><td class="opt">2.9</td><td class="opt">76</td><td class="opt">3.4</td><td class="tot">527 g</td></tr><tr><td class="l">Chickpeas, tinned</td><td class="l opt"><span class="wt">Drained</span></td><td class="opt">139</td><td class="opt">7.5</td><td class="opt">2.6</td><td class="opt">22.5</td><td class="opt">7.6</td><td class="tot">405 g</td></tr><tr><td class="l">Black beans, tinned</td><td class="l opt"><span class="wt">Drained</span></td><td class="opt">132</td><td class="opt">8.9</td><td class="opt">0.5</td><td class="opt">24</td><td class="opt">8.7</td><td class="tot">300 g</td></tr><tr><td class="l">Extra virgin olive oil</td><td class="l opt"><span class="wt">As it comes</span></td><td class="opt">884</td><td class="opt">0</td><td class="opt">100</td><td class="opt">0</td><td class="opt">0</td><td class="tot">259 g</td></tr><tr><td class="l">Tortilla, high-protein low-carb</td><td class="l opt"><span class="wt">As it comes</span></td><td class="opt">240</td><td class="opt">13.5</td><td class="opt">8</td><td class="opt">42.5</td><td class="opt">22</td><td class="tot">195 g</td></tr><tr><td class="l">Seeded low-carb loaf</td><td class="l opt"><span class="wt">As it comes</span></td><td class="opt">279</td><td class="opt">19.5</td><td class="opt">14.5</td><td class="opt">25</td><td class="opt">14.5</td><td class="tot">190 g</td></tr><tr><td class="l">Red kidney beans, tinned</td><td class="l opt"><span class="wt">Drained</span></td><td class="opt">127</td><td class="opt">8.7</td><td class="opt">0.5</td><td class="opt">22.8</td><td class="opt">6.4</td><td class="tot">160 g</td></tr><tr><td class="l">Tomato salsa, no added sugar</td><td class="l opt"><span class="wt">As it comes</span></td><td class="opt">30</td><td class="opt">1.5</td><td class="opt">0.2</td><td class="opt">6</td><td class="opt">1.5</td><td class="tot">130 g</td></tr><tr><td class="l">Porridge oats</td><td class="l opt"><span class="wt">Dry</span></td><td class="opt">379</td><td class="opt">13.2</td><td class="opt">6.5</td><td class="opt">67.7</td><td class="opt">10.1</td><td class="tot">98 g</td></tr><tr><td class="l">Edamame spaghetti</td><td class="l opt"><span class="wt">Dry</span></td><td class="opt">356</td><td class="opt">43.5</td><td class="opt">6.2</td><td class="opt">43.1</td><td class="opt">22.7</td><td class="tot">72 g</td></tr><tr><td class="l">Peanut butter, 100% nuts</td><td class="l opt"><span class="wt">As it comes</span></td><td class="opt">588</td><td class="opt">25</td><td class="opt">50</td><td class="opt">20</td><td class="opt">6</td><td class="tot">55 g</td></tr><tr><td class="l">Panko breadcrumbs</td><td class="l opt"><span class="wt">Dry</span></td><td class="opt">380</td><td class="opt">12</td><td class="opt">4</td><td class="opt">72</td><td class="opt">4</td><td class="tot">45 g</td></tr><tr><td class="l">Pumpkin seeds</td><td class="l opt"><span class="wt">Dry</span></td><td class="opt">559</td><td class="opt">30</td><td class="opt">49</td><td class="opt">11</td><td class="opt">6</td><td class="tot">34 g</td></tr><tr><td class="l">Egusi, ground melon seed</td><td class="l opt"><span class="wt">Dry</span></td><td class="opt">590</td><td class="opt">28</td><td class="opt">48</td><td class="opt">15</td><td class="opt">4</td><td class="tot">27 g</td></tr><tr><td class="l">Coconut, desiccated unsweetened</td><td class="l opt"><span class="wt">Dry</span></td><td class="opt">660</td><td class="opt">6.9</td><td class="opt">65</td><td class="opt">24</td><td class="opt">16.3</td><td class="tot">18 g</td></tr><tr><td class="l">Chia seeds</td><td class="l opt"><span class="wt">Dry</span></td><td class="opt">486</td><td class="opt">16.5</td><td class="opt">30.7</td><td class="opt">42.1</td><td class="opt">34.4</td><td class="tot">17 g</td></tr><tr><td class="l">Whey protein, unflavoured</td><td class="l opt"><span class="wt">Dry</span></td><td class="opt">380</td><td class="opt">80</td><td class="opt">4</td><td class="opt">8</td><td class="opt">2</td><td class="tot">13 g</td></tr></tbody></table></div></div>
+    <p class="colophon" style="margin-top:22px">Assumed already in the store room and not counted above: garlic, ginger,
+      lemons and limes, scotch bonnet, suya spice, pepper soup spice, jerk seasoning, chipotle in adobo,
+      Japanese curry powder, smoked paprika, oregano, dried thyme, coriander, cumin, soy, mustard,
+      stock, salt and pepper.<br><br>
+      <span style="font-style:normal;font-family:'Cinzel',serif;font-size:12px;letter-spacing:.1em;color:var(--blood)">
+      THE SHOP-BY-SHOP SPLIT AWAITS YOUR WORD.</span><br>Once given, this becomes two lists &mdash; one for Ocado,
+      one for wherever the plantain, egusi, scotch bonnet and okra are better and cheaper.</p>
+  </section>
+
+  <svg class="fleuron" viewBox="0 0 300 30" aria-hidden="true">
+<g fill="none" stroke="currentColor" stroke-width="1.05" stroke-linecap="round">
+<path d="M6 15 H112"/>
+<path d="M112 15 C122 15 126 5.5 135 7.5 C142.5 9 141.5 18.5 133 18.5 C126 18.5 123 12 130 8.6"/>
+<path d="M188 15 C178 15 174 5.5 165 7.5 C157.5 9 158.5 18.5 167 18.5 C174 18.5 177 12 170 8.6"/>
+<path d="M188 15 H294"/>
+</g>
+<g fill="currentColor">
+<path d="M150 5.5 L157.5 15 L150 24.5 L142.5 15 Z"/>
+<circle cx="138.5" cy="15" r="1.7"/><circle cx="161.5" cy="15" r="1.7"/>
+<circle cx="6" cy="15" r="1.5"/><circle cx="294" cy="15" r="1.5"/>
+</g></svg>
+
+  <section class="sec">
+    <div class="sectitle">
+      <div class="r cap">Part the Fourth</div>
+      <h2>Remarks from the Kitchen</h2>
+      <p class="s">To be read once, and then not fussed over.</p>
+      <svg class="sfleuron" viewBox="0 0 120 18" aria-hidden="true">
+<g fill="none" stroke="currentColor" stroke-width=".9" stroke-linecap="round">
+<path d="M4 9 H44"/><path d="M76 9 H116"/>
+<path d="M44 9 C50 9 52 3.5 57 5 C61 6 60.5 12 55.5 12 C51.5 12 50 8 54 5.8"/>
+<path d="M76 9 C70 9 68 3.5 63 5 C59 6 59.5 12 64.5 12 C68.5 12 70 8 66 5.8"/>
+</g><g fill="currentColor"><path d="M60 4 L64 9 L60 14 L56 9 Z"/></g></svg>
+    </div>
+    <div class="remarks"><div class="rem"><h4>The protein, and the reasoning</h4><p>A hundred and five to a hundred and sixteen grams on the smaller cover, a hundred and thirty-nine to a hundred and forty-eight on the larger &mdash; down some fifty and seventy grams from where this card began, which was frankly more than either body needed. As set, that works out at roughly 1.6 grams per kilogramme of bodyweight for both, which is squarely inside the range that protects muscle while the weight comes off. The figures were scaled to each body rather than fixed at one number: a flat hundred-and-twenty applied to the 85 kg cover would have meant 1.4 grams per kilo, and rather more of the loss arriving from muscle than from fat.</p></div><div class="rem"><h4>Where the freed calories went</h4><p>Nowhere, in the sense that matters &mdash; the daily totals are unchanged, so the deficit and the rate of loss are exactly as before. What changed is the shape of the plate. Rice portions are larger, plantain is more generous, avocado appears where it did not, the olive oil is no longer measured out meanly, and the fruit is a proper serving rather than a garnish. The food is a good deal less austere than it was.</p></div><div class="rem"><h4>On the carbohydrate</h4><p>Lower, not low &mdash; the version that survives contact with a real week. No dish is built on a mound of starch: rice is cut half-and-half with riced cauliflower, bread is the seeded low-carb sort, pasta is pressed from edamame, and the pizza has no base at all. Net carbohydrate now lands between ninety-one and a hundred and sixty-one grams on the smaller cover, a hundred and fourteen to two hundred and seventeen on the larger &mdash; higher than before, because that is where the protein went.</p></div><div class="rem"><h4>The fibre</h4><p>Forty to forty-four grams on the smaller cover, fifty-one to fifty-four on the larger, against a UK recommendation of thirty. Beans, cauliflower, greens and the high-fibre wraps do the work. If it is a sharp jump from where you are now, ease in across the first week and drink considerably more water than feels necessary.</p></div><div class="rem"><h4>Three things worth buying once</h4><p>High-fibre low-carb tortillas, edamame or black-bean spaghetti, and a seeded low-carb loaf. These three are what allow a wrap, a plate of pasta and a burger onto a card like this at all; without them those dishes cannot be made to fit, and would have had to be cut.</p></div><div class="rem"><h4>What is not on the card</h4><p>A number of dishes were considered and cut because they cannot be made to fit these numbers honestly: pounded yam and fufu, puff-puff, dodo fried properly in oil, a full traditional plate of jollof, moi moi and ewa agoyin (which are built on peas in any case), oxtail and nkwobi, and pizza on real dough. Nothing here is a diet version of itself pretending otherwise &mdash; the dishes that survived are the ones that genuinely work at this calorie.</p></div><div class="rem"><h4>The spice shelf</h4><p>Nigerian: suya spice, egusi, dried crayfish, scotch bonnet, pepper soup spice, and iru if you can find it. Everything else: jerk seasoning, chipotle in adobo, Japanese curry powder, smoked paprika, dried thyme, oregano. Bought once, they last months, and they are the whole difference between these plates and the same ingredients cooked dully.</p></div><div class="rem"><h4>How everything is weighed</h4><p>Meat, fish and poultry are RAW weights, before cooking. Rice, oats and pasta are DRY weights. Tinned pulses are DRAINED weights. Vegetables and fruit are prepared weights &mdash; peeled, deseeded, stoned, as the case may be. Where a household measure sits beside the gram figure it is an approximation for the days you cannot be bothered with the scales; the gram figure is what the reckonings are built on.</p></div><div class="rem"><h4>Peas, swaps & the rest</h4><p>No peas anywhere &mdash; where a Caribbean plate would call for rice and peas this uses red kidney beans, and the Nigerian bean dishes were left off for the same reason. Catfish takes any firm white fish; prawns and chicken trade places freely; skyr and Greek yoghurt are interchangeable.</p></div></div>
+  </section>
+
+  <svg class="fleuron" viewBox="0 0 300 30" aria-hidden="true">
+<g fill="none" stroke="currentColor" stroke-width="1.05" stroke-linecap="round">
+<path d="M6 15 H112"/>
+<path d="M112 15 C122 15 126 5.5 135 7.5 C142.5 9 141.5 18.5 133 18.5 C126 18.5 123 12 130 8.6"/>
+<path d="M188 15 C178 15 174 5.5 165 7.5 C157.5 9 158.5 18.5 167 18.5 C174 18.5 177 12 170 8.6"/>
+<path d="M188 15 H294"/>
+</g>
+<g fill="currentColor">
+<path d="M150 5.5 L157.5 15 L150 24.5 L142.5 15 Z"/>
+<circle cx="138.5" cy="15" r="1.7"/><circle cx="161.5" cy="15" r="1.7"/>
+<circle cx="6" cy="15" r="1.5"/><circle cx="294" cy="15" r="1.5"/>
+</g></svg>
+
+  <p class="colophon">Calories and reckonings are estimates drawn from standard composition tables and will
+    wander a few parts in the hundred according to brand and cookery. The covers assume ordinary stature and
+    moderate activity away from the bar; after a fortnight, adjust by some hundred and fifty calories in
+    whichever direction the glass and the scale advise. Offered as general counsel on eating, not as
+    medical or dietary prescription.</p>
+</div>
+
+<script>
+document.querySelectorAll('.tabs button').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.body.classList.remove('mode-w','mode-m');
+    document.body.classList.add('mode-'+b.dataset.m);
+  });
+});
+</script>
+</body></html>

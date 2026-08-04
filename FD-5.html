@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>FD-5 — Five Days at Table</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+ --chassis:#c9c6bf; --panel:#eeebe4; --panel2:#e3dfd6; --line:#b8b4ab;
+ --ink:#17171a; --ink2:#6f6c66; --lcd:#101012; --lcdtx:#e9e6df;
+ --or:#ff4d00; --ye:#ffc400; --bl:#1160ff; --gr:#00a35c; --rd:#e0301e;
+ --r:9px;
+}
+html{-webkit-text-size-adjust:100%}
+body{
+ background:#8f8b83;
+ background-image:radial-gradient(circle at 30% 0%,#a7a29a,#7c7871 70%);
+ font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+ color:var(--ink); font-size:15px; line-height:1.45;
+ padding:20px 14px 60px; min-height:100vh;
+}
+.mono{font-family:'JetBrains Mono','SFMono-Regular',Menlo,monospace;font-variant-numeric:tabular-nums}
+.lbl{font-size:9px;letter-spacing:.18em;text-transform:lowercase;color:var(--ink2);font-weight:600}
+
+.device{max-width:1080px;margin:0 auto;background:var(--chassis);border-radius:20px;
+ padding:14px;box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 26px 60px rgba(0,0,0,.4),0 2px 6px rgba(0,0,0,.3)}
+.screw{position:absolute;width:7px;height:7px;border-radius:50%;background:
+ radial-gradient(circle at 35% 30%,#fff,#9d9a93 60%,#6f6c66);box-shadow:0 1px 1px rgba(0,0,0,.3)}
+
+/* ---------- TOP BAR ---------- */
+.topbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:4px 6px 14px}
+.brand{display:flex;align-items:baseline;gap:9px;font-weight:700;font-size:13px;letter-spacing:-.01em}
+.brand .led{width:8px;height:8px;border-radius:50%;background:var(--or);
+ box-shadow:0 0 8px var(--or);align-self:center;animation:blink 3.2s infinite}
+@keyframes blink{0%,92%{opacity:1}94%,100%{opacity:.35}}
+.brand .model{font-size:9px;letter-spacing:.2em;color:var(--ink2);font-weight:600}
+.who{margin-left:auto;display:flex;gap:5px;background:var(--panel2);padding:4px;border-radius:12px;
+ box-shadow:0 1px 2px rgba(0,0,0,.16) inset}
+.who button{border:0;background:var(--panel);border-radius:9px;padding:7px 14px 6px;cursor:pointer;
+ display:flex;align-items:baseline;gap:7px;font:inherit;font-weight:600;font-size:12px;color:var(--ink2);
+ box-shadow:0 1px 0 rgba(255,255,255,.7) inset,0 1px 2px rgba(0,0,0,.18);transition:.15s}
+.who button em{font-style:normal;font-size:9px;letter-spacing:.12em}
+.who button.on{background:var(--or);color:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3) inset}
+
+/* ---------- CONSOLE ---------- */
+.console{display:grid;grid-template-columns:1.35fr .9fr;gap:12px;margin-bottom:12px}
+@media(max-width:800px){.console{grid-template-columns:1fr}}
+
+.screen{background:var(--lcd);border-radius:var(--r);padding:16px 18px;color:var(--lcdtx);
+ box-shadow:0 2px 5px rgba(0,0,0,.45) inset,0 1px 0 rgba(255,255,255,.35);position:relative;overflow:hidden}
+.screen:after{content:"";position:absolute;inset:0;pointer-events:none;
+ background:repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 1px,transparent 1px 3px)}
+.scr-top{display:flex;justify-content:space-between;align-items:baseline;font-size:9px;letter-spacing:.18em;
+ color:#7d7a72;text-transform:lowercase;font-weight:600}
+.scr-top b{color:var(--or);font-weight:700}
+.big{display:flex;align-items:flex-end;gap:12px;margin:10px 0 4px}
+.big .n{font-size:clamp(38px,9vw,58px);line-height:.92;font-weight:700;letter-spacing:-.03em}
+.big .of{font-size:13px;color:#8d8a82;padding-bottom:7px}
+.big .of b{color:var(--lcdtx);font-weight:600}
+.rem{font-size:11px;color:#8d8a82;letter-spacing:.04em;margin-bottom:14px}
+.rem b{color:var(--ye)}
+.meters{display:grid;gap:8px}
+.meter{display:grid;grid-template-columns:44px 1fr 78px;gap:9px;align-items:center}
+.meter .k{font-size:9px;letter-spacing:.14em;color:#8d8a82;font-weight:600}
+.meter .v{font-size:11px;text-align:right;color:#b9b5ac}
+.meter .v b{color:var(--lcdtx);font-weight:600}
+.seg{display:flex;gap:2px;height:9px}
+.seg i{flex:1;background:#2a2a2c;border-radius:1px;transition:background .18s}
+.meter.p i.on{background:var(--or)} .meter.f i.on{background:var(--ye)}
+.meter.c i.on{background:var(--bl)} .meter.b i.on{background:var(--gr)}
+.seg i.over{background:var(--rd)!important}
+
+.ctrl{background:var(--panel);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:12px;
+ box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 1px 3px rgba(0,0,0,.2)}
+.pads{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.pad{position:relative;border:0;background:var(--panel2);border-radius:8px;padding:9px 4px 7px;cursor:pointer;
+ font:inherit;text-align:center;box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 2px 3px rgba(0,0,0,.18);
+ transition:.13s}
+.pad .num{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;line-height:1}
+.pad .dy{font-size:8px;letter-spacing:.1em;color:var(--ink2);margin-top:3px;text-transform:uppercase;font-weight:600}
+.pad .tick{position:absolute;top:5px;right:5px;width:5px;height:5px;border-radius:50%;background:transparent}
+.pad.done .tick{background:var(--gr)}
+.pad:active{transform:translateY(1px)}
+.pad.on{background:var(--or);color:#fff;box-shadow:0 2px 4px rgba(0,0,0,.28) inset}
+.pad.on .dy{color:rgba(255,255,255,.85)}
+.pad.on .tick{background:#fff}
+
+.knobrow{display:flex;align-items:center;gap:14px}
+.knob{width:76px;height:76px;border-radius:50%;flex:0 0 auto;position:relative;cursor:ns-resize;touch-action:none;
+ background:radial-gradient(circle at 38% 30%,#fbfaf7,#dcd8d0 55%,#bfbab1);
+ box-shadow:0 3px 6px rgba(0,0,0,.28),0 1px 0 rgba(255,255,255,.9) inset}
+.knob:after{content:"";position:absolute;inset:9px;border-radius:50%;
+ background:linear-gradient(180deg,#f6f4ef,#e6e2d9);box-shadow:0 1px 2px rgba(0,0,0,.16) inset}
+.knob .ind{position:absolute;left:50%;top:8px;width:3px;height:22px;border-radius:2px;background:var(--or);
+ transform-origin:50% 30px;margin-left:-1.5px;z-index:2}
+.knob .ring{position:absolute;inset:-6px}
+.knobinfo{flex:1}
+.knobinfo .val{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;line-height:1}
+.knobinfo .val span{font-size:13px;color:var(--ink2)}
+.steps{display:flex;gap:5px;margin-top:7px}
+.steps button{border:0;background:var(--panel2);border-radius:6px;width:28px;height:24px;cursor:pointer;
+ font:inherit;font-weight:700;font-size:13px;color:var(--ink);
+ box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 1px 2px rgba(0,0,0,.18)}
+.steps button:active{transform:translateY(1px)}
+
+/* ---------- TABS ---------- */
+.tabs{display:flex;gap:5px;flex-wrap:wrap;padding:0 2px 12px}
+.tabs button{border:0;background:var(--panel2);border-radius:8px;padding:9px 15px 8px;cursor:pointer;font:inherit;
+ font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:lowercase;color:var(--ink2);
+ box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 1px 2px rgba(0,0,0,.18);transition:.13s}
+.tabs button.on{color:#fff}
+.tabs button[data-t="menu"].on{background:var(--or)}
+.tabs button[data-t="week"].on{background:var(--bl)}
+.tabs button[data-t="prep"].on{background:var(--ye);color:var(--ink)}
+.tabs button[data-t="shop"].on{background:var(--gr)}
+.tabs button[data-t="info"].on{background:var(--ink)}
+
+/* ---------- PANELS ---------- */
+.panel{background:var(--panel);border-radius:var(--r);padding:16px;
+ box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 1px 3px rgba(0,0,0,.2)}
+.panel + .panel{margin-top:10px}
+.phead{display:flex;align-items:baseline;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.phead h2{font-size:15px;font-weight:700;letter-spacing:-.01em}
+.phead .sub{font-size:11px;color:var(--ink2)}
+.phead .rule{flex:1;height:1px;background:var(--line);min-width:20px}
+
+.meal{display:grid;grid-template-columns:56px 1fr;gap:12px;padding:13px 0;border-top:1px solid var(--line)}
+.meal:first-of-type{border-top:0;padding-top:2px}
+.chk{width:56px;height:56px;border-radius:10px;border:0;cursor:pointer;background:var(--panel2);position:relative;
+ box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 2px 3px rgba(0,0,0,.2);font:inherit;transition:.13s}
+.chk .s{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--ink2);
+ position:absolute;left:0;right:0;top:10px}
+.chk .m{position:absolute;left:0;right:0;bottom:9px;font-size:17px;line-height:1;color:var(--ink2)}
+.chk.on{background:var(--gr)}
+.chk.on .s,.chk.on .m{color:#fff}
+.chk:active{transform:translateY(1px)}
+.mtop{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+.chipx{font-size:8.5px;letter-spacing:.13em;font-weight:700;text-transform:lowercase;padding:3px 7px;border-radius:5px;
+ background:var(--panel2);color:var(--ink2)}
+.chipx.slot{background:var(--ink);color:#fff}
+.chipx.batch{background:var(--ye);color:var(--ink)}
+.chipx.fresh{background:var(--or);color:#fff}
+.mtop .org{font-size:11px;color:var(--ink2);font-style:italic}
+.mtop .tm{margin-left:auto;font-size:11px;color:var(--ink2)}
+.meal h3{font-size:17px;font-weight:700;letter-spacing:-.015em;margin-bottom:9px}
+.macro{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:9px}
+.mc{background:var(--panel2);border-radius:6px;padding:5px 9px 4px;min-width:60px}
+.mc .k{font-size:8px;letter-spacing:.13em;color:var(--ink2);font-weight:700;text-transform:lowercase}
+.mc .v{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;margin-top:1px}
+.mc.p .v{color:var(--or)} .mc.f .v{color:#b98a00} .mc.c .v{color:var(--bl)} .mc.b .v{color:var(--gr)}
+.exp{border:0;background:none;cursor:pointer;font:inherit;font-size:10px;font-weight:700;letter-spacing:.13em;
+ color:var(--ink2);padding:4px 0;display:flex;align-items:center;gap:5px}
+.exp .ar{transition:transform .18s;display:inline-block}
+.meal.open .exp .ar{transform:rotate(90deg)}
+.det{display:none;margin-top:8px}
+.meal.open .det{display:block}
+.ilist{list-style:none;columns:2;column-gap:26px}
+@media(max-width:660px){.ilist{columns:1}}
+.ilist li{display:flex;align-items:baseline;gap:6px;font-size:13.5px;padding:2.5px 0;break-inside:avoid}
+.ilist .nm{color:var(--ink)}
+.ilist .wt{font-size:8px;letter-spacing:.13em;text-transform:uppercase;color:#a29e96;font-weight:700}
+.ilist .dt{flex:1;border-bottom:1px dotted var(--line);transform:translateY(-3px);min-width:10px}
+.ilist .g{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;white-space:nowrap}
+.ilist .u{font-size:11.5px;color:var(--ink2);white-space:nowrap}
+.method{font-size:13.5px;color:#57544e;line-height:1.55;margin-top:10px;max-width:74ch}
+
+/* ---------- WEEK ---------- */
+table.tb{width:100%;border-collapse:collapse;font-size:13px}
+table.tb th{font-size:8.5px;letter-spacing:.13em;text-transform:lowercase;color:var(--ink2);font-weight:700;
+ text-align:right;padding:6px 5px;border-bottom:1px solid var(--line)}
+table.tb th.l,table.tb td.l{text-align:left}
+table.tb td{padding:8px 5px;border-bottom:1px solid rgba(184,180,171,.5);text-align:right;
+ font-family:'JetBrains Mono',monospace;font-size:12.5px;font-variant-numeric:tabular-nums}
+table.tb td.l{font-family:inherit;font-size:13.5px;font-weight:600}
+table.tb tr:last-child td{border-bottom:0}
+table.tb td.l small{display:block;font-weight:400;font-size:10.5px;color:var(--ink2)}
+.bar{height:6px;border-radius:3px;background:var(--panel2);overflow:hidden;margin-top:4px}
+.bar i{display:block;height:100%;background:var(--or)}
+
+/* ---------- SHOP ---------- */
+.grp{margin-bottom:18px}
+.grp h3{font-size:10px;letter-spacing:.16em;font-weight:700;color:var(--ink2);text-transform:lowercase;
+ padding-bottom:6px;border-bottom:1px solid var(--line);margin-bottom:2px}
+.srow{display:flex;align-items:center;gap:10px;padding:7px 2px;border-bottom:1px solid rgba(184,180,171,.45);
+ cursor:pointer}
+.srow:last-child{border-bottom:0}
+.box{width:19px;height:19px;border-radius:5px;background:var(--panel2);flex:0 0 auto;position:relative;
+ box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 1px 2px rgba(0,0,0,.18)}
+.srow.on .box{background:var(--gr)}
+.srow.on .box:after{content:"";position:absolute;left:6px;top:2.5px;width:5px;height:10px;
+ border:solid #fff;border-width:0 2px 2px 0;transform:rotate(42deg)}
+.srow.on .nm{text-decoration:line-through;color:#a29e96}
+.srow .nm{flex:1;font-size:14px}
+.srow .nm i{font-style:normal;font-size:8px;letter-spacing:.13em;text-transform:uppercase;color:#a29e96;
+ font-weight:700;margin-left:6px}
+.srow .per{font-size:10.5px;color:var(--ink2);white-space:nowrap;display:none}
+@media(min-width:760px){.srow .per{display:block}}
+.srow .qt{font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:700;white-space:nowrap;min-width:66px;
+ text-align:right}
+.tools{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tools button{border:0;background:var(--panel2);border-radius:7px;padding:8px 13px;cursor:pointer;font:inherit;
+ font-size:10px;font-weight:700;letter-spacing:.13em;color:var(--ink);
+ box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 1px 2px rgba(0,0,0,.18)}
+.tools button:active{transform:translateY(1px)}
+.tools button.go{background:var(--gr);color:#fff}
+.totbar{display:flex;flex-wrap:wrap;gap:0;background:var(--lcd);border-radius:8px;margin-bottom:14px;overflow:hidden}
+.totbar div{flex:1 1 auto;min-width:120px;padding:11px 15px;border-right:1px solid #2a2a2c}
+.totbar div:last-child{border-right:0}
+.totbar em{display:block;font-style:normal;font-size:9px;letter-spacing:.18em;color:#7d7a72;font-weight:600;margin-bottom:3px}
+.totbar b{font-family:'JetBrains Mono',monospace;font-size:19px;color:var(--lcdtx)}
+.totbar div:first-child b{color:var(--or)}
+.srow .nm small{display:block;font-size:10.5px;color:#8a857c;margin-top:2px;line-height:1.35}
+.srow .nm small u{text-decoration:none;color:var(--or);font-weight:700}
+.srow .cost{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;min-width:56px;text-align:right}
+.srow.on .cost{color:#a29e96}
+.hint{font-size:12px;color:var(--ink2);line-height:1.5;margin-top:12px}
+.hint b{color:var(--or)}
+
+/* ---------- PREP / INFO ---------- */
+.step{display:grid;grid-template-columns:44px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.step:first-of-type{border-top:0}
+.step .no{width:44px;height:44px;border-radius:9px;background:var(--ye);display:flex;align-items:center;
+ justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:16px;
+ box-shadow:0 1px 0 rgba(255,255,255,.6) inset,0 2px 3px rgba(0,0,0,.2)}
+.step .wh{font-size:9px;letter-spacing:.14em;font-weight:700;color:var(--ink2);text-transform:lowercase;margin-bottom:3px}
+.step p{font-size:13.5px;color:#57544e;line-height:1.55}
+.note{padding:12px 0;border-top:1px solid var(--line)}
+.note:first-of-type{border-top:0;padding-top:0}
+.note h4{font-size:13px;font-weight:700;margin-bottom:5px}
+.note p{font-size:13.5px;color:#57544e;line-height:1.58}
+footer{max-width:1080px;margin:14px auto 0;font-size:10.5px;color:#3f3c37;line-height:1.6;padding:0 6px;
+ text-align:center;opacity:.85}
+</style>
+</head>
+<body>
+<div class="device">
+
+  <div class="topbar">
+    <div class="brand"><span class="led"></span> five days at table <span class="model">FD&mdash;5</span></div>
+    <div class="who">
+      <button data-p="w">her <em>70 KG</em></button>
+      <button data-p="m">him <em>85 KG</em></button>
+    </div>
+    <div class="who" style="margin-left:8px">
+      <button data-wkab="A">week <em>A</em></button>
+      <button data-wkab="B">week <em>B</em></button>
+    </div>
+  </div>
+
+  <div class="console">
+    <div class="screen">
+      <div class="scr-top"><span id="scDay"></span><span id="scMode"></span></div>
+      <div class="big"><span class="n mono" id="scK">0</span><span class="of mono" id="scOf"></span></div>
+      <div class="rem mono" id="scRem"></div>
+      <div class="meters" id="meters"></div>
+    </div>
+
+    <div class="ctrl">
+      <div>
+        <div class="lbl" style="margin-bottom:6px">day</div>
+        <div class="pads">
+          <button class="pad" data-day="1"><span class="tick"></span><span class="num">01</span><span class="dy">Mon</span></button><button class="pad" data-day="2"><span class="tick"></span><span class="num">02</span><span class="dy">Tue</span></button><button class="pad" data-day="3"><span class="tick"></span><span class="num">03</span><span class="dy">Wed</span></button><button class="pad" data-day="4"><span class="tick"></span><span class="num">04</span><span class="dy">Thu</span></button><button class="pad" data-day="5"><span class="tick"></span><span class="num">05</span><span class="dy">Fri</span></button>
+        </div>
+      </div>
+      <div class="knobrow">
+        <div class="knob" id="knob" title="drag to scale portions &middot; double-click to reset">
+          <div class="ind" id="knobInd"></div>
+        </div>
+        <div class="knobinfo">
+          <div class="lbl" style="margin-bottom:4px">portion size</div>
+          <div class="val mono" id="knobVal">100<span>%</span></div>
+          <div class="steps">
+            <button data-step="-0.05">&minus;</button>
+            <button data-step="0.05">+</button>
+            <button data-reset="scale" title="reset portions" style="width:auto;padding:0 9px;font-size:9px;letter-spacing:.12em">100%</button>
+            <button data-reset="log" title="clear today's log" style="width:auto;padding:0 9px;font-size:9px;letter-spacing:.12em">clear log</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button data-t="menu">menu</button>
+    <button data-t="week">week</button>
+    <button data-t="prep">prep</button>
+    <button data-t="shop">shop</button>
+    <button data-t="info">info</button>
+  </div>
+
+  <div id="view"></div>
+</div>
+
+<footer>
+Macros are estimates from standard composition values and drift a few percent by brand and cookery.<br>
+Meat and fish raw, grains and pasta dry, tinned pulses drained. Ticks and logs reset when the page reloads.<br>
+General guidance on eating, not medical or dietary advice.
+</footer>
+
+<script>
+const D = {"prices": {"chicken": {"shop": "S", "name": "Sainsbury's British Chicken Breast Fillets 2kg", "pack": 2000, "price": 12.29, "ver": 1}, "chicken_mince": {"shop": "S", "name": "Sainsbury's British Chicken Breast Mince 500g", "pack": 500, "price": 4.25, "ver": 0}, "beef_mince": {"shop": "S", "name": "Sainsbury's British Beef Mince 5% Fat 1kg", "pack": 1000, "price": 8.5, "ver": 0}, "beef_steak": {"shop": "S", "name": "Sainsbury's British Beef Rump Steak ~400g", "pack": 400, "price": 5.5, "ver": 0}, "turkey_mince": {"shop": "S", "name": "Sainsbury's British Turkey Breast Mince 500g", "pack": 500, "price": 4.5, "ver": 0}, "salmon": {"shop": "M", "name": "Morrisons 2 Salmon Fillets 220g", "pack": 220, "price": 4.35, "ver": 1}, "tilapia": {"shop": "S", "name": "Sainsbury's Basa Fillets 500g frozen", "pack": 500, "price": 3.5, "ver": 0}, "prawns": {"shop": "S", "name": "Frozen Raw King Prawns 250g", "pack": 250, "price": 3.5, "ver": 0}, "egg": {"shop": "S", "name": "Sainsbury's British Free Range Eggs Large x12", "pack": 600, "price": 3.35, "ver": 1}, "lc_tortilla": {"shop": "S", "name": "Mission Carb Balance Original Wraps x4 200g (Nectar)", "pack": 200, "price": 1.6, "ver": 1}, "cheddar_rf": {"shop": "S", "name": "Sainsbury's Lighter Mature Cheddar 400g", "pack": 400, "price": 3.25, "ver": 0}, "mozzarella": {"shop": "S", "name": "Sainsbury's Grated Mozzarella 250g", "pack": 250, "price": 2.25, "ver": 0}, "parmesan": {"shop": "S", "name": "Sainsbury's Italian Hard Cheese, grated 100g", "pack": 100, "price": 1.3, "ver": 0}, "panko": {"shop": "S", "name": "Panko Breadcrumbs 150g", "pack": 150, "price": 1.5, "ver": 0}, "whey": {"shop": "S", "name": "Whey protein, unflavoured 1kg (optional)", "pack": 1000, "price": 20.0, "ver": 0}, "greek_yog": {"shop": "M", "name": "Morrisons Fat Free Greek Style Yoghurt 1kg", "pack": 1000, "price": 2.1, "ver": 1}, "skyr": {"shop": "M", "name": "Morrisons Fat Free Greek Style Yoghurt 1kg (in place of skyr)", "pack": 1000, "price": 2.1, "ver": 1}, "cottage": {"shop": "M", "name": "Morrisons Cottage Cheese 300g", "pack": 300, "price": 1.1, "ver": 0}, "blueberries": {"shop": "M", "name": "Morrisons Blueberries 150g", "pack": 150, "price": 0.78, "ver": 1}, "raspberries": {"shop": "M", "name": "Morrisons Raspberries 150g", "pack": 150, "price": 2.2, "ver": 1}, "lettuce": {"shop": "M", "name": "Morrisons British Little Gem Lettuce 2pk", "pack": 250, "price": 0.77, "ver": 1}, "carrot": {"shop": "M", "name": "Morrisons British Carrots 1kg", "pack": 1000, "price": 0.69, "ver": 1}, "peppers": {"shop": "M", "name": "Morrisons Savers Mixed Peppers 3pk", "pack": 450, "price": 1.79, "ver": 1}, "tomato": {"shop": "M", "name": "Morrisons Chopped Tomatoes 400g (cooked) + Salad Tomatoes 6pk", "pack": 400, "price": 0.47, "ver": 1}, "cucumber": {"shop": "M", "name": "Morrisons Cucumber", "pack": 300, "price": 0.89, "ver": 0}, "red_onion": {"shop": "M", "name": "Morrisons Red Onions 3pk", "pack": 390, "price": 0.85, "ver": 0}, "spring_onion": {"shop": "M", "name": "Morrisons Spring Onions bunch", "pack": 100, "price": 0.75, "ver": 0}, "red_cabbage": {"shop": "M", "name": "Morrisons Red Cabbage, each", "pack": 700, "price": 0.85, "ver": 0}, "courgette": {"shop": "M", "name": "Morrisons Courgettes 3pk", "pack": 500, "price": 1.25, "ver": 0}, "broccoli": {"shop": "M", "name": "Morrisons Broccoli 350g", "pack": 350, "price": 0.75, "ver": 0}, "mushrooms": {"shop": "M", "name": "Morrisons Closed Cup Mushrooms 400g", "pack": 400, "price": 1.35, "ver": 0}, "cauliflower": {"shop": "M", "name": "Morrisons Cauliflower, each (rice it yourself)", "pack": 600, "price": 1.09, "ver": 0}, "avocado": {"shop": "M", "name": "Morrisons Avocados, loose", "pack": 140, "price": 0.8, "ver": 0}, "banana": {"shop": "M", "name": "Morrisons Bananas, loose", "pack": 1000, "price": 0.9, "ver": 0}, "apple": {"shop": "M", "name": "Morrisons Apples, loose", "pack": 1000, "price": 1.7, "ver": 0}, "pineapple": {"shop": "M", "name": "Morrisons Pineapple Chunks in Juice 425g tin", "pack": 250, "price": 0.65, "ver": 0}, "spinach": {"shop": "M", "name": "Morrisons Frozen Leaf Spinach 900g", "pack": 900, "price": 1.6, "ver": 0}, "sweetcorn": {"shop": "M", "name": "Morrisons Frozen Sweetcorn 1kg", "pack": 1000, "price": 1.25, "ver": 0}, "okra": {"shop": "M", "name": "Frozen Sliced Okra 300g", "pack": 300, "price": 1.15, "ver": 0}, "passata": {"shop": "M", "name": "Morrisons Passata 500g", "pack": 500, "price": 0.55, "ver": 0}, "brown_rice": {"shop": "M", "name": "Morrisons Wholegrain Brown Rice 1kg", "pack": 1000, "price": 1.65, "ver": 0}, "chickpeas": {"shop": "M", "name": "Morrisons Chickpeas 400g tin (240g drained)", "pack": 240, "price": 0.45, "ver": 0}, "black_beans": {"shop": "M", "name": "Morrisons Black Beans 400g tin (240g drained)", "pack": 240, "price": 0.65, "ver": 0}, "kidney_beans": {"shop": "M", "name": "Morrisons Red Kidney Beans 400g tin (240g drained)", "pack": 240, "price": 0.5, "ver": 0}, "olive_oil": {"shop": "M", "name": "Morrisons Extra Virgin Olive Oil 1L", "pack": 910, "price": 6.5, "ver": 0}, "oats": {"shop": "M", "name": "Morrisons Porridge Oats 1kg", "pack": 1000, "price": 1.29, "ver": 0}, "peanut_butter": {"shop": "M", "name": "Morrisons 100% Peanut Butter 340g", "pack": 340, "price": 2.5, "ver": 0}, "salsa": {"shop": "M", "name": "Morrisons Tomato Salsa 300g", "pack": 300, "price": 1.2, "ver": 0}, "pumpkin_seeds": {"shop": "M", "name": "Morrisons Pumpkin Seeds 200g", "pack": 200, "price": 1.8, "ver": 0}, "chia": {"shop": "M", "name": "Chia Seeds 300g", "pack": 300, "price": 2.75, "ver": 0}, "coconut_des": {"shop": "M", "name": "Desiccated Coconut 200g", "pack": 200, "price": 1.15, "ver": 0}, "plantain": {"shop": "X", "name": "Ripe plantain (Lewisham market / Caribbean grocer)", "pack": 500, "price": 1.2, "ver": 0}, "egusi": {"shop": "X", "name": "Ground egusi (melon seed) 250g — African grocer", "pack": 250, "price": 3.5, "ver": 0}, "seeded_bread": {"shop": "S", "name": "Allinson's Soya & Linseed Seeded Bread 750g", "pack": 750, "price": 1.5, "ver": 1}, "edamame_pasta": {"shop": "S", "name": "Sainsbury's Red Lentil Penne Pasta 250g", "pack": 250, "price": 1.9, "ver": 1}}, "shops": {"S": {"name": "Sainsbury's", "sub": "protein, eggs & the low-carb wraps"}, "M": {"name": "Morrisons", "sub": "fresh produce, dairy, frozen & cupboard"}, "X": {"name": "Lewisham market / Caribbean grocer", "sub": "plantain, egusi — not sold in the supermarkets"}, "H": {"name": "Health-food shop or online", "sub": "two specialist low-carb items"}}, "mealsB": {"d1b": {"name": "Breakfast burrito", "day": 1, "slot": "breakfast", "origin": "New York", "tag": "fresh", "time": "7 min", "method": "Same larder, different plate — cook it the way the name suggests.", "w": {"egg": 100, "black_beans": 60, "cheddar_rf": 12, "lc_tortilla": 45, "salsa": 40, "avocado": 30, "spinach": 60}, "m": {"egg": 150, "black_beans": 80, "cheddar_rf": 18, "lc_tortilla": 68, "salsa": 50, "avocado": 45, "spinach": 80}}, "d1l": {"name": "Jollof fried rice with chicken", "day": 1, "slot": "lunch", "origin": "New York", "tag": "batch", "time": "6 min", "method": "Same larder, different plate — cook it the way the name suggests.", "w": {"chicken": 105, "brown_rice": 55, "cauliflower": 130, "passata": 80, "peppers": 70, "red_onion": 30, "egg": 25, "spring_onion": 15, "olive_oil": 7}, "m": {"chicken": 140, "brown_rice": 72, "cauliflower": 160, "passata": 100, "peppers": 90, "red_onion": 40, "egg": 25, "spring_onion": 20, "olive_oil": 9}}, "d1d": {"name": "Chicken parmigiana with courgette", "day": 1, "slot": "dinner", "origin": "Naples, reconsidered", "tag": "fresh", "time": "25 min", "method": "Same larder, different plate — cook it the way the name suggests.", "w": {"chicken": 90, "passata": 100, "mozzarella": 35, "parmesan": 12, "panko": 18, "courgette": 180, "red_onion": 30, "olive_oil": 9}, "m": {"chicken": 120, "passata": 120, "mozzarella": 45, "parmesan": 15, "panko": 22, "courgette": 200, "red_onion": 40, "olive_oil": 11}}, "d1s": {"name": "Cottage cheese, pineapple & chilli", "day": 1, "slot": "snack", "origin": "New York", "tag": "fresh", "time": "2 min", "method": "Same larder, different plate — cook it the way the name suggests.", "w": {"cottage": 100, "pineapple": 200, "pumpkin_seeds": 8, "chia": 6}, "m": {"cottage": 135, "pineapple": 260, "pumpkin_seeds": 11, "chia": 8}}, "d2b": {"name": "Apple & cinnamon overnight oats", "day": 2, "slot": "breakfast", "origin": "The gym canteen", "tag": "fresh", "time": "10 min", "method": "Same larder, different plate — cook it the way the name suggests.", "w": {"oats": 50, "skyr": 130, "apple": 150, "peanut_butter": 10, "chia": 8}, "m": {"oats": 70, "skyr": 175, "apple": 190, "peanut_butter": 13, "chia": 10}}, "d2l": {"name": "Chilli-lime chicken & black bean salad", "day": 2, "slot": "lunch", "origin": "Tex-Mex", "tag": "batch", "time": "5 min", "method": "Same larder, different plate — cook it the way the name suggests.", "w": {"chicken": 110, "black_beans": 110, "lettuce": 70, "tomato": 90, "avocado": 40, "sweetcorn": 40, "red_onion": 30, "salsa": 50, "olive_oil": 6}, "m": {"chicken": 145, "black_beans": 145, "lettuce": 80, "tomato": 110, "avocado": 55, "sweetcorn": 55, "red_onion": 40, "salsa": 60, "olive_oil": 8}}, "d2d": {"name": "Basa escovitch with cauliflower rice", "day": 2, "slot": "dinner", "origin": "Japan", "tag": "fresh", "time": "22 min", "method": "Same larder, different plate — cook it the way the name suggests.", "w": {"tilapia": 160, "brown_rice": 48, "cauliflower": 130, "peppers": 90, "carrot": 70, "red_onion": 45, "olive_oil": 12}, "m": {"tilapia": 210, "brown_rice": 60, "cauliflower": 160, "peppers": 110, "carrot": 85, "red_onion": 55, "olive_oil": 10}}, "d2s": {"name": "Boiled eggs, avocado & chilli salt", "day": 2, "slot": "snack", "origin": "Nigeria", "tag": "batch", "time": "2 min", "method": "Same larder, different plate — cook it the way the name suggests.", "w": {"egg": 100, "avocado": 55, "cucumber": 60}, "m": {"egg": 150, "avocado": 70, "cucumber": 70}}, "d3b": {"name": "Plantain & pepper hash with fried eggs", "day": 3, "slot": "breakfast", "origin": "Nigeria", "tag": "fresh", "time": "12 min", "method": "Same larder, different plate — cook it the way the name suggests.", "w": {"egg": 125, "plantain": 100, "peppers": 80, "red_onion": 40, "tomato": 80, "spinach": 60, "olive_oil": 6}, "m": {"egg": 150, "plantain": 130, "peppers": 100, "red_onion": 50, "tomato": 100, "spinach": 80, "olive_oil": 7}}, "d3l": {"name": "Turkey & okra stew with rice", "day": 3, "slot": "lunch", "origin": "Nigeria", "tag": "batch", "time": "6 min", "method": "Same larder, different plate — cook it the way the name suggests.", "w": {"turkey_mince": 120, "okra": 120, "passata": 120, "brown_rice": 62, "spinach": 100, "peppers": 70, "red_onion": 40, "olive_oil": 7}, "m": {"turkey_mince": 160, "okra": 150, "passata": 140, "brown_rice": 85, "spinach": 130, "peppers": 90, "red_onion": 50, "olive_oil": 9}}, "d3d": {"name": "Suya chicken skewers with pepper salad", "day": 3, "slot": "dinner", "origin": "Nigeria", "tag": "fresh", "time": "20 min", "method": "Same larder, different plate — cook it the way the name suggests.", "w": {"chicken": 130, "peanut_butter": 12, "peppers": 100, "red_onion": 40, "lettuce": 60, "tomato": 100, "cucumber": 60, "plantain": 85, "olive_oil": 6}, "m": {"chicken": 175, "peanut_butter": 15, "peppers": 120, "red_onion": 50, "lettuce": 70, "tomato": 120, "cucumber": 70, "plantain": 130, "olive_oil": 8}}, "d3s": {"name": "Greek yoghurt, raspberries & seeds", "day": 3, "slot": "snack", "origin": "Jamaica", "tag": "batch", "time": "1 min", "method": "Same larder, different plate — cook it the way the name suggests.", "w": {"greek_yog": 150, "raspberries": 90, "pumpkin_seeds": 10, "chia": 6}, "m": {"greek_yog": 195, "raspberries": 110, "pumpkin_seeds": 13, "chia": 8}}, "d4b": {"name": "Beans & eggs on seeded toast", "day": 4, "slot": "breakfast", "origin": "New York", "tag": "fresh", "time": "10 min", "method": "Same larder, different plate — cook it the way the name suggests.", "w": {"egg": 100, "kidney_beans": 75, "passata": 80, "seeded_bread": 45, "spinach": 60, "red_onion": 25, "olive_oil": 9}, "m": {"egg": 150, "kidney_beans": 85, "passata": 100, "seeded_bread": 55, "spinach": 80, "red_onion": 30, "olive_oil": 11}}, "d4l": {"name": "Beef kofta wrap with cucumber yoghurt", "day": 4, "slot": "lunch", "origin": "Bologna, reconsidered", "tag": "batch", "time": "8 min", "method": "Same larder, different plate — cook it the way the name suggests.", "w": {"beef_mince": 110, "lc_tortilla": 40, "greek_yog": 70, "cucumber": 70, "lettuce": 50, "tomato": 70, "red_onion": 35, "olive_oil": 10}, "m": {"beef_mince": 145, "lc_tortilla": 55, "greek_yog": 90, "cucumber": 80, "lettuce": 60, "tomato": 90, "red_onion": 45, "olive_oil": 8}}, "d4d": {"name": "Beef smash tacos", "day": 4, "slot": "dinner", "origin": "New York", "tag": "fresh", "time": "14 min", "method": "Same larder, different plate — cook it the way the name suggests.", "w": {"beef_mince": 110, "lc_tortilla": 42, "cheddar_rf": 15, "lettuce": 50, "tomato": 70, "salsa": 50, "red_onion": 30, "avocado": 35, "olive_oil": 9}, "m": {"beef_mince": 145, "lc_tortilla": 55, "cheddar_rf": 20, "lettuce": 60, "tomato": 90, "salsa": 60, "red_onion": 40, "avocado": 50, "olive_oil": 11}}, "d4s": {"name": "Skyr, blueberries & coconut", "day": 4, "slot": "snack", "origin": "Caribbean", "tag": "fresh", "time": "3 min", "method": "Same larder, different plate — cook it the way the name suggests.", "w": {"skyr": 170, "blueberries": 90, "coconut_des": 6, "pumpkin_seeds": 8}, "m": {"skyr": 220, "blueberries": 110, "coconut_des": 8, "pumpkin_seeds": 11}}, "d5b": {"name": "Salmon & egg toast with chilli", "day": 5, "slot": "breakfast", "origin": "Jamaica", "tag": "fresh", "time": "14 min", "method": "Same larder, different plate — cook it the way the name suggests.", "w": {"salmon": 70, "egg": 100, "seeded_bread": 45, "spinach": 60, "tomato": 60, "spring_onion": 15, "olive_oil": 5}, "m": {"salmon": 95, "egg": 150, "seeded_bread": 55, "spinach": 80, "tomato": 80, "spring_onion": 20, "olive_oil": 6}}, "d5l": {"name": "Chicken & avocado club sandwich", "day": 5, "slot": "lunch", "origin": "Levant, by way of everywhere", "tag": "batch", "time": "8 min", "method": "Same larder, different plate — cook it the way the name suggests.", "w": {"chicken": 110, "seeded_bread": 55, "avocado": 45, "lettuce": 50, "tomato": 70, "cheddar_rf": 12, "greek_yog": 40, "olive_oil": 4}, "m": {"chicken": 145, "seeded_bread": 70, "avocado": 60, "lettuce": 60, "tomato": 90, "cheddar_rf": 16, "greek_yog": 50, "olive_oil": 5}}, "d5d": {"name": "Salmon teriyaki with broccoli & rice", "day": 5, "slot": "dinner", "origin": "Jamaica", "tag": "fresh", "time": "18 min", "method": "Same larder, different plate — cook it the way the name suggests.", "w": {"salmon": 110, "brown_rice": 45, "cauliflower": 100, "broccoli": 150, "carrot": 60, "spring_onion": 20, "olive_oil": 5}, "m": {"salmon": 145, "brown_rice": 60, "cauliflower": 130, "broccoli": 180, "carrot": 70, "spring_onion": 25, "olive_oil": 6}}, "d5s": {"name": "Carrot sticks with suya peanut dip", "day": 5, "slot": "snack", "origin": "Street corner", "tag": "fresh", "time": "4 min", "method": "Same larder, different plate — cook it the way the name suggests.", "w": {"carrot": 120, "peanut_butter": 20, "greek_yog": 80}, "m": {"carrot": 140, "peanut_butter": 25, "greek_yog": 100}}}, "food": {"greek_yog": [57, 10.3, 0, 4.0, 0.2], "skyr": [63, 11.0, 0, 4.0, 0.2], "cottage": [79, 12.6, 0, 3.6, 1.8], "milk": [50, 3.6, 0, 4.8, 1.8], "cheddar_rf": [251, 30.0, 0, 0.5, 14.0], "parmesan": [402, 36.0, 0, 0.0, 29.0], "mozzarella": [254, 24.3, 0, 2.8, 16.0], "egg": [143, 12.6, 0, 0.7, 9.9], "egg_white": [52, 10.9, 0, 0.7, 0.2], "oats": [379, 13.2, 10.1, 67.7, 6.5], "chia": [486, 16.5, 34.4, 42.1, 30.7], "whey": [380, 80.0, 2.0, 8.0, 4.0], "brown_rice": [362, 7.5, 3.4, 76.0, 2.9], "panko": [380, 12.0, 4.0, 72.0, 4.0], "edamame_pasta": [356, 43.5, 22.7, 43.1, 6.2], "lc_tortilla": [240, 13.5, 22.0, 42.5, 8.0], "seeded_bread": [279, 19.5, 14.5, 25.0, 14.5], "chicken": [106, 24.0, 0, 0, 1.1], "chicken_mince": [110, 23.5, 0, 0, 2.0], "beef_mince": [137, 21.0, 0, 0, 5.0], "beef_steak": [130, 21.5, 0, 0, 4.5], "turkey_mince": [132, 21.5, 0, 0, 5.0], "salmon": [208, 20.4, 0, 0, 13.6], "tilapia": [96, 20.1, 0, 0, 1.7], "prawns": [85, 20.1, 0, 0, 1.0], "black_beans": [132, 8.9, 8.7, 24.0, 0.5], "kidney_beans": [127, 8.7, 6.4, 22.8, 0.5], "chickpeas": [139, 7.5, 7.6, 22.5, 2.6], "edamame": [121, 12.0, 5.0, 8.9, 5.2], "peanut_butter": [588, 25.0, 6.0, 20.0, 50.0], "coconut_des": [660, 6.9, 16.3, 24.0, 65.0], "pumpkin_seeds": [559, 30.0, 6.0, 11.0, 49.0], "egusi": [590, 28.0, 4.0, 15.0, 48.0], "mango": [60, 0.8, 1.6, 15.0, 0.4], "pineapple": [50, 0.5, 1.4, 13.0, 0.1], "plantain": [122, 1.3, 2.3, 32.0, 0.4], "raspberries": [52, 1.2, 6.5, 11.9, 0.7], "banana": [89, 1.1, 2.6, 23.0, 0.3], "apple": [52, 0.3, 2.4, 14.0, 0.2], "blueberries": [57, 0.7, 2.4, 14.5, 0.3], "sweetcorn": [86, 3.2, 2.7, 19.0, 1.2], "cauliflower": [25, 1.9, 2.0, 5.0, 0.3], "spinach": [23, 2.9, 2.2, 3.6, 0.4], "broccoli": [34, 2.8, 2.6, 7.0, 0.4], "okra": [33, 1.9, 3.2, 7.5, 0.2], "mushrooms": [22, 3.1, 1.0, 3.3, 0.3], "courgette": [17, 1.2, 1.0, 3.1, 0.3], "peppers": [31, 1.0, 2.1, 6.0, 0.3], "tomato": [18, 0.9, 1.2, 3.9, 0.2], "passata": [30, 1.4, 1.4, 6.0, 0.2], "red_onion": [40, 1.1, 1.7, 9.3, 0.1], "spring_onion": [32, 1.8, 2.6, 7.3, 0.2], "carrot": [41, 0.9, 2.8, 9.6, 0.2], "lettuce": [17, 1.2, 2.1, 3.3, 0.2], "cucumber": [15, 0.7, 0.5, 3.6, 0.1], "red_cabbage": [31, 1.4, 2.1, 7.4, 0.2], "avocado": [160, 2.0, 6.7, 8.5, 14.7], "salsa": [30, 1.5, 1.5, 6.0, 0.2], "olive_oil": [884, 0, 0, 0, 100.0]}, "spec": {"greek_yog": ["Greek yoghurt, 0% fat", "As it comes", null, "", ""], "skyr": ["Skyr, plain natural", "As it comes", null, "", ""], "cottage": ["Cottage cheese, natural", "As it comes", null, "", ""], "milk": ["Milk, semi-skimmed", "As it comes", null, "", ""], "cheddar_rf": ["Cheddar, reduced fat (~14%)", "As it comes", 18, "thin slice", "thin slices"], "parmesan": ["Parmesan, finely grated", "As it comes", 7.5, "tbsp", "tbsp"], "mozzarella": ["Mozzarella, reduced fat, block", "As it comes", 125, "ball", "balls"], "egg": ["Eggs, medium, shell off", "Shelled", 50, "egg", "eggs"], "egg_white": ["Egg white, liquid carton", "As it comes", 33, "white", "whites"], "oats": ["Porridge oats", "Dry", 9, "tbsp", "tbsp"], "chia": ["Chia seeds", "Dry", 4, "tsp", "tsp"], "whey": ["Whey protein, unflavoured", "Dry", 30, "scoop", "scoops"], "brown_rice": ["Brown rice, long grain", "Dry", 14, "tbsp", "tbsp"], "panko": ["Panko breadcrumbs", "Dry", 7, "tbsp", "tbsp"], "edamame_pasta": ["Edamame spaghetti", "Dry", null, "", ""], "lc_tortilla": ["Tortilla, high-protein low-carb", "As it comes", 45, "tortilla", "tortillas"], "seeded_bread": ["Seeded low-carb loaf", "As it comes", 45, "slice", "slices"], "chicken": ["Chicken breast, skinless", "Raw", 175, "breast", "breasts"], "chicken_mince": ["Chicken breast mince, 2-3% fat", "Raw", null, "", ""], "beef_mince": ["Beef mince, 5% fat", "Raw", null, "", ""], "beef_steak": ["Sirloin steak, lean, trimmed", "Raw", 180, "steak", "steaks"], "turkey_mince": ["Turkey breast mince, 5% fat", "Raw", null, "", ""], "salmon": ["Salmon fillet, skinless", "Raw", 130, "fillet", "fillets"], "tilapia": ["Catfish or tilapia fillet", "Raw", 170, "fillet", "fillets"], "prawns": ["King prawns, peeled", "Raw", 6, "prawn", "prawns"], "black_beans": ["Black beans, tinned", "Drained", 240, "tin", "tins"], "kidney_beans": ["Red kidney beans, tinned", "Drained", 240, "tin", "tins"], "chickpeas": ["Chickpeas, tinned", "Drained", 240, "tin", "tins"], "edamame": ["Edamame beans, shelled", "Frozen", null, "", ""], "peanut_butter": ["Peanut butter, 100% nuts", "As it comes", 16, "tbsp", "tbsp"], "coconut_des": ["Coconut, desiccated unsweetened", "Dry", 4, "tsp", "tsp"], "pumpkin_seeds": ["Pumpkin seeds", "Dry", 9, "tbsp", "tbsp"], "egusi": ["Egusi, ground melon seed", "Dry", 10, "tbsp", "tbsp"], "mango": ["Mango", "Flesh only", 200, "mango", "mangoes"], "pineapple": ["Pineapple", "Flesh only", 75, "thick ring", "thick rings"], "plantain": ["Plantain, ripe", "Peeled", 130, "plantain", "plantains"], "raspberries": ["Raspberries", "Fresh or frozen", 40, "handful", "handfuls"], "banana": ["Bananas", "Peeled", 110, "banana", "bananas"], "apple": ["Apples", "Whole, skin on", 160, "apple", "apples"], "blueberries": ["Blueberries", "Fresh or frozen", 40, "handful", "handfuls"], "sweetcorn": ["Sweetcorn", "Frozen or tinned", 15, "tbsp", "tbsp"], "cauliflower": ["Cauliflower, riced", "Prepared", 600, "head", "heads"], "spinach": ["Spinach, ugu or callaloo", "Raw", 30, "handful", "handfuls"], "broccoli": ["Broccoli florets", "Raw", 350, "head", "heads"], "okra": ["Okra", "Fresh or frozen", 10, "pod", "pods"], "mushrooms": ["Chestnut mushrooms", "Raw", 20, "mushroom", "mushrooms"], "courgette": ["Courgette", "Raw", 200, "courgette", "courgettes"], "peppers": ["Red pepper, deseeded", "Prepared", 150, "pepper", "peppers"], "tomato": ["Tomatoes, ripe", "Raw", 90, "tomato", "tomatoes"], "passata": ["Passata, plain", "As it comes", 15, "tbsp", "tbsp"], "red_onion": ["Red onion, peeled", "Prepared", 130, "onion", "onions"], "spring_onion": ["Spring onions, trimmed", "Prepared", 15, "spring onion", "spring onions"], "carrot": ["Carrots, peeled", "Prepared", 70, "carrot", "carrots"], "lettuce": ["Little gem or romaine", "Raw", 30, "handful", "handfuls"], "cucumber": ["Cucumber", "Raw", 300, "cucumber", "cucumbers"], "red_cabbage": ["Red cabbage, shredded", "Prepared", 40, "handful", "handfuls"], "avocado": ["Avocado", "Flesh only", 140, "avocado", "avocados"], "salsa": ["Tomato salsa, no added sugar", "As it comes", 15, "tbsp", "tbsp"], "olive_oil": ["Extra virgin olive oil", "As it comes", 4.5, "tsp", "tsp"]}, "meals": {"d1b": {"name": "Bodega egg & cheese", "day": 1, "slot": "breakfast", "origin": "New York", "tag": "fresh", "time": "7 min", "method": "Wilt the spinach in the pan, pour the beaten eggs over, fold into one soft slab and lay the cheese on top to melt under a lid. Folded into a warmed tortilla rather than a roll — same sandwich, a third of the starch. Tomato, black pepper, and enough hot sauce to make it count.", "w": {"egg": 100, "cheddar_rf": 15, "lc_tortilla": 45, "spinach": 100, "tomato": 80, "avocado": 35, "olive_oil": 5}, "m": {"egg": 100, "cheddar_rf": 20, "lc_tortilla": 50, "spinach": 120, "tomato": 100, "avocado": 45, "olive_oil": 8}}, "d1l": {"name": "Halal cart chicken over rice", "day": 1, "slot": "lunch", "origin": "New York", "tag": "batch", "time": "6 min", "method": "Sunday's chicken chopped and warmed through with oregano, cumin and turmeric. Underneath, rice cut half-and-half with cauliflower — riced, dry-fried, and honestly indistinguishable once the sauce is on. Chickpeas, shredded lettuce and tomato around the edge. White sauce: yoghurt, grated garlic, lemon, a great deal of black pepper.", "w": {"chicken": 75, "brown_rice": 55, "cauliflower": 130, "chickpeas": 70, "lettuce": 70, "tomato": 80, "greek_yog": 50, "red_onion": 30, "olive_oil": 6}, "m": {"chicken": 100, "brown_rice": 80, "cauliflower": 160, "chickpeas": 90, "lettuce": 80, "tomato": 100, "greek_yog": 65, "red_onion": 40, "olive_oil": 8}}, "d1d": {"name": "Chicken-crust pizza", "day": 1, "slot": "dinner", "origin": "Naples, reconsidered", "tag": "fresh", "time": "25 min", "method": "The base is the trick: chicken mince pressed thin with parmesan and egg, baked fifteen minutes at 220°C until it firms and browns. Passata over it, mozzarella, mushrooms, peppers, onion and spinach, then back in for eight. It carves like a pizza, lifts like a pizza, and does it without a gram of flour.", "w": {"chicken_mince": 65, "parmesan": 12, "egg": 25, "mozzarella": 30, "passata": 100, "peppers": 90, "mushrooms": 90, "spinach": 60, "red_onion": 30, "lettuce": 40, "avocado": 25, "olive_oil": 9}, "m": {"chicken_mince": 75, "parmesan": 15, "egg": 25, "mozzarella": 40, "passata": 120, "peppers": 110, "mushrooms": 110, "spinach": 80, "red_onion": 40, "lettuce": 50, "avocado": 35, "olive_oil": 11}}, "d1s": {"name": "Lime & chilli yoghurt with banana", "day": 1, "slot": "snack", "origin": "New York", "tag": "fresh", "time": "2 min", "method": "Banana sliced thick over the yoghurt, lime squeezed hard, then chilli and salt across the top the way the fruit carts do it. Chia and pumpkin seeds scattered over. Sounds odd, tastes right.", "w": {"greek_yog": 110, "banana": 130, "chia": 8, "pumpkin_seeds": 6}, "m": {"greek_yog": 140, "banana": 175, "chia": 10, "pumpkin_seeds": 8}}, "d2b": {"name": "Protein pancakes with berries", "day": 2, "slot": "breakfast", "origin": "The gym canteen", "tag": "fresh", "time": "10 min", "method": "Oats blitzed to flour with the whey, egg and half the skyr, then dropped in small rounds into a dry non-stick pan — small ones hold together, large ones do not. Stacked with the remaining skyr and a great heap of berries.", "w": {"oats": 40, "egg": 50, "skyr": 95, "raspberries": 60, "blueberries": 60, "peanut_butter": 8, "olive_oil": 3}, "m": {"oats": 58, "egg": 75, "skyr": 140, "raspberries": 60, "blueberries": 75, "peanut_butter": 11, "olive_oil": 4}}, "d2l": {"name": "Chipotle burrito bowl", "day": 2, "slot": "lunch", "origin": "Tex-Mex", "tag": "batch", "time": "5 min", "method": "Sunday's chipotle beef over rice cut with cauliflower, with black beans, roast peppers and onion, sweetcorn, salsa, shredded lettuce and a restrained scoop of guacamole. Lime over the lot.", "w": {"beef_mince": 70, "black_beans": 95, "brown_rice": 40, "cauliflower": 120, "peppers": 70, "red_onion": 30, "sweetcorn": 25, "salsa": 60, "lettuce": 50, "avocado": 20}, "m": {"beef_mince": 95, "black_beans": 105, "brown_rice": 70, "cauliflower": 155, "peppers": 90, "red_onion": 40, "sweetcorn": 30, "salsa": 70, "lettuce": 60, "avocado": 28}}, "d2d": {"name": "Chicken katsu curry", "day": 2, "slot": "dinner", "origin": "Japan", "tag": "fresh", "time": "22 min", "method": "Chicken flattened thin, through beaten egg then panko, baked at 220°C for eighteen minutes and turned once — it crisps properly without a fryer. The sauce is onion and carrot cooked soft with curry powder and then blitzed smooth, which thickens it without flour. Rice cut with cauliflower, broccoli steamed.", "w": {"chicken": 85, "panko": 20, "egg": 25, "brown_rice": 30, "cauliflower": 130, "broccoli": 140, "red_onion": 40, "carrot": 60, "olive_oil": 6}, "m": {"chicken": 110, "panko": 25, "egg": 25, "brown_rice": 42, "cauliflower": 160, "broccoli": 165, "red_onion": 50, "carrot": 70, "olive_oil": 8}}, "d2s": {"name": "Suya-spiced eggs & carrots", "day": 2, "slot": "snack", "origin": "Nigeria", "tag": "batch", "time": "2 min", "method": "Sunday's boiled eggs halved and dusted heavily with suya — ground peanut, chilli, ginger, stock powder. Carrot sticks to scoop with.", "w": {"egg": 50, "carrot": 100, "peanut_butter": 16, "avocado": 25}, "m": {"egg": 75, "carrot": 100, "peanut_butter": 20, "avocado": 35}}, "d3b": {"name": "Nigerian egg sauce with plantain", "day": 3, "slot": "breakfast", "origin": "Nigeria", "tag": "fresh", "time": "12 min", "method": "Onion, pepper and tomato cooked down hard until the oil separates, then the eggs stirred through in ribbons rather than scrambled to dust. Spinach folded in at the end. Plantain sliced thick and griddled dry, not fried, which is the whole difference.", "w": {"egg": 150, "tomato": 100, "peppers": 80, "red_onion": 40, "spinach": 60, "plantain": 80, "olive_oil": 5}, "m": {"egg": 175, "tomato": 120, "peppers": 100, "red_onion": 50, "spinach": 80, "plantain": 120, "olive_oil": 6}}, "d3l": {"name": "Efo riro with chicken & jollof", "day": 3, "slot": "lunch", "origin": "Nigeria", "tag": "batch", "time": "6 min", "method": "Sunday's efo riro reheated — peppers, tomato and onion cooked down with egusi until it thickens, a mountain of spinach wilted through, the chicken in at the end. Beside it, jollof made half with rice and half with cauliflower, which takes the colour perfectly well.", "w": {"chicken": 85, "spinach": 200, "egusi": 12, "passata": 100, "peppers": 70, "red_onion": 40, "brown_rice": 40, "cauliflower": 110, "olive_oil": 6}, "m": {"chicken": 110, "spinach": 240, "egusi": 15, "passata": 120, "peppers": 90, "red_onion": 50, "brown_rice": 55, "cauliflower": 140, "olive_oil": 8}}, "d3d": {"name": "Catfish pepper soup with okra", "day": 3, "slot": "dinner", "origin": "Nigeria", "tag": "fresh", "time": "20 min", "method": "Stock brought up with pepper soup spice, onion, scotch bonnet and tomato. Okra in for five minutes, fish laid on top and poached gently for eight, prawns for the last three, spinach wilted through at the end. Plantain on the side. Very light on calories and very heavy on flavour, which is exactly what a Wednesday needs.", "w": {"tilapia": 100, "prawns": 40, "okra": 100, "spinach": 120, "tomato": 80, "red_onion": 40, "peppers": 60, "plantain": 140, "olive_oil": 6}, "m": {"tilapia": 130, "prawns": 55, "okra": 120, "spinach": 150, "tomato": 100, "red_onion": 50, "peppers": 80, "plantain": 185, "olive_oil": 8}}, "d3s": {"name": "Jerk-roasted chickpeas with skyr", "day": 3, "slot": "snack", "origin": "Jamaica", "tag": "batch", "time": "1 min", "method": "Chickpeas tossed in oil and jerk seasoning on Sunday and roasted thirty minutes until they rattle on the tray. Eaten by the handful with skyr to cool it.", "w": {"chickpeas": 110, "skyr": 50, "avocado": 20, "olive_oil": 7}, "m": {"chickpeas": 135, "skyr": 70, "avocado": 28, "olive_oil": 9}}, "d4b": {"name": "Steak & egg breakfast sandwich", "day": 4, "slot": "breakfast", "origin": "New York", "tag": "fresh", "time": "10 min", "method": "Sirloin seasoned hard, seared two minutes a side and rested while the eggs fry in the same pan. Stacked on toasted seeded bread with wilted spinach and tomato. The bread is the low-carb seeded sort, which toasts far better than it has any right to.", "w": {"beef_steak": 55, "egg": 50, "seeded_bread": 45, "spinach": 60, "tomato": 60, "red_onion": 20, "avocado": 25, "olive_oil": 9}, "m": {"beef_steak": 58, "egg": 75, "seeded_bread": 50, "spinach": 80, "tomato": 80, "red_onion": 25, "avocado": 35, "olive_oil": 11}}, "d4l": {"name": "Turkey bolognese with edamame spaghetti", "day": 4, "slot": "lunch", "origin": "Bologna, reconsidered", "tag": "batch", "time": "8 min", "method": "Sunday's bolognese — turkey mince browned properly, passata, grated carrot and courgette cooked down for half an hour — over edamame spaghetti, which takes seven minutes and brings more protein and far more fibre to the plate than any wheat pasta could. Parmesan over.", "w": {"turkey_mince": 50, "edamame_pasta": 34, "passata": 190, "courgette": 150, "carrot": 65, "red_onion": 40, "parmesan": 10, "olive_oil": 13}, "m": {"turkey_mince": 70, "edamame_pasta": 38, "passata": 210, "courgette": 180, "carrot": 70, "red_onion": 50, "parmesan": 14, "olive_oil": 21}}, "d4d": {"name": "Smash burger with slaw", "day": 4, "slot": "dinner", "origin": "New York", "tag": "fresh", "time": "14 min", "method": "Mince divided into two thin balls, pressed hard onto a screaming pan and left alone until the crust forms, then flipped with the cheese on. Seeded bun toasted in the fat. Lettuce, tomato, raw onion. Slaw of red cabbage, carrot and yoghurt alongside to keep it honest.", "w": {"beef_mince": 72, "cheddar_rf": 16, "seeded_bread": 45, "red_cabbage": 90, "carrot": 55, "greek_yog": 35, "lettuce": 40, "tomato": 60, "red_onion": 30, "avocado": 30, "olive_oil": 9}, "m": {"beef_mince": 85, "cheddar_rf": 25, "seeded_bread": 50, "red_cabbage": 95, "carrot": 65, "greek_yog": 45, "lettuce": 50, "tomato": 80, "red_onion": 40, "avocado": 40, "olive_oil": 13}}, "d4s": {"name": "Grated apple, cinnamon & coconut yoghurt", "day": 4, "slot": "snack", "origin": "Caribbean", "tag": "fresh", "time": "3 min", "method": "Apple grated coarsely, skin and all, stirred through the yoghurt with far more cinnamon than seems sensible so it eats almost like a bircher. Toasted coconut and pumpkin seeds over the top.", "w": {"greek_yog": 120, "apple": 230, "coconut_des": 5, "pumpkin_seeds": 8}, "m": {"greek_yog": 170, "apple": 300, "coconut_des": 6, "pumpkin_seeds": 11}}, "d5b": {"name": "Callaloo & egg skillet", "day": 5, "slot": "breakfast", "origin": "Jamaica", "tag": "fresh", "time": "14 min", "method": "Onion, tomato and thyme cooked down, spinach and black beans folded in, wells made for the eggs and a lid on for five minutes. Plantain griddled dry on the diagonal until it blackens at the edges.", "w": {"egg": 125, "spinach": 130, "tomato": 80, "red_onion": 30, "black_beans": 45, "plantain": 95, "olive_oil": 5}, "m": {"egg": 150, "spinach": 160, "tomato": 100, "red_onion": 40, "black_beans": 55, "plantain": 140, "olive_oil": 6}}, "d5l": {"name": "Chicken shawarma wrap", "day": 5, "slot": "lunch", "origin": "Levant, by way of everywhere", "tag": "batch", "time": "8 min", "method": "Sunday's chicken tossed in shawarma spice and flashed in a hot dry pan. Cabbage, carrot and cucumber shredded with lemon. Rolled in a high-fibre tortilla with garlic yoghurt — one wrap, not two, because these are large and they are dense.", "w": {"chicken": 95, "lc_tortilla": 45, "red_cabbage": 70, "carrot": 50, "cucumber": 60, "greek_yog": 60, "lettuce": 40, "avocado": 25, "olive_oil": 11}, "m": {"chicken": 110, "lc_tortilla": 55, "red_cabbage": 80, "carrot": 60, "cucumber": 70, "greek_yog": 80, "lettuce": 50, "avocado": 35, "olive_oil": 15}}, "d5d": {"name": "Jerk salmon, rice & red beans", "day": 5, "slot": "dinner", "origin": "Jamaica", "tag": "fresh", "time": "18 min", "method": "Salmon rubbed with jerk paste and grilled ten to twelve minutes. Rice cooked with the kidney beans, thyme and a spoonful of coconut, then cauliflower stirred through at the end. Slaw of red cabbage and charred pineapple with lime, which is the part that makes the plate work.", "w": {"salmon": 80, "kidney_beans": 70, "brown_rice": 45, "cauliflower": 120, "red_cabbage": 80, "pineapple": 70, "spring_onion": 20, "olive_oil": 4}, "m": {"salmon": 105, "kidney_beans": 90, "brown_rice": 70, "cauliflower": 150, "red_cabbage": 100, "pineapple": 90, "spring_onion": 25, "olive_oil": 5}}, "d5s": {"name": "Elote-style corn cup", "day": 5, "slot": "snack", "origin": "Street corner", "tag": "fresh", "time": "4 min", "method": "Sweetcorn charred in a dry pan until it blisters, stirred into cottage cheese loosened with yoghurt, then chilli, lime and coriander over the top.", "w": {"sweetcorn": 100, "cottage": 80, "greek_yog": 30, "avocado": 20, "olive_oil": 6}, "m": {"sweetcorn": 120, "cottage": 110, "greek_yog": 40, "avocado": 25, "olive_oil": 8}}}, "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "themes": ["Carts, Crusts & Chilli", "Bowls, Batter & Panko", "Nigeria, Start to Finish", "Bologna Meets the Bodega", "Wraps, Jerk & Char"], "train": ["Train — Push", "Rest", "Train — Pull", "Train — Legs", "Train — Full body"], "targets": {"w": {"label": "70 kg", "who": "Her cover", "kcal": "1,650-1,695", "p": "105-116 g", "fat": "53-83 g", "c": "91-161 g", "f": "40-44 g", "note": "Roughly a 400 calorie daily deficit against an estimated 2,050 maintenance."}, "m": {"label": "85 kg", "who": "His cover", "kcal": "2,145-2,225", "p": "139-148 g", "fat": "73-112 g", "c": "114-217 g", "f": "51-54 g", "note": "Roughly a 450 calorie daily deficit against an estimated 2,650 maintenance."}}, "aisle": {"Protein counter": ["chicken", "chicken_mince", "beef_mince", "beef_steak", "turkey_mince", "salmon", "tilapia", "prawns", "egg", "egg_white"], "Dairy & chilled": ["greek_yog", "skyr", "cottage", "milk", "cheddar_rf", "mozzarella", "parmesan"], "Produce": ["spinach", "cauliflower", "broccoli", "courgette", "mushrooms", "okra", "peppers", "tomato", "red_onion", "spring_onion", "carrot", "lettuce", "cucumber", "red_cabbage", "avocado", "plantain", "mango", "pineapple", "raspberries", "blueberries", "banana", "apple"], "Freezer": ["sweetcorn", "edamame"], "Cupboard": ["lc_tortilla", "seeded_bread", "edamame_pasta", "brown_rice", "panko", "oats", "chia", "whey", "black_beans", "kidney_beans", "chickpeas", "passata", "salsa", "peanut_butter", "egusi", "coconut_des", "pumpkin_seeds", "olive_oil"]}, "aisleName": {"Protein counter": "From the Butcher & Fishmonger", "Dairy & chilled": "From the Dairy", "Produce": "From the Market Stall", "Freezer": "From the Ice House", "Cupboard": "From the Store Room"}, "prep": [["Sunday", "~55 min, mostly waiting", "A tray of chicken breasts seasoned with nothing but salt, garlic and onion powder, into a 200°C oven for twenty-five minutes. This one tray becomes three lunches — the character arrives later, at the plate, as halal-cart spice, as efo riro, as shawarma."], ["Sunday", "the same oven", "Beside it, chickpeas tossed in oil and jerk seasoning, roasted until they rattle. Peppers and onions for the week's bowls on a third tray if there is room."], ["Sunday", "35 min on the hob", "Three pans. The chipotle beef: mince browned hard with chipotle, cumin and oregano. The efo riro base: peppers, tomato and onion blended and cooked down with egusi until the oil separates. The bolognese: turkey mince, passata, grated carrot and courgette, left to mumble for half an hour while you do the rest."], ["Sunday", "15 min", "The small things that make the week quick. Six eggs boiled eight minutes. Two heads of cauliflower riced in the processor and bagged raw. Cabbage and carrot shredded for the slaws. Garlic yoghurt shaken up in a jar and used three separate times."], ["Wednesday", "10 min", "A short top-up. Fish and prawns bought fresh, more salad, more fruit. Nothing that keeps badly is bought on Sunday."]], "notes": [["The protein, and the reasoning", "A hundred and five to a hundred and sixteen grams on the smaller cover, a hundred and thirty-nine to a hundred and forty-eight on the larger &mdash; down some fifty and seventy grams from where this card began, which was frankly more than either body needed. As set, that works out at roughly 1.6 grams per kilogramme of bodyweight for both, which is squarely inside the range that protects muscle while the weight comes off. The figures were scaled to each body rather than fixed at one number: a flat hundred-and-twenty applied to the 85 kg cover would have meant 1.4 grams per kilo, and rather more of the loss arriving from muscle than from fat."], ["Where the freed calories went", "Nowhere, in the sense that matters &mdash; the daily totals are unchanged, so the deficit and the rate of loss are exactly as before. What changed is the shape of the plate. Rice portions are larger, plantain is more generous, avocado appears where it did not, the olive oil is no longer measured out meanly, and the fruit is a proper serving rather than a garnish. The food is a good deal less austere than it was."], ["On the carbohydrate", "Lower, not low &mdash; the version that survives contact with a real week. No dish is built on a mound of starch: rice is cut half-and-half with riced cauliflower, bread is the seeded low-carb sort, pasta is pressed from edamame, and the pizza has no base at all. Net carbohydrate now lands between ninety-one and a hundred and sixty-one grams on the smaller cover, a hundred and fourteen to two hundred and seventeen on the larger &mdash; higher than before, because that is where the protein went."], ["The fibre", "Forty to forty-four grams on the smaller cover, fifty-one to fifty-four on the larger, against a UK recommendation of thirty. Beans, cauliflower, greens and the high-fibre wraps do the work. If it is a sharp jump from where you are now, ease in across the first week and drink considerably more water than feels necessary."], ["Three things worth buying once", "High-fibre low-carb tortillas, edamame or black-bean spaghetti, and a seeded low-carb loaf. These three are what allow a wrap, a plate of pasta and a burger onto a card like this at all; without them those dishes cannot be made to fit, and would have had to be cut."], ["What is not on the card", "A number of dishes were considered and cut because they cannot be made to fit these numbers honestly: pounded yam and fufu, puff-puff, dodo fried properly in oil, a full traditional plate of jollof, moi moi and ewa agoyin (which are built on peas in any case), oxtail and nkwobi, and pizza on real dough. Nothing here is a diet version of itself pretending otherwise &mdash; the dishes that survived are the ones that genuinely work at this calorie."], ["The spice shelf", "Nigerian: suya spice, egusi, dried crayfish, scotch bonnet, pepper soup spice, and iru if you can find it. Everything else: jerk seasoning, chipotle in adobo, Japanese curry powder, smoked paprika, dried thyme, oregano. Bought once, they last months, and they are the whole difference between these plates and the same ingredients cooked dully."], ["How everything is weighed", "Meat, fish and poultry are RAW weights, before cooking. Rice, oats and pasta are DRY weights. Tinned pulses are DRAINED weights. Vegetables and fruit are prepared weights &mdash; peeled, deseeded, stoned, as the case may be. Where a household measure sits beside the gram figure it is an approximation for the days you cannot be bothered with the scales; the gram figure is what the reckonings are built on."], ["Peas, swaps & the rest", "No peas anywhere &mdash; where a Caribbean plate would call for rice and peas this uses red kidney beans, and the Nigerian bean dishes were left off for the same reason. Catfish takes any firm white fish; prawns and chicken trade places freely; skyr and Greek yoghurt are interchangeable."]]};
+const S = {wk:'A', who:'w', day:1, tab:'menu', scale:1.0, weeks:3, eaten:{}, bought:{}, prepDone:{}, open:{}};
+const $ = s => document.querySelector(s);
+const el = (t,c,h)=>{const e=document.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
+const SLOTS = ['breakfast','lunch','dinner','snack'];
+const SLOTKEY = {breakfast:'b', lunch:'l', dinner:'d', snack:'s'};
+
+function MEALS(){ return S.wk==='B' ? D.mealsB : D.meals; }
+function ingOf(id){ return MEALS()[id][S.who]; }
+function macros(ing, sc){
+  sc = sc==null ? S.scale : sc;
+  let k=0,p=0,fb=0,c=0,ft=0;
+  for(const n in ing){ const g=ing[n]*sc, f=D.food[n];
+    k+=f[0]*g/100; p+=f[1]*g/100; fb+=f[2]*g/100; c+=f[3]*g/100; ft+=f[4]*g/100; }
+  return {k:Math.round(k), p:Math.round(p), fat:Math.round(ft), c:Math.round(c-fb), fib:Math.round(fb*10)/10};
+}
+function dayIds(d){ return SLOTS.map(s=>'d'+d+SLOTKEY[s]); }
+function dayTotals(d, onlyEaten){
+  const t={k:0,p:0,fat:0,c:0,fib:0};
+  dayIds(d).forEach(id=>{ if(onlyEaten && !S.eaten[id]) return;
+    const m=macros(ingOf(id)); t.k+=m.k; t.p+=m.p; t.fat+=m.fat; t.c+=m.c; t.fib+=m.fib; });
+  t.fib=Math.round(t.fib*10)/10; return t;
+}
+const FRAC={0.25:'¼',0.33:'⅓',0.5:'½',0.67:'⅔',0.75:'¾'};
+function niceQty(q){
+  if(q<0.18) return null;
+  if(q<0.85){ let best=null,bd=9; for(const f in FRAC){const d=Math.abs(f-q); if(d<bd){bd=d;best=f;}}
+    return bd<=0.13?FRAC[best]:null; }
+  const r = q<3 ? Math.round(q*4)/4 : Math.round(q*2)/2;
+  const wh=Math.floor(r), rem=Math.round((r-wh)*100)/100;
+  const fr={0.25:'¼',0.5:'½',0.75:'¾'}[rem]||'';
+  return wh===0 ? (fr||null) : wh+fr;
+}
+const BIGUNIT=['tin','head','ball','cucumber','courgette','mango','avocado','plantain','breast','steak'];
+function unitHint(k,g){
+  const sp=D.spec[k]; if(!sp||!sp[2]) return '';
+  const q=g/sp[2], t=niceQty(q); if(!t) return '';
+  if(BIGUNIT.includes(sp[3]) && q<0.95) return t+' of a'+('aeiou'.includes(sp[3][0])?'n':'')+' '+sp[3];
+  return t+' '+(q<1.6?sp[3]:sp[4]);
+}
+const WT={'Raw':'raw','Dry':'dry','Drained':'drained','Flesh only':'flesh','Peeled':'peeled',
+          'Frozen':'frozen','Shelled':'shelled'};
+function gRound(g){ return g>=20 ? Math.round(g/5)*5 : Math.round(g); }
+
+/* ---------- SCREEN ---------- */
+function drawScreen(){
+  const tg = D.targets[S.who];
+  const parse = s => { const m=String(s).replace(/,/g,'').match(/(\d+)\s*-\s*(\d+)/); return m?[+m[1],+m[2]]:[0,0]; };
+  const full = dayTotals(S.day,false), eat = dayTotals(S.day,true);
+  const anyEaten = dayIds(S.day).some(id=>S.eaten[id]);
+  const show = anyEaten ? eat : full;
+  const kR = parse(tg.kcal), pR=parse(tg.p), fR=parse(tg.fat), cR=parse(tg.c), bR=parse(tg.f);
+  const mid = r => (r[0]+r[1])/2;
+  $('#scDay').textContent = D.days[S.day-1].toLowerCase()+' · '+D.themes[S.day-1].toLowerCase();
+  $('#scMode').innerHTML = anyEaten ? '<b>logging</b>' : 'planned';
+  $('#scK').textContent = show.k.toLocaleString();
+  $('#scOf').innerHTML = anyEaten ? 'of <b>'+full.k.toLocaleString()+'</b> planned' : 'kcal planned';
+  $('#scRem').innerHTML = anyEaten
+    ? 'remaining today <b>'+Math.max(0,full.k-eat.k).toLocaleString()+' kcal</b> · '+
+      dayIds(S.day).filter(i=>S.eaten[i]).length+'/4 meals logged'
+    : 'target band <b>'+tg.kcal+' kcal</b> · tap a meal pad to log it';
+  const rows = [['p','protein',show.p,mid(pR),'g'],['f','fat',show.fat,mid(fR),'g'],
+                ['c','net carb',show.c,mid(cR),'g'],['b','fibre',show.fib,mid(bR),'g']];
+  $('#meters').innerHTML = rows.map(r=>{
+    const pct = r[3]? r[2]/r[3] : 0, lit = Math.min(20, Math.round(pct*16));
+    let segs=''; for(let i=0;i<20;i++){ const on=i<lit; const over=on&&i>=16&&pct>1.15;
+      segs += '<i class="'+(on?'on':'')+(over?' over':'')+'"></i>'; }
+    return '<div class="meter '+r[0]+'"><span class="k">'+r[1]+'</span><span class="seg">'+segs+
+      '</span><span class="v"><b>'+r[2]+'</b>'+r[4]+' / '+Math.round(r[3])+r[4]+'</span></div>';
+  }).join('');
+}
+
+/* ---------- VIEWS ---------- */
+function viewMenu(){
+  const wrap = el('div');
+  const p = el('div','panel');
+  const h = el('div','phead');
+  h.innerHTML = '<h2>'+D.days[S.day-1]+'</h2><span class="sub">'+D.themes[S.day-1]+
+    ' · '+D.train[S.day-1].toLowerCase()+'</span><span class="rule"></span>'+
+    '<span class="lbl">day '+String(S.day).padStart(2,'0')+' / 05</span>';
+  p.appendChild(h);
+  dayIds(S.day).forEach((id,i)=>{
+    const m = MEALS()[id], ing = ingOf(id), mm = macros(ing);
+    const a = el('article','meal'+(S.open[id]?' open':''));
+    a.innerHTML =
+      '<button class="chk'+(S.eaten[id]?' on':'')+'" data-eat="'+id+'">'+
+        '<span class="s">'+String(i+1).padStart(2,'0')+'</span><span class="m">'+(S.eaten[id]?'✓':'○')+'</span></button>'+
+      '<div><div class="mtop"><span class="chipx slot">'+m.slot+'</span>'+
+        '<span class="chipx '+m.tag+'">'+m.tag+'</span>'+
+        '<span class="org">'+m.origin+'</span><span class="tm">'+m.time+'</span></div>'+
+      '<h3>'+m.name+'</h3>'+
+      '<div class="macro">'+
+        '<div class="mc"><div class="k">kcal</div><div class="v">'+mm.k+'</div></div>'+
+        '<div class="mc p"><div class="k">protein</div><div class="v">'+mm.p+'g</div></div>'+
+        '<div class="mc f"><div class="k">fat</div><div class="v">'+mm.fat+'g</div></div>'+
+        '<div class="mc c"><div class="k">net carb</div><div class="v">'+mm.c+'g</div></div>'+
+        '<div class="mc b"><div class="k">fibre</div><div class="v">'+mm.fib+'g</div></div></div>'+
+      '<button class="exp" data-open="'+id+'"><span class="ar">▸</span> ingredients &amp; method</button>'+
+      '<div class="det"><ul class="ilist">'+
+        Object.keys(ing).map(k=>{
+          const g = gRound(ing[k]*S.scale), sp=D.spec[k], u=unitHint(k,g), wt=WT[sp[1]]||'';
+          return '<li><span class="nm">'+sp[0]+(wt?' <i class="wt">'+wt+'</i>':'')+'</span>'+
+                 '<span class="dt"></span><span class="g">'+g+' g</span>'+
+                 (u?'<span class="u">('+u+')</span>':'')+'</li>';
+        }).join('')+
+      '</ul><p class="method">'+m.method+'</p></div></div>';
+    p.appendChild(a);
+  });
+  wrap.appendChild(p);
+  return wrap;
+}
+
+function viewWeek(){
+  const tg = D.targets[S.who];
+  const p = el('div','panel');
+  p.innerHTML = '<div class="phead"><h2>The week</h2><span class="sub">'+
+    (S.who==='w'?'her cover · 70 kg':'his cover · 85 kg')+
+    ' · portions at '+Math.round(S.scale*100)+'%</span><span class="rule"></span></div>';
+  let rows='';
+  for(let d=1;d<=5;d++){
+    const t=dayTotals(d,false), done=dayIds(d).filter(i=>S.eaten[i]).length;
+    const kb=Math.min(100, t.k/2400*100);
+    rows += '<tr><td class="l">'+D.days[d-1]+'<small>'+D.themes[d-1]+'</small>'+
+      '<div class="bar"><i style="width:'+kb+'%"></i></div></td>'+
+      '<td>'+t.k.toLocaleString()+'</td><td>'+t.p+'</td><td>'+t.fat+'</td><td>'+t.c+'</td><td>'+t.fib+'</td>'+
+      '<td>'+done+'/4</td></tr>';
+  }
+  p.innerHTML += '<table class="tb"><thead><tr><th class="l">day</th><th>kcal</th><th>prot</th>'+
+    '<th>fat</th><th>carb</th><th>fibre</th><th>logged</th></tr></thead><tbody>'+rows+'</tbody></table>'+
+    '<p class="hint">target band — <b>'+tg.kcal+' kcal</b>, '+tg.p+' protein, '+tg.fat+' fat, '+
+    tg.c+' net carb, '+tg.f+' fibre. '+tg.note+'</p>';
+  return p;
+}
+
+function viewPrep(){
+  const p = el('div','panel');
+  p.innerHTML = '<div class="phead"><h2>The Sunday labour</h2><span class="sub">about 55 minutes, most of it waiting</span><span class="rule"></span></div>';
+  D.prep.forEach((s,i)=>{
+    const d = el('div','step');
+    d.innerHTML = '<div class="no">'+(i+1)+'</div><div><div class="wh">'+s[0]+' · '+s[1]+'</div><p>'+s[2]+'</p></div>';
+    p.appendChild(d);
+  });
+  return p;
+}
+
+function shopTotals(){
+  const t={};
+  for(let d=1;d<=5;d++) dayIds(d).forEach(id=>{
+    ['w','m'].forEach(who=>{ const ing=MEALS()[id][who];
+      for(const n in ing) t[n]=(t[n]||0)+ing[n]*S.scale; });
+  });
+  return t;
+}
+function qtyStr(k,g){
+  if(k==='egg') return Math.ceil(g/50)+' eggs';
+  if(k==='milk') return (g/1000).toFixed(1)+' L';
+  if(g>=1000) return (g/1000).toFixed(1)+' kg';
+  return Math.round(g/5)*5+' g';
+}
+function viewShop(){
+  const tot = shopTotals(); const W = S.weeks||1;
+  const p = el('div','panel');
+  let grand=0, estSum=0; const byShop={}, shopTot={};
+  Object.keys(tot).forEach(function(k){
+    const pr=D.prices[k]; if(!pr) return;
+    (byShop[pr.shop]=byShop[pr.shop]||[]).push(k);
+    const want=tot[k]*W, n=Math.ceil(want/pr.pack), c=n*pr.price;
+    grand+=c; shopTot[pr.shop]=(shopTot[pr.shop]||0)+c; if(!pr.ver) estSum+=c;
+  });
+  p.innerHTML = '<div class="phead"><h2>The larder</h2><span class="sub">both covers · portions at '+
+    Math.round(S.scale*100)+'% · '+W+' week shop</span><span class="rule"></span></div>'+
+    '<div class="tools">'+
+      [1,2,3,4].map(function(x){return '<button data-wk="'+x+'" class="'+(W===x?'go':'')+'">'+x+' wk</button>';}).join('')+
+      '<button data-sh="clear">clear ticks</button>'+
+      '<button data-sh="copy">copy list</button></div>'+
+    '<div class="totbar"><div><em>all shops</em><b>£'+grand.toFixed(2)+'</b></div>'+
+      Object.keys(shopTot).sort(function(a,b){return shopTot[b]-shopTot[a];}).map(function(s){
+        return '<div><em>'+D.shops[s].name+'</em><b>£'+shopTot[s].toFixed(2)+'</b></div>';}).join('')+
+      '<div><em>per person / day</em><b>£'+(grand/(10*W)).toFixed(2)+'</b></div>'+
+      '<div><em>verified</em><b>'+Math.round((1-estSum/grand)*100)+'%</b></div></div>';
+  Object.keys(byShop).sort(function(a,b){return (shopTot[b]||0)-(shopTot[a]||0);}).forEach(function(a){
+    const keys = byShop[a].sort(function(x,y){
+      const px=D.prices[x],py=D.prices[y];
+      return Math.ceil(tot[y]*W/py.pack)*py.price - Math.ceil(tot[x]*W/px.pack)*px.price;});
+    const g = el('div','grp');
+    g.innerHTML = '<h3 style="color:var(--ink);border-bottom-color:var(--or)">'+D.shops[a].name+
+      ' <span style="font-weight:400;color:var(--ink2);letter-spacing:0;text-transform:none">— '+
+      D.shops[a].sub+' · £'+(shopTot[a]||0).toFixed(2)+'</span></h3>';
+    keys.forEach(k=>{
+      const f=D.food[k], sp=D.spec[k];
+      const r = el('div','srow'+(S.bought[k]?' on':''));
+      r.dataset.buy = k;
+      const pr=D.prices[k];
+      let costTxt='', packTxt='';
+      if(pr && pr.ver!==2){ const want=tot[k]*W, n=Math.ceil(want/pr.pack);
+        costTxt='£'+(n*pr.price).toFixed(2); packTxt=n+' × '+pr.name+(pr.ver?'':' <u>est</u>')+
+          (pr.note?' — '+pr.note:''); }
+      else if(pr){ costTxt='—'; packTxt='<u>not stocked at Ocado</u>'+(pr.note?' — '+pr.note:''); }
+      r.innerHTML = '<span class="box"></span>'+
+        '<span class="nm">'+sp[0]+' <i>'+(WT[sp[1]]||sp[1].toLowerCase())+'</i>'+
+          '<small>'+packTxt+'</small></span>'+
+        '<span class="qt">'+qtyStr(k,tot[k]*W)+'</span>'+
+        '<span class="cost">'+costTxt+'</span>';
+      g.appendChild(r);
+    });
+    p.appendChild(g);
+  });
+  p.appendChild(el('p','hint','Store-cupboard assumed and not listed: garlic, ginger, lemons and limes, scotch bonnet, suya spice, pepper soup spice, jerk seasoning, chipotle in adobo, Japanese curry powder, smoked paprika, oregano, dried thyme, coriander, cumin, soy, mustard, stock, salt and pepper. <b>The Ocado split awaits your word</b> — say go and this becomes two lists.'));
+  return p;
+}
+
+function viewInfo(){
+  const p = el('div','panel');
+  p.innerHTML = '<div class="phead"><h2>Read this bit</h2><span class="sub">once, then stop fussing</span><span class="rule"></span></div>';
+  D.notes.forEach(n=>{
+    const d = el('div','note');
+    d.innerHTML = '<h4>'+n[0]+'</h4><p>'+n[1]+'</p>';
+    p.appendChild(d);
+  });
+  return p;
+}
+
+/* ---------- RENDER ---------- */
+function render(){
+  document.querySelectorAll('.who button[data-p]').forEach(b=>b.classList.toggle('on', b.dataset.p===S.who));
+  document.querySelectorAll('[data-wkab]').forEach(b=>b.classList.toggle('on', b.dataset.wkab===S.wk));
+  document.querySelectorAll('.pad').forEach(b=>{
+    const d=+b.dataset.day;
+    b.classList.toggle('on', d===S.day);
+    b.classList.toggle('done', dayIds(d).every(i=>S.eaten[i]));
+  });
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('on', b.dataset.t===S.tab));
+  $('#knobVal').innerHTML = Math.round(S.scale*100)+'<span>%</span>';
+  $('#knobInd').style.transform = 'rotate('+((S.scale-1)*300)+'deg)';
+  drawScreen();
+  const v = $('#view'); v.innerHTML='';
+  v.appendChild({menu:viewMenu, week:viewWeek, prep:viewPrep, shop:viewShop, info:viewInfo}[S.tab]());
+}
+
+/* ---------- EVENTS ---------- */
+document.addEventListener('click', e=>{
+  const ab = e.target.closest('[data-wkab]'); if(ab){ S.wk=ab.dataset.wkab; render(); return; }
+  const w = e.target.closest('.who button'); if(w && w.dataset.p){ S.who=w.dataset.p; render(); return; }
+  const pd = e.target.closest('.pad'); if(pd){ S.day=+pd.dataset.day; S.tab='menu'; render(); return; }
+  const tb = e.target.closest('.tabs button'); if(tb){ S.tab=tb.dataset.t; render(); return; }
+  const ck = e.target.closest('[data-eat]'); if(ck){ const id=ck.dataset.eat; S.eaten[id]=!S.eaten[id]; render(); return; }
+  const ex = e.target.closest('[data-open]'); if(ex){ const id=ex.dataset.open; S.open[id]=!S.open[id]; render(); return; }
+  const by = e.target.closest('[data-buy]'); if(by){ const k=by.dataset.buy; S.bought[k]=!S.bought[k];
+    by.classList.toggle('on'); return; }
+  const st = e.target.closest('[data-step]'); if(st){ setScale(S.scale + (+st.dataset.step)); return; }
+  const rs = e.target.closest('[data-reset]'); if(rs){
+    if(rs.dataset.reset==='scale') setScale(1);
+    else { dayIds(S.day).forEach(i=>delete S.eaten[i]); render(); } return; }
+  const wk = e.target.closest('[data-wk]'); if(wk){ S.weeks=+wk.dataset.wk; render(); return; }
+  const sh = e.target.closest('[data-sh]');
+  if(sh){
+    if(sh.dataset.sh==='clear'){ S.bought={}; render(); }
+    else {
+      const tot=shopTotals(); const W3=S.weeks||1;
+      let txt='FIVE DAYS AT TABLE — '+W3+' week shop ('+Math.round(S.scale*100)+'%)\n';
+      const bs={}; Object.keys(tot).forEach(function(k){const pr=D.prices[k]; if(pr)(bs[pr.shop]=bs[pr.shop]||[]).push(k);});
+      for(const a in bs){
+        const keys=bs[a].filter(k=>!S.bought[k]);
+        if(!keys.length) continue;
+        txt += '\n'+D.shops[a].name.toUpperCase()+'\n';
+        keys.forEach(k=>{ const pr=D.prices[k];
+          txt += '  '+D.spec[k][0]+' — '+qtyStr(k,tot[k]*W3)+'  ('+Math.ceil(tot[k]*W3/pr.pack)+' × '+pr.name+')\n'; });
+      }
+      navigator.clipboard.writeText(txt).then(()=>{ sh.textContent='copied ✓';
+        setTimeout(()=>sh.textContent='copy list',1400); }).catch(()=>{ sh.textContent='select & copy'; });
+    }
+  }
+});
+function setScale(v){ S.scale = Math.min(1.3, Math.max(0.7, Math.round(v*20)/20)); render(); }
+
+/* knob drag */
+(function(){
+  const k = $('#knob'); let y0=0, s0=1, drag=false;
+  k.addEventListener('pointerdown', e=>{ drag=true; y0=e.clientY; s0=S.scale; k.setPointerCapture(e.pointerId); });
+  k.addEventListener('pointermove', e=>{ if(!drag) return; setScale(s0 - (e.clientY-y0)/200); });
+  k.addEventListener('pointerup', ()=>drag=false);
+  k.addEventListener('pointercancel', ()=>drag=false);
+  k.addEventListener('dblclick', ()=>setScale(1));
+})();
+document.addEventListener('keydown', e=>{
+  if(e.key>='1'&&e.key<='5'){ S.day=+e.key; S.tab='menu'; render(); }
+  if(e.key==='h'||e.key==='H'){ S.who = S.who==='w'?'m':'w'; render(); }
+});
+render();
+</script>
+</body></html>
