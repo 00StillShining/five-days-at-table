@@ -1,0 +1,374 @@
+[
+  {
+    "variant": "a+b",
+    "day": 0,
+    "weekday": "Sat",
+    "phase": "shop",
+    "title": "THE BIG SHOP",
+    "body": "Week A's chicken (770 g) and the chicken breast mince (140 g) go into the fridge. Every other piece of meat and fish goes into the freezer, bagged and labelled by the day it's wanted. Second loaf and two packs of tortillas in too. Half the mozzarella block.",
+    "station": "Shop",
+    "items": [
+      {
+        "ingId": "chicken",
+        "g": 770,
+        "move": "buy"
+      },
+      {
+        "ingId": "chicken_mince",
+        "g": 140,
+        "move": "buy"
+      }
+    ]
+  },
+  {
+    "variant": "a+b",
+    "day": 1,
+    "weekday": "Sun",
+    "phase": "prep",
+    "title": "Week A prep",
+    "body": "The 95-minute session. Nothing needs defrosting for it.",
+    "station": "Week A",
+    "items": []
+  },
+  {
+    "variant": "a+b",
+    "day": 3,
+    "weekday": "Tue",
+    "phase": "defrost",
+    "title": "Down for Wednesday",
+    "body": "Basa (230 g) and the prawns, for Wednesday's pepper soup.",
+    "station": "Week A",
+    "items": [
+      {
+        "ingId": "tilapia",
+        "g": 230,
+        "move": "freezer → fridge"
+      }
+    ]
+  },
+  {
+    "variant": "a+b",
+    "day": 4,
+    "weekday": "Wed",
+    "phase": "defrost",
+    "title": "Down for Thursday",
+    "body": "Sirloin steak (113 g).",
+    "station": "Week A",
+    "items": [
+      {
+        "ingId": "beef_steak",
+        "g": 113,
+        "move": "freezer → fridge"
+      }
+    ]
+  },
+  {
+    "variant": "a+b",
+    "day": 5,
+    "weekday": "Thu",
+    "phase": "defrost",
+    "title": "Down for Friday",
+    "body": "Salmon (185 g).",
+    "station": "Week A",
+    "items": [
+      {
+        "ingId": "salmon",
+        "g": 185,
+        "move": "freezer → fridge"
+      }
+    ]
+  },
+  {
+    "variant": "a+b",
+    "day": 7,
+    "weekday": "Sat",
+    "phase": "shop",
+    "title": "THE TOP-UP",
+    "body": "Five lines, ten minutes, under nine pounds. Then bring down Week B's chicken (1,270 g — it needs a full night), the turkey mince (280 g) and the kofta mince (255 g), all for tomorrow.",
+    "station": "Shop",
+    "items": [
+      {
+        "ingId": "chicken",
+        "g": 1270,
+        "move": "freezer → fridge"
+      },
+      {
+        "ingId": "turkey_mince",
+        "g": 280,
+        "move": "freezer → fridge"
+      },
+      {
+        "ingId": "beef_mince",
+        "g": 255,
+        "move": "freezer → fridge"
+      }
+    ]
+  },
+  {
+    "variant": "a+b",
+    "day": 8,
+    "weekday": "Sun",
+    "phase": "prep",
+    "title": "Week B prep",
+    "body": "The 80-minute session. The koftas get cooked today and go BACK into the freezer — freeze, cook, freeze again is safe; it's only refreezing something raw that isn't.",
+    "station": "Week B",
+    "items": []
+  },
+  {
+    "variant": "a+b",
+    "day": 9,
+    "weekday": "Mon",
+    "phase": "defrost",
+    "title": "Down for Tuesday",
+    "body": "Basa (370 g) for the escovitch. Dry it very well — frozen white fish holds water.",
+    "station": "Week B",
+    "items": [
+      {
+        "ingId": "tilapia",
+        "g": 370,
+        "move": "freezer → fridge"
+      }
+    ]
+  },
+  {
+    "variant": "a+b",
+    "day": 11,
+    "weekday": "Wed",
+    "phase": "defrost",
+    "title": "Down for Thursday",
+    "body": "The smash-taco mince (255 g), the cooked koftas, and the frozen half of the mozzarella.",
+    "station": "Week B",
+    "items": [
+      {
+        "ingId": "beef_mince",
+        "g": 255,
+        "move": "freezer → fridge"
+      }
+    ]
+  },
+  {
+    "variant": "a+b",
+    "day": 12,
+    "weekday": "Thu",
+    "phase": "defrost",
+    "title": "Down for Friday",
+    "body": "Salmon (255 g) for the teriyaki.",
+    "station": "Week B",
+    "items": [
+      {
+        "ingId": "salmon",
+        "g": 255,
+        "move": "freezer → fridge"
+      }
+    ]
+  },
+  {
+    "variant": "a-twice",
+    "day": 0,
+    "weekday": "Sat",
+    "phase": "shop",
+    "title": "THE BIG SHOP",
+    "body": "Week A's chicken (770 g) and the chicken breast mince (140 g) go into the fridge. Every other piece of meat and fish goes into the freezer, bagged and labelled by the day it's wanted. Second loaf and two packs of tortillas in too. Half the mozzarella block. (A-twice variant: this single day-0 shop buys enough of every Week-A ingredient for BOTH passes through the fortnight — the canonical FD5-Shopping-List.html basket already doubles quantities for this reason, e.g. 2x1kg chicken packs.)",
+    "station": "Shop",
+    "items": [
+      {
+        "ingId": "chicken",
+        "g": 770,
+        "move": "buy"
+      },
+      {
+        "ingId": "chicken_mince",
+        "g": 140,
+        "move": "buy"
+      }
+    ]
+  },
+  {
+    "variant": "a-twice",
+    "day": 1,
+    "weekday": "Sun",
+    "phase": "prep",
+    "title": "Week A prep",
+    "body": "The 95-minute session. Nothing needs defrosting for it.",
+    "station": "Week A",
+    "items": []
+  },
+  {
+    "variant": "a-twice",
+    "day": 3,
+    "weekday": "Tue",
+    "phase": "defrost",
+    "title": "Down for Wednesday",
+    "body": "Basa (230 g) and the prawns, for Wednesday's pepper soup.",
+    "station": "Week A",
+    "items": [
+      {
+        "ingId": "tilapia",
+        "g": 230,
+        "move": "freezer → fridge"
+      }
+    ]
+  },
+  {
+    "variant": "a-twice",
+    "day": 4,
+    "weekday": "Wed",
+    "phase": "defrost",
+    "title": "Down for Thursday",
+    "body": "Sirloin steak (113 g).",
+    "station": "Week A",
+    "items": [
+      {
+        "ingId": "beef_steak",
+        "g": 113,
+        "move": "freezer → fridge"
+      }
+    ]
+  },
+  {
+    "variant": "a-twice",
+    "day": 5,
+    "weekday": "Thu",
+    "phase": "defrost",
+    "title": "Down for Friday",
+    "body": "Salmon (185 g).",
+    "station": "Week A",
+    "items": [
+      {
+        "ingId": "salmon",
+        "g": 185,
+        "move": "freezer → fridge"
+      }
+    ]
+  },
+  {
+    "variant": "a-twice",
+    "day": 7,
+    "weekday": "Sat",
+    "phase": "shop",
+    "title": "THE TOP-UP",
+    "body": "Seven lines, £8.58, restocking the short-life produce that would not have lasted the second Week-A pass: Salad tomatoes, Little gem lettuce, Cucumber, Spring onions, Pineapple chunks, Cottage cheese, Avocados. Sourced from FD5-Shopping-List.html's day-7 card (the canonical A-twice top-up), not from provisioning.json's Week-B-specific day-7 table. Then bring down the second pass's chicken (770 g) and chicken breast mince (140 g) from the freezer — it needs a full night before tomorrow's Sunday session, exactly as the source A+B calendar's own day-7 op brings down Week B's meat the night before Week B's prep.",
+    "station": "Shop",
+    "items": [
+      {
+        "ingId": "tomato",
+        "g": 1600,
+        "move": "buy"
+      },
+      {
+        "ingId": "lettuce",
+        "g": 250,
+        "move": "buy"
+      },
+      {
+        "ingId": "cucumber",
+        "g": 300,
+        "move": "buy"
+      },
+      {
+        "ingId": "spring_onion",
+        "g": 100,
+        "move": "buy"
+      },
+      {
+        "ingId": "pineapple",
+        "g": 260,
+        "move": "buy"
+      },
+      {
+        "ingId": "cottage",
+        "g": 300,
+        "move": "buy"
+      },
+      {
+        "ingId": "avocado",
+        "g": 280,
+        "move": "buy"
+      },
+      {
+        "ingId": "chicken",
+        "g": 770,
+        "move": "freezer → fridge"
+      },
+      {
+        "ingId": "chicken_mince",
+        "g": 140,
+        "move": "freezer → fridge"
+      }
+    ]
+  },
+  {
+    "variant": "a-twice",
+    "day": 8,
+    "weekday": "Sun",
+    "phase": "prep",
+    "title": "Week A prep",
+    "body": "The 95-minute session. Chicken and chicken breast mince should already be down from the freezer (see Saturday's top-up op) — this pass, unlike pass 1's day-0 shop, starts from frozen stock, not a fresh buy. The frozen mozzarella half also needs to come down today, ready for tomorrow's pizza (see the separate 'Mozzarella down' op). (second Week-A pass, day 8)",
+    "station": "Week A",
+    "items": []
+  },
+  {
+    "variant": "a-twice",
+    "day": 8,
+    "weekday": "Sun",
+    "phase": "defrost",
+    "title": "Mozzarella down for Monday's pizza",
+    "body": "The half-block frozen on day 0 needs to come down today for tomorrow's (day 9) pizza — register: 'Freezer → fridge', 'Mozzarella... it gets opened twice, eight days apart' (day 1 and day 9 are exactly 8 days apart).",
+    "station": "Fridge",
+    "items": [
+      {
+        "ingId": "mozzarella",
+        "g": 125,
+        "move": "freezer → fridge"
+      }
+    ]
+  },
+  {
+    "variant": "a-twice",
+    "day": 10,
+    "weekday": "Tue",
+    "phase": "defrost",
+    "title": "Down for Wednesday",
+    "body": "Basa (230 g) and the prawns, for Wednesday's pepper soup. (second Week-A pass, day 10)",
+    "station": "Week A",
+    "items": [
+      {
+        "ingId": "tilapia",
+        "g": 230,
+        "move": "freezer → fridge"
+      }
+    ]
+  },
+  {
+    "variant": "a-twice",
+    "day": 11,
+    "weekday": "Wed",
+    "phase": "defrost",
+    "title": "Down for Thursday",
+    "body": "Sirloin steak (113 g). (second Week-A pass, day 11)",
+    "station": "Week A",
+    "items": [
+      {
+        "ingId": "beef_steak",
+        "g": 113,
+        "move": "freezer → fridge"
+      }
+    ]
+  },
+  {
+    "variant": "a-twice",
+    "day": 12,
+    "weekday": "Thu",
+    "phase": "defrost",
+    "title": "Down for Friday",
+    "body": "Salmon (185 g). (second Week-A pass, day 12)",
+    "station": "Week A",
+    "items": [
+      {
+        "ingId": "salmon",
+        "g": 185,
+        "move": "freezer → fridge"
+      }
+    ]
+  }
+]

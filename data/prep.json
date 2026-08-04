@@ -1,0 +1,548 @@
+[
+  {
+    "week": "A",
+    "sessionName": "one session, ninety-five minutes, mostly waiting",
+    "totalMin": 95,
+    "ops": [
+      {
+        "clock": "0:00",
+        "title": "Oven on, three trays out",
+        "body": "220 °C fan while you load, dropping to 200 °C once the trays go in. Line all three with paper. Drain and dry the chickpeas on a tea towel now — they will not crisp wet.",
+        "station": "Oven · 3 trays",
+        "ingredients": []
+      },
+      {
+        "clock": "0:10",
+        "title": "Trays in — chicken, chickpeas, peppers",
+        "body": "TRAY A: 600 g chicken breast, salt, garlic powder, onion powder. Nothing else. 25 min. TRAY B: 250 g drained chickpeas, 1 tbsp oil, 2 tsp jerk seasoning. 35 min, shaken twice. TRAY C: 160 g red pepper and 70 g red onion in wedges, 1 tsp oil. 25 min.",
+        "station": "Oven",
+        "ingredients": [
+          {
+            "ingId": "chicken",
+            "g": 600
+          },
+          {
+            "ingId": "chickpeas",
+            "g": 250
+          },
+          {
+            "ingId": "peppers_frozen",
+            "g": 160
+          },
+          {
+            "ingId": "red_onion",
+            "g": 70
+          }
+        ]
+      },
+      {
+        "clock": "0:12",
+        "title": "Pan 1 — the bolognese (longest job, start it early)",
+        "body": "90 g onion, 135 g carrot and 330 g courgette, all grated, into oil on medium for 6 min. 120 g turkey mince in, broken up and browned properly — 5 min, don't rush it. 400 g passata, oregano, a bay leaf, salt. Lid ajar, lowest heat, 30 min.",
+        "station": "Hob 1",
+        "ingredients": [
+          {
+            "ingId": "red_onion",
+            "g": 90
+          },
+          {
+            "ingId": "carrot",
+            "g": 135
+          },
+          {
+            "ingId": "courgette",
+            "g": 330
+          },
+          {
+            "ingId": "turkey_mince",
+            "g": 120
+          },
+          {
+            "ingId": "passata",
+            "g": 400
+          }
+        ]
+      },
+      {
+        "clock": "0:20",
+        "title": "Pan 2 — chipotle beef",
+        "body": "165 g 5% beef mince browned hard in a dry pan. 2 chopped chipotles in adobo, 1 tsp cumin, 1 tsp smoked paprika, 100 ml water. 10 min until it's thick and glossy.",
+        "station": "Hob 2",
+        "ingredients": [
+          {
+            "ingId": "beef_mince",
+            "g": 165
+          }
+        ]
+      },
+      {
+        "clock": "0:28",
+        "title": "Pan 3 — efo riro base (no spinach)",
+        "body": "Blend 160 g red pepper with 90 g red onion. Into 1 tbsp oil on medium-high and cook down 8 min until it darkens and thickens. 220 g passata, 10 min. Then 27 g egusi slaked with a little water, stirred in, 5 min until it thickens and goes grainy. Stop there — the spinach belongs at the plate on Wednesday, not here.",
+        "station": "Hob 3",
+        "ingredients": [
+          {
+            "ingId": "peppers_frozen",
+            "g": 160
+          },
+          {
+            "ingId": "red_onion",
+            "g": 90
+          },
+          {
+            "ingId": "passata",
+            "g": 220
+          },
+          {
+            "ingId": "egusi",
+            "g": 27
+          }
+        ]
+      },
+      {
+        "clock": "0:32",
+        "title": "Eggs on",
+        "body": "4 medium eggs into boiling water for 8 minutes, then straight into cold. Peel them now while they're easy. Two are for Tuesday's snack; the spares will get eaten.",
+        "station": "Hob 4",
+        "ingredients": [
+          {
+            "ingId": "egg",
+            "g": 200
+          }
+        ]
+      },
+      {
+        "clock": "0:37",
+        "title": "Chicken and peppers out",
+        "body": "Chicken rested 5 min, then sliced or left whole — whole keeps better. Peppers and onion into their own box. Chickpeas stay in until 0:45.",
+        "station": "Oven",
+        "ingredients": []
+      },
+      {
+        "clock": "0:40",
+        "title": "Pan 2 free — plain rice on",
+        "body": "320 g brown rice, dry, cooked plain. 25 min. This covers Monday's lunch, Tuesday's lunch and Tuesday's dinner.",
+        "station": "Hob 2",
+        "ingredients": [
+          {
+            "ingId": "brown_rice",
+            "g": 320
+          }
+        ]
+      },
+      {
+        "clock": "0:45",
+        "title": "Chickpeas out — jar, lid OFF",
+        "body": "They should rattle on the tray. Into a jar, uncovered, on the counter. Sealed in a box they go soft by Tuesday.",
+        "station": "Oven off",
+        "ingredients": []
+      },
+      {
+        "clock": "0:46",
+        "title": "Pan 3 free — the jollof",
+        "body": "95 g brown rice, dry, cooked in a blended base of pepper, tomato, onion and a little stock until the liquid is gone. 25 min. Keep it slightly under — it gets a second heating on Wednesday.",
+        "station": "Hob 3",
+        "ingredients": [
+          {
+            "ingId": "brown_rice",
+            "g": 95
+          }
+        ]
+      },
+      {
+        "clock": "0:50",
+        "title": "Rice the cauliflower — the big job",
+        "body": "Two heads, about 1.4 kg once florets are riced in a food processor (pulse, don't run it — you want couscous, not paste). Store it RAW. It cooks in three minutes at the plate and holds far better uncooked.",
+        "station": "Processor",
+        "ingredients": [
+          {
+            "ingId": "cauliflower",
+            "g": 1400
+          }
+        ]
+      },
+      {
+        "clock": "1:05",
+        "title": "Shred for two slaws",
+        "body": "335 g red cabbage and 230 g carrot, shredded fine, into one box with a piece of kitchen paper on top to take the moisture. Thursday's burger slaw and Friday's wrap both come out of this.",
+        "station": "Mandoline / processor",
+        "ingredients": [
+          {
+            "ingId": "red_cabbage",
+            "g": 335
+          },
+          {
+            "ingId": "carrot",
+            "g": 230
+          }
+        ]
+      },
+      {
+        "clock": "1:12",
+        "title": "The two jars",
+        "body": "WHITE SAUCE: 115 g Greek yoghurt, 1 grated garlic clove, lemon juice, salt, and far more black pepper than feels reasonable. Shake. SUYA: mix your own if you like — 3 parts ground roasted peanut, 1 part chilli, then ginger, garlic powder and stock powder to taste.",
+        "station": "2 jars",
+        "ingredients": [
+          {
+            "ingId": "greek_yog",
+            "g": 115
+          }
+        ]
+      },
+      {
+        "clock": "1:20",
+        "title": "Bolognese and rice off — cool them FAST",
+        "body": "Spread the rice out on a cold tray in a thin layer. Both into the fridge within the hour. This is the one genuine food-safety point of the day: rice left to cool slowly at room temperature is the classic way to make yourself ill.",
+        "station": "Trays",
+        "ingredients": []
+      },
+      {
+        "clock": "1:35",
+        "title": "Portion and label",
+        "body": "Everything into boxes marked with the day it's for. Five minutes now saves the Wednesday evening argument about what the orange one is.",
+        "station": "Boxes",
+        "ingredients": []
+      }
+    ],
+    "yields": [
+      {
+        "component": "Roast chicken",
+        "qty": "600 g raw",
+        "consumers": [
+          "a-d1l",
+          "a-d3l",
+          "a-d5l"
+        ],
+        "storage": "Fridge, whole, 4 days"
+      },
+      {
+        "component": "Chipotle beef",
+        "qty": "165 g raw",
+        "consumers": [
+          "a-d2l"
+        ],
+        "storage": "Fridge, 3 days"
+      },
+      {
+        "component": "Turkey bolognese",
+        "qty": "makes ~1 kg",
+        "consumers": [
+          "a-d4l"
+        ],
+        "storage": "Fridge 4 days, or freeze half"
+      },
+      {
+        "component": "Efo riro base",
+        "qty": "~450 g",
+        "consumers": [
+          "a-d3l"
+        ],
+        "storage": "Fridge, 4 days"
+      },
+      {
+        "component": "Jerk chickpeas",
+        "qty": "250 g drained",
+        "consumers": [
+          "a-d3s"
+        ],
+        "storage": "Jar, lid off, counter"
+      },
+      {
+        "component": "Boiled eggs",
+        "qty": "4",
+        "consumers": [
+          "a-d2s"
+        ],
+        "storage": "Fridge, peeled, 4 days"
+      },
+      {
+        "component": "Plain brown rice",
+        "qty": "320 g dry",
+        "consumers": [
+          "a-d1l",
+          "a-d2l",
+          "a-d2d"
+        ],
+        "storage": "Fridge ≤3 days, cooled fast"
+      },
+      {
+        "component": "Jollof",
+        "qty": "95 g dry",
+        "consumers": [
+          "a-d3l"
+        ],
+        "storage": "Fridge ≤3 days, cooled fast"
+      },
+      {
+        "component": "Riced cauliflower",
+        "qty": "~1.4 kg raw",
+        "consumers": [
+          "a-d1l",
+          "a-d2l",
+          "a-d2d",
+          "a-d3l",
+          "a-d5d"
+        ],
+        "storage": "Fridge raw, 4 days"
+      },
+      {
+        "component": "Slaw shred",
+        "qty": "335 g cabbage + 230 g carrot",
+        "consumers": [
+          "a-d4d",
+          "a-d5l"
+        ],
+        "storage": "Fridge, paper on top"
+      },
+      {
+        "component": "White sauce",
+        "qty": "115 g",
+        "consumers": [
+          "a-d1l"
+        ],
+        "storage": "Jar, 4 days"
+      }
+    ],
+    "midweek": [
+      {
+        "heading": "Tuesday night",
+        "body": "Move Wednesday's fish and prawns from the freezer to the fridge. If you're buying them fresh instead, buy them Wednesday — not before."
+      },
+      {
+        "heading": "Wednesday",
+        "body": "Ten minutes. Salad and any fruit topped up. Thursday's steak out of the freezer if it's in there. Check the chickpeas still rattle; if not, 4 minutes in a hot dry pan on Wednesday evening."
+      },
+      {
+        "heading": "Thursday night",
+        "body": "Friday's salmon from the freezer to the fridge."
+      }
+    ]
+  },
+  {
+    "week": "B",
+    "sessionName": "one session, eighty minutes — lighter than Week A",
+    "totalMin": 75,
+    "ops": [
+      {
+        "clock": "0:00",
+        "title": "Oven on, two trays",
+        "body": "200 °C fan. Two trays lined. Week B is a lighter prep than Week A — one roast, one stew, one batch of koftas, and rice.",
+        "station": "Oven · 2 trays",
+        "ingredients": []
+      },
+      {
+        "clock": "0:08",
+        "title": "Tray A — the week's chicken",
+        "body": "760 g chicken breast, salt, garlic powder, onion powder. Nothing else, again. 28 min for a tray this size. It carries Monday's fried rice, Tuesday's salad and Friday's club sandwich.",
+        "station": "Oven",
+        "ingredients": [
+          {
+            "ingId": "chicken",
+            "g": 760
+          }
+        ]
+      },
+      {
+        "clock": "0:10",
+        "title": "Pan 1 — turkey and okra stew",
+        "body": "90 g red onion and 160 g red pepper into oil, 5 min. 280 g turkey mince broken up and browned, 5 min. 260 g passata, 200 ml stock, thyme, a pinch of stock powder, scotch bonnet. 12 min. Then 270 g okra in for the LAST 5 MINUTES ONLY.",
+        "station": "Hob 1",
+        "ingredients": [
+          {
+            "ingId": "red_onion",
+            "g": 90
+          },
+          {
+            "ingId": "peppers_frozen",
+            "g": 160
+          },
+          {
+            "ingId": "turkey_mince",
+            "g": 280
+          },
+          {
+            "ingId": "passata",
+            "g": 260
+          },
+          {
+            "ingId": "okra",
+            "g": 270
+          }
+        ]
+      },
+      {
+        "clock": "0:14",
+        "title": "Tray B — the koftas",
+        "body": "255 g 5% beef mince with 40 g grated onion squeezed dry, 1 tsp cumin, 1 tsp ground coriander, dried mint, salt, pepper. Worked hard for a minute, then shaped into 6 fingers. 18 min.",
+        "station": "Oven",
+        "ingredients": [
+          {
+            "ingId": "beef_mince",
+            "g": 255
+          },
+          {
+            "ingId": "red_onion",
+            "g": 40
+          }
+        ]
+      },
+      {
+        "clock": "0:24",
+        "title": "Eggs on",
+        "body": "6 medium eggs, 8 minutes in boiling water, straight into cold. Peel now. Five are Tuesday's snack across the two of you; the spare gets eaten.",
+        "station": "Hob 2",
+        "ingredients": [
+          {
+            "ingId": "egg",
+            "g": 300
+          }
+        ]
+      },
+      {
+        "clock": "0:32",
+        "title": "Koftas out",
+        "body": "Cooled on a rack, then straight into the FREEZER in one bag. Sunday to Thursday is too long in the fridge for cooked mince — move them down to the fridge on Wednesday night.",
+        "station": "Oven",
+        "ingredients": []
+      },
+      {
+        "clock": "0:34",
+        "title": "Pan 3 — the rice",
+        "body": "380 g brown rice, dry, plain. 25 min. This covers Monday's fried rice, Tuesday's dinner and Wednesday's lunch — and stops there. Friday's rice is cooked fresh inside the dish.",
+        "station": "Hob 3",
+        "ingredients": [
+          {
+            "ingId": "brown_rice",
+            "g": 380
+          }
+        ]
+      },
+      {
+        "clock": "0:38",
+        "title": "Chicken out",
+        "body": "Rested 5 minutes. Left whole rather than sliced — it dries out far more slowly that way, and Friday is a long way off.",
+        "station": "Oven off",
+        "ingredients": []
+      },
+      {
+        "clock": "0:45",
+        "title": "Rice the cauliflower",
+        "body": "One large head, about 810 g riced. Pulse it, don't run the processor — couscous, not paste. Stored RAW; it cooks in three minutes at the plate.",
+        "station": "Processor",
+        "ingredients": [
+          {
+            "ingId": "cauliflower",
+            "g": 810
+          }
+        ]
+      },
+      {
+        "clock": "0:55",
+        "title": "Two jars",
+        "body": "SUYA: 3 parts ground roasted peanut to 1 part chilli, plus ginger, garlic powder and stock powder. It appears on Tuesday, twice on Wednesday and again on Friday. CHILLI SALT: 2 parts flaky salt to 1 part chilli flakes, briefly ground together.",
+        "station": "2 jars",
+        "ingredients": []
+      },
+      {
+        "clock": "1:02",
+        "title": "Rice off — cool it fast",
+        "body": "Spread thin on a cold tray, into the fridge within the hour. Same rule as Week A and the same reason: slowly-cooled rice is the classic way to make yourself ill.",
+        "station": "Tray",
+        "ingredients": []
+      },
+      {
+        "clock": "1:15",
+        "title": "Portion, label, and check the freezer",
+        "body": "Boxes marked with the day. Then look ahead: Tuesday needs 370 g basa or tilapia and Friday needs 255 g salmon. If they're frozen, they need moving down in good time.",
+        "station": "Boxes",
+        "ingredients": []
+      }
+    ],
+    "yields": [
+      {
+        "component": "Roast chicken",
+        "qty": "760 g raw",
+        "consumers": [
+          "b-d1l",
+          "b-d2l",
+          "b-d5l"
+        ],
+        "storage": "Fridge, whole, 5 days"
+      },
+      {
+        "component": "Turkey & okra stew",
+        "qty": "~1.05 kg",
+        "consumers": [
+          "b-d3l"
+        ],
+        "storage": "Fridge, 4 days"
+      },
+      {
+        "component": "Beef koftas",
+        "qty": "255 g raw · 6 fingers",
+        "consumers": [
+          "b-d4l"
+        ],
+        "storage": "FREEZER — down Wed night"
+      },
+      {
+        "component": "Boiled eggs",
+        "qty": "6",
+        "consumers": [
+          "b-d2s"
+        ],
+        "storage": "Fridge, peeled, 4 days"
+      },
+      {
+        "component": "Brown rice",
+        "qty": "380 g dry",
+        "consumers": [
+          "b-d1l",
+          "b-d3l",
+          "b-d2d"
+        ],
+        "storage": "Fridge ≤3 days, cooled fast"
+      },
+      {
+        "component": "Riced cauliflower",
+        "qty": "~810 g raw",
+        "consumers": [
+          "b-d1l",
+          "b-d2d",
+          "b-d5d"
+        ],
+        "storage": "Fridge raw, 4 days"
+      },
+      {
+        "component": "Suya jar",
+        "qty": "makes plenty",
+        "consumers": null,
+        "storage": "Cupboard, months"
+      },
+      {
+        "component": "Chilli salt jar",
+        "qty": "makes plenty",
+        "consumers": null,
+        "storage": "Cupboard, months"
+      }
+    ],
+    "midweek": [
+      {
+        "heading": "Monday night",
+        "body": "Make the overnight oats — 4 minutes. Oats, skyr, chia, cinnamon, water and half the grated apple into a jar. It is the only dish this week that has to be started the day before."
+      },
+      {
+        "heading": "Kept raw on purpose",
+        "body": "Wednesday's suya skewers use raw chicken, not Sunday's roast — 305 g of it, cubed on the night. Roast chicken on a skewer is a sad thing."
+      },
+      {
+        "heading": "Tuesday",
+        "body": "Basa or tilapia bought fresh, or moved down from the freezer on Monday night. Escovitch wants fish that has never been near a reheat."
+      },
+      {
+        "heading": "Wednesday night",
+        "body": "Koftas from the freezer to the fridge. Friday's salmon down too if it's frozen — 255 g, for the teriyaki."
+      }
+    ]
+  }
+]

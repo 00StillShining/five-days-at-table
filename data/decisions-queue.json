@@ -1,0 +1,410 @@
+[
+  {
+    "id": "D0-001",
+    "topic": "retired ingredients purge (D10)",
+    "detail": "Confirmed by cross-reference against fd5.meals+mealsB, all 40 methods.json cards, and the 54-row storage register: milk, egg_white, whey, edamame, mango are referenced nowhere except fd5.food/fd5.spec/fd5.aisle (and, for whey only, a stray fd5.prices entry marked \"(optional)\"). All 5 purged to data/retired.json with their data preserved. This is exactly the D10-named list (milk, egg_white, edamame, mango) plus whey, which the task brief flagged as \"likely already absent\" — it is NOT absent from fd5.json's data tables, but IS absent from every meal/register/shopping-list use, so it is retired for the same reason as the other four.",
+    "options": [
+      "Keep as unused ingredients",
+      "Retire to retired.json (chosen)"
+    ],
+    "recommendation": "Retire all 5 to retired.json, preserving full data + reason.",
+    "status": "resolved-by-default",
+    "resolvedTo": "retired.json holds all 5 (milk, egg_white, whey, edamame, mango)."
+  },
+  {
+    "id": "D0-002",
+    "topic": "three addedInExtraction ingredients + assumed compositions",
+    "detail": "Three FD5-Shopping-List.html rows have no ingredient anywhere in fd5.json/methods.json: 'Sweetheart cabbage' (row 22), 'Frozen sliced peppers' (row 35), 'Rapeseed oil' (row 49). Verified by grep: methods.json's only cabbage mentions are all 'Red cabbage, shredded'; its only oil mentions are all 'Extra virgin olive oil'; 'sweetheart'/'rapeseed' appear zero times in any of the 40 cards. Created 3 new ingredient ids (sweetheart_cabbage, peppers_frozen, rapeseed_oil), all addedInExtraction:true, with per-100g composition from standard UK reference values: sweetheart_cabbage uses a generic raw-cabbage reference (27 kcal/1.4 protein/2.3 fibre/5.0 carb/0.2 fat per 100g, chosen close to the dataset's existing red_cabbage entry [31,1.4,2.1,7.4,0.2] since the two vegetables are nutritionally near-identical); peppers_frozen reuses fd5.food.peppers verbatim (freezing does not materially change a vegetable's macro composition); rapeseed_oil uses the standard pure-oil reference (884 kcal, 100g fat, 0 protein/carb/fibre per 100g), identical in shape to olive_oil since both are pure fats. Provisioning's provenance.cutsStuck section independently corroborates all three as genuine SKU decisions: 'Half the peppers frozen' (Morrisons Sliced Mixed Peppers 500g £1.25 vs fresh £3.98/kg), 'Sweetheart cabbage where the gem is only shredded' (Morrisons British Sweetheart Cabbage £0.75 each ~500g), 'Split the oil two ways' (KTC Extended Life Rapeseed 1L £3.50 vs EVOO £7.14/kg).",
+    "options": [
+      "Leave the 3 shopping rows unmapped (breaks the 'alias map covers all 55 short names' checksum)",
+      "Create 3 new ingredient records with standard-reference composition (chosen)"
+    ],
+    "recommendation": "Create the 3 records; no meal in meals.json references sweetheart_cabbage or rapeseed_oil (methods.json prose never distinguishes them from their siblings) — they exist as shopping-list/basket SKUs only. peppers_frozen IS wired into meals.json per the raw/cooked split decision below.",
+    "status": "resolved-by-default",
+    "resolvedTo": "ingredients.json carries all 3 with addedInExtraction:true; sweetheart_cabbage and rapeseed_oil have no meals.json linkage (see separate decision entries for why that linkage was not attempted)."
+  },
+  {
+    "id": "D0-003",
+    "topic": "sweetheart_cabbage / rapeseed_oil: no meal-level linkage attempted",
+    "detail": "provisioning.provenance notes sweetheart cabbage substitutes for lettuce 'where the gem is only shredded', and rapeseed oil substitutes for olive oil 'everything that hits a hot pan'. Both are real substitution rules, but methods.json's 210 ingredient rows never distinguish 'shredded' lettuce from whole-leaf lettuce, nor 'hot-pan' oil from 'dressing' oil, at the row level — every lettuce row is just 'Little gem or romaine' and every oil row is just 'Extra virgin olive oil', with a single combined gram figure per dish covering all uses within that dish (e.g. the pizza's 14/17 g oil figure explicitly covers both the 5 g used to soften vegetables AND the remaining oil used to dress the salad, per that card's own steps text). Splitting these combined per-dish gram figures between two ingredient ids would require guessing what fraction of each figure was for which purpose — not offered anywhere in the data. join.js does not attempt it. The task brief's explicit 'map ... to cooked uses / raw uses where the distinction appears' instruction names peppers only, not cabbage or oil, so this is treated as in-scope for peppers and out-of-scope (by design, not oversight) for cabbage/oil.",
+    "options": [
+      "Guess a split fraction per dish (rejected — no basis in the data)",
+      "Leave lettuce/olive_oil meal references as-is; sweetheart_cabbage/rapeseed_oil exist only as basket SKUs (chosen)"
+    ],
+    "recommendation": "As chosen. Revisit in Phase 1 if the methods rewrite adds per-step oil/lettuce attribution.",
+    "status": "open",
+    "resolvedTo": null
+  },
+  {
+    "id": "D0-004",
+    "topic": "peppers raw-vs-frozen SKU split (task brief explicit instruction)",
+    "detail": "10 methods.json cards use 'Red pepper, deseeded': A-1-Dinner Chicken-crust pizza; A-2-Lunch Chipotle burrito bowl; A-3-Breakfast Nigerian egg sauce with plantain; A-3-Lunch Efo riro with chicken & jollof; A-3-Dinner Catfish pepper soup with okra; B-1-Lunch Jollof fried rice with chicken; B-2-Dinner Basa escovitch with cauliflower rice; B-3-Breakfast Plantain & pepper hash with fried eggs; B-3-Lunch Turkey & okra stew with rice; B-3-Dinner Suya chicken skewers with pepper salad. shoppinglist.json row 18 ('Red peppers', fresh, Morrisons Savers Mixed Peppers 3pk £3.58/2) note reads 'The raw ones — Wednesday's suya salad and Tuesday's escovitch', which names exactly B-3-Dinner (Suya chicken skewers with pepper salad) and B-2-Dinner (Basa escovitch with cauliflower rice) — confirmed by exact dish-name match, not guessed. row 35 ('Frozen sliced peppers', Morrisons Sliced Mixed Peppers 500g £1.25) note reads 'For everything cooked down — jollof, efo riro, the stews, the hash', which names B-1-Lunch (Jollof fried rice), A-3-Lunch (Efo riro), B-3-Lunch (Turkey & okra stew), B-3-Breakfast (Plantain & pepper hash) — 4 of the remaining 8 cooked cards named explicitly, the other 4 (A-1-Dinner pizza, A-2-Lunch burrito bowl, A-3-Breakfast egg sauce, A-3-Dinner pepper soup) all cook the pepper in a pan/oven/soup per their own steps text, consistent with 'cooked'. Raw group (2 cards, id stays 'peppers', SKU = fresh row 18): B-2-Dinner, B-3-Dinner. Cooked group (8 cards, id becomes 'peppers_frozen', SKU = frozen row 35): A-1-Dinner, A-2-Lunch, A-3-Breakfast, A-3-Lunch, A-3-Dinner, B-1-Lunch, B-3-Breakfast, B-3-Lunch.",
+    "options": [
+      "Map all pepper rows to the single existing 'peppers' id (loses the real fresh/frozen price split; contradicts task brief instruction)",
+      "Split by card per the shopping-list note text, using the existing 'peppers' id for the 2 named-raw cards and a new 'peppers_frozen' id for the other 8 (chosen)"
+    ],
+    "recommendation": "As chosen — fully derived from the two shopping-list row notes, zero guessing.",
+    "status": "resolved-by-default",
+    "resolvedTo": "meals.json: peppers id used only for B-2-Dinner and B-3-Dinner; peppers_frozen id used for the other 8 pepper-bearing cards."
+  },
+  {
+    "id": "D0-005",
+    "topic": "19 estimate-flag differences: provisioning overlay wins over D.prices.ver",
+    "detail": "Base layer is fd5.json D.prices[id].ver (ver:0 = estimate). Overlay is provisioning.json's day0/day7 'estimate' field (from the Provisioning HTML's est spans). 19 ids differ (task brief predicted 19; confirmed exactly 19): [{\"id\":\"cottage\",\"name\":\"Cottage cheese, natural\",\"fd5VerEstimate\":true,\"provisioningEstimate\":false},{\"id\":\"spinach\",\"name\":\"Spinach, ugu or callaloo\",\"fd5VerEstimate\":true,\"provisioningEstimate\":false},{\"id\":\"cauliflower\",\"name\":\"Cauliflower, riced\",\"fd5VerEstimate\":true,\"provisioningEstimate\":false},{\"id\":\"okra\",\"name\":\"Okra\",\"fd5VerEstimate\":true,\"provisioningEstimate\":false},{\"id\":\"avocado\",\"name\":\"Avocado\",\"fd5VerEstimate\":true,\"provisioningEstimate\":false},{\"id\":\"courgette\",\"name\":\"Courgette\",\"fd5VerEstimate\":true,\"provisioningEstimate\":false},{\"id\":\"red_onion\",\"name\":\"Red onion, peeled\",\"fd5VerEstimate\":true,\"provisioningEstimate\":false},{\"id\":\"apple\",\"name\":\"Apples\",\"fd5VerEstimate\":true,\"provisioningEstimate\":false},{\"id\":\"broccoli\",\"name\":\"Broccoli florets\",\"fd5VerEstimate\":true,\"provisioningEstimate\":false},{\"id\":\"pineapple\",\"name\":\"Pineapple\",\"fd5VerEstimate\":true,\"provisioningEstimate\":false},{\"id\":\"raspberries\",\"name\":\"Raspberries\",\"fd5VerEstimate\":false,\"provisioningEstimate\":true},{\"id\":\"blueberries\",\"name\":\"Blueberries\",\"fd5VerEstimate\":false,\"provisioningEstimate\":true},{\"id\":\"cucumber\",\"name\":\"Cucumber\",\"fd5VerEstimate\":true,\"provisioningEstimate\":false},{\"id\":\"spring_onion\",\"name\":\"Spring onions, trimmed\",\"fd5VerEstimate\":true,\"provisioningEstimate\":false},{\"id\":\"peanut_butter\",\"name\":\"Peanut butter, 100% nuts\",\"fd5VerEstimate\":true,\"provisioningEstimate\":false},{\"id\":\"brown_rice\",\"name\":\"Brown rice, long grain\",\"fd5VerEstimate\":true,\"provisioningEstimate\":false},{\"id\":\"salsa\",\"name\":\"Tomato salsa, no added sugar\",\"fd5VerEstimate\":true,\"provisioningEstimate\":false},{\"id\":\"passata\",\"name\":\"Passata, plain\",\"fd5VerEstimate\":true,\"provisioningEstimate\":false},{\"id\":\"black_beans\",\"name\":\"Black beans, tinned\",\"fd5VerEstimate\":true,\"provisioningEstimate\":false}]",
+    "options": [
+      "Keep fd5.prices.ver as final",
+      "Overlay wins because Provisioning is newer (chosen)"
+    ],
+    "recommendation": "Overlay wins per PLAN.md §2 ('overlay wins — newer'). estimateSource recorded per ingredient.",
+    "status": "resolved-by-default",
+    "resolvedTo": "ingredients.json sku.estimate uses the overlay value for these 19 ids; sku.estimateSource='provisioning' for them, 'fd5' otherwise."
+  },
+  {
+    "id": "D0-006",
+    "topic": "second shared-SKU pair discovered: raspberries + blueberries",
+    "detail": "shoppinglist.json row 36 'Frozen mixed berries' note: 'One bag replaces both the raspberries and the blueberries.' This is structurally identical to the Greek-yoghurt/skyr shared-SKU case named explicitly in the task brief, but was not named there — discovered by reading every row note. Handled the same way: two ingredient records (raspberries, blueberries), one shared SKU via sharedSkuWith, alias-map row maps to both ids.",
+    "options": [
+      "Treat as a single merged ingredient (rejected — loses macro distinction, contradicts 'never dedupe')",
+      "Two records, one shared SKU (chosen)"
+    ],
+    "recommendation": "As chosen, consistent with the named greek_yog/skyr precedent.",
+    "status": "resolved-by-default",
+    "resolvedTo": "raspberries and blueberries are both real ingredients.json entries with sku.sharedSkuWith pointing at each other."
+  },
+  {
+    "id": "D0-007",
+    "topic": "stale FD-5 prices vs canonical basket",
+    "detail": "Compared fd5.json D.prices[id] (price+pack) against the canonical FD5-Shopping-List.html basket (data/raw/shoppinglist.json, price-per-pack = priceShown/qty) for all 54 non-added ingredients with a shopping-list SKU. 20/54 differ in price and/or pack size (task brief's planning-session estimate was '~26/54'; the actual measured figure is 20/54 — recorded here as the authoritative, reproducible count). Full list: [{\"id\":\"cottage\",\"name\":\"Cottage cheese, natural\",\"fd5Price\":1.1,\"fd5Pack\":300,\"canonicalPrice\":1.65,\"canonicalPack\":300},{\"id\":\"brown_rice\",\"name\":\"Brown rice, long grain\",\"fd5Price\":1.65,\"fd5Pack\":1000,\"canonicalPrice\":1.85,\"canonicalPack\":1000},{\"id\":\"chicken\",\"name\":\"Chicken breast, skinless\",\"fd5Price\":12.29,\"fd5Pack\":2000,\"canonicalPrice\":5,\"canonicalPack\":1000},{\"id\":\"black_beans\",\"name\":\"Black beans, tinned\",\"fd5Price\":0.65,\"fd5Pack\":240,\"canonicalPrice\":0.5,\"canonicalPack\":240},{\"id\":\"peanut_butter\",\"name\":\"Peanut butter, 100% nuts\",\"fd5Price\":2.5,\"fd5Pack\":340,\"canonicalPrice\":3.99,\"canonicalPack\":1000},{\"id\":\"pineapple\",\"name\":\"Pineapple\",\"fd5Price\":0.65,\"fd5Pack\":250,\"canonicalPrice\":1.1,\"canonicalPack\":260},{\"id\":\"raspberries\",\"name\":\"Raspberries\",\"fd5Price\":2.2,\"fd5Pack\":150,\"canonicalPrice\":2.99,\"canonicalPack\":1000},{\"id\":\"apple\",\"name\":\"Apples\",\"fd5Price\":1.7,\"fd5Pack\":1000,\"canonicalPrice\":1.8,\"canonicalPack\":900},{\"id\":\"blueberries\",\"name\":\"Blueberries\",\"fd5Price\":0.78,\"fd5Pack\":150,\"canonicalPrice\":2.99,\"canonicalPack\":1000},{\"id\":\"cauliflower\",\"name\":\"Cauliflower, riced\",\"fd5Price\":1.09,\"fd5Pack\":600,\"canonicalPrice\":1.5,\"canonicalPack\":1000},{\"id\":\"spinach\",\"name\":\"Spinach, ugu or callaloo\",\"fd5Price\":1.6,\"fd5Pack\":900,\"canonicalPrice\":1.5,\"canonicalPack\":950},{\"id\":\"broccoli\",\"name\":\"Broccoli florets\",\"fd5Price\":0.75,\"fd5Pack\":350,\"canonicalPrice\":1.5,\"canonicalPack\":900},{\"id\":\"okra\",\"name\":\"Okra\",\"fd5Price\":1.15,\"fd5Pack\":300,\"canonicalPrice\":3.5,\"canonicalPack\":900},{\"id\":\"courgette\",\"name\":\"Courgette\",\"fd5Price\":1.25,\"fd5Pack\":500,\"canonicalPrice\":2.8,\"canonicalPack\":1000},{\"id\":\"passata\",\"name\":\"Passata, plain\",\"fd5Price\":0.55,\"fd5Pack\":500,\"canonicalPrice\":0.45,\"canonicalPack\":500},{\"id\":\"red_onion\",\"name\":\"Red onion, peeled\",\"fd5Price\":0.85,\"fd5Pack\":390,\"canonicalPrice\":0.95,\"canonicalPack\":1000},{\"id\":\"spring_onion\",\"name\":\"Spring onions, trimmed\",\"fd5Price\":0.75,\"fd5Pack\":100,\"canonicalPrice\":0.69,\"canonicalPack\":100},{\"id\":\"cucumber\",\"name\":\"Cucumber\",\"fd5Price\":0.89,\"fd5Pack\":300,\"canonicalPrice\":0.99,\"canonicalPack\":300},{\"id\":\"avocado\",\"name\":\"Avocado\",\"fd5Price\":0.8,\"fd5Pack\":140,\"canonicalPrice\":1.5,\"canonicalPack\":560},{\"id\":\"salsa\",\"name\":\"Tomato salsa, no added sugar\",\"fd5Price\":1.2,\"fd5Pack\":300,\"canonicalPrice\":1.5,\"canonicalPack\":300}]",
+    "options": [
+      "Keep fd5.prices as canonical (rejected — PLAN.md §2 names the shopping list as canonical for price)",
+      "Use shoppinglist.json prices as canonical, fd5.prices retained only for the legacy/est-flag checksums (chosen)"
+    ],
+    "recommendation": "ingredients.json sku.price is always the canonical-basket price; fd5.prices is never written into sku directly, only used for the ver:0 base-layer estimate flag and the legacy checksum.",
+    "status": "resolved-by-default",
+    "resolvedTo": "20/54 ids repriced relative to fd5.json; ingredients.json uses canonical-basket prices throughout."
+  },
+  {
+    "id": "D0-008",
+    "topic": "provisioning parser penny-drift anomaly: day0-shop-subtotal-mismatch",
+    "detail": "Morrisons (M): sum of the 37 parsed line costs is £89.47, but the shopbar/.sum row shows £89.46. This is a rounding discrepancy present in the source document itself, not introduced by the parser (verified independently against the raw table cells).",
+    "options": [
+      "Correct the source figure (rejected — not join.js's job; source HTML is archival/read-only)",
+      "Record as-is, both figures preserved"
+    ],
+    "recommendation": "No action — this is a rounding discrepancy present in the source HTML itself, already flagged by provisioning.js. Recorded here for visibility per task brief.",
+    "status": "resolved-by-default",
+    "resolvedTo": "No correction applied; both figures cited in this entry."
+  },
+  {
+    "id": "D0-009",
+    "topic": "provisioning parser penny-drift anomaly: day0-header-total-mismatch",
+    "detail": "Section header tag shows £183.06 for Day 0, but the sum of all 54 parsed day0 line costs is £183.07.",
+    "options": [
+      "Correct the source figure (rejected — not join.js's job; source HTML is archival/read-only)",
+      "Record as-is, both figures preserved"
+    ],
+    "recommendation": "No action — this is a rounding discrepancy present in the source HTML itself, already flagged by provisioning.js. Recorded here for visibility per task brief.",
+    "status": "resolved-by-default",
+    "resolvedTo": "No correction applied; both figures cited in this entry."
+  },
+  {
+    "id": "D0-010",
+    "topic": "macro recompute checksum: empirically 40/40 cards pass, not the predicted ~36/40",
+    "detail": "Recomputed all 40 cards x 2 covers (80 checks) from methods.json's own per-cover gram tables x ingredients.json per100g, and compared to methods.json's own mac-strip macros. Result: 0 cards outside tolerance (task brief predicted ~4 disputed cards / 36 undisputed, citing PLAN.md §4's known arithmetic-bug list). Explanation: the mac-strips in methods.json were computed CONSISTENTLY from the SAME per-cover gram tables also in methods.json — including the tables that carry known Phase-1 defects (e.g. Week B oil inversions: B-2-Dinner Extra virgin olive oil her=12g/him=10g, B-4-Lunch her=10g/him=8g — verified present in methods.json, her cover getting MORE oil than the larger him cover, backwards from every other card). A defect in the SOURCE gram table does not cause a mac-strip MISMATCH, because both the gram table and the mac-strip were authored/extracted from the same (possibly-wrong) numbers. The §4 known defects are real and are preserved as-extracted per Phase 0 scope (Phase 1 fixes them), but none of them manifest as a recompute-vs-mac-strip discrepancy.",
+    "options": [
+      "Force 4 cards into a 'disputed' bucket to match the prediction (rejected — fabricates a failure that doesn't exist)",
+      "Report the true empirical result: 40/40 pass (chosen)"
+    ],
+    "recommendation": "Report 40/40. The oil-inversion and red-cabbage-quantity defects are separately logged (see the §4 content-defect entries) since they are real content issues, just not macro-recompute failures.",
+    "status": "resolved-by-default",
+    "resolvedTo": "validation.json checksum 'macro-recompute' reports 40/40 cards within tolerance, zero disputed."
+  },
+  {
+    "id": "D0-011",
+    "topic": "D10: three dropped avocado garnishes — verified diffs, cited numbers",
+    "detail": "Verified by diffing fd5.json meals/mealsB ingredient tables against methods.json's per-cover gram tables for every one of the 40 cards. Exactly 3 cards lost an avocado row between fd5.json and methods.json, all in Week A, all matching provisioning.provenance.cutsStuck's 'Three avocado garnishes dropped' note ('the chicken-crust pizza salad, the burrito bowl's guacamole scoop and the steak sandwich'): (1) A-1-Dinner 'Chicken-crust pizza': fd5 had avocado 25g(her)/35g(him); methods drops it, oil rises 9/11g -> 14/17g. (2) A-2-Lunch 'Chipotle burrito bowl': fd5 had avocado 20g/28g and NO oil; methods drops avocado, adds oil 5g/6g. (3) A-4-Breakfast 'Steak & egg breakfast sandwich': fd5 had avocado 25g/35g; methods drops it, oil rises 9/11g -> 14/17g. Consequence traced to Week A day-kcal totals (her cover): day1 recomputed 1671 vs legacy-quoted 1667 (+4), day2 1675 vs 1663 (+12), day4 1650 vs 1646 (+4) — days 3 and 5 (no avocado-drop cards) match the legacy figure exactly (diff 0). The true mechanism producing each delta is NOT the avocado drop alone — it is the avocado drop (a small kcal loss) PLUS a compensating olive-oil increase in the SAME dish (a larger kcal gain, since oil is far more calorie-dense per gram than avocado), netting to a small POSITIVE delta on each affected day: e.g. A-1-Dinner loses ~25-35g avocado (~35-50 kcal) but gains 5g oil (~44 kcal); A-2-Lunch loses ~20-28g avocado (~30-40 kcal) but gains a full 5-6g oil from zero (~44-53 kcal); A-4-Breakfast mirrors A-1-Dinner's pattern. The 'legacy' 1667/1663/1670/1646/1694 figures in PLAN.md §3 were computed from fd5.json's PRE-ruling meal data; methods.json (D10: plate-truth) already reflects the post-ruling plate (avocado dropped, oil correspondingly raised), so the small positive diffs on days 1/2/4 are the expected, fully-explained net consequence of applying D10, not a data-quality problem.",
+    "options": [
+      "Treat as validation failure requiring a STOP",
+      "Recognise as expected net consequence (avocado drop + compensating oil rise) of the D10 ruling PLAN.md itself commissioned; report both figures (chosen)"
+    ],
+    "recommendation": "Report recomputed totals as canonical (methods.json is plate-truth); keep the legacy totals in this entry for audit trail.",
+    "status": "resolved-by-default",
+    "resolvedTo": "validation.json week-A-day-totals check reports the recomputed 1671/1675/1670/1650/1694 alongside the legacy 1667/1663/1670/1646/1694, asserting the exact +4/+12/0/+4/0 deltas (avocado-drop + compensating-oil net effect) rather than accepting any diff."
+  },
+  {
+    "id": "D0-012",
+    "topic": "D10: salmon -> eggs, Week B Friday breakfast — verified diff, cited numbers",
+    "detail": "fd5.mealsB.d5b was 'Salmon & egg toast with chilli' (salmon 70g/95g, egg 100g/150g, seeded_bread 45g/55g, spinach 60g/80g, tomato 60g/80g, spring_onion 15g/20g, olive_oil 5g/6g). methods.json's B-5-Breakfast card is 'Scrambled eggs & tomato on seeded toast' (egg 175g/225g — no salmon; spinach 60g/80g, tomato 60g/80g, seeded_bread 55g/70g, spring_onion 15g/20g, olive_oil 5g/6g). Egg quantity rose from 100/150g to 175/225g to replace the dropped salmon's protein. Recomputed macros: her 477 kcal / 35 protein (vs fd5's implied salmon-bearing dish, not separately recomputed here since methods.json is the sole plate-truth source). Matches provisioning.provenance.cutsStuck 'Friday breakfast: salmon -> eggs' note exactly: 'Week B's Friday had 420 g of salmon across two meals at £19.77/kg. The teriyaki dinner is the one worth keeping.'",
+    "options": [
+      "Keep fd5.json's salmon breakfast",
+      "Use methods.json's eggs breakfast (plate-truth, chosen)"
+    ],
+    "recommendation": "meals.json b-d5b is 'Scrambled eggs & tomato on seeded toast', no salmon.",
+    "status": "resolved-by-default",
+    "resolvedTo": "meals.json b-d5b matches methods.json exactly; fd5.json's salmon version is superseded, not separately retained."
+  },
+  {
+    "id": "D0-013",
+    "topic": "two additional batch/fresh tag diffs found between fd5.json and methods.json (Week B)",
+    "detail": "Beyond the task-brief-named diffs, a full fd5-vs-methods diff over all 40 cards' tag field found 2 more discrepancies, not previously documented anywhere in PLAN.md: [{\"key\":\"Bd2b\",\"card\":\"B-2-Breakfast\",\"name\":\"Apple & cinnamon overnight oats\",\"fd5Tag\":\"fresh\",\"methodsTag\":\"batch\"},{\"key\":\"Bd3s\",\"card\":\"B-3-Snack\",\"name\":\"Greek yoghurt, raspberries & seeds\",\"fd5Tag\":\"batch\",\"methodsTag\":\"fresh\"}]. B-2-Breakfast 'Apple & cinnamon overnight oats': fd5 says tag=fresh, methods says tag=batch (methods.json's Week B midweek note confirms it IS a batch/prep-ahead dish: 'Make the overnight oats — 4 minutes... It is the only dish this week that has to be started the day before', i.e. genuinely prepped in advance, supporting methods' batch tag over fd5's fresh tag). B-3-Snack 'Greek yoghurt, raspberries & seeds': fd5 says tag=batch, methods says tag=fresh (no batch-prep basis found anywhere in the Sunday session data for this snack — supporting methods' fresh tag).",
+    "options": [
+      "Keep fd5.json tags",
+      "Use methods.json tags (plate-truth per D10, chosen)"
+    ],
+    "recommendation": "methods.json wins per D10 ('Methods files are plate-truth'), consistent with how the named avocado/salmon diffs were resolved.",
+    "status": "resolved-by-default",
+    "resolvedTo": "meals.json b-d2b.tag='batch', b-d3s.tag='fresh' (both from methods.json)."
+  },
+  {
+    "id": "D0-014",
+    "topic": "§4 defect: Week A Sunday shreds 335g red cabbage, not 515g — all three consumers identified, fully reconciled",
+    "detail": "methods.json Week A Sunday op 'Shred for two slaws' (clock 1:05) says '335 g red cabbage and 230 g carrot, shredded fine... Thursday's burger slaw and Friday's wrap both come out of this' — naming only TWO consumers. meals.json confirms those two sum to exactly 335g: A-4-Dinner (Smash burger) red_cabbage her=90/him=95 (=185g) + A-5-Lunch (Chicken shawarma wrap) red_cabbage her=70/him=80 (=150g) = 335g exactly. But there is a THIRD consumer the op text omits entirely: A-5-Dinner 'Jerk salmon, rice & red beans' also carries a red_cabbage row, her=80/him=100 (=180g), for its 'slaw of red cabbage and charred pineapple'. 335g + 180g = 515g exactly, matching provisioning.day0's need figure ('Red cabbage, shredded' need=515, buy='1 x 700g') to the gram. This is precisely PLAN §4's own description of the bug: the Sunday-prep instruction (335g) 'omits' the Friday-DINNER slaw (A-5-Dinner, 180g) — distinct from the Friday-LUNCH wrap (A-5-Lunch, already counted in the 335g). All three consumers and the exact reconciliation are now cited; nothing is unexplained.",
+    "options": [
+      "Silently correct the op body text to 515g and add the third consumer",
+      "Ship the op text as-extracted (335g, two consumers named), flag the full three-consumer/515g reconciliation here (chosen)"
+    ],
+    "recommendation": "Phase 1 rewrite corrects the Sunday-prep instruction to '515 g red cabbage... Thursday's burger slaw, Friday's wrap AND Friday's salmon slaw all come out of this.' Phase 0 ships prep.json's op body verbatim from methods.json (335g, two consumers named).",
+    "status": "resolved-by-default",
+    "resolvedTo": "applied in Phase 1 rewrite; prep.json op body text kept as-extracted (335g, naming only the wrap+burger consumers) for now. prep.json's 'Slaw shred' yield consumers array is limited to the two the op text itself names (a-d4d, a-d5l) since yield-consumer mapping is drawn from the yields table, not the op body — a-d5d's separate red_cabbage need is real but is not part of THIS yield's stated consumer list, per the source table."
+  },
+  {
+    "id": "D0-015",
+    "topic": "§4 defect: Week B oil inversions (her > him)",
+    "detail": "Verified present in methods.json: B-2-Dinner 'Basa escovitch' Extra virgin olive oil her=12g/him=10g; B-4-Lunch 'Beef kofta wrap' Extra virgin olive oil her=10g/him=8g. In both cases the smaller (70kg, her) cover is given MORE oil than the larger (85kg, him) cover — backwards from every other oil row in the dataset (all other 209 ingredient rows give him >= her).",
+    "options": [
+      "Silently swap the figures",
+      "Ship as-extracted, flag here (chosen)"
+    ],
+    "recommendation": "Phase 1 rewrite corrects. Phase 0 meals.json carries the inverted figures as methods.json states them (covers.w.olive_oil=12/10, covers.m.olive_oil=10/8 respectively).",
+    "status": "resolved-by-default",
+    "resolvedTo": "applied in Phase 1 rewrite; meals.json b-d2d and b-d4l keep the inverted grams as-extracted."
+  },
+  {
+    "id": "D0-016",
+    "topic": "§4 defect: pancake 'half the skyr' arithmetic",
+    "detail": "A-2-Breakfast 'Protein pancakes with berries' step 2 says 'half the skyr' goes into the batter, step 5 says 'Remaining skyr... on top'. Ingredient table total skyr = her 95g/him 140g. Step text quantifies the batter portion as 48g(her)/70g(him) and the topping as 47g(her)/70g(him) — 48+47=95 (her, exact) but 70+70=140 (him, exact) — actually both halves DO sum correctly to the table total. Flagged here per task brief's §4 list regardless, since 48/47 is not an exact half of 95 (47.5) — a rounding artefact, not a real arithmetic bug; recorded as reviewed-and-found-benign.",
+    "options": [
+      "Treat as a bug needing correction",
+      "Reviewed: rounding artefact only, no correction needed (chosen)"
+    ],
+    "recommendation": "No Phase 1 action required beyond cosmetic 'half' wording softened to 'about half' if desired.",
+    "status": "resolved-by-default",
+    "resolvedTo": "No numeric correction applied — the two halves already sum exactly to the ingredient-table total on both covers."
+  },
+  {
+    "id": "D0-017",
+    "topic": "§4 defect: pizza 'remaining oil' wording",
+    "detail": "A-1-Dinner 'Chicken-crust pizza' step 4 uses '5 g of the oil' for cooking vegetables, out of a table total of her=14g/him=17g; step 7 refers to 'the remaining oil (14/17 g total across the dish)' for dressing the salad — the step 7 wording restates the FULL table total (14/17g) rather than the true remainder after step 4's 5g (which would be 9/12g). This is a wording defect (the step calls the full amount 'remaining' when only part of it remains), not a gram-table error — the ingredient table total (14/17g) is internally consistent with meals.json's covers/macros.",
+    "options": [
+      "Correct the step wording now",
+      "Ship as-extracted; flag for Phase 1 rewrite (chosen)"
+    ],
+    "recommendation": "Phase 1 rewrite should read '9 g of the remaining oil' or similar.",
+    "status": "resolved-by-default",
+    "resolvedTo": "applied in Phase 1 rewrite; meals.json a-d1d step text kept verbatim for now."
+  },
+  {
+    "id": "D0-018",
+    "topic": "§4 defect: kofta onion (40g) missing from B-4-Lunch's card-level ingredient table",
+    "detail": "The Week B Sunday session's kofta tray op specifies '255 g 5% beef mince with 40 g grated onion squeezed dry...' but B-4-Lunch 'Beef kofta wrap with cucumber yoghurt''s own methods.json ingredient table has no separate onion row alongside its 110g/145g beef_mince (Sunday-batch koftas) — the 40g onion is baked INTO the kofta mixture on Sunday and never appears as a per-cover onion gram figure on the consuming card. Confirmed: B-4-Lunch ingredients = [beef_mince, lc_tortilla, greek_yog, cucumber, lettuce, tomato, red_onion(35g/45g — this IS a separate raw-onion garnish row, distinct from the 40g cooked into the kofta), olive_oil]. So there IS a red_onion row on the card, but it is the raw garnish, not the 40g cooked-in onion — the cooked-in 40g is genuinely unaccounted for in per-cover macros.",
+    "options": [
+      "Add an estimated per-cover share of the cooked-in onion to B-4-Lunch's macros now (guessing a per-portion split of a Sunday-batch ingredient not stated per-cover anywhere)",
+      "Ship as-extracted; the card's macros under-count this small amount, flagged for Phase 1 (chosen)"
+    ],
+    "recommendation": "Phase 1 methods rewrite should either add a per-cover onion row to B-4-Lunch or explicitly note it as a freebie-level seasoning-onion within the kofta mix.",
+    "status": "resolved-by-default",
+    "resolvedTo": "applied in Phase 1 rewrite; meals.json b-d4l macros unchanged (as methods.json states), defect flagged."
+  },
+  {
+    "id": "D0-019",
+    "topic": "§4 defect: boiled-egg count (2 vs 2.5)",
+    "detail": "Week A Sunday session boils '4 medium eggs... Two are for Tuesday's snack; the spares will get eaten' (op text says 2 of 4 are earmarked). A-2-Snack 'Suya-spiced eggs & carrots' ingredient table: egg her=50g/him=75g with unitHint '1 / 1½ eggs' — at fd5's own 50g/egg spec unit, 75g = 1.5 eggs, not a whole number, meaning the 'him' cover's boiled-egg allocation from Sunday's batch of 4 is fractional (2 eggs would only cover the 'her' 50g side cleanly; the 'him' side's 75g implies 1.5 eggs, i.e. the batch's 2 earmarked eggs (100g) don't quite stretch to her+him's combined 50+75=125g need without a fractional egg). Recorded as a known table/reality mismatch (Sunday boils whole eggs; the per-cover table wants a fractional egg count for the larger cover).",
+    "options": [
+      "Round the him-cover figure to a whole-egg equivalent now (guessing which direction to round)",
+      "Ship as-extracted (75g / 1.5 eggs), flag here (chosen)"
+    ],
+    "recommendation": "Phase 1 rewrite should either boil an odd number of eggs or adjust the him-cover gram figure to a clean multiple of 50g.",
+    "status": "resolved-by-default",
+    "resolvedTo": "applied in Phase 1 rewrite; meals.json a-d2s.covers.m.egg=75 kept as-extracted."
+  },
+  {
+    "id": "D0-020",
+    "topic": "§4 defect: yield roundings (chicken 600 vs 575g, chickpeas 250 vs 245g) — reproduced exactly from consumer sums",
+    "detail": "Week A Sunday yields table states 'Roast chicken: 600 g raw' (op text TRAY A: 600g chicken breast — batch quantity, matches) with consumers a-d1l/a-d3l/a-d5l (per prep.json). Summing meals.json's actual per-cover chicken grams across those three consuming meals: a-d1l (75+100) + a-d3l (85+110) + a-d5l (95+110) = 175+195+205 = 575g exactly — 25g less than the 600g batched, i.e. Sunday cooks 25g of headroom/wastage-allowance beyond what the three lunches actually plate. Likewise 'Jerk chickpeas: 250 g drained' (op text TRAY B: 250g drained chickpeas) has sole consumer a-d3s; meals.json a-d3s.covers chickpeas her=110+him=135=245g exactly — 5g less than the 250g batched. Both defects reproduce exactly and are fully derivable from join.js's own outputs (prep.json yields[].consumers x meals.json covers): the Sunday batch quantities (600g/250g) are consistently ~4% larger than the sum of what the per-cover gram tables actually call for, i.e. genuine small over-batching, not a transcription error.",
+    "options": [
+      "Silently shrink the Sunday batch quantities to 575g/245g",
+      "Ship the op text and yields as-extracted (600g/250g batched), cite the exact 575g/245g consumer-sum reconciliation here (chosen)"
+    ],
+    "recommendation": "Phase 1 rewrite should either explain the headroom explicitly (e.g. 'cooks 600g, ~25g extra for taste/loss') or tighten the batch quantity to match consumer demand exactly.",
+    "status": "resolved-by-default",
+    "resolvedTo": "applied in Phase 1 rewrite; prep.json yields keep the as-extracted 600g/250g batch figures; the 575g/245g consumer-demand figures are derivable on demand from meals.json and are cited here for the record."
+  },
+  {
+    "id": "D0-021",
+    "topic": "§4 content defects (all seven) — overall disposition",
+    "detail": "Per task brief: all seven §4 arithmetic/content defects are recorded status resolved-by-default, resolution 'applied in Phase 1 rewrite', data kept as-extracted for now. See the seven individual entries immediately above for the verified specifics of each (all seven were checked against the actual extracted data; six reproduce exactly with cited numbers, one — the pancake 'half the skyr' — was checked and found benign/a rounding artefact rather than a real bug).",
+    "options": [
+      "Fix all seven in the data now (rejected — Phase 0 scope is 'ship originals'; would pre-empt the Phase 1 review checkpoint and the owner's ability to overturn individual items per D10)",
+      "Leave all seven as-extracted in Phase 0, fix in the Phase 1 methods rewrite (chosen, matches D10 and PLAN §4's own phasing)"
+    ],
+    "recommendation": "No Phase 0 data changes from any of the seven; Phase 1 methods rewrite addresses them.",
+    "status": "resolved-by-default",
+    "resolvedTo": "meals.json and prep.json carry all seven defects as-extracted from methods.json, matching Phase 0 scope ('Phase 0 ships originals')."
+  },
+  {
+    "id": "D0-022",
+    "topic": "pineapple rule amendment sanctioning the Week-B cottage-cheese snack",
+    "detail": "fd5.json's notes[5] ('What is not on the card') lists dishes considered and cut, and notes[8] ('Peas, swaps & the rest') establishes the plan's general swap philosophy, but B-1-Snack 'Cottage cheese, pineapple & chilli' (methods.json: cottage 100g/135g, pineapple 200g/260g, pumpkin_seeds 8g/11g, chia 6g/8g, tinned pineapple chunks griddled) is a real Week B card present in both fd5.mealsB and methods.json — it is not cut. D10 sanctions this dish under an amended 'pineapple rule' (the plan's general low-sugar-fruit discipline is relaxed for this one griddled-tinned-chunk snack). No conflicting data was found anywhere requiring removal of this card; it is included in meals.json as b-d1s exactly as methods.json states it.",
+    "options": [
+      "Remove the dish as inconsistent with a stricter reading of the fruit rule",
+      "Keep it; D10 amends the rule to explicitly sanction it (chosen)"
+    ],
+    "recommendation": "Keep b-d1s as extracted.",
+    "status": "resolved-by-default",
+    "resolvedTo": "meals.json b-d1s present, unmodified, tag='fresh' per methods.json."
+  },
+  {
+    "id": "D0-023",
+    "topic": "prep.json yield consumers: cross-checked against meals.json instead of parsing ambiguous prose",
+    "detail": "Week A 'Riced cauliflower' yield consumers text reads 'Mon, Tue x2, Wed, Fri' with no slot words. Cross-checking against actual meals.json cauliflower use for Week A gives exactly 5 meals: [\"a-d1l\",\"a-d2l\",\"a-d2d\",\"a-d3l\",\"a-d5d\"] (Mon lunch=1, Tue lunch+dinner=2, Wed lunch=1, Fri dinner=1 — matches the prose's day-by-day mention counts, including the 'x2' on Tuesday, exactly). Week B 'Riced cauliflower' text ('Mon lunch, Tue + Fri dinner') parses cleanly without cross-referencing: [\"b-d1l\",\"b-d2d\",\"b-d5d\"]. Week B 'Suya jar' ('Tue, Wed x2, Fri') and 'Chilli salt jar' ('Tue snack, and everywhere else') were NOT resolved this way because suya/chilli-salt are seasoning blends with no tracked ingredient id and no gram-quantified row on any card — there is nothing in meals.json to cross-reference against, so their consumers are left null (prose preserved in the yield's qty/component fields) rather than guessed.",
+    "options": [
+      "Parse all consumer strings with a generic day/slot text parser (rejected for the ×2/bare-weekday cases — too fragile, risks wrong slot assignment)",
+      "Cross-check against real ingredient presence in meals.json wherever the yield maps to a single tracked ingredient; leave prose-only where it doesn't (chosen)"
+    ],
+    "recommendation": "As chosen.",
+    "status": "resolved-by-default",
+    "resolvedTo": "prep.json yields[].consumers is a meal-id array for 9/11 (Week A) and 6/8 (Week B) yields; null for the 2 seasoning-jar yields in Week B."
+  },
+  {
+    "id": "D0-024",
+    "topic": "a+b calendar: day-7 items are defrost bring-downs, not buys — move field corrected",
+    "detail": "provisioning.defrostCalendar's day-7 'THE TOP-UP' op has kit:'Shop' (a shopping day), which the original opPhase()-only move logic read as move:'buy' for ALL of its items. But the op's own body text is explicit that every itemized quantity (chicken 1270g, turkey mince 280g, kofta mince 255g) is a freezer->fridge bring-down for tomorrow's Week B Sunday session ('Then bring down Week B's chicken... the turkey mince... and the kofta mince... all for tomorrow') — the actual day-7 shopping (five produce lines, 'under nine pounds') is never itemized in items[] at all, only described in prose. Fixed via moveForOp(): a 'shop'-phase op's items still get move:'freezer → fridge' if the op body contains 'bring down' (case-insensitive), matching the source text precisely; otherwise 'buy'. Day-0's 'THE BIG SHOP' body has no 'bring down' text and correctly keeps move:'buy' for its chicken 770g/chicken_mince 140g (freshly purchased, going straight to fridge).",
+    "options": [
+      "Leave day-7 items as move:'buy' (contradicts the op's own body text)",
+      "Detect 'bring down' in body text and override to 'freezer → fridge' per item-owning op (chosen)"
+    ],
+    "recommendation": "As chosen — moveForOp() is now the single source of truth for both the a+b and a-twice variants' item moves.",
+    "status": "resolved-by-default",
+    "resolvedTo": "calendar.json a+b day-7 items (chicken, turkey_mince, beef_mince/kofta) now carry move:'freezer → fridge'."
+  },
+  {
+    "id": "D0-025",
+    "topic": "a-twice calendar regeneration methodology (D5) — corrected after Fable review cycle 1",
+    "detail": "provisioning.json's defrostCalendar was authored for the A+B fortnight (days 0-5 = Week A, days 7-12 = Week B-specific moves: Basa 370g for escovitch, kofta/smash-taco mince, salmon 255g for teriyaki — none of which apply to an A-twice fortnight, which repeats Week A's own recipes). Regeneration method: (1) days 0-6 = the A+B calendar's own Week-A ops (dayNo 0,1,3,4,5), reused verbatim — these ARE genuinely Week-A-specific and correct for pass 1 regardless of what happens in week 2; day-0's body text is lightly adapted to note it buys for two passes. (2) day 7 = a NEW 'THE TOP-UP' shop op built from shoppinglist.json's day7Card (the actual canonical A-twice top-up: 7 rows, £8.58), replacing provisioning's Week-B-specific day-7 table entirely, PLUS — corrected in review cycle 1 — a freezer->fridge bring-down of pass 2's chicken (770g) and chicken breast mince (140g), mirroring the A+B source's own day-7 op which combines a top-up shop with 'bring down Week B's chicken... for tomorrow' in a single op. This is necessary because the canonical basket buys chicken FROZEN (shoppinglist.json row 0: 'Frozen chicken breast fillets 1kg' x2, tag 'Freeze on arrival'; the put-away card only keeps pass 1's 770g+140g out of the freezer) — without this move, pass 2's Sunday session (day 8) would have no thawed chicken. (3) days 8,10,11,12 = the SAME Week-A defrost moves from days 1,3,4,5, mechanically shifted +7 days, because pass 2 cooks the identical Week-A recipes a second time and therefore needs the identical defrost lead times against the storage register (chicken/basa/steak/salmon freshDays all read directly from the register in ingredients.json). Day 8's body text — corrected in review cycle 1 — no longer claims 'nothing needs defrosting' (true for pass 1's day 1, false for pass 2, which depends on last night's chicken bring-down and today's mozzarella bring-down). (4) NEW in review cycle 1: a day-8 'Mozzarella down for Monday's pizza' entry, freezer->fridge, 125g (the half-block frozen on day 0 per the put-away card's 'Halve the mozzarella... one half frozen — it gets opened twice, eight days apart' — day 1 and day 9 pizzas are exactly 8 days apart, confirming day 9 as the second use, so day 8 is the correct one-day-ahead lead time matching every other bring-down in this calendar). No op on days 2,6,9,13, matching the original calendar's own gaps on days 2 and 6 (no defrost move needed those days in Week A pass 1, so none in pass 2 either). Known residual gap, inherited unchanged from the a+b source (not introduced by the regeneration): provisioning.defrostCalendar's day-3 'Down for Wednesday' op body reads 'Basa (230 g) and the prawns, for Wednesday's pepper soup' but its structured items[] array contains ONLY Basa (230g) — prawns are named in body prose with no gram figure captured in the structured data anywhere in provisioning.json (the actual prawns gram figure, her=40/him=55, lives only in meals.json's A-3-Dinner covers). join.js does not invent a prawns calendar item for this gap, in either variant, since provisioning.js (out of scope to modify) never extracted one — see the prep-op-ingredient-extraction decision entry for the same category of gap.",
+    "options": [
+      "Guess new Week-A-repeat-specific moves from scratch (rejected — no basis; the mechanical +7 shift IS the correct 'same meal-driven moves recomputed' per D5's own wording)",
+      "Reuse Week-A's own defrost pattern for both passes, shifted +7 for pass 2, with day 7 replaced by the real A-twice top-up, PLUS explicit pass-2 freezer bring-downs (chicken/mince on day 7, mozzarella on day 8) that the source's own day-7 precedent requires (chosen)"
+    ],
+    "recommendation": "As chosen. Reviewable — if freezer stock timing differs between pass 1 and pass 2 in practice (e.g. because pass 1 already drew down some frozen stock), that is a Phase 2 inventory-tracking concern, not a Phase 0 calendar-authoring one.",
+    "status": "resolved-by-default",
+    "resolvedTo": "data/calendar.json contains both variant:'a+b' (10 ops, as extracted, day-7 items now correctly move:'freezer → fridge') and variant:'a-twice' (11 ops: day0 adapted, days1/3/4/5 verbatim, day7 top-up+chicken-bring-down, day8 mozzarella-down (new), days8/10/11/12 = +7 shift of days1/3/4/5 with day8's body corrected)."
+  },
+  {
+    "id": "D0-026",
+    "topic": "re-banded macro targets per week, old vs new (D10)",
+    "detail": "Old targets (fd5.json D.targets, single fixed band applied to whichever week is active): her cover {\"kcal\":[1650,1695],\"protein\":[105,116],\"fat\":[53,83],\"netCarb\":[91,161],\"fibre\":[40,44]}, him cover {\"kcal\":[2145,2225],\"protein\":[139,148],\"fat\":[73,112],\"netCarb\":[114,217],\"fibre\":[51,54]}. New targets (recomputed: band = [floor(min-of-5-recomputed-day-totals), ceil(max-of-5-recomputed-day-totals)], PER WEEK, from meals.json's own recomputed macros): Week A her {\"kcal\":[1650,1694],\"protein\":[105,118],\"netCarb\":[87,162],\"fat\":[55,84],\"fibre\":[40,45]}, him {\"kcal\":[2099,2241],\"protein\":[140,145],\"netCarb\":[107,219],\"fat\":[75,112],\"fibre\":[51,53]}; Week B her {\"kcal\":[1628,1696],\"protein\":[119,129],\"netCarb\":[77,154],\"fat\":[57,85],\"fibre\":[35,45]}, him {\"kcal\":[2077,2193],\"protein\":[155,168],\"netCarb\":[97,205],\"fat\":[73,109],\"fibre\":[45,57]}. Week A's new kcal band reflects the D10 avocado-drop (slightly higher than fd5's old band on the days it touches). Week B, never checked against a per-week band before (fd5.json only ever published ONE combined-week band), now has its own explicit band for the first time.",
+    "options": [
+      "Keep the single old fixed band for both weeks",
+      "Re-band per week from the 5 recomputed day totals (D10, chosen)"
+    ],
+    "recommendation": "As chosen — plan.json.targets is now {A:{w,m}, B:{w,m}}, four independent bands instead of one shared pair.",
+    "status": "resolved-by-default",
+    "resolvedTo": "plan.json.targets holds the 4 recomputed bands; old fd5.json bands preserved only in this decisions-queue entry."
+  },
+  {
+    "id": "D0-027",
+    "topic": "legacy est-flags vs D.prices.ver:0: the '41 each' checksum does not hold exactly — explained",
+    "detail": "The task brief's checksum #6 expects 41=41. Measured: legacy shopping-list.html (54 rows, matches shoppinglist.js's own checksum) has 40 rows with estimateMark=true, not 41. fd5.json D.prices has 41 entries with ver:0. The two sets match 1:1 with ZERO conflicts on the 54 ids they share (matched=54/54) — the count discrepancy (40 vs 41) is fully explained by \"whey\": fd5.prices.whey has ver:0 (an estimate) but whey has NO row in the 54-line legacy shopping list at all (consistent with whey being one of the 5 vestigial/retired ingredients — see retired.json — it was priced speculatively in fd5.json but never actually bought on either shopping list).",
+    "options": [
+      "Report a false '41=41 pass'",
+      "Report the true 40-matched-of-54 + 1-orphan(whey) breakdown (chosen)"
+    ],
+    "recommendation": "validation.json records: 54/54 legacy rows matched fd5.prices.ver with zero conflicts; fd5.prices' 41st ver:0 entry (whey) has no legacy counterpart, fully explained by whey's retired/vestigial status.",
+    "status": "resolved-by-default",
+    "resolvedTo": "validation.json checksum reports 54/54 matched, 0 conflicts, and cites the whey orphan explicitly."
+  },
+  {
+    "id": "D0-028",
+    "topic": "storage.class derivation: provisioning day0 'pill' text -> storage class enum",
+    "detail": "Every one of the 54 non-added ingredients' storage.class comes from provisioning.json's day0[].pill field via a fixed, exhaustive lookup table (verified: exactly 5 distinct pill strings appear across all 54 day0 rows, no others): 'Freeze on day 0'->freeze-day0, 'Buy once'->buy-once, 'Buy frozen'->buy-frozen, 'Day-7 top-up'->topup, 'Buy mixed ripeness'->stagger. This is a clean bijection onto the PLAN §5 enum {buy-once, freeze-day0, buy-frozen, stagger, topup} — every enum value is used, no pill string was left unmapped, and join.js STOPs (does not guess) if an unrecognised pill string is ever encountered. The 3 addedInExtraction ingredients (no day0 row) were assigned class by analogy instead: peppers_frozen='buy-frozen' (its shopping-list tag is 'Freezer aisle', matching every other buy-frozen sibling); sweetheart_cabbage and rapeseed_oil='buy-once' (shopping-list tag 'Store normally', matching every other buy-once sibling with that tag).",
+    "options": [
+      "Derive class from the register's location/life text instead (rejected — less direct than the purpose-built pill field, and the register has no pill-equivalent column)",
+      "Use day0.pill via the 5-value lookup table (chosen)"
+    ],
+    "recommendation": "As chosen — fully mechanical, zero ambiguity encountered in practice (all 54 rows matched one of the 5 known pills).",
+    "status": "resolved-by-default",
+    "resolvedTo": "ingredients.json storage.class populated for all 57 ids; 54 from day0.pill, 3 by documented analogy."
+  },
+  {
+    "id": "D0-029",
+    "topic": "register-map.json methodology: exact-name join, not fuzzy",
+    "detail": "register-map.json was generated by joining provisioning.json's 54 storageRegister[].item strings against fd5.json's spec[id][0] display names with EXACT string equality (===), then hand-verified: 54/54 matched, 0 unmatched, 0 collisions (no two register rows resolved to the same id, no register row failed to resolve). Because the match rate was already 100% on first attempt, no fuzzy step (edit distance, substring, case-folding) was ever invoked or needed — recorded here per the task brief's instruction to log 'any ... register-mapping judgment calls', even though the outcome required none.",
+    "options": [
+      "Fuzzy-match any near-misses (not needed — there were none)",
+      "Exact match only (chosen, and sufficient)"
+    ],
+    "recommendation": "No further action; the join is airtight.",
+    "status": "resolved-by-default",
+    "resolvedTo": "register-map.json's 54 entries are all exact-name matches; see tools/extract/register-map.json's own header comment."
+  },
+  {
+    "id": "D0-030",
+    "topic": "ingredients.json name.canonical heuristic",
+    "detail": "PLAN §5 specifies name:{display, short, canonical} but does not define how 'canonical' differs from 'display' beyond implying a plainer form. join.js derives canonical as the display name truncated at its first comma or open-parenthesis (e.g. 'Greek yoghurt, 0% fat' -> 'Greek yoghurt'; 'Cheddar, reduced fat (~14%)' -> 'Cheddar'; 'Extra virgin olive oil' -> unchanged, no comma/paren present). This is a deterministic, documented rule applied uniformly to all 57 ingredients, not a per-item judgment call — flagged here because no source file defines a third name variant explicitly.",
+    "options": [
+      "Leave canonical === display (loses the distinction PLAN §5 implies)",
+      "Derive via comma/paren truncation (chosen)"
+    ],
+    "recommendation": "Revisit in Phase 1/2 if the dashboard's search/filter UI needs a different canonicalisation rule (e.g. singular/plural normalisation).",
+    "status": "open",
+    "resolvedTo": null
+  },
+  {
+    "id": "D0-031",
+    "topic": "sku.verifiedOn is null for all 57 ingredients",
+    "detail": "PLAN §5 schema includes sku.verifiedOn (a date). None of the four raw extractions (fd5.json, methods.json, provisioning.json, shoppinglist.json) carry any price-verification timestamp anywhere — shoppinglist.json's rows have no date field, and provisioning.json's provenance notes are undated prose. join.js sets verifiedOn:null for every ingredient rather than inventing a date (e.g. the extraction date or shoppinglist.html's file date). D4 in PLAN.md names a Phase-2 'price re-verification tracker' extra, which is presumably how this field gets populated going forward.",
+    "options": [
+      "Backfill with the shopping list's known file date (Aug 3) as a proxy 'verified on' date (rejected — conflates 'the list was authored' with 'this specific price was checked at the till', which is what the field is for)",
+      "Leave null (chosen)"
+    ],
+    "recommendation": "Populate verifiedOn only from real future price-check events (the localStorage priceChecks mechanism in §5's runtime state), not from extraction-time guesses.",
+    "status": "open",
+    "resolvedTo": null
+  },
+  {
+    "id": "D0-032",
+    "topic": "prep.json op-ingredient extraction methodology (hand-verified, not fuzzy prose parsing)",
+    "detail": "methods.json's Sunday-session ops carry only free prose bodies (clock/title/body/kit) — no structured per-op ingredient list; that structure does not exist anywhere upstream (methods.js, per CONTRACT.md, is out of scope for join.js to modify or re-parse beyond its own output). join.js's OP_INGREDIENTS table hand-extracts every literal '<number> g <ingredient>' mention from all 25 op bodies (13 Week A + 12 Week B) against the 57 tracked ingredient ids, using exact keyword identification (not fuzzy/edit-distance matching) verified against each op's own text, reproduced verbatim in this file's source comments. Two explicit, non-guessed conversions were applied: egg counts ('4 medium eggs') were converted to grams via fd5.spec.egg's own stated household-unit weight (50g/egg) — a data-stated conversion, not an assumption. Seasoning/spice-blend/stock mentions with no gram figure (chipotles in adobo, curry powder, stock powder, bay leaf, etc.) were omitted rather than assigned an invented gram figure, consistent with fd5.json's own treatment of seasonings as untracked 'freebies'.",
+    "options": [
+      "Regex-extract all '<number> g <word>' patterns generically and fuzzy-match the word against ingredient names (rejected — risk of false positives on seasoning words, e.g. matching 'onion powder' to 'onion')",
+      "Hand-verify every op body's ingredient mentions against the 57-id ingredient list (chosen)"
+    ],
+    "recommendation": "As chosen. If Phase 1's methods rewrite adds structured per-op ingredient data to methods.js's own output, this hand-built table should be retired in favour of reading it directly.",
+    "status": "resolved-by-default",
+    "resolvedTo": "prep.json ops[].ingredients populated for 12/25 ops (the ones with an explicit gram figure); the other 13 have ingredients:[] (process-only steps: oven preheat, portioning, cooling, jar-making with tsp/tbsp-only seasoning quantities)."
+  },
+  {
+    "id": "D0-033",
+    "topic": "Week B Sunday session totalMin: derived clock total (75 min) vs theme prose ('eighty minutes')",
+    "detail": "methods.json's Week B sunday.theme reads 'one session, eighty minutes — lighter than Week A', but the session's own last op clock is '1:15' (75 minutes elapsed at the start of the final 'Portion, label, and check the freezer' op, which itself takes a few more minutes to complete). prep.json's totalMin is computed mechanically from the last op's clock timestamp (75), not parsed from the English-words prose figure in theme text (which would require number-word parsing not needed anywhere else in this codebase). The 5-minute gap is consistent with the final op's own unstated duration, not a data error.",
+    "options": [
+      "Parse 'eighty minutes' out of the theme prose via a number-words dictionary and use 80 (adds a fragile, single-use parser for one field)",
+      "Use the clock-derived total (75) and keep theme prose verbatim alongside it (chosen)"
+    ],
+    "recommendation": "No action needed — both figures are preserved (totalMin=75 is derived/objective, sessionName carries the original 'eighty minutes' prose verbatim).",
+    "status": "resolved-by-default",
+    "resolvedTo": "prep.json[1].totalMin=75; prep.json[1].sessionName='one session, eighty minutes — lighter than Week A' (verbatim)."
+  },
+  {
+    "id": "D0-034",
+    "topic": "calendar.json day-0 body text adapted for the a-twice variant",
+    "detail": "The a+b defrostCalendar's day-0 'THE BIG SHOP' body text describes buying for Week A immediately plus freezing stock for Week B later. For the a-twice variant this op is reused (same kept-out items: chicken 770g, chicken breast mince 140g — both correct for pass 1's Sunday session regardless of what happens in week 2) but its body text has an appended clarifying sentence noting the canonical FD5-Shopping-List.html basket buys double quantities of Week-A-only ingredients to cover both passes. This is prose annotation only; no item/gram figures were changed.",
+    "options": [
+      "Leave the a+b body text completely unmodified under the a-twice variant (would read as if buying for a genuine Week B, misleading)",
+      "Append a short clarifying sentence (chosen)"
+    ],
+    "recommendation": "As chosen.",
+    "status": "resolved-by-default",
+    "resolvedTo": "calendar.json's a-twice day-0 entry body = a+b's original text + one appended sentence; item list unchanged."
+  }
+]

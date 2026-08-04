@@ -1,0 +1,2717 @@
+[
+  {
+    "id": "greek_yog",
+    "name": {
+      "display": "Greek yoghurt, 0% fat",
+      "short": "Fat-free Greek yoghurt",
+      "canonical": "Greek yoghurt"
+    },
+    "aliases": [
+      "Fat-free Greek yoghurt"
+    ],
+    "per100g": {
+      "kcal": 57,
+      "protein": 10.3,
+      "fat": 0.2,
+      "carb": 4,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": null,
+      "unitSingular": "",
+      "unitPlural": ""
+    },
+    "aisle": "Dairy & chilled",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Fridge",
+      "note": "Two 1 kg tubs. Open one per week and it works — open both and the second is off by day 12. Check the date at the shelf; reject anything under 16 days.",
+      "life": {
+        "prose": "2–3 weeks sealed · 5–7 days open",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Fat free Greek style yoghurt, 1 kg",
+      "packG": 1000,
+      "price": 2.1,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": "skyr"
+    }
+  },
+  {
+    "id": "skyr",
+    "name": {
+      "display": "Skyr, plain natural",
+      "short": "Fat-free Greek yoghurt",
+      "canonical": "Skyr"
+    },
+    "aliases": [
+      "Fat-free Greek yoghurt"
+    ],
+    "per100g": {
+      "kcal": 63,
+      "protein": 11,
+      "fat": 0.2,
+      "carb": 4,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": null,
+      "unitSingular": "",
+      "unitPlural": ""
+    },
+    "aisle": "Dairy & chilled",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Fridge",
+      "note": "Two tubs, same rule. Week B uses nearly twice what Week A does.",
+      "life": {
+        "prose": "2–3 weeks sealed · 5–7 days open",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Fat free Greek style yoghurt, 1 kg",
+      "packG": 1000,
+      "price": 2.1,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": "greek_yog"
+    }
+  },
+  {
+    "id": "cottage",
+    "name": {
+      "display": "Cottage cheese, natural",
+      "short": "Cottage cheese",
+      "canonical": "Cottage cheese"
+    },
+    "aliases": [
+      "Cottage cheese"
+    ],
+    "per100g": {
+      "kcal": 79,
+      "protein": 12.6,
+      "fat": 1.8,
+      "carb": 3.6,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": null,
+      "unitSingular": "",
+      "unitPlural": ""
+    },
+    "aisle": "Dairy & chilled",
+    "freebie": false,
+    "storage": {
+      "class": "topup",
+      "location": "Fridge",
+      "note": "The shortest-dated thing in the chiller. One 300 g tub on day 0, one on day 7 — buying both up front is the single most likely thing to go off on you.",
+      "life": {
+        "prose": "2 weeks sealed · 5 days open",
+        "sealedDays": 14,
+        "openDays": 5,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "British natural cottage cheese, 300 g",
+      "packG": 300,
+      "price": 1.65,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "cheddar_rf",
+    "name": {
+      "display": "Cheddar, reduced fat (~14%)",
+      "short": "Reduced-fat cheddar",
+      "canonical": "Cheddar"
+    },
+    "aliases": [
+      "Reduced-fat cheddar"
+    ],
+    "per100g": {
+      "kcal": 251,
+      "protein": 30,
+      "fat": 14,
+      "carb": 0.5,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": 18,
+      "unitSingular": "thin slice",
+      "unitPlural": "thin slices"
+    },
+    "aisle": "Dairy & chilled",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Fridge",
+      "note": "Block, not slices. Blocks keep three times as long and cost less per gram.",
+      "life": {
+        "prose": "3–4 weeks",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "S",
+      "product": "Lighter mature cheddar block, 400 g",
+      "packG": 400,
+      "price": 3.25,
+      "estimate": true,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "parmesan",
+    "name": {
+      "display": "Parmesan, finely grated",
+      "short": "Parmesan",
+      "canonical": "Parmesan"
+    },
+    "aliases": [
+      "Parmesan"
+    ],
+    "per100g": {
+      "kcal": 402,
+      "protein": 36,
+      "fat": 29,
+      "carb": 0,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": 7.5,
+      "unitSingular": "tbsp",
+      "unitPlural": "tbsp"
+    },
+    "aisle": "Dairy & chilled",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Fridge",
+      "note": "Hard cheese. Genuinely not a problem.",
+      "life": {
+        "prose": "Months",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "S",
+      "product": "Italian hard cheese, grated, 100 g",
+      "packG": 100,
+      "price": 1.3,
+      "estimate": true,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "mozzarella",
+    "name": {
+      "display": "Mozzarella, reduced fat, block",
+      "short": "Mozzarella",
+      "canonical": "Mozzarella"
+    },
+    "aliases": [
+      "Mozzarella"
+    ],
+    "per100g": {
+      "kcal": 254,
+      "protein": 24.3,
+      "fat": 16,
+      "carb": 2.8,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": 125,
+      "unitSingular": "ball",
+      "unitPlural": "balls"
+    },
+    "aisle": "Dairy & chilled",
+    "freebie": false,
+    "storage": {
+      "class": "freeze-day0",
+      "location": "Freezer → fridge",
+      "note": "One 250 g block, opened twice eight days apart — it will not survive that. Cut it in half on day 0 and freeze one half. Mozzarella freezes badly for salad and perfectly for melting, which is all we do with it.",
+      "life": {
+        "prose": "3 weeks sealed · 4 days open",
+        "sealedDays": 21,
+        "openDays": 4,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "S",
+      "product": "Reduced-fat mozzarella block, 250 g",
+      "packG": 250,
+      "price": 2.25,
+      "estimate": true,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "egg",
+    "name": {
+      "display": "Eggs, medium, shell off",
+      "short": "Eggs",
+      "canonical": "Eggs"
+    },
+    "aliases": [
+      "Eggs"
+    ],
+    "per100g": {
+      "kcal": 143,
+      "protein": 12.6,
+      "fat": 9.9,
+      "carb": 0.7,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "Shelled",
+      "householdUnitG": 50,
+      "unitSingular": "egg",
+      "unitPlural": "eggs"
+    },
+    "aisle": "Protein counter",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Fridge",
+      "note": "52 eggs. Five boxes. They outlast the plan comfortably — the only issue is shelf space.",
+      "life": {
+        "prose": "3–4 weeks",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "S",
+      "product": "Large free-range eggs, box of 12",
+      "packG": 600,
+      "price": 3.35,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "oats",
+    "name": {
+      "display": "Porridge oats",
+      "short": "Porridge oats",
+      "canonical": "Porridge oats"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 379,
+      "protein": 13.2,
+      "fat": 6.5,
+      "carb": 67.7,
+      "fibre": 10.1
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 9,
+      "unitSingular": "tbsp",
+      "unitPlural": "tbsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "",
+      "life": {
+        "prose": "Months",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Porridge oats, 1 kg",
+      "packG": 1000,
+      "price": 1.29,
+      "estimate": true,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "chia",
+    "name": {
+      "display": "Chia seeds",
+      "short": "Chia seeds",
+      "canonical": "Chia seeds"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 486,
+      "protein": 16.5,
+      "fat": 30.7,
+      "carb": 42.1,
+      "fibre": 34.4
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 4,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "",
+      "life": {
+        "prose": "Months",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Chia seeds, 300 g",
+      "packG": 300,
+      "price": 2.75,
+      "estimate": true,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "brown_rice",
+    "name": {
+      "display": "Brown rice, long grain",
+      "short": "Brown rice",
+      "canonical": "Brown rice"
+    },
+    "aliases": [
+      "Brown rice"
+    ],
+    "per100g": {
+      "kcal": 362,
+      "protein": 7.5,
+      "fat": 2.9,
+      "carb": 76,
+      "fibre": 3.4
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 14,
+      "unitSingular": "tbsp",
+      "unitPlural": "tbsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Dry weight. COOKED rice is the exception — never more than three days in the fridge, and cooled fast. That's why each week cooks its own.",
+      "life": {
+        "prose": "Years",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Brown basmati rice, 1 kg",
+      "packG": 1000,
+      "price": 1.85,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "panko",
+    "name": {
+      "display": "Panko breadcrumbs",
+      "short": "Panko breadcrumbs",
+      "canonical": "Panko breadcrumbs"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 380,
+      "protein": 12,
+      "fat": 4,
+      "carb": 72,
+      "fibre": 4
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 7,
+      "unitSingular": "tbsp",
+      "unitPlural": "tbsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "",
+      "life": {
+        "prose": "Months",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "S",
+      "product": "Panko breadcrumbs, 150 g",
+      "packG": 150,
+      "price": 1.5,
+      "estimate": true,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "edamame_pasta",
+    "name": {
+      "display": "Edamame spaghetti",
+      "short": "Red lentil penne",
+      "canonical": "Edamame spaghetti"
+    },
+    "aliases": [
+      "Red lentil penne"
+    ],
+    "per100g": {
+      "kcal": 356,
+      "protein": 43.5,
+      "fat": 6.2,
+      "carb": 43.1,
+      "fibre": 22.7
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": null,
+      "unitSingular": "",
+      "unitPlural": ""
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Week A only.",
+      "life": {
+        "prose": "Months",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "S",
+      "product": "Red lentil penne, 250 g",
+      "packG": 250,
+      "price": 1.9,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "lc_tortilla",
+    "name": {
+      "display": "Tortilla, high-protein low-carb",
+      "short": "Low-carb wraps",
+      "canonical": "Tortilla"
+    },
+    "aliases": [
+      "Low-carb wraps"
+    ],
+    "per100g": {
+      "kcal": 240,
+      "protein": 13.5,
+      "fat": 8,
+      "carb": 42.5,
+      "fibre": 22
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": 45,
+      "unitSingular": "tortilla",
+      "unitPlural": "tortillas"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "freeze-day0",
+      "location": "Freezer",
+      "note": "Three packs, and only one gets opened at a time. Freeze two on day 0; they thaw in fifteen minutes on the counter.",
+      "life": {
+        "prose": "3 weeks sealed · 1 week open",
+        "sealedDays": 21,
+        "openDays": 7,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "S",
+      "product": "Mission Carb Balance Original Wraps ×4, 200 g",
+      "packG": 200,
+      "price": 1.6,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "seeded_bread",
+    "name": {
+      "display": "Seeded low-carb loaf",
+      "short": "Seeded low-carb loaf",
+      "canonical": "Seeded low-carb loaf"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 279,
+      "protein": 19.5,
+      "fat": 14.5,
+      "carb": 25,
+      "fibre": 14.5
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": 45,
+      "unitSingular": "slice",
+      "unitPlural": "slices"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "freeze-day0",
+      "location": "Freezer → toaster",
+      "note": "Freeze the second loaf whole on day 0 and toast slices straight from frozen — no defrosting, and it toasts better than fresh does.",
+      "life": {
+        "prose": "7 days · 3 months frozen",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 7
+      }
+    },
+    "sku": {
+      "shop": "S",
+      "product": "Allinson's Soya & Linseed Seeded Bread, 750 g",
+      "packG": 750,
+      "price": 1.5,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "chicken",
+    "name": {
+      "display": "Chicken breast, skinless",
+      "short": "Chicken breast",
+      "canonical": "Chicken breast"
+    },
+    "aliases": [
+      "Chicken breast"
+    ],
+    "per100g": {
+      "kcal": 106,
+      "protein": 24,
+      "fat": 1.1,
+      "carb": 0,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "Raw",
+      "householdUnitG": 175,
+      "unitSingular": "breast",
+      "unitPlural": "breasts"
+    },
+    "aisle": "Protein counter",
+    "freebie": false,
+    "storage": {
+      "class": "freeze-day0",
+      "location": "Freezer → fridge",
+      "note": "Split at the till: 770 g stays out for Week A's Sunday roast, 1,270 g goes straight to the freezer in one bag. Down to the fridge on the Friday night before Week B.",
+      "life": {
+        "prose": "2 days fresh · 6 months frozen",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 2
+      }
+    },
+    "sku": {
+      "shop": "S",
+      "product": "Frozen chicken breast fillets, 1 kg (Hank & Joes or similar)",
+      "packG": 1000,
+      "price": 5,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "chicken_mince",
+    "name": {
+      "display": "Chicken breast mince, 2-3% fat",
+      "short": "Chicken breast mince",
+      "canonical": "Chicken breast mince"
+    },
+    "aliases": [
+      "Chicken breast mince"
+    ],
+    "per100g": {
+      "kcal": 110,
+      "protein": 23.5,
+      "fat": 2,
+      "carb": 0,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "Raw",
+      "householdUnitG": null,
+      "unitSingular": "",
+      "unitPlural": ""
+    },
+    "aisle": "Protein counter",
+    "freebie": false,
+    "storage": {
+      "class": "freeze-day0",
+      "location": "Freezer → fridge",
+      "note": "Week A only, 140 g, and it's Monday's dinner — so this one comes down on day 0 and gets used before it needs freezing at all.",
+      "life": {
+        "prose": "2 days fresh · 3 months frozen",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 2
+      }
+    },
+    "sku": {
+      "shop": "S",
+      "product": "British chicken breast mince, 500 g",
+      "packG": 500,
+      "price": 4.25,
+      "estimate": true,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "beef_mince",
+    "name": {
+      "display": "Beef mince, 5% fat",
+      "short": "Beef mince, 5%",
+      "canonical": "Beef mince"
+    },
+    "aliases": [
+      "Beef mince, 5%"
+    ],
+    "per100g": {
+      "kcal": 137,
+      "protein": 21,
+      "fat": 5,
+      "carb": 0,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "Raw",
+      "householdUnitG": null,
+      "unitSingular": "",
+      "unitPlural": ""
+    },
+    "aisle": "Protein counter",
+    "freebie": false,
+    "storage": {
+      "class": "freeze-day0",
+      "location": "Freezer → fridge",
+      "note": "Three bags: 322 g for Week A, then 255 g koftas and 255 g smash for Week B's Thursday. Freeze all three; move each down the night before.",
+      "life": {
+        "prose": "2 days fresh · 3 months frozen",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 2
+      }
+    },
+    "sku": {
+      "shop": "S",
+      "product": "British beef mince 5% fat, 1 kg",
+      "packG": 1000,
+      "price": 8.5,
+      "estimate": true,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "beef_steak",
+    "name": {
+      "display": "Sirloin steak, lean, trimmed",
+      "short": "Rump or sirloin steak",
+      "canonical": "Sirloin steak"
+    },
+    "aliases": [
+      "Rump or sirloin steak"
+    ],
+    "per100g": {
+      "kcal": 130,
+      "protein": 21.5,
+      "fat": 4.5,
+      "carb": 0,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "Raw",
+      "householdUnitG": 180,
+      "unitSingular": "steak",
+      "unitPlural": "steaks"
+    },
+    "aisle": "Protein counter",
+    "freebie": false,
+    "storage": {
+      "class": "freeze-day0",
+      "location": "Freezer → fridge",
+      "note": "Week A Thursday only. Freeze on day 0, down on Wednesday night.",
+      "life": {
+        "prose": "3 days fresh · 6 months frozen",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 3
+      }
+    },
+    "sku": {
+      "shop": "S",
+      "product": "British beef rump steak, ~400 g",
+      "packG": 400,
+      "price": 5.5,
+      "estimate": true,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "turkey_mince",
+    "name": {
+      "display": "Turkey breast mince, 5% fat",
+      "short": "Turkey breast mince",
+      "canonical": "Turkey breast mince"
+    },
+    "aliases": [
+      "Turkey breast mince"
+    ],
+    "per100g": {
+      "kcal": 132,
+      "protein": 21.5,
+      "fat": 5,
+      "carb": 0,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "Raw",
+      "householdUnitG": null,
+      "unitSingular": "",
+      "unitPlural": ""
+    },
+    "aisle": "Protein counter",
+    "freebie": false,
+    "storage": {
+      "class": "freeze-day0",
+      "location": "Freezer → fridge",
+      "note": "120 g for Week A's bolognese, 280 g for Week B's stew. Both go in Sunday prep, so each only needs to be down by the Saturday night.",
+      "life": {
+        "prose": "2 days fresh · 3 months frozen",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 2
+      }
+    },
+    "sku": {
+      "shop": "S",
+      "product": "British turkey breast mince 5%, 500 g",
+      "packG": 500,
+      "price": 4.5,
+      "estimate": true,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "salmon",
+    "name": {
+      "display": "Salmon fillet, skinless",
+      "short": "Salmon fillets",
+      "canonical": "Salmon fillet"
+    },
+    "aliases": [
+      "Salmon fillets"
+    ],
+    "per100g": {
+      "kcal": 208,
+      "protein": 20.4,
+      "fat": 13.6,
+      "carb": 0,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "Raw",
+      "householdUnitG": 130,
+      "unitSingular": "fillet",
+      "unitPlural": "fillets"
+    },
+    "aisle": "Protein counter",
+    "freebie": false,
+    "storage": {
+      "class": "freeze-day0",
+      "location": "Freezer",
+      "note": "Buy frozen fillets, not fresh. 440 g across the fortnight and all of it is cooked from defrosted — there is no advantage to fresh here and a real cost.",
+      "life": {
+        "prose": "2 days fresh · 3 months frozen",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 2
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Salmon fillets, frozen, 2 × 220 g",
+      "packG": 220,
+      "price": 4.35,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "tilapia",
+    "name": {
+      "display": "Catfish or tilapia fillet",
+      "short": "Basa fillets",
+      "canonical": "Catfish or tilapia fillet"
+    },
+    "aliases": [
+      "Basa fillets"
+    ],
+    "per100g": {
+      "kcal": 96,
+      "protein": 20.1,
+      "fat": 1.7,
+      "carb": 0,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "Raw",
+      "householdUnitG": 170,
+      "unitSingular": "fillet",
+      "unitPlural": "fillets"
+    },
+    "aisle": "Protein counter",
+    "freebie": false,
+    "storage": {
+      "class": "freeze-day0",
+      "location": "Freezer",
+      "note": "Frozen basa fillets are the cheap, correct choice. Defrost overnight, dry very well — frozen white fish holds water and will not crisp otherwise.",
+      "life": {
+        "prose": "2 days fresh · 3 months frozen",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 2
+      }
+    },
+    "sku": {
+      "shop": "S",
+      "product": "Basa fillets, frozen, 500 g",
+      "packG": 500,
+      "price": 3.5,
+      "estimate": true,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "prawns",
+    "name": {
+      "display": "King prawns, peeled",
+      "short": "King prawns",
+      "canonical": "King prawns"
+    },
+    "aliases": [
+      "King prawns"
+    ],
+    "per100g": {
+      "kcal": 85,
+      "protein": 20.1,
+      "fat": 1,
+      "carb": 0,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "Raw",
+      "householdUnitG": 6,
+      "unitSingular": "prawn",
+      "unitPlural": "prawns"
+    },
+    "aisle": "Protein counter",
+    "freebie": false,
+    "storage": {
+      "class": "buy-frozen",
+      "location": "Freezer",
+      "note": "Buy frozen. 95 g in the whole fortnight — a bag lasts months and defrosts in 10 minutes under cold water.",
+      "life": {
+        "prose": "3 months frozen",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "S",
+      "product": "Raw king prawns, frozen, 250 g",
+      "packG": 250,
+      "price": 3.5,
+      "estimate": true,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "black_beans",
+    "name": {
+      "display": "Black beans, tinned",
+      "short": "Black beans",
+      "canonical": "Black beans"
+    },
+    "aliases": [
+      "Black beans"
+    ],
+    "per100g": {
+      "kcal": 132,
+      "protein": 8.9,
+      "fat": 0.5,
+      "carb": 24,
+      "fibre": 8.7
+    },
+    "spec": {
+      "weightState": "Drained",
+      "householdUnitG": 240,
+      "unitSingular": "tin",
+      "unitPlural": "tins"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "",
+      "life": {
+        "prose": "Years",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Black beans in water, 400 g tin (240 g drained)",
+      "packG": 240,
+      "price": 0.5,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "kidney_beans",
+    "name": {
+      "display": "Red kidney beans, tinned",
+      "short": "Red kidney beans",
+      "canonical": "Red kidney beans"
+    },
+    "aliases": [
+      "Red kidney beans"
+    ],
+    "per100g": {
+      "kcal": 127,
+      "protein": 8.7,
+      "fat": 0.5,
+      "carb": 22.8,
+      "fibre": 6.4
+    },
+    "spec": {
+      "weightState": "Drained",
+      "householdUnitG": 240,
+      "unitSingular": "tin",
+      "unitPlural": "tins"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "",
+      "life": {
+        "prose": "Years",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Red kidney beans, 400 g tin (240 g drained)",
+      "packG": 240,
+      "price": 0.5,
+      "estimate": true,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "chickpeas",
+    "name": {
+      "display": "Chickpeas, tinned",
+      "short": "Chickpeas",
+      "canonical": "Chickpeas"
+    },
+    "aliases": [
+      "Chickpeas"
+    ],
+    "per100g": {
+      "kcal": 139,
+      "protein": 7.5,
+      "fat": 2.6,
+      "carb": 22.5,
+      "fibre": 7.6
+    },
+    "spec": {
+      "weightState": "Drained",
+      "householdUnitG": 240,
+      "unitSingular": "tin",
+      "unitPlural": "tins"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Week A only.",
+      "life": {
+        "prose": "Years",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Chickpeas, 400 g tin (240 g drained)",
+      "packG": 240,
+      "price": 0.45,
+      "estimate": true,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "peanut_butter",
+    "name": {
+      "display": "Peanut butter, 100% nuts",
+      "short": "Peanut butter",
+      "canonical": "Peanut butter"
+    },
+    "aliases": [
+      "Peanut butter"
+    ],
+    "per100g": {
+      "kcal": 588,
+      "protein": 25,
+      "fat": 50,
+      "carb": 20,
+      "fibre": 6
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": 16,
+      "unitSingular": "tbsp",
+      "unitPlural": "tbsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Stir it; 100% nut butters separate.",
+      "life": {
+        "prose": "Months",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Smooth peanut butter, 1 kg",
+      "packG": 1000,
+      "price": 3.99,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "coconut_des",
+    "name": {
+      "display": "Coconut, desiccated unsweetened",
+      "short": "Desiccated coconut",
+      "canonical": "Coconut"
+    },
+    "aliases": [
+      "Desiccated coconut"
+    ],
+    "per100g": {
+      "kcal": 660,
+      "protein": 6.9,
+      "fat": 65,
+      "carb": 24,
+      "fibre": 16.3
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 4,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "",
+      "life": {
+        "prose": "Months",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Desiccated coconut, unsweetened, 200 g",
+      "packG": 200,
+      "price": 1.15,
+      "estimate": true,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "pumpkin_seeds",
+    "name": {
+      "display": "Pumpkin seeds",
+      "short": "Pumpkin seeds",
+      "canonical": "Pumpkin seeds"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 559,
+      "protein": 30,
+      "fat": 49,
+      "carb": 11,
+      "fibre": 6
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 9,
+      "unitSingular": "tbsp",
+      "unitPlural": "tbsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "",
+      "life": {
+        "prose": "Months",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Pumpkin seeds, 200 g",
+      "packG": 200,
+      "price": 1.8,
+      "estimate": true,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "egusi",
+    "name": {
+      "display": "Egusi, ground melon seed",
+      "short": "Egusi",
+      "canonical": "Egusi"
+    },
+    "aliases": [
+      "Egusi"
+    ],
+    "per100g": {
+      "kcal": 590,
+      "protein": 28,
+      "fat": 48,
+      "carb": 15,
+      "fibre": 4
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 10,
+      "unitSingular": "tbsp",
+      "unitPlural": "tbsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Freezer, once opened",
+      "note": "Ground melon seed is high in oil and goes rancid at room temperature. Keep the bag in the freezer and use it from frozen.",
+      "life": {
+        "prose": "Months",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "X",
+      "product": "Ground melon seed (egusi), 250 g",
+      "packG": 250,
+      "price": 3.5,
+      "estimate": true,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "pineapple",
+    "name": {
+      "display": "Pineapple",
+      "short": "Pineapple chunks",
+      "canonical": "Pineapple"
+    },
+    "aliases": [
+      "Pineapple chunks"
+    ],
+    "per100g": {
+      "kcal": 50,
+      "protein": 0.5,
+      "fat": 0.1,
+      "carb": 13,
+      "fibre": 1.4
+    },
+    "spec": {
+      "weightState": "Flesh only",
+      "householdUnitG": 75,
+      "unitSingular": "thick ring",
+      "unitPlural": "thick rings"
+    },
+    "aisle": "Produce",
+    "freebie": false,
+    "storage": {
+      "class": "topup",
+      "location": "Fridge",
+      "note": "Frozen would work but costs more here, and Week B's big 460 g use falls on day 9 anyway. One pack on day 0, the rest on day 7.",
+      "life": {
+        "prose": "4 days cut",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 4
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Pineapple chunks in juice, 425 g tin (260 g drained)",
+      "packG": 260,
+      "price": 1.1,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "plantain",
+    "name": {
+      "display": "Plantain, ripe",
+      "short": "Plantain",
+      "canonical": "Plantain"
+    },
+    "aliases": [
+      "Plantain"
+    ],
+    "per100g": {
+      "kcal": 122,
+      "protein": 1.3,
+      "fat": 0.4,
+      "carb": 32,
+      "fibre": 2.3
+    },
+    "spec": {
+      "weightState": "Peeled",
+      "householdUnitG": 130,
+      "unitSingular": "plantain",
+      "unitPlural": "plantains"
+    },
+    "aisle": "Produce",
+    "freebie": false,
+    "storage": {
+      "class": "stagger",
+      "location": "Counter",
+      "note": "Same trick. Buy half yellow-black for Week A and half green for Week B. Never refrigerate a green plantain — it stops ripening and never restarts.",
+      "life": {
+        "prose": "Ripens over 1–2 weeks",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "X",
+      "product": "Ripe plantain, loose",
+      "packG": 500,
+      "price": 1.2,
+      "estimate": true,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "raspberries",
+    "name": {
+      "display": "Raspberries",
+      "short": "Frozen mixed berries",
+      "canonical": "Raspberries"
+    },
+    "aliases": [
+      "Frozen mixed berries"
+    ],
+    "per100g": {
+      "kcal": 52,
+      "protein": 1.2,
+      "fat": 0.7,
+      "carb": 11.9,
+      "fibre": 6.5
+    },
+    "spec": {
+      "weightState": "Fresh or frozen",
+      "householdUnitG": 40,
+      "unitSingular": "handful",
+      "unitPlural": "handfuls"
+    },
+    "aisle": "Produce",
+    "freebie": false,
+    "storage": {
+      "class": "buy-frozen",
+      "location": "Freezer",
+      "note": "Fresh raspberries are £14/kg and last two days. Frozen are a third of that and better in yoghurt — they bleed as they thaw and sweeten the whole pot.",
+      "life": {
+        "prose": "2 days fresh · 12 months frozen",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 2
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Wonky berries mix, 1 kg",
+      "packG": 1000,
+      "price": 2.99,
+      "estimate": true,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": "blueberries"
+    }
+  },
+  {
+    "id": "banana",
+    "name": {
+      "display": "Bananas",
+      "short": "Bananas",
+      "canonical": "Bananas"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 89,
+      "protein": 1.1,
+      "fat": 0.3,
+      "carb": 23,
+      "fibre": 2.6
+    },
+    "spec": {
+      "weightState": "Peeled",
+      "householdUnitG": 110,
+      "unitSingular": "banana",
+      "unitPlural": "bananas"
+    },
+    "aisle": "Produce",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Counter",
+      "note": "Week A only, and only one dish. Buy them green.",
+      "life": {
+        "prose": "5–7 days",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Bananas, loose",
+      "packG": 1000,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "apple",
+    "name": {
+      "display": "Apples",
+      "short": "Apples",
+      "canonical": "Apples"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 52,
+      "protein": 0.3,
+      "fat": 0.2,
+      "carb": 14,
+      "fibre": 2.4
+    },
+    "spec": {
+      "weightState": "Whole, skin on",
+      "householdUnitG": 160,
+      "unitSingular": "apple",
+      "unitPlural": "apples"
+    },
+    "aisle": "Produce",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Fridge",
+      "note": "In the fridge, not the bowl. Room temperature costs you two of the four weeks.",
+      "life": {
+        "prose": "3–4 weeks",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Royal Gala apples, 6 pack",
+      "packG": 900,
+      "price": 1.8,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "blueberries",
+    "name": {
+      "display": "Blueberries",
+      "short": "Frozen mixed berries",
+      "canonical": "Blueberries"
+    },
+    "aliases": [
+      "Frozen mixed berries"
+    ],
+    "per100g": {
+      "kcal": 57,
+      "protein": 0.7,
+      "fat": 0.3,
+      "carb": 14.5,
+      "fibre": 2.4
+    },
+    "spec": {
+      "weightState": "Fresh or frozen",
+      "householdUnitG": 40,
+      "unitSingular": "handful",
+      "unitPlural": "handfuls"
+    },
+    "aisle": "Produce",
+    "freebie": false,
+    "storage": {
+      "class": "buy-frozen",
+      "location": "Freezer",
+      "note": "Same argument, slightly less urgent. Frozen still wins on price.",
+      "life": {
+        "prose": "10 days fresh · 12 months frozen",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 10
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Wonky berries mix, 1 kg",
+      "packG": 1000,
+      "price": 2.99,
+      "estimate": true,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": "raspberries"
+    }
+  },
+  {
+    "id": "sweetcorn",
+    "name": {
+      "display": "Sweetcorn",
+      "short": "Frozen sweetcorn",
+      "canonical": "Sweetcorn"
+    },
+    "aliases": [
+      "Frozen sweetcorn"
+    ],
+    "per100g": {
+      "kcal": 86,
+      "protein": 3.2,
+      "fat": 1.2,
+      "carb": 19,
+      "fibre": 2.7
+    },
+    "spec": {
+      "weightState": "Frozen or tinned",
+      "householdUnitG": 15,
+      "unitSingular": "tbsp",
+      "unitPlural": "tbsp"
+    },
+    "aisle": "Freezer",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Freezer",
+      "note": "",
+      "life": {
+        "prose": "12 months",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Sweetcorn, 1 kg",
+      "packG": 1000,
+      "price": 1.25,
+      "estimate": true,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "cauliflower",
+    "name": {
+      "display": "Cauliflower, riced",
+      "short": "Frozen cauliflower florets",
+      "canonical": "Cauliflower"
+    },
+    "aliases": [
+      "Frozen cauliflower florets"
+    ],
+    "per100g": {
+      "kcal": 25,
+      "protein": 1.9,
+      "fat": 0.3,
+      "carb": 5,
+      "fibre": 2
+    },
+    "spec": {
+      "weightState": "Prepared",
+      "householdUnitG": 600,
+      "unitSingular": "head",
+      "unitPlural": "heads"
+    },
+    "aisle": "Produce",
+    "freebie": false,
+    "storage": {
+      "class": "buy-frozen",
+      "location": "Freezer",
+      "note": "Changed after the price check: frozen FLORETS are £1.50/kg, cheaper than whole heads at £1.19 each, and they skip the worst twenty minutes of Sunday. Blitz them from frozen, in two batches on the two Sundays. Do NOT buy ready-riced — that is £4.83/kg.",
+      "life": {
+        "prose": "12 months frozen · 4 days once riced",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 4
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Cauliflower florets, 1 kg",
+      "packG": 1000,
+      "price": 1.5,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "spinach",
+    "name": {
+      "display": "Spinach, ugu or callaloo",
+      "short": "Frozen leaf spinach",
+      "canonical": "Spinach"
+    },
+    "aliases": [
+      "Frozen leaf spinach"
+    ],
+    "per100g": {
+      "kcal": 23,
+      "protein": 2.9,
+      "fat": 0.4,
+      "carb": 3.6,
+      "fibre": 2.2
+    },
+    "spec": {
+      "weightState": "Raw",
+      "householdUnitG": 30,
+      "unitSingular": "handful",
+      "unitPlural": "handfuls"
+    },
+    "aisle": "Produce",
+    "freebie": false,
+    "storage": {
+      "class": "buy-frozen",
+      "location": "Freezer",
+      "note": "THE BIG ONE. 2.4 kg across the fortnight and bagged spinach is dead in four days. Every single use in both weeks is wilted or cooked — not one is raw. Buy it all frozen. It is cheaper, it is already blanched, and nothing about the plan changes.",
+      "life": {
+        "prose": "4 days fresh · 12 months frozen",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 4
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Whole leaf spinach, 950 g",
+      "packG": 950,
+      "price": 1.5,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "broccoli",
+    "name": {
+      "display": "Broccoli florets",
+      "short": "Frozen broccoli florets",
+      "canonical": "Broccoli florets"
+    },
+    "aliases": [
+      "Frozen broccoli florets"
+    ],
+    "per100g": {
+      "kcal": 34,
+      "protein": 2.8,
+      "fat": 0.4,
+      "carb": 7,
+      "fibre": 2.6
+    },
+    "spec": {
+      "weightState": "Raw",
+      "householdUnitG": 350,
+      "unitSingular": "head",
+      "unitPlural": "heads"
+    },
+    "aisle": "Produce",
+    "freebie": false,
+    "storage": {
+      "class": "buy-frozen",
+      "location": "Freezer",
+      "note": "Borderline — fresh would just about last Week A. But both uses are steamed, so frozen costs nothing and removes a top-up line.",
+      "life": {
+        "prose": "7 days fresh · 12 months frozen",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 7
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Broccoli florets, 900 g",
+      "packG": 900,
+      "price": 1.5,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "okra",
+    "name": {
+      "display": "Okra",
+      "short": "Frozen okra",
+      "canonical": "Okra"
+    },
+    "aliases": [
+      "Frozen okra"
+    ],
+    "per100g": {
+      "kcal": 33,
+      "protein": 1.9,
+      "fat": 0.2,
+      "carb": 7.5,
+      "fibre": 3.2
+    },
+    "spec": {
+      "weightState": "Fresh or frozen",
+      "householdUnitG": 10,
+      "unitSingular": "pod",
+      "unitPlural": "pods"
+    },
+    "aisle": "Produce",
+    "freebie": false,
+    "storage": {
+      "class": "buy-frozen",
+      "location": "Freezer",
+      "note": "Frozen sliced okra is standard and often better — it's picked and frozen young. Straight from the bag into the pot, no defrosting.",
+      "life": {
+        "prose": "4 days fresh · 12 months frozen",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 4
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Whole baby okra, 900 g",
+      "packG": 900,
+      "price": 3.5,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "mushrooms",
+    "name": {
+      "display": "Chestnut mushrooms",
+      "short": "Chestnut mushrooms",
+      "canonical": "Chestnut mushrooms"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 22,
+      "protein": 3.1,
+      "fat": 0.3,
+      "carb": 3.3,
+      "fibre": 1
+    },
+    "spec": {
+      "weightState": "Raw",
+      "householdUnitG": 20,
+      "unitSingular": "mushroom",
+      "unitPlural": "mushrooms"
+    },
+    "aisle": "Produce",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Fridge, paper bag",
+      "note": "Week A only, Monday's dinner. Out of the plastic and into paper the moment you're home.",
+      "life": {
+        "prose": "5–7 days",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Closed cup mushrooms, 400 g",
+      "packG": 400,
+      "price": 1.35,
+      "estimate": true,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "courgette",
+    "name": {
+      "display": "Courgette",
+      "short": "Courgettes",
+      "canonical": "Courgette"
+    },
+    "aliases": [
+      "Courgettes"
+    ],
+    "per100g": {
+      "kcal": 17,
+      "protein": 1.2,
+      "fat": 0.3,
+      "carb": 3.1,
+      "fibre": 1
+    },
+    "spec": {
+      "weightState": "Raw",
+      "householdUnitG": 200,
+      "unitSingular": "courgette",
+      "unitPlural": "courgettes"
+    },
+    "aisle": "Produce",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Fridge",
+      "note": "Week B uses slightly more; use the firmest last.",
+      "life": {
+        "prose": "1–2 weeks",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Naturally wonky courgettes, 1 kg",
+      "packG": 1000,
+      "price": 2.8,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "peppers",
+    "name": {
+      "display": "Red pepper, deseeded",
+      "short": "Red peppers",
+      "canonical": "Red pepper"
+    },
+    "aliases": [
+      "Red peppers"
+    ],
+    "per100g": {
+      "kcal": 31,
+      "protein": 1,
+      "fat": 0.3,
+      "carb": 6,
+      "fibre": 2.1
+    },
+    "spec": {
+      "weightState": "Prepared",
+      "householdUnitG": 150,
+      "unitSingular": "pepper",
+      "unitPlural": "peppers"
+    },
+    "aisle": "Produce",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Fridge",
+      "note": "1.76 kg. They genuinely do last a fortnight in the crisper drawer — check them on day 10 and use the softest first.",
+      "life": {
+        "prose": "2 weeks",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 14
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Savers mixed peppers, 3 pack",
+      "packG": 450,
+      "price": 1.79,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "tomato",
+    "name": {
+      "display": "Tomatoes, ripe",
+      "short": "Salad tomatoes",
+      "canonical": "Tomatoes"
+    },
+    "aliases": [
+      "Salad tomatoes"
+    ],
+    "per100g": {
+      "kcal": 18,
+      "protein": 0.9,
+      "fat": 0.2,
+      "carb": 3.9,
+      "fibre": 1.2
+    },
+    "spec": {
+      "weightState": "Raw",
+      "householdUnitG": 90,
+      "unitSingular": "tomato",
+      "unitPlural": "tomatoes"
+    },
+    "aisle": "Produce",
+    "freebie": false,
+    "storage": {
+      "class": "topup",
+      "location": "Counter, not fridge",
+      "note": "2.4 kg, and the largest single top-up line. Keep them out of the fridge — cold kills the flavour and doesn't extend the life much.",
+      "life": {
+        "prose": "7–10 days",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Salad tomatoes, 400 g",
+      "packG": 400,
+      "price": 0.47,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "passata",
+    "name": {
+      "display": "Passata, plain",
+      "short": "Passata",
+      "canonical": "Passata"
+    },
+    "aliases": [
+      "Passata"
+    ],
+    "per100g": {
+      "kcal": 30,
+      "protein": 1.4,
+      "fat": 0.2,
+      "carb": 6,
+      "fibre": 1.4
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": 15,
+      "unitSingular": "tbsp",
+      "unitPlural": "tbsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard, then fridge",
+      "note": "1.68 kg. Buy four 500 g cartons rather than two big ones — an opened carton is five days, and this is spread across eight different dishes.",
+      "life": {
+        "prose": "Years sealed · 5 days open",
+        "sealedDays": null,
+        "openDays": 5,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Passata, 500 g",
+      "packG": 500,
+      "price": 0.45,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "red_onion",
+    "name": {
+      "display": "Red onion, peeled",
+      "short": "Red onions",
+      "canonical": "Red onion"
+    },
+    "aliases": [
+      "Red onions"
+    ],
+    "per100g": {
+      "kcal": 40,
+      "protein": 1.1,
+      "fat": 0.1,
+      "carb": 9.3,
+      "fibre": 1.7
+    },
+    "spec": {
+      "weightState": "Prepared",
+      "householdUnitG": 130,
+      "unitSingular": "onion",
+      "unitPlural": "onions"
+    },
+    "aisle": "Produce",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cool, dark, not the fridge",
+      "note": "",
+      "life": {
+        "prose": "4–6 weeks",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "British red onions, 1 kg",
+      "packG": 1000,
+      "price": 0.95,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "spring_onion",
+    "name": {
+      "display": "Spring onions, trimmed",
+      "short": "Spring onions",
+      "canonical": "Spring onions"
+    },
+    "aliases": [
+      "Spring onions"
+    ],
+    "per100g": {
+      "kcal": 32,
+      "protein": 1.8,
+      "fat": 0.2,
+      "carb": 7.3,
+      "fibre": 2.6
+    },
+    "spec": {
+      "weightState": "Prepared",
+      "householdUnitG": 15,
+      "unitSingular": "spring onion",
+      "unitPlural": "spring onions"
+    },
+    "aisle": "Produce",
+    "freebie": false,
+    "storage": {
+      "class": "topup",
+      "location": "Fridge, in water",
+      "note": "Stand them in a glass of water like flowers and they'll go a fortnight. Otherwise, day 7.",
+      "life": {
+        "prose": "1 week",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 7
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Salad onions, min 100 g",
+      "packG": 100,
+      "price": 0.69,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "carrot",
+    "name": {
+      "display": "Carrots, peeled",
+      "short": "Carrots",
+      "canonical": "Carrots"
+    },
+    "aliases": [
+      "Carrots"
+    ],
+    "per100g": {
+      "kcal": 41,
+      "protein": 0.9,
+      "fat": 0.2,
+      "carb": 9.6,
+      "fibre": 2.8
+    },
+    "spec": {
+      "weightState": "Prepared",
+      "householdUnitG": 70,
+      "unitSingular": "carrot",
+      "unitPlural": "carrots"
+    },
+    "aisle": "Produce",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Fridge",
+      "note": "Buy them with the tops off.",
+      "life": {
+        "prose": "3–4 weeks",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "British carrots, 1 kg",
+      "packG": 1000,
+      "price": 0.69,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "lettuce",
+    "name": {
+      "display": "Little gem or romaine",
+      "short": "Little gem lettuce",
+      "canonical": "Little gem or romaine"
+    },
+    "aliases": [
+      "Little gem lettuce"
+    ],
+    "per100g": {
+      "kcal": 17,
+      "protein": 1.2,
+      "fat": 0.2,
+      "carb": 3.3,
+      "fibre": 2.1
+    },
+    "spec": {
+      "weightState": "Raw",
+      "householdUnitG": 30,
+      "unitSingular": "handful",
+      "unitPlural": "handfuls"
+    },
+    "aisle": "Produce",
+    "freebie": false,
+    "storage": {
+      "class": "topup",
+      "location": "Fridge",
+      "note": "Whole heads, not bagged leaves. Bagged salad is four days; a whole gem is ten.",
+      "life": {
+        "prose": "7–10 days",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "British little gem lettuce, 2 pack",
+      "packG": 250,
+      "price": 0.77,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "cucumber",
+    "name": {
+      "display": "Cucumber",
+      "short": "Cucumber",
+      "canonical": "Cucumber"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 15,
+      "protein": 0.7,
+      "fat": 0.1,
+      "carb": 3.6,
+      "fibre": 0.5
+    },
+    "spec": {
+      "weightState": "Raw",
+      "householdUnitG": 300,
+      "unitSingular": "cucumber",
+      "unitPlural": "cucumbers"
+    },
+    "aisle": "Produce",
+    "freebie": false,
+    "storage": {
+      "class": "topup",
+      "location": "Fridge",
+      "note": "Week B uses three times what Week A does, so most of this is a day-7 buy anyway.",
+      "life": {
+        "prose": "7–10 days",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Whole cucumber",
+      "packG": 300,
+      "price": 0.99,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "red_cabbage",
+    "name": {
+      "display": "Red cabbage, shredded",
+      "short": "Red cabbage",
+      "canonical": "Red cabbage"
+    },
+    "aliases": [
+      "Red cabbage"
+    ],
+    "per100g": {
+      "kcal": 31,
+      "protein": 1.4,
+      "fat": 0.2,
+      "carb": 7.4,
+      "fibre": 2.1
+    },
+    "spec": {
+      "weightState": "Prepared",
+      "householdUnitG": 40,
+      "unitSingular": "handful",
+      "unitPlural": "handfuls"
+    },
+    "aisle": "Produce",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Fridge",
+      "note": "Buy a whole cabbage, not a shredded bag. It is the best keeper in the fridge and half the price.",
+      "life": {
+        "prose": "3–4 weeks whole",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Red cabbage, each",
+      "packG": 700,
+      "price": 0.85,
+      "estimate": true,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "avocado",
+    "name": {
+      "display": "Avocado",
+      "short": "Avocados",
+      "canonical": "Avocado"
+    },
+    "aliases": [
+      "Avocados"
+    ],
+    "per100g": {
+      "kcal": 160,
+      "protein": 2,
+      "fat": 14.7,
+      "carb": 8.5,
+      "fibre": 6.7
+    },
+    "spec": {
+      "weightState": "Flesh only",
+      "householdUnitG": 140,
+      "unitSingular": "avocado",
+      "unitPlural": "avocados"
+    },
+    "aisle": "Produce",
+    "freebie": false,
+    "storage": {
+      "class": "stagger",
+      "location": "Counter, then fridge",
+      "note": "Down to five after the garnish cut, and now bought as Ripen At Home 4-packs at 37.5p each — which is both the cheapest option and exactly the staggered ripeness this needs. Move each one to the fridge the day it softens; that stops the clock for about four days.",
+      "life": {
+        "prose": "Ripens over 1–2 weeks",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Ripen At Home avocados, 4 pack",
+      "packG": 560,
+      "price": 1.5,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "salsa",
+    "name": {
+      "display": "Tomato salsa, no added sugar",
+      "short": "Tomato salsa",
+      "canonical": "Tomato salsa"
+    },
+    "aliases": [
+      "Tomato salsa"
+    ],
+    "per100g": {
+      "kcal": 30,
+      "protein": 1.5,
+      "fat": 0.2,
+      "carb": 6,
+      "fibre": 1.5
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": 15,
+      "unitSingular": "tbsp",
+      "unitPlural": "tbsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard, then fridge",
+      "note": "Two jars. Opened, it comfortably covers a week.",
+      "life": {
+        "prose": "Months sealed · 2 weeks open",
+        "sealedDays": null,
+        "openDays": 14,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Mild salsa dip, 300 g",
+      "packG": 300,
+      "price": 1.5,
+      "estimate": false,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "olive_oil",
+    "name": {
+      "display": "Extra virgin olive oil",
+      "short": "Extra virgin olive oil",
+      "canonical": "Extra virgin olive oil"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 884,
+      "protein": 0,
+      "fat": 100,
+      "carb": 0,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": 4.5,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard, dark",
+      "note": "",
+      "life": {
+        "prose": "Years",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Extra virgin olive oil, 1 L",
+      "packG": 910,
+      "price": 6.5,
+      "estimate": true,
+      "estimateSource": "provisioning",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "sweetheart_cabbage",
+    "name": {
+      "display": "Sweetheart cabbage",
+      "short": "Sweetheart cabbage",
+      "canonical": "Sweetheart cabbage"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 27,
+      "protein": 1.4,
+      "fat": 0.2,
+      "carb": 5,
+      "fibre": 2.3
+    },
+    "spec": {
+      "weightState": "Prepared",
+      "householdUnitG": null,
+      "unitSingular": "",
+      "unitPlural": ""
+    },
+    "aisle": "Produce",
+    "freebie": false,
+    "addedInExtraction": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Fridge",
+      "note": "Keeps three weeks (shopping-list note). Substitutes for shredded little-gem uses per provisioning provenance; no register row exists (not in the original 54-item register).",
+      "life": {
+        "prose": "Keeps three weeks",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 21
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "British sweetheart cabbage, each ~500 g",
+      "packG": 500,
+      "price": 0.75,
+      "estimate": true,
+      "estimateSource": "extraction-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "peppers_frozen",
+    "name": {
+      "display": "Red pepper, deseeded (frozen sliced)",
+      "short": "Frozen sliced peppers",
+      "canonical": "Red pepper"
+    },
+    "aliases": [
+      "Frozen sliced peppers"
+    ],
+    "per100g": {
+      "kcal": 31,
+      "protein": 1,
+      "fat": 0.3,
+      "carb": 6,
+      "fibre": 2.1
+    },
+    "spec": {
+      "weightState": "Frozen",
+      "householdUnitG": null,
+      "unitSingular": "",
+      "unitPlural": ""
+    },
+    "aisle": "Produce",
+    "freebie": false,
+    "addedInExtraction": true,
+    "storage": {
+      "class": "buy-frozen",
+      "location": "Freezer",
+      "note": "Frozen sliced retail SKU of red pepper, used for all cooked/stewed uses. No dedicated register row; shelf life assumed identical to sibling frozen vegetables (spinach/cauliflower/broccoli/okra all register at 12 months frozen).",
+      "life": {
+        "prose": "12 months frozen (assumed, matching sibling frozen veg)",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": 365,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Sliced mixed peppers, 500 g",
+      "packG": 500,
+      "price": 1.25,
+      "estimate": true,
+      "estimateSource": "extraction-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "rapeseed_oil",
+    "name": {
+      "display": "Rapeseed oil",
+      "short": "Rapeseed oil",
+      "canonical": "Rapeseed oil"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 884,
+      "protein": 0,
+      "fat": 100,
+      "carb": 0,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": 4.5,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "addedInExtraction": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard, dark",
+      "note": "No dedicated register row; assumed identical shelf life to olive_oil (register: 'Years').",
+      "life": {
+        "prose": "Years (assumed, matching olive_oil)",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Rapeseed oil, 1 L",
+      "packG": 910,
+      "price": 3.5,
+      "estimate": true,
+      "estimateSource": "extraction-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  }
+]

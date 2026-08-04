@@ -1,0 +1,108 @@
+[
+  {
+    "id": "milk",
+    "name": "Milk, semi-skimmed",
+    "per100g": {
+      "kcal": 50,
+      "protein": 3.6,
+      "fibre": 0,
+      "carb": 4.8,
+      "fat": 1.8
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": null,
+      "unitSingular": "",
+      "unitPlural": ""
+    },
+    "price": null,
+    "aisle": "Dairy & chilled",
+    "reason": "Never used in any Week A/B meal (fd5.meals/mealsB) or methods.json card, absent from the storage register, and absent from both shopping lists' price data. D10 ruling: purge vestigial ingredients (milk, egg_white, edamame, mango)."
+  },
+  {
+    "id": "egg_white",
+    "name": "Egg white, liquid carton",
+    "per100g": {
+      "kcal": 52,
+      "protein": 10.9,
+      "fibre": 0,
+      "carb": 0.7,
+      "fat": 0.2
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": 33,
+      "unitSingular": "white",
+      "unitPlural": "whites"
+    },
+    "price": null,
+    "aisle": "Protein counter",
+    "reason": "Never used in any Week A/B meal (fd5.meals/mealsB) or methods.json card, absent from the storage register, and absent from both shopping lists' price data. D10 ruling: purge vestigial ingredients (milk, egg_white, edamame, mango)."
+  },
+  {
+    "id": "whey",
+    "name": "Whey protein, unflavoured",
+    "per100g": {
+      "kcal": 380,
+      "protein": 80,
+      "fibre": 2,
+      "carb": 8,
+      "fat": 4
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 30,
+      "unitSingular": "scoop",
+      "unitPlural": "scoops"
+    },
+    "price": {
+      "shop": "S",
+      "name": "Whey protein, unflavoured 1kg (optional)",
+      "pack": 1000,
+      "price": 20,
+      "ver": 0
+    },
+    "aisle": "Cupboard",
+    "reason": "Never used in any Week A/B meal (fd5.meals/mealsB) or methods.json card, and absent from the 54-row storage register. Has a legacy fd5.prices entry marked '(optional)' but was never purchased on any shopping list (55-row canonical basket or 54-row legacy basket). D10 ruling: purge whey + vestigial ingredients."
+  },
+  {
+    "id": "edamame",
+    "name": "Edamame beans, shelled",
+    "per100g": {
+      "kcal": 121,
+      "protein": 12,
+      "fibre": 5,
+      "carb": 8.9,
+      "fat": 5.2
+    },
+    "spec": {
+      "weightState": "Frozen",
+      "householdUnitG": null,
+      "unitSingular": "",
+      "unitPlural": ""
+    },
+    "price": null,
+    "aisle": "Freezer",
+    "reason": "Never used in any Week A/B meal (fd5.meals/mealsB) or methods.json card, absent from the storage register, and absent from both shopping lists' price data. D10 ruling: purge vestigial ingredients (milk, egg_white, edamame, mango)."
+  },
+  {
+    "id": "mango",
+    "name": "Mango",
+    "per100g": {
+      "kcal": 60,
+      "protein": 0.8,
+      "fibre": 1.6,
+      "carb": 15,
+      "fat": 0.4
+    },
+    "spec": {
+      "weightState": "Flesh only",
+      "householdUnitG": 200,
+      "unitSingular": "mango",
+      "unitPlural": "mangoes"
+    },
+    "price": null,
+    "aisle": "Produce",
+    "reason": "Never used in any Week A/B meal (fd5.meals/mealsB) or methods.json card, absent from the storage register, and absent from both shopping lists' price data. D10 ruling: purge vestigial ingredients (milk, egg_white, edamame, mango)."
+  }
+]

@@ -1,0 +1,4094 @@
+[
+  {
+    "id": "a-d1b",
+    "week": "A",
+    "day": 1,
+    "slot": "breakfast",
+    "name": "Bodega egg & cheese",
+    "origin": "New York",
+    "tag": "fresh",
+    "activeMin": 7,
+    "covers": {
+      "w": {
+        "spinach": 100,
+        "egg": 100,
+        "tomato": 80,
+        "lc_tortilla": 45,
+        "avocado": 35,
+        "cheddar_rf": 15,
+        "olive_oil": 5
+      },
+      "m": {
+        "spinach": 120,
+        "egg": 100,
+        "tomato": 100,
+        "lc_tortilla": 50,
+        "avocado": 45,
+        "cheddar_rf": 20,
+        "olive_oil": 8
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 426,
+        "protein": 27,
+        "netCarb": 14,
+        "fat": 26,
+        "fibre": 15.4
+      },
+      "m": {
+        "kcal": 502,
+        "protein": 31,
+        "netCarb": 16,
+        "fat": 32,
+        "fibre": 17.9
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Non-stick pan, dry, medium-high. Spinach in (100/120 g) with a pinch of salt. 60 seconds, until it collapses. Tip onto a plate and press the water out with the back of a spoon.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Oil into the pan (5/8 g). Beat the eggs (100 g — 2 eggs) with black pepper. Pour in and tilt to coat the base.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Leave 45 seconds untouched. As the edge sets, draw it to the middle with a spatula and tilt again. Twice more — you want three or four soft folds, not scramble.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Spinach over one half, cheddar on top (15/20 g). Fold, lid on, heat OFF. 60 seconds to melt.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 5,
+          "text": "Warm the tortilla (45/50 g) 20 seconds a side in the dry pan while that happens.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 6,
+          "text": "Tomato (80/100 g) sliced thin and salted. Avocado (35/45 g) mashed onto the tortilla. Egg in, tomato on, hot sauce, fold and press.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Wilt and squeeze. Spinach is mostly water and it will steam the eggs into a wet mess otherwise. And take the pan off the heat before the cheese goes on — residual heat melts it and the egg stays tender.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "a-d1l",
+    "week": "A",
+    "day": 1,
+    "slot": "lunch",
+    "name": "Halal cart chicken over rice",
+    "origin": "New York",
+    "tag": "batch",
+    "activeMin": 6,
+    "covers": {
+      "w": {
+        "cauliflower": 130,
+        "chicken": 75,
+        "tomato": 80,
+        "chickpeas": 70,
+        "brown_rice": 55,
+        "lettuce": 70,
+        "greek_yog": 50,
+        "red_onion": 30,
+        "olive_oil": 6
+      },
+      "m": {
+        "cauliflower": 160,
+        "chicken": 100,
+        "tomato": 100,
+        "chickpeas": 90,
+        "brown_rice": 80,
+        "lettuce": 80,
+        "greek_yog": 65,
+        "red_onion": 40,
+        "olive_oil": 8
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 528,
+        "protein": 37,
+        "netCarb": 62,
+        "fat": 11,
+        "fibre": 12.7
+      },
+      "m": {
+        "kcal": 716,
+        "protein": 49,
+        "netCarb": 86,
+        "fat": 15,
+        "fibre": 16.3
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Out of the fridge: Sunday's roast chicken and Sunday's rice-and-cauliflower.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Chicken (75/100 g) chopped into rough 2 cm pieces.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Pan, medium-high, oil (6/8 g). Chicken in with ½ tsp oregano, ½ tsp cumin, ¼ tsp turmeric and salt. 3 minutes, moving it, until the edges catch.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Rice and cauliflower (55/80 g dry cooked + 130/160 g riced) warmed through — 90 seconds in the microwave, or into the pan for the last minute with a splash of water.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 5,
+          "text": "Build: rice base, chicken over, then chickpeas (70/90 g), shredded lettuce (70/80 g) and diced tomato (80/100 g) around the edge. Raw red onion (30/40 g) over.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 6,
+          "text": "White sauce from Sunday's jar (50/65 g yoghurt, grated garlic, lemon, a great deal of black pepper). Hot sauce to taste.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "The spices go on in the pan, not on Sunday. One tray of deliberately plain roast chicken becomes three completely different lunches this week precisely because it was left neutral.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "a-d1d",
+    "week": "A",
+    "day": 1,
+    "slot": "dinner",
+    "name": "Chicken-crust pizza",
+    "origin": "Naples, reconsidered",
+    "tag": "fresh",
+    "activeMin": 25,
+    "covers": {
+      "w": {
+        "passata": 100,
+        "peppers_frozen": 90,
+        "mushrooms": 90,
+        "spinach": 60,
+        "chicken_mince": 65,
+        "lettuce": 40,
+        "mozzarella": 30,
+        "red_onion": 30,
+        "egg": 25,
+        "olive_oil": 14,
+        "parmesan": 12
+      },
+      "m": {
+        "passata": 120,
+        "peppers_frozen": 110,
+        "mushrooms": 110,
+        "spinach": 80,
+        "chicken_mince": 75,
+        "lettuce": 50,
+        "mozzarella": 40,
+        "red_onion": 40,
+        "egg": 25,
+        "olive_oil": 17,
+        "parmesan": 15
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 466,
+        "protein": 38,
+        "netCarb": 15,
+        "fat": 27,
+        "fibre": 6.9
+      },
+      "m": {
+        "kcal": 568,
+        "protein": 45,
+        "netCarb": 18,
+        "fat": 33,
+        "fibre": 8.6
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Oven to 220 °C fan. Tray lined with baking paper.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Base: chicken mince (65/75 g), parmesan (12/15 g), half a beaten egg (25 g), salt, oregano, garlic powder. Mix hard with your hands for a full minute — it should turn tacky and hold together in one mass.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Press onto the paper into a 20 cm round, 5–6 mm thick and even. Wet fingers stop it sticking. Bake 15 minutes.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Meanwhile: pepper (90/110 g), mushrooms (90/110 g) and onion (30/40 g) sliced. Pan, 5 g of the oil, high heat, 5 minutes — until the mushrooms have given up their water and taken colour. Spinach (60/80 g) in at the end to wilt. Season.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 5,
+          "text": "Base out. It should be firm, browned at the rim and lift cleanly off the paper. Blot the surface with kitchen paper.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 6,
+          "text": "Passata (100/120 g) spread thin, mozzarella (30/40 g) torn over, vegetables on. Back in for 8 minutes.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 7,
+          "text": "Salad alongside: lettuce (40/50 g), dressed properly with the remaining oil (14/17 g total across the dish), lemon, salt and plenty of black pepper.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Blot the base. Chicken mince releases water as it bakes, and a wet base steams instead of crisping. Press it thin and even too — a thick middle stays raw while the rim burns.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "a-d1s",
+    "week": "A",
+    "day": 1,
+    "slot": "snack",
+    "name": "Lime & chilli yoghurt with banana",
+    "origin": "New York",
+    "tag": "fresh",
+    "activeMin": 2,
+    "covers": {
+      "w": {
+        "banana": 130,
+        "greek_yog": 110,
+        "chia": 8,
+        "pumpkin_seeds": 6
+      },
+      "m": {
+        "banana": 175,
+        "greek_yog": 140,
+        "chia": 10,
+        "pumpkin_seeds": 8
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 251,
+        "protein": 16,
+        "netCarb": 32,
+        "fat": 6,
+        "fibre": 6.5
+      },
+      "m": {
+        "kcal": 329,
+        "protein": 20,
+        "netCarb": 42,
+        "fat": 8,
+        "fibre": 8.5
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Yoghurt (110/140 g) into a bowl or jar.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Banana (130/175 g — about 1 medium / 1 large) sliced thick, straight on top.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Lime squeezed hard over the banana. Chilli flakes and a real pinch of flaky salt.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Chia (8/10 g) and pumpkin seeds (6/8 g) scattered over.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "The lime is structural, not decoration. It stops the banana browning and cuts the sweetness so this eats as a snack rather than a dessert — the salt does the same job.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "a-d2b",
+    "week": "A",
+    "day": 2,
+    "slot": "breakfast",
+    "name": "Protein pancakes with berries",
+    "origin": "The gym canteen",
+    "tag": "fresh",
+    "activeMin": 10,
+    "covers": {
+      "w": {
+        "skyr": 95,
+        "egg": 50,
+        "blueberries": 60,
+        "raspberries": 60,
+        "oats": 40,
+        "peanut_butter": 8,
+        "olive_oil": 3
+      },
+      "m": {
+        "skyr": 140,
+        "egg": 75,
+        "blueberries": 75,
+        "raspberries": 60,
+        "oats": 58,
+        "peanut_butter": 11,
+        "olive_oil": 4
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 422,
+        "protein": 25,
+        "netCarb": 39,
+        "fat": 15,
+        "fibre": 9.9
+      },
+      "m": {
+        "kcal": 589,
+        "protein": 37,
+        "netCarb": 53,
+        "fat": 22,
+        "fibre": 12.2
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Blitz the oats (40/58 g) to a rough flour, 20 seconds in a blender or bullet.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Add the egg (50/75 g — 1 / 1½), half the skyr (48/70 g), ½ tsp baking powder and a pinch of salt. Blitz 15 seconds to a thick, just-pourable batter. Rest 2 minutes.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Non-stick pan, medium-LOW. Oil (3/4 g) wiped round with kitchen paper.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Drop 3–4 small rounds, 7–8 cm across. Do not make them large. 2 minutes, until bubbles hold their shape on the surface, then flip. 1 minute more.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 5,
+          "text": "Stack. Remaining skyr (47/70 g) on top, berries heaped over (60 g raspberries, 60/75 g blueberries), peanut butter (8/11 g) warmed 10 seconds and drizzled.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Medium-low, and small. High heat browns the outside before the middle sets, and a large pancake made of oats and skyr has nothing structural holding it together when you try to turn it.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "a-d2l",
+    "week": "A",
+    "day": 2,
+    "slot": "lunch",
+    "name": "Chipotle burrito bowl",
+    "origin": "Tex-Mex",
+    "tag": "batch",
+    "activeMin": 5,
+    "covers": {
+      "w": {
+        "cauliflower": 120,
+        "black_beans": 95,
+        "beef_mince": 70,
+        "peppers_frozen": 70,
+        "brown_rice": 40,
+        "salsa": 60,
+        "lettuce": 50,
+        "red_onion": 30,
+        "sweetcorn": 25,
+        "olive_oil": 5
+      },
+      "m": {
+        "cauliflower": 155,
+        "black_beans": 105,
+        "beef_mince": 95,
+        "peppers_frozen": 90,
+        "brown_rice": 70,
+        "salsa": 70,
+        "lettuce": 60,
+        "red_onion": 40,
+        "sweetcorn": 30,
+        "olive_oil": 6
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 522,
+        "protein": 32,
+        "netCarb": 60,
+        "fat": 11,
+        "fibre": 16.6
+      },
+      "m": {
+        "kcal": 715,
+        "protein": 42,
+        "netCarb": 87,
+        "fat": 15,
+        "fibre": 20.3
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Out of the fridge: Sunday's chipotle beef, Sunday's rice-and-cauliflower, Sunday's roast peppers and onion.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Beef (70/95 g) and the peppers and onion (70/90 g + 30/40 g) into a pan on high for 3 minutes, until the edges catch again. The microwave works; the pan is better.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Rice and cauliflower (40/70 g dry cooked + 120/155 g) warmed through alongside.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Build: rice base, beef over one side, black beans (95/105 g) and sweetcorn (25/30 g) the other, salsa (60/70 g) into the middle.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 5,
+          "text": "Shredded lettuce (50/60 g) on LAST, off the heat, with the oil (5/6 g) and lime hard over everything. The salsa is doing the job the guacamole used to.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Cold things after hot things, never before. Lettuce that has sat under hot beef for two minutes is soup, and it takes the rest of the bowl with it.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "a-d2d",
+    "week": "A",
+    "day": 2,
+    "slot": "dinner",
+    "name": "Chicken katsu curry",
+    "origin": "Japan",
+    "tag": "fresh",
+    "activeMin": 22,
+    "covers": {
+      "w": {
+        "broccoli": 140,
+        "cauliflower": 130,
+        "chicken": 85,
+        "carrot": 60,
+        "red_onion": 40,
+        "brown_rice": 30,
+        "panko": 20,
+        "egg": 25,
+        "olive_oil": 6
+      },
+      "m": {
+        "broccoli": 165,
+        "cauliflower": 160,
+        "chicken": 110,
+        "carrot": 70,
+        "red_onion": 50,
+        "brown_rice": 42,
+        "panko": 25,
+        "egg": 25,
+        "olive_oil": 8
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 484,
+        "protein": 36,
+        "netCarb": 53,
+        "fat": 12,
+        "fibre": 10.4
+      },
+      "m": {
+        "kcal": 615,
+        "protein": 45,
+        "netCarb": 68,
+        "fat": 15,
+        "fibre": 12.7
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Oven to 220 °C fan with a baking tray inside to heat.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Sauce first. Onion (40/50 g) and carrot (60/70 g) diced small, into a pan with 3 g of the oil, medium, 6 minutes until soft. 1½ tsp curry powder, ½ tsp garam masala and a pinch of sugar — 60 seconds more. 150 ml stock, simmer 6 minutes.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Chicken (85/110 g) between two sheets of paper, bashed to an even 1 cm. Salt both sides.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Beaten egg (25 g) in one bowl, seasoned panko (20/25 g) in another. Egg, then panko, pressed on firmly.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 5,
+          "text": "Onto the HOT tray, the rest of the oil brushed over the crumb. 18 minutes, turned once at 10.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 6,
+          "text": "Blitz the sauce smooth with a stick blender. It should coat the back of a spoon — loosen with a splash of water if it's gone too far.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 7,
+          "text": "Rice and cauliflower (30/42 g dry + 130/160 g) warmed. Broccoli (140/165 g) steamed 4 minutes, still squeaky.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 8,
+          "text": "Slice the chicken across. Sauce poured BESIDE it, not over.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "The preheated tray is what replaces the deep fryer — the underside starts cooking on contact instead of sitting in its own steam. And blitzing the carrot and onion is what thickens the sauce; there is no flour anywhere in this.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "a-d2s",
+    "week": "A",
+    "day": 2,
+    "slot": "snack",
+    "name": "Suya-spiced eggs & carrots",
+    "origin": "Nigeria",
+    "tag": "batch",
+    "activeMin": 2,
+    "covers": {
+      "w": {
+        "carrot": 100,
+        "egg": 50,
+        "avocado": 25,
+        "peanut_butter": 16
+      },
+      "m": {
+        "carrot": 100,
+        "egg": 75,
+        "avocado": 35,
+        "peanut_butter": 20
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 247,
+        "protein": 12,
+        "netCarb": 10,
+        "fat": 17,
+        "fibre": 5.4
+      },
+      "m": {
+        "kcal": 322,
+        "protein": 16,
+        "netCarb": 11,
+        "fat": 23,
+        "fibre": 6.3
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Sunday's boiled eggs (50/75 g — 1 / 1½), peeled and halved.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Dust the cut faces heavily with suya — ground roasted peanut, chilli, ginger, garlic, stock powder. More than looks sensible.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Dip: peanut butter (16/20 g) loosened with warm water and lemon, mashed together with the avocado (25/35 g) and salt.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Carrot (100 g) cut into batons to scoop with.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Suya is mostly ground peanut, so it needs fat and salt around it to open up. Dry on a cold egg it tastes dusty; against the avocado dip it tastes like the thing you get at a roadside stand.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "a-d3b",
+    "week": "A",
+    "day": 3,
+    "slot": "breakfast",
+    "name": "Nigerian egg sauce with plantain",
+    "origin": "Nigeria",
+    "tag": "fresh",
+    "activeMin": 12,
+    "covers": {
+      "w": {
+        "egg": 150,
+        "tomato": 100,
+        "plantain": 80,
+        "peppers_frozen": 80,
+        "spinach": 60,
+        "red_onion": 40,
+        "olive_oil": 5
+      },
+      "m": {
+        "egg": 175,
+        "tomato": 120,
+        "plantain": 120,
+        "peppers_frozen": 100,
+        "spinach": 80,
+        "red_onion": 50,
+        "olive_oil": 6
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 429,
+        "protein": 24,
+        "netCarb": 35,
+        "fat": 21,
+        "fibre": 6.7
+      },
+      "m": {
+        "kcal": 541,
+        "protein": 29,
+        "netCarb": 49,
+        "fat": 25,
+        "fibre": 8.9
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Plantain (80/120 g) peeled and sliced 1.5 cm thick on the diagonal. Griddle or heavy pan, DRY, high. 3 minutes a side until blackened in patches. Set aside and salt.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Same pan, oil (5/6 g), medium-high. Onion (40/50 g) and pepper (80/100 g), diced, 4 minutes.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Tomato (100/120 g) chopped, plus scotch bonnet to taste and a pinch of stock powder. Cook 4–5 minutes, pressing it down, until it darkens and the oil separates at the edges.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Beat the eggs (150/175 g — 3 / 3½) loosely. Pour in, leave 20 seconds, then draw through in slow ribbons. Off the heat while still glossy.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 5,
+          "text": "Spinach (60/80 g) folded through on the residual heat.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Wait for the oil to separate before the eggs go in. That's the moment the tomato stops being raw and the sauce gets its depth — go early and the whole thing tastes thin and slightly metallic.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "a-d3l",
+    "week": "A",
+    "day": 3,
+    "slot": "lunch",
+    "name": "Efo riro with chicken & jollof",
+    "origin": "Nigeria",
+    "tag": "batch",
+    "activeMin": 6,
+    "covers": {
+      "w": {
+        "spinach": 200,
+        "cauliflower": 110,
+        "passata": 100,
+        "chicken": 85,
+        "peppers_frozen": 70,
+        "brown_rice": 40,
+        "red_onion": 40,
+        "egusi": 12,
+        "olive_oil": 6
+      },
+      "m": {
+        "spinach": 240,
+        "cauliflower": 140,
+        "passata": 120,
+        "chicken": 110,
+        "peppers_frozen": 90,
+        "brown_rice": 55,
+        "red_onion": 50,
+        "egusi": 15,
+        "olive_oil": 8
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 500,
+        "protein": 37,
+        "netCarb": 47,
+        "fat": 15,
+        "fibre": 12
+      },
+      "m": {
+        "kcal": 649,
+        "protein": 47,
+        "netCarb": 62,
+        "fat": 20,
+        "fibre": 15
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Out of the fridge: Sunday's efo riro base and Sunday's jollof.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Base into a pan on medium with a splash of water — it sets hard when cold. 3 minutes.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Chicken (85/110 g) sliced in and warmed through, 2 minutes.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Spinach (200/240 g) is a mountain. Add it in three goes, letting each wilt before the next. It comes down to about a quarter of its volume.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 5,
+          "text": "Jollof (40/55 g dry rice + 110/140 g cauliflower) warmed alongside, covered, 2 minutes.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "The spinach goes in at the plate, not on Sunday. Reheated wilted greens turn grey and bitter; folded fresh into a hot base they stay green and the dish tastes like it was made today.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "a-d3d",
+    "week": "A",
+    "day": 3,
+    "slot": "dinner",
+    "name": "Catfish pepper soup with okra",
+    "origin": "Nigeria",
+    "tag": "fresh",
+    "activeMin": 20,
+    "covers": {
+      "w": {
+        "plantain": 140,
+        "spinach": 120,
+        "tilapia": 100,
+        "okra": 100,
+        "tomato": 80,
+        "peppers_frozen": 60,
+        "prawns": 40,
+        "red_onion": 40,
+        "olive_oil": 6
+      },
+      "m": {
+        "plantain": 185,
+        "spinach": 150,
+        "tilapia": 130,
+        "okra": 120,
+        "tomato": 100,
+        "peppers_frozen": 80,
+        "prawns": 55,
+        "red_onion": 50,
+        "olive_oil": 8
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 463,
+        "protein": 37,
+        "netCarb": 55,
+        "fat": 10,
+        "fibre": 12
+      },
+      "m": {
+        "kcal": 605,
+        "protein": 48,
+        "netCarb": 72,
+        "fat": 13,
+        "fibre": 15.1
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Plantain (140/185 g) sliced thick, dry-griddled 3 minutes a side. Set aside.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Onion (40/50 g) and pepper (60/80 g) into a wide pan with the oil (6/8 g), 4 minutes. Tomato (80/100 g) and scotch bonnet, 3 minutes.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "500 ml stock, 2 tsp pepper soup spice, a bay leaf. Bring to a BARE simmer — never a boil.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Okra (100/120 g) topped and halved, in for 5 minutes.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 5,
+          "text": "Fish (100/130 g) in whole pieces, laid on top. Lid on, 8 minutes. Do not stir it.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 6,
+          "text": "Prawns (40/55 g) in for the last 3 minutes. Spinach (120/150 g) folded through for the last 1.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 7,
+          "text": "Lime at the table. Plantain on the side.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "A bare simmer and no stirring. Catfish and tilapia are soft, and a rolling boil shreds them into the broth — you want whole pieces you can lift out with a spoon.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "a-d3s",
+    "week": "A",
+    "day": 3,
+    "slot": "snack",
+    "name": "Jerk-roasted chickpeas with skyr",
+    "origin": "Jamaica",
+    "tag": "batch",
+    "activeMin": 1,
+    "covers": {
+      "w": {
+        "chickpeas": 110,
+        "skyr": 50,
+        "avocado": 20,
+        "olive_oil": 7
+      },
+      "m": {
+        "chickpeas": 135,
+        "skyr": 70,
+        "avocado": 28,
+        "olive_oil": 9
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 278,
+        "protein": 14,
+        "netCarb": 19,
+        "fat": 13,
+        "fibre": 9.7
+      },
+      "m": {
+        "kcal": 356,
+        "protein": 18,
+        "netCarb": 23,
+        "fat": 17,
+        "fibre": 12.1
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Sunday's jerk chickpeas (110/135 g), straight from the jar. If they've softened, 4 minutes in a hot dry pan brings the crunch back.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Skyr (50/70 g) in a small bowl, mashed with the avocado (20/28 g), lime and salt.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Chickpeas by the handful, dipped.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Store them in a jar with the lid OFF, not a sealed box. Sealed, the residual steam softens them overnight and you lose the rattle, which is the entire point of them.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "a-d4b",
+    "week": "A",
+    "day": 4,
+    "slot": "breakfast",
+    "name": "Steak & egg breakfast sandwich",
+    "origin": "New York",
+    "tag": "fresh",
+    "activeMin": 10,
+    "covers": {
+      "w": {
+        "spinach": 60,
+        "tomato": 60,
+        "egg": 50,
+        "beef_steak": 55,
+        "seeded_bread": 45,
+        "red_onion": 20,
+        "olive_oil": 14
+      },
+      "m": {
+        "spinach": 80,
+        "tomato": 80,
+        "egg": 75,
+        "beef_steak": 58,
+        "seeded_bread": 50,
+        "red_onion": 25,
+        "olive_oil": 17
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 425,
+        "protein": 29,
+        "netCarb": 9,
+        "fat": 28,
+        "fibre": 8.9
+      },
+      "m": {
+        "kcal": 515,
+        "protein": 35,
+        "netCarb": 11,
+        "fat": 35,
+        "fibre": 10.4
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Steak (55/58 g) out of the fridge 10 minutes ahead. Dry it hard with kitchen paper. Salt heavily.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Pan on high until it faintly smokes. 3 g oil. Steak in — 90 seconds, flip, 90 seconds. Onto a board to rest. This is not optional.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Bread (45/50 g) toasting while it rests.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Same pan, heat down to medium, 3 g oil. Onion (20/25 g) 1 minute, spinach (60/80 g) in to wilt, out.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 5,
+          "text": "Remaining oil. Eggs (50/75 g — 1 / 1½) cracked in, lid on, 2 minutes for a set white and a soft yolk.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 6,
+          "text": "Spinach onto the toast, sliced tomato (60/80 g) salted, steak sliced AGAINST the grain, egg on top. The pan juices spooned over — that is what the avocado was covering for.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Dry meat, smoking pan. Steak this thin has about three minutes before it goes grey all the way through — the crust has to form fast, and it cannot form on a wet surface.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "a-d4l",
+    "week": "A",
+    "day": 4,
+    "slot": "lunch",
+    "name": "Turkey bolognese with edamame spaghetti",
+    "origin": "Bologna, reconsidered",
+    "tag": "batch",
+    "activeMin": 8,
+    "covers": {
+      "w": {
+        "passata": 190,
+        "courgette": 150,
+        "turkey_mince": 50,
+        "carrot": 65,
+        "red_onion": 40,
+        "edamame_pasta": 34,
+        "olive_oil": 13,
+        "parmesan": 10
+      },
+      "m": {
+        "passata": 210,
+        "courgette": 180,
+        "turkey_mince": 70,
+        "carrot": 70,
+        "red_onion": 50,
+        "edamame_pasta": 38,
+        "olive_oil": 21,
+        "parmesan": 14
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 467,
+        "protein": 35,
+        "netCarb": 26,
+        "fat": 22,
+        "fibre": 14.4
+      },
+      "m": {
+        "kcal": 612,
+        "protein": 43,
+        "netCarb": 30,
+        "fat": 32,
+        "fibre": 16.2
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Big pan of water on, salted hard.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Sunday's bolognese into a pan on medium with a splash of water, 5 minutes.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Edamame spaghetti (34/38 g) into the boiling water. 6–7 minutes, no more — it goes from firm to mush quickly and there is no rescuing it.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Drain, keeping a mug of the cooking water. Pasta INTO the sauce, not sauce onto pasta.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 5,
+          "text": "Toss hard for 30 seconds with a splash of that water and the oil (13/21 g), until it turns glossy and clings.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 6,
+          "text": "Parmesan (10/14 g) off the heat.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Edamame pasta has no gluten and almost no starch, so it will not emulsify a sauce the way wheat does — the oil and the splash of cooking water are doing that job by force. Skip them and the sauce just sits in a puddle underneath.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "a-d4d",
+    "week": "A",
+    "day": 4,
+    "slot": "dinner",
+    "name": "Smash burger with slaw",
+    "origin": "New York",
+    "tag": "fresh",
+    "activeMin": 14,
+    "covers": {
+      "w": {
+        "red_cabbage": 90,
+        "beef_mince": 72,
+        "tomato": 60,
+        "carrot": 55,
+        "seeded_bread": 45,
+        "lettuce": 40,
+        "greek_yog": 35,
+        "red_onion": 30,
+        "avocado": 30,
+        "cheddar_rf": 16,
+        "olive_oil": 9
+      },
+      "m": {
+        "red_cabbage": 95,
+        "beef_mince": 85,
+        "tomato": 80,
+        "carrot": 65,
+        "seeded_bread": 50,
+        "lettuce": 50,
+        "greek_yog": 45,
+        "red_onion": 40,
+        "avocado": 40,
+        "cheddar_rf": 25,
+        "olive_oil": 13
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 492,
+        "protein": 36,
+        "netCarb": 20,
+        "fat": 26,
+        "fibre": 14
+      },
+      "m": {
+        "kcal": 618,
+        "protein": 44,
+        "netCarb": 23,
+        "fat": 35,
+        "fibre": 16.4
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Slaw first: red cabbage (90/95 g) and carrot (55/65 g) from Sunday, with yoghurt (35/45 g), lemon, mustard, salt and pepper. Leave it to sit.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Beef (72/85 g) into two loose balls. Do not season them. Do not compact them.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Heavy pan, dry, on high for a full 3 minutes. It has to be too hot.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Balls in, and immediately press flat and hard with a spatula for 10 seconds each. Salt the top. 90 seconds — no touching, no moving, no pressing again.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 5,
+          "text": "Scrape underneath with a firm edge to keep the crust attached, flip, cheddar on (16/25 g). 45 seconds.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 6,
+          "text": "Bread (45/50 g) toasted, avocado (30/40 g) mashed on the base. Patties, lettuce (40/50 g), tomato (60/80 g), raw onion (30/40 g).",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "The crust is the whole dish, and it only forms in the first ninety seconds against a dry, screaming pan. Oil in the pan, salt on the raw side, or one early poke and you have lost it.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "a-d4s",
+    "week": "A",
+    "day": 4,
+    "slot": "snack",
+    "name": "Grated apple, cinnamon & coconut yoghurt",
+    "origin": "Caribbean",
+    "tag": "fresh",
+    "activeMin": 3,
+    "covers": {
+      "w": {
+        "apple": 230,
+        "greek_yog": 120,
+        "pumpkin_seeds": 8,
+        "coconut_des": 5
+      },
+      "m": {
+        "apple": 300,
+        "greek_yog": 170,
+        "pumpkin_seeds": 11,
+        "coconut_des": 6
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 266,
+        "protein": 16,
+        "netCarb": 32,
+        "fat": 8,
+        "fibre": 6.8
+      },
+      "m": {
+        "kcal": 354,
+        "protein": 22,
+        "netCarb": 43,
+        "fat": 10,
+        "fibre": 8.8
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Coconut (5/6 g) into a dry pan, medium, 90 seconds, shaken constantly, until it just turns gold. Out of the pan immediately.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Apple (230/300 g — about 1½ / 2 medium) grated coarsely, SKIN ON. Lemon over it straight away.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Fold into the yoghurt (120/170 g) with a full teaspoon of cinnamon and a pinch of salt.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Toasted coconut and pumpkin seeds (8/11 g) over the top.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Skin on. That is most of the fibre in the apple and all of the texture — peeled and grated, this collapses into apple sauce with yoghurt in it.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "a-d5b",
+    "week": "A",
+    "day": 5,
+    "slot": "breakfast",
+    "name": "Callaloo & egg skillet",
+    "origin": "Jamaica",
+    "tag": "fresh",
+    "activeMin": 14,
+    "covers": {
+      "w": {
+        "spinach": 130,
+        "egg": 125,
+        "plantain": 95,
+        "tomato": 80,
+        "black_beans": 45,
+        "red_onion": 30,
+        "olive_oil": 5
+      },
+      "m": {
+        "spinach": 160,
+        "egg": 150,
+        "plantain": 140,
+        "tomato": 100,
+        "black_beans": 55,
+        "red_onion": 40,
+        "olive_oil": 6
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 455,
+        "protein": 26,
+        "netCarb": 42,
+        "fat": 19,
+        "fibre": 10.4
+      },
+      "m": {
+        "kcal": 582,
+        "protein": 32,
+        "netCarb": 59,
+        "fat": 23,
+        "fibre": 13.4
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Plantain (95/140 g) sliced thick on the diagonal, dry-griddled 3 minutes a side until black at the edges. Set aside.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Oil (5/6 g) into a lidded pan, medium. Onion (30/40 g), 3 minutes. Tomato (80/100 g), thyme and scotch bonnet, 4 minutes until it thickens.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Black beans (45/55 g) in. Spinach (130/160 g) in handfuls, each wilting before the next.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Make 2–3 wells with the back of a spoon. Crack the eggs (125/150 g — 2½ / 3) into them. Salt.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 5,
+          "text": "Lid on, heat low, 5 minutes. Whites set, yolks still moving.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 6,
+          "text": "Plantain alongside. Hot sauce.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Wells, not on top. Sitting the eggs down into the greens cooks them in trapped steam and they set evenly — dropped on the surface they slide, spread thin and overcook at the edge long before the middle goes.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "a-d5l",
+    "week": "A",
+    "day": 5,
+    "slot": "lunch",
+    "name": "Chicken shawarma wrap",
+    "origin": "Levant, by way of everywhere",
+    "tag": "batch",
+    "activeMin": 8,
+    "covers": {
+      "w": {
+        "chicken": 95,
+        "red_cabbage": 70,
+        "greek_yog": 60,
+        "cucumber": 60,
+        "carrot": 50,
+        "lc_tortilla": 45,
+        "lettuce": 40,
+        "avocado": 25,
+        "olive_oil": 11
+      },
+      "m": {
+        "chicken": 110,
+        "red_cabbage": 80,
+        "greek_yog": 80,
+        "cucumber": 70,
+        "carrot": 60,
+        "lc_tortilla": 55,
+        "lettuce": 50,
+        "avocado": 35,
+        "olive_oil": 15
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 438,
+        "protein": 38,
+        "netCarb": 22,
+        "fat": 20,
+        "fibre": 15.6
+      },
+      "m": {
+        "kcal": 551,
+        "protein": 46,
+        "netCarb": 26,
+        "fat": 26,
+        "fibre": 19.2
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Slaw: cabbage (70/80 g), carrot (50/60 g) and cucumber (60/70 g) — cucumber deseeded and cut into BATONS, not rounds — with lemon, salt and the oil (11/15 g). Leave 5 minutes.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Chicken (95/110 g) sliced thin. DRY pan, high. 2 minutes, then 1½ tsp shawarma spice and 30 seconds more. No oil — you want char, not fry.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Garlic yoghurt: yoghurt (60/80 g), grated garlic, lemon, salt.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Tortilla (45/55 g), 20 seconds a side in the same dry pan until pliable.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 5,
+          "text": "Build a LINE down the middle, not across the whole surface: yoghurt, chicken, slaw, lettuce (40/50 g), avocado (25/35 g). Fold the bottom up, then roll tight.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Batons, and dress the slaw early. Cucumber rounds go limp and slide out of the far end; batons hold their shape. And five minutes of sitting draws the water out onto the board now rather than into the wrap later.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "a-d5d",
+    "week": "A",
+    "day": 5,
+    "slot": "dinner",
+    "name": "Jerk salmon, rice & red beans",
+    "origin": "Jamaica",
+    "tag": "fresh",
+    "activeMin": 18,
+    "covers": {
+      "w": {
+        "cauliflower": 120,
+        "salmon": 80,
+        "red_cabbage": 80,
+        "kidney_beans": 70,
+        "pineapple": 70,
+        "brown_rice": 45,
+        "spring_onion": 20,
+        "olive_oil": 4
+      },
+      "m": {
+        "cauliflower": 150,
+        "salmon": 105,
+        "red_cabbage": 100,
+        "kidney_beans": 90,
+        "pineapple": 90,
+        "brown_rice": 70,
+        "spring_onion": 25,
+        "olive_oil": 5
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 550,
+        "protein": 30,
+        "netCarb": 61,
+        "fat": 17,
+        "fibre": 11.6
+      },
+      "m": {
+        "kcal": 752,
+        "protein": 40,
+        "netCarb": 87,
+        "fat": 23,
+        "fibre": 15.2
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Rice (45/70 g dry) on with the kidney beans (70/90 g), a sprig of thyme, the spring onion (20/25 g) and a spoonful of coconut in the water. 20 minutes, covered.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Salmon (80/105 g) rubbed with jerk paste and left while the rice cooks.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Pineapple (70/90 g) in thick slices onto a dry griddle, high, 2 minutes a side until it caramelises and marks. Chop.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Slaw: red cabbage (80/100 g), the charred pineapple, lime, salt and the oil (4/5 g).",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 5,
+          "text": "Grill the salmon 10–12 minutes at medium-high, not turned. It's done when it flakes at a light press and is still coral in the middle.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 6,
+          "text": "Cauliflower (120/150 g) stirred through the rice for the last 2 minutes, lid on, to steam.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Char the pineapple. Raw, it is just sweet against an already sweet-hot fish; caramelised, it picks up a bitter edge and that is the thing stopping the whole plate from cloying.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "a-d5s",
+    "week": "A",
+    "day": 5,
+    "slot": "snack",
+    "name": "Elote-style corn cup",
+    "origin": "Street corner",
+    "tag": "fresh",
+    "activeMin": 4,
+    "covers": {
+      "w": {
+        "sweetcorn": 100,
+        "cottage": 80,
+        "greek_yog": 30,
+        "avocado": 20,
+        "olive_oil": 6
+      },
+      "m": {
+        "sweetcorn": 120,
+        "cottage": 110,
+        "greek_yog": 40,
+        "avocado": 25,
+        "olive_oil": 8
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 251,
+        "protein": 17,
+        "netCarb": 21,
+        "fat": 12,
+        "fibre": 4
+      },
+      "m": {
+        "kcal": 324,
+        "protein": 22,
+        "netCarb": 26,
+        "fat": 15,
+        "fibre": 4.9
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Sweetcorn (100/120 g) into a dry pan on high, spread thin. Leave it alone for 2 minutes until it blisters and pops. Shake, 1 minute more.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Cottage cheese (80/110 g) loosened with the yoghurt (30/40 g) and the oil (6/8 g), mashed together with the avocado (20/25 g).",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Hot corn stirred through.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Chilli powder, lime hard, coriander, flaky salt.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "It has to blister. Warm corn is just corn; charred corn is elote — the blackened kernels are where the entire flavour of the thing lives.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "b-d1b",
+    "week": "B",
+    "day": 1,
+    "slot": "breakfast",
+    "name": "Breakfast burrito",
+    "origin": "Tex-Mex",
+    "tag": "fresh",
+    "activeMin": 9,
+    "covers": {
+      "w": {
+        "egg": 100,
+        "black_beans": 60,
+        "spinach": 60,
+        "lc_tortilla": 45,
+        "salsa": 40,
+        "avocado": 30,
+        "cheddar_rf": 12
+      },
+      "m": {
+        "egg": 150,
+        "black_beans": 80,
+        "spinach": 80,
+        "lc_tortilla": 68,
+        "salsa": 50,
+        "avocado": 45,
+        "cheddar_rf": 18
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 434,
+        "protein": 31,
+        "netCarb": 22,
+        "fat": 20,
+        "fibre": 19.1
+      },
+      "m": {
+        "kcal": 634,
+        "protein": 45,
+        "netCarb": 32,
+        "fat": 30,
+        "fibre": 27.4
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Black beans (60/80 g) into a small pan with a splash of water, a pinch of cumin and salt. Low heat, 3 minutes, mashing about a third of them against the side.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Non-stick pan, dry, medium. Spinach (60/80 g) for 60 seconds to wilt. Out, and squeezed.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Eggs (100/150 g — 2 / 3) beaten with salt. Into the pan on medium-LOW, stirred slowly and constantly. Off the heat while they still look visibly wet.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Tortilla (45/68 g) warmed 20 seconds a side. His portion is a tortilla and a half — warm both.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 5,
+          "text": "A line down the middle: beans, egg, cheddar (12/18 g), salsa (40/50 g), spinach, avocado (30/45 g).",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 6,
+          "text": "Fold the sides in, roll tight, then 60 seconds seam-side down in the dry pan to seal it shut.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Take the eggs off wet. They keep cooking inside a rolled burrito for a good minute afterwards, and eggs that looked perfect in the pan will be rubber by the time you unwrap it.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "b-d1l",
+    "week": "B",
+    "day": 1,
+    "slot": "lunch",
+    "name": "Jollof fried rice with chicken",
+    "origin": "Nigeria",
+    "tag": "batch",
+    "activeMin": 7,
+    "covers": {
+      "w": {
+        "cauliflower": 130,
+        "chicken": 105,
+        "passata": 80,
+        "peppers_frozen": 70,
+        "brown_rice": 55,
+        "red_onion": 30,
+        "egg": 25,
+        "spring_onion": 15,
+        "olive_oil": 7
+      },
+      "m": {
+        "cauliflower": 160,
+        "chicken": 140,
+        "passata": 100,
+        "peppers_frozen": 90,
+        "brown_rice": 72,
+        "red_onion": 40,
+        "egg": 25,
+        "spring_onion": 20,
+        "olive_oil": 9
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 503,
+        "protein": 37,
+        "netCarb": 53,
+        "fat": 13,
+        "fibre": 8
+      },
+      "m": {
+        "kcal": 645,
+        "protein": 48,
+        "netCarb": 69,
+        "fat": 16,
+        "fibre": 10.1
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Out of the fridge: Sunday's chicken and Sunday's rice.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "The widest pan you own — or a wok — on high with the oil (7/9 g). Onion (30/40 g) and pepper (70/90 g) diced, 3 minutes. You want colour on them, not softness.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Passata (80/100 g) with 1 tsp curry powder, ½ tsp thyme and a pinch of stock powder. Cook it down hard for 3 minutes, until it stops being loose.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Rice (55/72 g dry, cooked) and raw cauliflower (130/160 g) in. Press it flat and LEAVE it 60 seconds to catch before stirring. Then twice more.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 5,
+          "text": "Push everything to one side. Beaten egg (25 g) into the gap, scrambled fast, then folded through.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 6,
+          "text": "Chicken (105/140 g) in for the last minute. Spring onion (15/20 g) off the heat.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Leave the rice alone. Fried rice is made by contact with hot metal, not by stirring — every time you move it you drop the pan temperature and end up steaming it into porridge.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "b-d1d",
+    "week": "B",
+    "day": 1,
+    "slot": "dinner",
+    "name": "Chicken parmigiana with courgette",
+    "origin": "Italian-American",
+    "tag": "fresh",
+    "activeMin": 28,
+    "covers": {
+      "w": {
+        "courgette": 180,
+        "chicken": 90,
+        "passata": 100,
+        "mozzarella": 35,
+        "red_onion": 30,
+        "panko": 18,
+        "parmesan": 12,
+        "olive_oil": 9
+      },
+      "m": {
+        "courgette": 200,
+        "chicken": 120,
+        "passata": 120,
+        "mozzarella": 45,
+        "red_onion": 40,
+        "panko": 22,
+        "parmesan": 15,
+        "olive_oil": 11
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 453,
+        "protein": 40,
+        "netCarb": 24,
+        "fat": 21,
+        "fibre": 4.4
+      },
+      "m": {
+        "kcal": 569,
+        "protein": 52,
+        "netCarb": 29,
+        "fat": 26,
+        "fibre": 5.2
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Oven to 200 °C fan.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Sauce: onion (30/40 g) diced into 3 g of the oil, 4 minutes. Passata (100/120 g), garlic, oregano and a pinch of sugar. Simmer 10 minutes while you do everything else.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Chicken (90/120 g) butterflied, opened out flat, then bashed to 1 cm. Salt both sides.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Panko (18/22 g) mixed with the parmesan (12/15 g) and the rest of the oil, rubbed through with your fingers until it looks like damp sand. No egg wash — press it onto the damp chicken dry and firm.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 5,
+          "text": "Courgette (180/200 g) in 1 cm coins, tossed with salt, spread on the tray around the chicken.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 6,
+          "text": "18 minutes at 200 °C. Then mozzarella (35/45 g) torn over the chicken only, 5 minutes more until it blisters.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 7,
+          "text": "Sauce spooned around the base, never over the crumb.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Parmesan in the crumb instead of egg beneath it. An egg wash makes a thick soft layer that steams under the cheese; a dry parmesan-and-oil crumb pressed onto damp chicken sticks well enough and stays crisp.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "b-d1s",
+    "week": "B",
+    "day": 1,
+    "slot": "snack",
+    "name": "Cottage cheese, pineapple & chilli",
+    "origin": "Street corner",
+    "tag": "fresh",
+    "activeMin": 3,
+    "covers": {
+      "w": {
+        "pineapple": 200,
+        "cottage": 100,
+        "pumpkin_seeds": 8,
+        "chia": 6
+      },
+      "m": {
+        "pineapple": 260,
+        "cottage": 135,
+        "pumpkin_seeds": 11,
+        "chia": 8
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 253,
+        "protein": 17,
+        "netCarb": 28,
+        "fat": 8,
+        "fibre": 5.3
+      },
+      "m": {
+        "kcal": 337,
+        "protein": 23,
+        "netCarb": 36,
+        "fat": 11,
+        "fibre": 7.1
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Pineapple (200/260 g) in thick chunks. Optional but much better: 2 minutes a side on a dry griddle until it marks.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Cottage cheese (100/135 g) into a bowl, chunks over.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Chilli flakes, lime, flaky salt.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Pumpkin seeds (8/11 g) and chia (6/8 g) scattered over.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Salt on pineapple. It does the same job it does on melon — pulls the sweetness back so the fruit reads as sharp, and the cottage cheese stops tasting bland beside it.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "b-d2b",
+    "week": "B",
+    "day": 2,
+    "slot": "breakfast",
+    "name": "Apple & cinnamon overnight oats",
+    "origin": "The night before",
+    "tag": "batch",
+    "activeMin": 4,
+    "covers": {
+      "w": {
+        "apple": 150,
+        "skyr": 130,
+        "oats": 50,
+        "peanut_butter": 10,
+        "chia": 8
+      },
+      "m": {
+        "apple": 190,
+        "skyr": 175,
+        "oats": 70,
+        "peanut_butter": 13,
+        "chia": 10
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 447,
+        "protein": 25,
+        "netCarb": 53,
+        "fat": 11,
+        "fibre": 12
+      },
+      "m": {
+        "kcal": 599,
+        "protein": 34,
+        "netCarb": 72,
+        "fat": 15,
+        "fibre": 15.8
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "THE NIGHT BEFORE. Oats (50/70 g), skyr (130/175 g), chia (8/10 g), a full teaspoon of cinnamon, a pinch of salt and 60–80 ml water into a jar. Stir properly — chia clumps if you don't.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Grate HALF the apple (75/95 g) in now, skin on, with lemon over it first.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Lid on, into the fridge.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "In the morning: the other half (75/95 g) grated or sliced on top. Peanut butter (10/13 g) warmed 10 seconds and spooned over.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Half the apple in, half on. The half that soaks overnight disappears into the oats and sweetens the whole jar; the half added in the morning is the only part that still has any bite left in it.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "b-d2l",
+    "week": "B",
+    "day": 2,
+    "slot": "lunch",
+    "name": "Chilli-lime chicken & black bean salad",
+    "origin": "Tex-Mex",
+    "tag": "batch",
+    "activeMin": 6,
+    "covers": {
+      "w": {
+        "chicken": 110,
+        "black_beans": 110,
+        "tomato": 90,
+        "lettuce": 70,
+        "salsa": 50,
+        "avocado": 40,
+        "sweetcorn": 40,
+        "red_onion": 30,
+        "olive_oil": 6
+      },
+      "m": {
+        "chicken": 145,
+        "black_beans": 145,
+        "tomato": 110,
+        "lettuce": 80,
+        "salsa": 60,
+        "avocado": 55,
+        "sweetcorn": 55,
+        "red_onion": 40,
+        "olive_oil": 8
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 468,
+        "protein": 41,
+        "netCarb": 32,
+        "fat": 15,
+        "fibre": 17.1
+      },
+      "m": {
+        "kcal": 619,
+        "protein": 54,
+        "netCarb": 42,
+        "fat": 20,
+        "fibre": 22.4
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Dressing first: oil (6/8 g), the juice of a whole lime, 1 tsp chilli flakes, ½ tsp cumin, salt. Shake it.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Sweetcorn (40/55 g) into a dry pan on high, 2 minutes, until it blisters. Out.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Sunday's chicken (110/145 g) sliced and tossed in HALF the dressing in the warm pan — 30 seconds off the heat is enough to wake the spice up.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Black beans (110/145 g), tomato (90/110 g), red onion (30/40 g), the corn and lettuce (70/80 g) into a bowl with the rest of the dressing.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 5,
+          "text": "Chicken over. Salsa (50/60 g) and avocado (40/55 g) last.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Dress the chicken separately, and warm. Cold roast chicken tossed straight into a cold salad tastes like leftovers; thirty seconds in a warm pan with lime and chilli on it tastes like it was cooked for this.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "b-d2d",
+    "week": "B",
+    "day": 2,
+    "slot": "dinner",
+    "name": "Basa escovitch with cauliflower rice",
+    "origin": "Jamaica",
+    "tag": "fresh",
+    "activeMin": 20,
+    "covers": {
+      "w": {
+        "tilapia": 160,
+        "cauliflower": 130,
+        "peppers": 90,
+        "carrot": 70,
+        "brown_rice": 48,
+        "red_onion": 45,
+        "olive_oil": 12
+      },
+      "m": {
+        "tilapia": 210,
+        "cauliflower": 160,
+        "peppers": 110,
+        "carrot": 85,
+        "brown_rice": 60,
+        "red_onion": 55,
+        "olive_oil": 10
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 541,
+        "protein": 40,
+        "netCarb": 50,
+        "fat": 17,
+        "fibre": 8.8
+      },
+      "m": {
+        "kcal": 638,
+        "protein": 52,
+        "netCarb": 63,
+        "fat": 16,
+        "fibre": 10.9
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Fish (160/210 g) dried hard, salted, dusted with a little all-purpose seasoning.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Pan on high with 8 g of the oil. Fish in, 3–4 minutes a side until the edges are properly crisp. Out onto a plate and left there — it's meant to sit.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Same pan, heat down. Onion (45/55 g), pepper (90/110 g) and carrot (70/85 g) all cut into thin strips. 2 minutes ONLY — they have to stay crunchy.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "4 tbsp vinegar, 1 tsp sugar, a few allspice berries, a scotch bonnet pierced but left whole, a bay leaf. Bring it up hard for 60 seconds.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 5,
+          "text": "Pour the whole hot pickle over the fish. Leave 5 minutes at least, longer if you can stand it.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 6,
+          "text": "Sunday's rice (48/60 g dry) warmed with the cauliflower (130/160 g) stirred through, lid on, 3 minutes.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Two minutes on the vegetables, not ten. Escovitch is a hot pickle poured over fried fish, and the whole dish is the contrast between crunchy vegetables in sharp vinegar and soft fish underneath. Cook them soft and it's just fish in sauce.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "b-d2s",
+    "week": "B",
+    "day": 2,
+    "slot": "snack",
+    "name": "Boiled eggs, avocado & chilli salt",
+    "origin": "Nigeria",
+    "tag": "batch",
+    "activeMin": 2,
+    "covers": {
+      "w": {
+        "egg": 100,
+        "avocado": 55,
+        "cucumber": 60
+      },
+      "m": {
+        "egg": 150,
+        "avocado": 70,
+        "cucumber": 70
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 240,
+        "protein": 14,
+        "netCarb": 4,
+        "fat": 18,
+        "fibre": 4
+      },
+      "m": {
+        "kcal": 337,
+        "protein": 21,
+        "netCarb": 4,
+        "fat": 25,
+        "fibre": 5
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Sunday's boiled eggs (100/150 g — 2 / 3), peeled and halved.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Avocado (55/70 g) sliced, or roughly mashed straight onto the plate.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Chilli salt over both — 2 parts flaky salt to 1 part chilli flakes, briefly ground together.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Cucumber (60/70 g) in thick batons alongside.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Make the chilli salt in a jar, once. This is three ingredients and no cooking, so it lives or dies on seasoning — and reaching for a jar is the difference between doing that properly and not bothering.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "b-d3b",
+    "week": "B",
+    "day": 3,
+    "slot": "breakfast",
+    "name": "Plantain & pepper hash with fried eggs",
+    "origin": "Nigeria",
+    "tag": "fresh",
+    "activeMin": 14,
+    "covers": {
+      "w": {
+        "egg": 125,
+        "plantain": 100,
+        "peppers_frozen": 80,
+        "tomato": 80,
+        "spinach": 60,
+        "red_onion": 40,
+        "olive_oil": 6
+      },
+      "m": {
+        "egg": 150,
+        "plantain": 130,
+        "peppers_frozen": 100,
+        "tomato": 100,
+        "spinach": 80,
+        "red_onion": 50,
+        "olive_oil": 7
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 423,
+        "protein": 21,
+        "netCarb": 40,
+        "fat": 19,
+        "fibre": 6.9
+      },
+      "m": {
+        "kcal": 522,
+        "protein": 25,
+        "netCarb": 51,
+        "fat": 23,
+        "fibre": 8.9
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Plantain (100/130 g) in 1.5 cm DICE, not slices. This is a hash.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Wide pan, oil (6/7 g), medium-high. Plantain in a single layer, 4 minutes without touching it, then turned and 3 minutes more until the faces are dark.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Onion (40/50 g) and pepper (80/100 g) in, 4 minutes.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Tomato (80/100 g), thyme, scotch bonnet and a pinch of stock powder. 3 minutes, until it clings to everything rather than sitting in the pan.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 5,
+          "text": "Spinach (60/80 g) folded through.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 6,
+          "text": "Push the hash into two heaps, clear a space, and fry the eggs (125/150 g — 2½ / 3) alongside on a hard heat so the whites frill and brown at the edge.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Single layer, and don't touch it. Plantain browns by contact, and a crowded pan steams it into something sweet and wet instead of caramelising it at the corners.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "b-d3l",
+    "week": "B",
+    "day": 3,
+    "slot": "lunch",
+    "name": "Turkey & okra stew with rice",
+    "origin": "Nigeria",
+    "tag": "batch",
+    "activeMin": 6,
+    "covers": {
+      "w": {
+        "turkey_mince": 120,
+        "okra": 120,
+        "passata": 120,
+        "spinach": 100,
+        "peppers_frozen": 70,
+        "brown_rice": 62,
+        "red_onion": 40,
+        "olive_oil": 7
+      },
+      "m": {
+        "turkey_mince": 160,
+        "okra": 150,
+        "passata": 140,
+        "spinach": 130,
+        "peppers_frozen": 90,
+        "brown_rice": 85,
+        "red_onion": 50,
+        "olive_oil": 9
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 581,
+        "protein": 38,
+        "netCarb": 63,
+        "fat": 16,
+        "fibre": 12
+      },
+      "m": {
+        "kcal": 768,
+        "protein": 51,
+        "netCarb": 84,
+        "fat": 21,
+        "fibre": 15.3
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Sunday's stew into a pan on medium with a splash of water. 4 minutes — no more.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Spinach (100/130 g) in two handfuls, wilted through.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Sunday's rice (62/85 g dry) warmed alongside, covered, 2 minutes.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Lime or lemon at the table. Okra wants acid.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "The okra was cooked briefly on Sunday and will not survive a second long heating. Four minutes to warm through — go longer and you get the slime everyone complains about instead of the body it is supposed to give the stew.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "b-d3d",
+    "week": "B",
+    "day": 3,
+    "slot": "dinner",
+    "name": "Suya chicken skewers with pepper salad",
+    "origin": "Nigeria",
+    "tag": "fresh",
+    "activeMin": 18,
+    "covers": {
+      "w": {
+        "chicken": 130,
+        "plantain": 85,
+        "peppers": 100,
+        "tomato": 100,
+        "lettuce": 60,
+        "cucumber": 60,
+        "red_onion": 40,
+        "peanut_butter": 12,
+        "olive_oil": 6
+      },
+      "m": {
+        "chicken": 175,
+        "plantain": 130,
+        "peppers": 120,
+        "tomato": 120,
+        "lettuce": 70,
+        "cucumber": 70,
+        "red_onion": 50,
+        "peanut_butter": 15,
+        "olive_oil": 8
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 449,
+        "protein": 39,
+        "netCarb": 39,
+        "fat": 14,
+        "fibre": 8.2
+      },
+      "m": {
+        "kcal": 604,
+        "protein": 52,
+        "netCarb": 55,
+        "fat": 19,
+        "fibre": 10.5
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Chicken (130/175 g) in 3 cm cubes. Rubbed with 3 g of the oil, then 2 tsp suya worked in with your hands. Leave it 10 minutes while everything else happens — longer if you have it.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Onto skewers, packed loosely, not crammed.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Grill, griddle or a very hot dry pan: 3–4 minutes a side, about 12 minutes total, until charred at the corners and just firm.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Plantain (85/130 g) sliced thick, dry-griddled 3 minutes a side.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 5,
+          "text": "Salad: pepper (100/120 g), tomato (100/120 g), cucumber (60/70 g) and red onion (40/50 g) diced small and rough, lettuce (60/70 g) torn in. Lime, salt, the rest of the oil.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 6,
+          "text": "Dip: peanut butter (12/15 g) loosened with warm water, lemon, 1 tsp suya, salt.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 7,
+          "text": "More suya dusted over the skewers OFF the heat.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Suya twice — on before, dusted on after. It is a spice blend with ground peanut in it, and peanut burns. What goes on before the grill gives you the char; what goes on after gives you the flavour.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "b-d3s",
+    "week": "B",
+    "day": 3,
+    "slot": "snack",
+    "name": "Greek yoghurt, raspberries & seeds",
+    "origin": "The gym canteen",
+    "tag": "fresh",
+    "activeMin": 2,
+    "covers": {
+      "w": {
+        "greek_yog": 150,
+        "raspberries": 90,
+        "pumpkin_seeds": 10,
+        "chia": 6
+      },
+      "m": {
+        "greek_yog": 195,
+        "raspberries": 110,
+        "pumpkin_seeds": 13,
+        "chia": 8
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 217,
+        "protein": 21,
+        "netCarb": 12,
+        "fat": 8,
+        "fibre": 8.5
+      },
+      "m": {
+        "kcal": 280,
+        "protein": 27,
+        "netCarb": 15,
+        "fat": 10,
+        "fibre": 10.7
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Half the raspberries (45/55 g) crushed with a fork and a squeeze of lemon, into the bottom of the bowl.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Yoghurt (150/195 g) over.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "The rest of the raspberries (45/55 g) whole on top, then pumpkin seeds (10/13 g) and chia (6/8 g).",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Crush half. A broken raspberry releases its acid into the yoghurt and does the job a spoonful of honey would otherwise be doing — the whole ones on top are there for the texture.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "b-d4b",
+    "week": "B",
+    "day": 4,
+    "slot": "breakfast",
+    "name": "Beans & eggs on seeded toast",
+    "origin": "London caff",
+    "tag": "fresh",
+    "activeMin": 10,
+    "covers": {
+      "w": {
+        "egg": 100,
+        "passata": 80,
+        "kidney_beans": 75,
+        "spinach": 60,
+        "seeded_bread": 45,
+        "red_onion": 25,
+        "olive_oil": 9
+      },
+      "m": {
+        "egg": 150,
+        "passata": 100,
+        "kidney_beans": 85,
+        "spinach": 80,
+        "seeded_bread": 55,
+        "red_onion": 30,
+        "olive_oil": 11
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 491,
+        "protein": 31,
+        "netCarb": 24,
+        "fat": 26,
+        "fibre": 14.2
+      },
+      "m": {
+        "kcal": 634,
+        "protein": 41,
+        "netCarb": 29,
+        "fat": 35,
+        "fibre": 17.1
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Onion (25/30 g) finely diced into 4 g of the oil, medium, 4 minutes.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Passata (80/100 g), 1 tsp smoked paprika, ½ tsp mustard, a dash of Worcestershire, a pinch of sugar. 3 minutes.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Kidney beans (75/85 g) in. 3 minutes more, mashing six or seven of them against the side to thicken it. This is baked beans, made properly and without the sugar.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Bread (45/55 g) toasting.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 5,
+          "text": "Spinach (60/80 g) wilted in a second pan, then the eggs (100/150 g — 2 / 3) fried in the rest of the oil.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 6,
+          "text": "Beans onto the toast, spinach, eggs over.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Mash a few of the beans. There is no starch and no sugar syrup in this doing the thickening, so the sauce has to get its body from the beans themselves — half a dozen crushed against the pan is the difference between a sauce and a puddle.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "b-d4l",
+    "week": "B",
+    "day": 4,
+    "slot": "lunch",
+    "name": "Beef kofta wrap with cucumber yoghurt",
+    "origin": "Levant",
+    "tag": "batch",
+    "activeMin": 8,
+    "covers": {
+      "w": {
+        "beef_mince": 110,
+        "greek_yog": 70,
+        "tomato": 70,
+        "cucumber": 70,
+        "lettuce": 50,
+        "lc_tortilla": 40,
+        "red_onion": 35,
+        "olive_oil": 10
+      },
+      "m": {
+        "beef_mince": 145,
+        "greek_yog": 90,
+        "tomato": 90,
+        "cucumber": 80,
+        "lettuce": 60,
+        "lc_tortilla": 55,
+        "red_onion": 45,
+        "olive_oil": 8
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 421,
+        "protein": 38,
+        "netCarb": 18,
+        "fat": 19,
+        "fibre": 11.6
+      },
+      "m": {
+        "kcal": 509,
+        "protein": 50,
+        "netCarb": 24,
+        "fat": 20,
+        "fibre": 15.6
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Sunday's koftas out — from the fridge, or from the freezer if you moved them down on Wednesday night.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Pan, medium-high, 5 g of the oil. Koftas in, 6–7 minutes, turned to colour all sides. They are already cooked; this is purely about the crust.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Cucumber yoghurt: cucumber (70/80 g) coarsely grated and then SQUEEZED dry in your hands, into the yoghurt (70/90 g) with grated garlic, lemon, salt and dried mint.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Tortilla (40/55 g), 20 seconds a side.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 5,
+          "text": "Yoghurt down the middle, koftas, lettuce (50/60 g), tomato (70/90 g), raw onion (35/45 g), the rest of the oil. Roll tight.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Squeeze the cucumber. Grated cucumber holds an astonishing amount of water and will turn the yoghurt to soup inside a minute — wring it out over the sink until it stops dripping, then use it.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "b-d4d",
+    "week": "B",
+    "day": 4,
+    "slot": "dinner",
+    "name": "Beef smash tacos",
+    "origin": "Mexico",
+    "tag": "fresh",
+    "activeMin": 12,
+    "covers": {
+      "w": {
+        "beef_mince": 110,
+        "tomato": 70,
+        "lettuce": 50,
+        "salsa": 50,
+        "lc_tortilla": 42,
+        "avocado": 35,
+        "red_onion": 30,
+        "cheddar_rf": 15,
+        "olive_oil": 9
+      },
+      "m": {
+        "beef_mince": 145,
+        "tomato": 90,
+        "lettuce": 60,
+        "salsa": 60,
+        "lc_tortilla": 55,
+        "avocado": 50,
+        "red_onion": 40,
+        "cheddar_rf": 20,
+        "olive_oil": 11
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 473,
+        "protein": 36,
+        "netCarb": 16,
+        "fat": 25,
+        "fibre": 14.7
+      },
+      "m": {
+        "kcal": 618,
+        "protein": 48,
+        "netCarb": 21,
+        "fat": 33,
+        "fibre": 19.4
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Beef (110/145 g) into THREE loose balls per person. Don't season them, don't compact them.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Tortillas (42/55 g) — cut down into smaller rounds if yours are large.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Heavy pan, dry, high, a full 3 minutes. Balls in, pressed flat and hard with a spatula for 10 seconds each. Salt the tops. 90 seconds untouched.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Flip, cheddar (15/20 g) on, 45 seconds. Out.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 5,
+          "text": "Tortillas 20 seconds a side in the beef fat left behind.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 6,
+          "text": "Build: avocado (35/50 g), patty, salsa (50/60 g), lettuce (50/60 g), tomato (70/90 g), raw onion (30/40 g). Lime hard.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Three small patties, not one big one. Crust-to-meat ratio is the entire reason a smashed patty tastes the way it does, and splitting the same mince three ways gives you half again as much of it.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "b-d4s",
+    "week": "B",
+    "day": 4,
+    "slot": "snack",
+    "name": "Skyr, blueberries & coconut",
+    "origin": "Nordic",
+    "tag": "fresh",
+    "activeMin": 3,
+    "covers": {
+      "w": {
+        "skyr": 170,
+        "blueberries": 90,
+        "pumpkin_seeds": 8,
+        "coconut_des": 6
+      },
+      "m": {
+        "skyr": 220,
+        "blueberries": 110,
+        "pumpkin_seeds": 11,
+        "coconut_des": 8
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 243,
+        "protein": 22,
+        "netCarb": 19,
+        "fat": 8,
+        "fibre": 3.6
+      },
+      "m": {
+        "kcal": 316,
+        "protein": 29,
+        "netCarb": 23,
+        "fat": 11,
+        "fibre": 4.6
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Coconut (6/8 g) toasted in a dry pan, 90 seconds, shaken constantly, out the moment it turns gold.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Blueberries (90/110 g) — if frozen, straight from the freezer into the skyr and left 5 minutes. They bleed, and it turns purple, which is better.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Skyr (170/220 g), berries, then coconut and pumpkin seeds (8/11 g) over.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Frozen berries beat fresh here, and cost a third as much. As they thaw against the skyr they release juice that sweetens the whole pot — fresh ones just sit on top of it.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "b-d5b",
+    "week": "B",
+    "day": 5,
+    "slot": "breakfast",
+    "name": "Scrambled eggs & tomato on seeded toast",
+    "origin": "London caff",
+    "tag": "fresh",
+    "activeMin": 9,
+    "covers": {
+      "w": {
+        "egg": 175,
+        "spinach": 60,
+        "tomato": 60,
+        "seeded_bread": 55,
+        "spring_onion": 15,
+        "olive_oil": 5
+      },
+      "m": {
+        "egg": 225,
+        "spinach": 80,
+        "tomato": 80,
+        "seeded_bread": 70,
+        "spring_onion": 20,
+        "olive_oil": 6
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 477,
+        "protein": 35,
+        "netCarb": 10,
+        "fat": 31,
+        "fibre": 10.4
+      },
+      "m": {
+        "kcal": 609,
+        "protein": 45,
+        "netCarb": 13,
+        "fat": 39,
+        "fibre": 13.4
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Bread (55/70 g) toasting — this is a thicker cut than usual, it is carrying the plate.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Spinach (60/80 g) into a dry pan on medium, 60 seconds to wilt. Out, squeezed, and seasoned.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Tomatoes (60/80 g) halved, cut side down into the same pan with 3 g of the oil, high heat, 3 minutes until they blister and start to collapse. Salt.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Eggs (175/225 g — 3½ / 4½) beaten with salt. Heat right down, the rest of the oil in, and stirred slowly and constantly. Off the heat while still visibly loose.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 5,
+          "text": "Toast, spinach, egg heaped over, blistered tomatoes on top, spring onion (15/20 g), chilli flakes and lemon.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Low and slow, off early. This is a lot of egg — nearly four each on the larger cover — and the only thing standing between that and a plate of rubber is a gentle heat and the nerve to stop cooking while it still looks underdone.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "b-d5l",
+    "week": "B",
+    "day": 5,
+    "slot": "lunch",
+    "name": "Chicken & avocado club sandwich",
+    "origin": "New York",
+    "tag": "batch",
+    "activeMin": 6,
+    "covers": {
+      "w": {
+        "chicken": 110,
+        "tomato": 70,
+        "seeded_bread": 55,
+        "avocado": 45,
+        "lettuce": 50,
+        "greek_yog": 40,
+        "cheddar_rf": 12,
+        "olive_oil": 4
+      },
+      "m": {
+        "chicken": 145,
+        "tomato": 90,
+        "seeded_bread": 70,
+        "avocado": 60,
+        "lettuce": 60,
+        "greek_yog": 50,
+        "cheddar_rf": 16,
+        "olive_oil": 5
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 451,
+        "protein": 47,
+        "netCarb": 11,
+        "fat": 22,
+        "fibre": 12.9
+      },
+      "m": {
+        "kcal": 584,
+        "protein": 61,
+        "netCarb": 14,
+        "fat": 28,
+        "fibre": 16.5
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Bread (55/70 g) toasted properly — dark, not pale. It has to hold.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Dressing: yoghurt (40/50 g), oil (4/5 g), lemon, ½ tsp mustard, black pepper, salt.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Avocado (45/60 g) mashed onto one slice with lemon and salt.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Sunday's chicken (110/145 g) sliced thin and tossed in the dressing.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 5,
+          "text": "Build: avocado, chicken, cheddar (12/16 g), tomato (70/90 g) salted, and lettuce (50/60 g) LAST, against the top slice.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 6,
+          "text": "Press under a plate for 2 minutes. Cut on the diagonal.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Lettuce against the top slice, tomato salted and buried in the middle. Tomato against bread makes it wet within minutes; a leaf of lettuce is a waterproof layer, and it is the only reason a sandwich made in the morning survives to lunchtime.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "b-d5d",
+    "week": "B",
+    "day": 5,
+    "slot": "dinner",
+    "name": "Salmon teriyaki with broccoli & rice",
+    "origin": "Japan",
+    "tag": "fresh",
+    "activeMin": 25,
+    "covers": {
+      "w": {
+        "broccoli": 150,
+        "salmon": 110,
+        "cauliflower": 100,
+        "carrot": 60,
+        "brown_rice": 45,
+        "spring_onion": 20,
+        "olive_oil": 5
+      },
+      "m": {
+        "broccoli": 180,
+        "salmon": 145,
+        "cauliflower": 130,
+        "carrot": 70,
+        "brown_rice": 60,
+        "spring_onion": 25,
+        "olive_oil": 6
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 543,
+        "protein": 33,
+        "netCarb": 47,
+        "fat": 22,
+        "fibre": 9.6
+      },
+      "m": {
+        "kcal": 702,
+        "protein": 43,
+        "netCarb": 61,
+        "fat": 29,
+        "fibre": 11.9
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Rice (45/60 g dry) on, 25 minutes covered. This one is cooked fresh — it is the end of the week and Sunday's is long gone.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "Teriyaki: 3 tbsp soy, 1 tbsp mirin or rice vinegar, 1 tsp honey, grated ginger and garlic. Into a small pan, simmered 3–4 minutes until it just coats a spoon.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Salmon (110/145 g) dried, into a hot pan with the oil (5/6 g). 3 minutes presentation-side down, 2 minutes over.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 4,
+          "text": "Half the glaze spooned over IN the pan on a low heat, tilting and basting for 60 seconds until it goes lacquered.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 5,
+          "text": "Broccoli (150/180 g) and carrot (60/70 g) steamed 4 minutes. Cauliflower (100/130 g) stirred through the rice for its last 2 minutes, lid on.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 6,
+          "text": "The rest of the glaze over the vegetables. Spring onion (20/25 g) raw over everything.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "Glaze at the end, on a low heat. There is sugar in teriyaki and it burns fast — put it in at the start and you get a black pan and a bitter fish long before the middle is warm.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  },
+  {
+    "id": "b-d5s",
+    "week": "B",
+    "day": 5,
+    "slot": "snack",
+    "name": "Carrot sticks with suya peanut dip",
+    "origin": "Nigeria",
+    "tag": "fresh",
+    "activeMin": 3,
+    "covers": {
+      "w": {
+        "carrot": 120,
+        "greek_yog": 80,
+        "peanut_butter": 20
+      },
+      "m": {
+        "carrot": 140,
+        "greek_yog": 100,
+        "peanut_butter": 25
+      }
+    },
+    "macros": {
+      "w": {
+        "kcal": 212,
+        "protein": 14,
+        "netCarb": 14,
+        "fat": 10,
+        "fibre": 4.6
+      },
+      "m": {
+        "kcal": 261,
+        "protein": 18,
+        "netCarb": 17,
+        "fat": 13,
+        "fibre": 5.4
+      }
+    },
+    "method": {
+      "steps": [
+        {
+          "n": 1,
+          "text": "Peanut butter (20/25 g) and yoghurt (80/100 g) beaten together. It will look split for a moment — keep going, it comes back.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 2,
+          "text": "1 tsp suya, lime, salt, then warm water a teaspoon at a time until it's just scoopable.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        },
+        {
+          "n": 3,
+          "text": "Carrots (120/140 g) in long batons.",
+          "minutes": null,
+          "tempC": null,
+          "track": null,
+          "station": null,
+          "clockStart": null
+        }
+      ],
+      "why": "It splits, then it doesn't. Peanut butter and yoghurt seize when they first meet and it looks wrong — thirty seconds of hard beating brings it smooth, and adding the water too early stops that ever happening.",
+      "batchSource": null,
+      "batchTakeG": null,
+      "approved": false,
+      "rev": "A"
+    }
+  }
+]

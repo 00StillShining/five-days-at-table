@@ -1,0 +1,77 @@
+[
+  {
+    "name": "methods-spec-join-281",
+    "pass": true,
+    "detail": "281 ingredient rows across 40 cards, 0 join failures (expect 281 rows, 0 failures). Failures: []"
+  },
+  {
+    "name": "40-cards-20-per-week-2x5-macros-min3-ingredients",
+    "pass": true,
+    "detail": "cards=40 (A=20, B=20), every card has 2x5 macros: true, every card >=3 ingredient rows: true"
+  },
+  {
+    "name": "alias-map-covers-55-short-names",
+    "pass": true,
+    "detail": "alias-map.json has 55 short-name keys (expect 55)"
+  },
+  {
+    "name": "alias-map-zero-fuzzy (all mapped ids exist)",
+    "pass": true,
+    "detail": "alias-map ids not found in ALL_ING_IDS: "
+  },
+  {
+    "name": "register-map-covers-54-rows",
+    "pass": true,
+    "detail": "register-map.json has 54 keys (expect 54)"
+  },
+  {
+    "name": "54-register-rows-have-shelf-life-and-location",
+    "pass": true,
+    "detail": "54 non-new ingredients (expect 54), all with location+life.prose: true"
+  },
+  {
+    "name": "greek-yog-skyr-two-records-one-shared-sku",
+    "pass": true,
+    "detail": "greek_yog.sku.sharedSkuWith=skyr, skyr.sku.sharedSkuWith=greek_yog"
+  },
+  {
+    "name": "raspberries-blueberries-two-records-one-shared-sku",
+    "pass": true,
+    "detail": "raspberries.sku.sharedSkuWith=blueberries, blueberries.sku.sharedSkuWith=raspberries"
+  },
+  {
+    "name": "meals-count-40-20-per-week",
+    "pass": true,
+    "detail": "meals=40"
+  },
+  {
+    "name": "macro-recompute-within-tolerance-36-undisputed",
+    "pass": true,
+    "detail": "40/40 cards recompute within +-1 unit (+-0.2 fibre) on BOTH covers. Disputed: []"
+  },
+  {
+    "name": "week-A-day-totals-her-recomputed",
+    "pass": true,
+    "detail": "recomputed=[1671,1675,1670,1650,1694] vs legacy PLAN.md figures=[1667,1663,1670,1646,1694], diffs=[4,12,0,4,0], expected diffs=[4,12,0,4,0]. Days 1,2,4 diffs match the D10 avocado-garnish-drop-plus-compensating-oil-increase deltas exactly (see decisions-queue); days 3,5 match the legacy figure exactly (diff 0)."
+  },
+  {
+    "name": "costs-sum-179.31-per-shop-subtotals",
+    "pass": true,
+    "detail": "costsChecksum.sum=179.31, per-shop={\"S\":72.7,\"M\":98.31,\"X\":8.3}"
+  },
+  {
+    "name": "week-A-x3-reproduces-257.32-legacy",
+    "pass": true,
+    "detail": "legacy.totalShown=£257.32, per-shop={\"S\":102.58,\"M\":145.24,\"X\":9.5}"
+  },
+  {
+    "name": "legacy-est-flags-vs-D-prices-ver0",
+    "pass": true,
+    "detail": "legacy rows=54, matched=54/54, mismatched=[]. legacy estimateMark=true count=40, fd5.prices ver:0 count=41 (differ by 1: \"whey\" has an fd5.prices entry marked ver:0 but no legacy shopping-list row at all)."
+  },
+  {
+    "name": "decisions-queue-target-30",
+    "pass": true,
+    "detail": "decisions-queue has 34 entries (target ~30)"
+  }
+]

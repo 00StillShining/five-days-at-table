@@ -1,0 +1,196 @@
+{
+  "variant": "a-twice",
+  "targets": {
+    "A": {
+      "w": {
+        "kcal": [
+          1650,
+          1694
+        ],
+        "protein": [
+          105,
+          118
+        ],
+        "netCarb": [
+          87,
+          162
+        ],
+        "fat": [
+          55,
+          84
+        ],
+        "fibre": [
+          40,
+          45
+        ]
+      },
+      "m": {
+        "kcal": [
+          2099,
+          2241
+        ],
+        "protein": [
+          140,
+          145
+        ],
+        "netCarb": [
+          107,
+          219
+        ],
+        "fat": [
+          75,
+          112
+        ],
+        "fibre": [
+          51,
+          53
+        ]
+      }
+    },
+    "B": {
+      "w": {
+        "kcal": [
+          1628,
+          1696
+        ],
+        "protein": [
+          119,
+          129
+        ],
+        "netCarb": [
+          77,
+          154
+        ],
+        "fat": [
+          57,
+          85
+        ],
+        "fibre": [
+          35,
+          45
+        ]
+      },
+      "m": {
+        "kcal": [
+          2077,
+          2193
+        ],
+        "protein": [
+          155,
+          168
+        ],
+        "netCarb": [
+          97,
+          205
+        ],
+        "fat": [
+          73,
+          109
+        ],
+        "fibre": [
+          45,
+          57
+        ]
+      }
+    }
+  },
+  "shops": {
+    "S": {
+      "name": "Sainsbury's",
+      "sub": "protein, eggs & the low-carb wraps"
+    },
+    "M": {
+      "name": "Morrisons",
+      "sub": "fresh produce, dairy, frozen & cupboard"
+    },
+    "X": {
+      "name": "Lewisham market / Caribbean grocer",
+      "sub": "plantain, egusi — not sold in the supermarkets"
+    },
+    "H": {
+      "name": "Health-food shop or online",
+      "sub": "two specialist low-carb items"
+    }
+  },
+  "days": [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday"
+  ],
+  "themes": [
+    "Carts, Crusts & Chilli",
+    "Bowls, Batter & Panko",
+    "Nigeria, Start to Finish",
+    "Bologna Meets the Bodega",
+    "Wraps, Jerk & Char"
+  ],
+  "train": [
+    "Train — Push",
+    "Rest",
+    "Train — Pull",
+    "Train — Legs",
+    "Train — Full body"
+  ],
+  "notes": [
+    [
+      "The protein, and the reasoning",
+      "A hundred and five to a hundred and sixteen grams on the smaller cover, a hundred and thirty-nine to a hundred and forty-eight on the larger &mdash; down some fifty and seventy grams from where this card began, which was frankly more than either body needed. As set, that works out at roughly 1.6 grams per kilogramme of bodyweight for both, which is squarely inside the range that protects muscle while the weight comes off. The figures were scaled to each body rather than fixed at one number: a flat hundred-and-twenty applied to the 85 kg cover would have meant 1.4 grams per kilo, and rather more of the loss arriving from muscle than from fat."
+    ],
+    [
+      "Where the freed calories went",
+      "Nowhere, in the sense that matters &mdash; the daily totals are unchanged, so the deficit and the rate of loss are exactly as before. What changed is the shape of the plate. Rice portions are larger, plantain is more generous, avocado appears where it did not, the olive oil is no longer measured out meanly, and the fruit is a proper serving rather than a garnish. The food is a good deal less austere than it was."
+    ],
+    [
+      "On the carbohydrate",
+      "Lower, not low &mdash; the version that survives contact with a real week. No dish is built on a mound of starch: rice is cut half-and-half with riced cauliflower, bread is the seeded low-carb sort, pasta is pressed from edamame, and the pizza has no base at all. Net carbohydrate now lands between ninety-one and a hundred and sixty-one grams on the smaller cover, a hundred and fourteen to two hundred and seventeen on the larger &mdash; higher than before, because that is where the protein went."
+    ],
+    [
+      "The fibre",
+      "Forty to forty-four grams on the smaller cover, fifty-one to fifty-four on the larger, against a UK recommendation of thirty. Beans, cauliflower, greens and the high-fibre wraps do the work. If it is a sharp jump from where you are now, ease in across the first week and drink considerably more water than feels necessary."
+    ],
+    [
+      "Three things worth buying once",
+      "High-fibre low-carb tortillas, edamame or black-bean spaghetti, and a seeded low-carb loaf. These three are what allow a wrap, a plate of pasta and a burger onto a card like this at all; without them those dishes cannot be made to fit, and would have had to be cut."
+    ],
+    [
+      "What is not on the card",
+      "A number of dishes were considered and cut because they cannot be made to fit these numbers honestly: pounded yam and fufu, puff-puff, dodo fried properly in oil, a full traditional plate of jollof, moi moi and ewa agoyin (which are built on peas in any case), oxtail and nkwobi, and pizza on real dough. Nothing here is a diet version of itself pretending otherwise &mdash; the dishes that survived are the ones that genuinely work at this calorie."
+    ],
+    [
+      "The spice shelf",
+      "Nigerian: suya spice, egusi, dried crayfish, scotch bonnet, pepper soup spice, and iru if you can find it. Everything else: jerk seasoning, chipotle in adobo, Japanese curry powder, smoked paprika, dried thyme, oregano. Bought once, they last months, and they are the whole difference between these plates and the same ingredients cooked dully."
+    ],
+    [
+      "How everything is weighed",
+      "Meat, fish and poultry are RAW weights, before cooking. Rice, oats and pasta are DRY weights. Tinned pulses are DRAINED weights. Vegetables and fruit are prepared weights &mdash; peeled, deseeded, stoned, as the case may be. Where a household measure sits beside the gram figure it is an approximation for the days you cannot be bothered with the scales; the gram figure is what the reckonings are built on."
+    ],
+    [
+      "Peas, swaps & the rest",
+      "No peas anywhere &mdash; where a Caribbean plate would call for rice and peas this uses red kidney beans, and the Nigerian bean dishes were left off for the same reason. Catfish takes any firm white fish; prawns and chicken trade places freely; skyr and Greek yoghurt are interchangeable."
+    ]
+  ],
+  "economics": {
+    "basketMain": {
+      "amount": 179.31,
+      "basis": "sum of shoppinglist.json shops[].subtotalShown (S £72.70 + M £98.31 + X £8.30), the day-0 canonical basket for one Week-A pass"
+    },
+    "basketDay7TopUp": {
+      "amount": 8.58,
+      "basis": "shoppinglist.json day7Card.totalShown, the second-pass produce top-up"
+    },
+    "fortnightTotal": {
+      "amount": 187.89,
+      "basis": "£179.31 (day-0 basket) + £8.58 (day-7 top-up) over the 14-day A-twice fortnight"
+    },
+    "perDay": {
+      "amount": 13.42,
+      "basis": "£187.89 ÷ 14 days"
+    },
+    "perPersonPerDay": {
+      "amount": 6.71,
+      "basis": "£187.89 ÷ 14 days ÷ 2 people"
+    }
+  }
+}
