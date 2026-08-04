@@ -2,7 +2,7 @@
   SHOP — the Saturday console (PLAN §6.8). Scoped entirely under .scr-shop
   per PHASE2-CONTRACT ("colocate your own screen CSS scoped by screen-root
   class") — no new global tokens invented here, only src/tokens.css's
-  --sol-*/--fd-* custom properties.
+  sol- and fd- custom properties.
 
   Lean (PLAN §6.0): playful-technical, borrowed precision ~20% — "calm
   console horizon (Beogram reading); the convex send-to-phone key and

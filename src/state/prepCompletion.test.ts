@@ -66,8 +66,8 @@ describe("computePrepCompletion — merges with existing inventory rather than r
   it("leaves untouched ingredients alone", () => {
     const existing = { avocado: { level: 2 as const, updatedAt: "2026-07-30T00:00:00.000Z" } };
     const result = computePrepCompletion("A", existing, AT)!;
-    expect(result.inventory.avocado).toEqual(existing.avocado);
-    expect(result.inventory.chicken).toEqual({ level: 4, updatedAt: AT });
+    expect(result.inventory.avocado).toEqual(existing.avocado); // genuinely untouched — no thawedAt added to an entry prep-a never stamps
+    expect(result.inventory.chicken).toEqual({ level: 4, updatedAt: AT, thawedAt: AT }); // freshly stamped by "Roast chicken" — see the other describe block
   });
 });
 

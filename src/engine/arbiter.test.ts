@@ -105,10 +105,18 @@ describe("arbiterFor — priority ordering", () => {
 
 describe("arbiterFor — tie-breaks within a category", () => {
   it("picks the most-expired item first, and counts the other as queued", () => {
+    const thirtyDaysAgo = new Date(WEDNESDAY_MORNING.getTime() - 30 * 86_400_000).toISOString();
     const state = baseState({
       inventory: {
         cottage: { level: 2, updatedAt: new Date(WEDNESDAY_MORNING.getTime() - 8 * 86_400_000).toISOString() }, // remaining ~ 5-8 = -3
-        chicken: { level: 1, updatedAt: new Date(WEDNESDAY_MORNING.getTime() - 30 * 86_400_000).toISOString() }, // freeze-day0, freshDays 2, remaining ~ 2-30 = -28 (far more expired)
+        // chicken is freeze-day0 (freezer stock) — P1 fix: its post-thaw
+        // countdown only starts from `thawedAt`, never from a bare
+        // `updatedAt` stocktake touch (that's the false-expired-flood bug
+        // this fixed). So this fixture must explicitly mark it thawed 30
+        // days ago to genuinely be the more-expired item under the new
+        // semantics — a chicken with no thawedAt wouldn't be "expired" at
+        // all (still frozen, no countdown applies).
+        chicken: { level: 1, updatedAt: thirtyDaysAgo, thawedAt: thirtyDaysAgo }, // freshDays 2, remaining ~ 2-30 = -28 (far more expired)
       },
     });
     const result = arbiterFor("today", state, WEDNESDAY_MORNING);

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { ingredientsList } from "./ingredients";
-import { estimateFreeTextLifeDays, operativeLifeDays, parseIngredientLife } from "./lifeEstimate";
+import { estimateFreeTextLifeDays, isFreezerStock, operativeLifeDays, parseIngredientLife } from "./lifeEstimate";
 
 describe("parseIngredientLife", () => {
   it("reproduces every ingredient's own canonical numeric fields from its prose", () => {
@@ -97,5 +97,23 @@ describe("estimateFreeTextLifeDays", () => {
     const est = estimateFreeTextLifeDays("Jar, lid off, counter");
     expect(est.confidence).toBe("low");
     expect(est.days).toBeGreaterThan(0);
+  });
+});
+
+describe("isFreezerStock — P1 wave-1-review fix", () => {
+  it("is true for every freeze-day0/buy-frozen ingredient in the dataset (all 18 are located in the Freezer)", () => {
+    const frozenClassIngredients = ingredientsList.filter((i) => i.storage.class === "freeze-day0" || i.storage.class === "buy-frozen");
+    expect(frozenClassIngredients.length).toBeGreaterThanOrEqual(18);
+    for (const ing of frozenClassIngredients) expect(isFreezerStock(ing), ing.id).toBe(true);
+  });
+
+  it("is false for a non-frozen storage class even if it happens to share other traits", () => {
+    const cottage = ingredientsList.find((i) => i.id === "cottage")!; // topup, Fridge
+    expect(isFreezerStock(cottage)).toBe(false);
+  });
+
+  it("specifically covers chicken and tilapia — the review's own reproduction ingredients", () => {
+    expect(isFreezerStock(ingredientsList.find((i) => i.id === "chicken")!)).toBe(true);
+    expect(isFreezerStock(ingredientsList.find((i) => i.id === "tilapia")!)).toBe(true);
   });
 });

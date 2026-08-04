@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
+import { ingredientsById } from "../data/ingredients";
 import { mealsByWeek, requireMeal } from "../data/meals";
-import { bands, coverageForAllMeals, dayMacros, effectiveMealForSlot, mealMacros, todayInfo, tripBuild } from "./selectors";
-import type { Swaps } from "./types";
+import { defaultState } from "./reducer";
+import { bands, coverageForAllMeals, dayMacros, dutyStack, eatenSoFar, effectiveMealForSlot, formatRemainingDays, mealMacros, remainingLifeDays, todayInfo, tripBuild } from "./selectors";
+import type { AppState, Swaps } from "./types";
 
 // 2026-08-01 is a Saturday (verified against Intl). Each case below is
 // "midday London" on that calendar date, well clear of any BST-edge issue.
