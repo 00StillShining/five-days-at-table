@@ -1,2 +1,651 @@
-/* PLACEHOLDER — the F1 chassis builder replaces this with the Sol §4.2 verbatim token sheet per docs/PHASE2-CONTRACT.md */
-.fd5 { font-family: "Space Grotesk", system-ui, sans-serif; }
+/*
+  FD-5 · tokens.css
+  ==================
+  The single scoped stylesheet for the Phase 2 chassis (docs/PHASE2-CONTRACT.md).
+
+  Sections:
+    1. Page-level reset (outside the .fd5 scope — just enough to remove UA chrome)
+    2. Sol atlas §4.2 base — VERBATIM (R1), scope renamed .sol-atlas -> .fd5 only.
+       Property/custom-property NAMES are untouched (--sol-* stays --sol-*).
+    3. PHASE2-CONTRACT extensions — macro channels, list row height, semantic role
+       comments, visually-hidden utility.
+    4. Chassis layout — frame, topbar, masthead, paddles, loop rail, cycle cursor,
+       scene mount, responsive breakpoints, safe-area insets.
+    5. Shared primitives — Key, Paddle, ArbiterSlot, EstimateMark, Sheet.
+    6. Placeholder scene card (src/app/scenes/*).
+    7. Supplementary reduced-motion / forced-colors rules for chassis-specific bits
+       not covered by the verbatim §4.2 block.
+
+  Screen builders: this file is chassis + shared primitives ONLY. Colocate your own
+  screen CSS scoped by `.scr-<name>` per PHASE2-CONTRACT conventions — do not append
+  screen-specific rules here.
+*/
+
+/* ---------------------------------------------------------------------- */
+/* 1. Page-level reset                                                     */
+/* ---------------------------------------------------------------------- */
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow-x: hidden; /* safety net: no interior element should ever force horizontal scroll */
+}
+
+/* ---------------------------------------------------------------------- */
+/* 2. Sol atlas §4.2 — VERBATIM base (scope renamed .sol-atlas -> .fd5)    */
+/* ---------------------------------------------------------------------- */
+
+.fd5 {
+  --sol-font-ui: "Space Grotesk", system-ui, sans-serif;
+  --sol-font-data: "JetBrains Mono", ui-monospace, monospace;
+
+  --sol-text-body: 1rem;
+  --sol-text-label: 0.8125rem;
+  --sol-target-min-size: 2.75rem; /* 44 CSS px house target */
+  --sol-focus-width: 2px;
+  --sol-motion-snap: 80ms;
+  --sol-motion-state: 160ms;
+
+  font-family: var(--sol-font-ui);
+  font-size: var(--sol-text-body);
+  line-height: 1.5;
+  color: var(--sol-text);
+  background: var(--sol-bg);
+}
+
+.fd5,
+.fd5 *,
+.fd5 *::before,
+.fd5 *::after {
+  box-sizing: border-box;
+}
+
+.fd5[data-language="playful"] {
+  color-scheme: light;
+  --sol-bg: #d9d8d4;
+  --sol-panel: #f2f0ea;
+  --sol-text: #1c1c1c;
+  --sol-text-muted: #55534f;
+  --sol-border: #6e6b65;
+  --sol-accent: #8a2e00;
+  --sol-accent-fill: #ff5a1f;
+  --sol-on-accent-fill: #161616;
+  --sol-focus: #0057b8;
+  --sol-danger: #a51d27;
+  --sol-success: #006b3c;
+  --sol-warning: #735100;
+}
+
+.fd5[data-language="precision-industrial"] {
+  color-scheme: dark;
+  --sol-bg: #17191b;
+  --sol-panel: #24272a;
+  --sol-text: #f4f5f5;
+  --sol-text-muted: #bec4c8;
+  --sol-border: #777d81;
+  --sol-accent: #ff8a3d;
+  --sol-accent-fill: #ff8a3d;
+  --sol-on-accent-fill: #111315;
+  --sol-focus: #75bfff;
+  --sol-danger: #ff7b82;
+  --sol-success: #59d59b;
+  --sol-warning: #ffd166;
+}
+
+.fd5-control {
+  min-inline-size: var(--sol-target-min-size);
+  min-block-size: var(--sol-target-min-size);
+  font: inherit;
+  color: var(--sol-text);
+  background: var(--sol-panel);
+  border: 1px solid var(--sol-border);
+}
+
+.fd5-control:focus-visible {
+  outline: var(--sol-focus-width) solid var(--sol-focus);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fd5 [data-motion] {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .fd5-control {
+    border-color: ButtonText;
+  }
+  .fd5-control:focus-visible {
+    outline-color: Highlight;
+  }
+}
+
+/* ---------------------------------------------------------------------- */
+/* 3. PHASE2-CONTRACT extensions                                          */
+/* ---------------------------------------------------------------------- */
+
+.fd5 {
+  /*
+    Macro channels (heritage hues, AA-adjusted where used as text — PHASE2-CONTRACT).
+    Always paired with a second cue (label + position) wherever used on ladders/gauges;
+    never the sole way a value is communicated.
+  */
+  --fd-ch-protein: #ff4d00;
+  --fd-ch-fat: #8a6d00;
+  --fd-ch-carb: #1160ff;
+  --fd-ch-fibre: #00753f;
+
+  /* LIST row height: 56px (PLAN §6.1 — LIST rows + COOK controls get the larger target). */
+  --fd-target-list: 3.5rem;
+}
+
+/*
+  Semantic role reference (PLAN §6.1 — enforced app-wide, every screen):
+    --sol-success        settled / confirmed / in-stock / verified / in-band (+ shape or label cue)
+    --sol-focus           the cursor family: today-ring, cycle cursor, playhead, focused row
+    --sol-accent-fill     THE arbiter's single act-now slot — nowhere else (.fd5-arbiter only)
+    --sol-danger/warning   true error/warning states only, never decorative
+    estimates              ink "≈" + dotted underline (.fd5-estimate) — never color alone
+    --fd-ch-*              macro channel identity on ladders/gauges, paired with label+position
+*/
+
+.fd5-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------------------------------------------------------------------- */
+/* 4. Chassis layout                                                      */
+/* ---------------------------------------------------------------------- */
+
+.fd5-frame {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+.fd5-topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: max(0.75rem, env(safe-area-inset-top)) 1rem 0.75rem;
+  border-bottom: 1px solid var(--sol-border);
+  background: var(--sol-panel);
+}
+
+.fd5-masthead {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.fd5-brand {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+}
+
+.fd5-date {
+  font-family: var(--sol-font-data);
+  font-size: var(--sol-text-label);
+  color: var(--sol-text-muted);
+  text-transform: lowercase;
+  white-space: nowrap;
+}
+
+.fd5-status {
+  font-family: var(--sol-font-data);
+  font-size: var(--sol-text-label);
+  color: var(--sol-accent);
+  min-height: 1em; /* reserve space so it appearing/disappearing doesn't jump layout */
+}
+
+.fd5-gear {
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.fd5-paddles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.fd5-scene {
+  flex: 1;
+  padding: 1rem;
+  min-width: 0;
+}
+
+
+/* --- Loop rail: desktop = top row, ~48px keys --- */
+
+.fd5-rail {
+  border-bottom: 1px solid var(--sol-border);
+  background: var(--sol-panel);
+}
+
+.fd5-rail-keys {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.fd5-rail-cell {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.fd5-key {
+  position: relative;
+  width: 100%;
+  min-block-size: 3rem; /* 48px desktop */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+}
+
+.fd5-key-label {
+  text-transform: lowercase;
+}
+
+.fd5-key-hotkey {
+  font-family: var(--sol-font-data);
+  font-size: 0.625rem; /* 10px — nonessential engraving band (9-11px) */
+  color: var(--sol-text-muted);
+}
+
+.fd5-key[aria-current="page"] {
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.35),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.fd5-key[aria-current="page"] .fd5-key-label {
+  font-weight: 700;
+}
+
+.fd5-key-pulse {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--sol-accent-fill);
+  animation: fd5-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes fd5-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.7);
+  }
+}
+
+.fd5-cycle-cursor-slot {
+  display: flex;
+  justify-content: center;
+  min-height: 10px;
+}
+
+.fd5-cycle-cursor-wrap {
+  display: inline-flex;
+}
+
+.fd5-cycle-cursor {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--sol-focus);
+}
+
+/*
+  COOK lid-closed: rail replaced by one exit tab. Kept in normal document flow
+  (right-aligned, in the rail's usual row) rather than fixed/floating so it can never
+  overlap the topbar's paddles or gear button at any viewport size.
+*/
+
+.fd5-rail--lidclosed {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.5rem 1rem;
+}
+
+.fd5-exit-tab {
+  padding-inline: 1rem;
+}
+
+/* --- Mobile: rail moves to bottom, full-width, 64px keys, safe-area padding --- */
+
+@media (max-width: 700px) {
+  .fd5-rail:not(.fd5-rail--lidclosed) {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 20;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+
+  .fd5-rail:not(.fd5-rail--lidclosed) .fd5-key {
+    min-block-size: 4rem; /* 64px mobile */
+  }
+
+  .fd5-scene {
+    padding-bottom: calc(4rem + env(safe-area-inset-bottom, 0px) + 1.5rem);
+  }
+
+  .fd5-frame[data-lidclosed] .fd5-scene {
+    padding-bottom: 1rem;
+  }
+}
+
+/* ---------------------------------------------------------------------- */
+/* 5. Shared primitives                                                   */
+/* ---------------------------------------------------------------------- */
+
+.fd5-control {
+  cursor: pointer;
+  transition:
+    border-color var(--sol-motion-state) ease,
+    box-shadow var(--sol-motion-state) ease;
+}
+
+.fd5-control:hover:not(:disabled) {
+  border-color: var(--sol-text);
+}
+
+.fd5-control:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.fd5-control:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* --- Paddle (two-position switch) --- */
+
+.fd5-paddle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.625rem;
+}
+
+.fd5-paddle-name {
+  font-size: var(--sol-text-label);
+  color: var(--sol-text-muted);
+  text-transform: lowercase;
+}
+
+.fd5-paddle-track {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--sol-border);
+  background: var(--sol-bg);
+  overflow: hidden;
+}
+
+.fd5-paddle-track::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  width: calc(50% - 2px);
+  background: var(--sol-panel);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25);
+  transition: transform var(--sol-motion-state) ease;
+}
+
+.fd5-paddle[data-pos="b"] .fd5-paddle-track::before {
+  transform: translateX(100%);
+}
+
+.fd5-paddle-opt {
+  position: relative;
+  z-index: 1;
+  font-size: var(--sol-text-label);
+  color: var(--sol-text-muted);
+  white-space: nowrap;
+}
+
+.fd5-paddle-opt[data-active] {
+  color: var(--sol-text);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* --- ArbiterSlot (accent-fill act-now banner — the ONLY place accent-fill appears) --- */
+
+.fd5-arbiter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: var(--sol-target-min-size);
+  padding: 0.75rem 1rem;
+  background: var(--sol-accent-fill);
+  color: var(--sol-on-accent-fill);
+  border: 1px solid var(--sol-accent);
+}
+
+.fd5-arbiter-chevron {
+  font-size: 1rem;
+}
+
+.fd5-arbiter-text {
+  flex: 1;
+  font-weight: 600;
+  min-width: 0;
+}
+
+.fd5-arbiter-badge {
+  font-family: var(--sol-font-data);
+  font-size: var(--sol-text-label);
+  background: var(--sol-on-accent-fill);
+  color: var(--sol-accent-fill);
+  border-radius: 999px;
+  padding: 0.125rem 0.5rem;
+}
+
+.fd5-arbiter-action {
+  margin-inline-start: 0.5rem;
+}
+
+/* --- EstimateMark --- */
+
+.fd5-estimate {
+  font-family: var(--sol-font-data);
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+
+/* --- Sheet (drill-in dialog, max one level) --- */
+
+.fd5-sheet {
+  border: 1px solid var(--sol-border);
+  background: var(--sol-panel);
+  color: var(--sol-text);
+  padding: 0;
+  max-width: min(28rem, 92vw);
+  width: 100%;
+  max-height: min(80vh, 40rem);
+  overflow: hidden;
+  flex-direction: column;
+}
+
+/* The UA stylesheet's dialog:not([open]) { display: none } would otherwise be beaten
+   by this author rule regardless of specificity (author > UA in the cascade) — so the
+   flex layout is scoped to [open] instead of applied unconditionally. */
+.fd5-sheet[open] {
+  display: flex;
+}
+
+.fd5-sheet::backdrop {
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.fd5-sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-bottom: 1px solid var(--sol-border);
+}
+
+.fd5-sheet-title {
+  font-size: 1.1rem;
+  margin: 0;
+  text-transform: lowercase;
+}
+
+.fd5-sheet-close {
+  padding-inline: 0.875rem;
+}
+
+.fd5-sheet-body {
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.fd5-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+.fd5-field-label {
+  font-size: var(--sol-text-label);
+  color: var(--sol-text-muted);
+  text-transform: lowercase;
+}
+
+.fd5-settings-io {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  border-top: 1px solid var(--sol-border);
+  padding-top: 1rem;
+}
+
+.fd5-note {
+  flex-basis: 100%;
+  font-size: var(--sol-text-label);
+  color: var(--sol-text-muted);
+  margin: 0;
+}
+
+@media (max-width: 700px) {
+  .fd5-sheet {
+    position: fixed;
+    inset: auto 0 0 0;
+    margin: 0;
+    max-width: 100%;
+    max-height: min(85vh, 100%);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}
+
+/* ---------------------------------------------------------------------- */
+/* 6. Placeholder scene card                                              */
+/* ---------------------------------------------------------------------- */
+
+.fd5-placeholder-card {
+  background: var(--sol-panel);
+  border: 1px solid var(--sol-border);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  max-width: 28rem;
+  margin: 2rem auto;
+}
+
+.fd5-placeholder-station {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-transform: lowercase;
+  margin: 0 0 0.5rem;
+}
+
+.fd5-placeholder-note {
+  margin: 0;
+  font-family: var(--sol-font-data);
+  font-size: var(--sol-text-label);
+  color: var(--sol-text-muted);
+}
+
+.fd5-scene-cook {
+  min-height: 100%;
+  padding: 1rem;
+}
+
+/* ---------------------------------------------------------------------- */
+/* 7. Supplementary reduced-motion / forced-colors                        */
+/* ---------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .fd5-paddle-track::before {
+    transition: none;
+  }
+  .fd5-control {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .fd5-key[aria-current="page"] {
+    box-shadow: none;
+    outline: 2px solid ButtonText;
+    outline-offset: -2px;
+  }
+  .fd5-paddle-track::before {
+    background: Highlight;
+    forced-color-adjust: none;
+  }
+  .fd5-arbiter {
+    border: 2px solid ButtonText;
+  }
+}
