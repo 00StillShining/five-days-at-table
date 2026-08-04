@@ -234,6 +234,9 @@ export const ApprovalBatchSchema = z
     approved: z.boolean(),
     mealIds: z.array(z.string()).min(1),
     sessionIds: z.array(z.string()),
+    // Provenance, set by the orchestrator when the owner approves a batch.
+    approvedOn: z.string().optional(),
+    approvedBy: z.string().optional(),
   })
   .strict();
 

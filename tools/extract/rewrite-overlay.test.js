@@ -44,7 +44,13 @@ let baseIngredients, baseIngredientsById, phase0Meals, mealById, phase0Prep, pha
 beforeAll(() => {
   baseIngredients = readJSON(path.join(ROOT, "data", "ingredients.json"));
   baseIngredientsById = new Map(baseIngredients.map((i) => [i.id, i]));
-  phase0Meals = readJSON(path.join(ROOT, "data", "meals.json"));
+  // Normalize approvals out of the baseline: method.approved is sourced from the
+  // real tools/extract/approvals.json at extract time, so its live value changes
+  // when the owner approves batches — these fixture tests must not depend on it.
+  phase0Meals = readJSON(path.join(ROOT, "data", "meals.json")).map((m) => ({
+    ...m,
+    method: { ...m.method, approved: false },
+  }));
   mealById = new Map(phase0Meals.map((m) => [m.id, m]));
   phase0Prep = readJSON(path.join(ROOT, "data", "prep.json"));
   // The real data/rewrites/ pipeline may already have run (its _ingredients.*

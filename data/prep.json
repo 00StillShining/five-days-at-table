@@ -381,7 +381,7 @@
       }
     ],
     "rev": "B",
-    "approved": false
+    "approved": true
   },
   {
     "week": "B",
@@ -647,6 +647,6 @@
       }
     ],
     "rev": "B",
-    "approved": false
+    "approved": true
   }
 ]
