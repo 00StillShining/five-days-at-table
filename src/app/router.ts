@@ -13,6 +13,17 @@ const KNOWN_SCREENS: ScreenId[] = ["today", "plan", "meal", "cook", "stores", "s
 export interface Route {
   screen: ScreenId;
   params: { id?: string };
+  /**
+   * The raw query string from the hash (everything after "?", not including
+   * it), or "" when absent — e.g. "#/list?t=abc" -> "t=abc". Deliberately
+   * NOT parsed into URLSearchParams here: lz-string's URL-safe alphabet
+   * (engine/tripCodec.ts) includes literal "+" characters, and
+   * URLSearchParams/application-x-www-form-urlencoded parsing treats "+" as
+   * a space, silently corrupting any payload that contains one. Callers
+   * that need a specific key should extract it themselves with a plain
+   * substring/regex match instead of URLSearchParams.
+   */
+  query: string;
 }
 
 /** Props every registered scene component receives (src/app/scenes.tsx). */
@@ -21,16 +32,20 @@ export interface SceneProps {
 }
 
 export function parseHash(hash: string): Route | null {
-  const clean = hash.replace(/^#\/?/, "");
-  const segments = clean.split("/").filter(Boolean);
+  const withoutPrefix = hash.replace(/^#\/?/, "");
+  const queryIndex = withoutPrefix.indexOf("?");
+  const path = queryIndex === -1 ? withoutPrefix : withoutPrefix.slice(0, queryIndex);
+  const query = queryIndex === -1 ? "" : withoutPrefix.slice(queryIndex + 1);
+
+  const segments = path.split("/").filter(Boolean);
   if (segments.length === 0) return null;
   const [screen, param] = segments;
   if (!KNOWN_SCREENS.includes(screen as ScreenId)) return null;
   if (screen === "meal") {
     if (!param) return null;
-    return { screen: "meal", params: { id: param } };
+    return { screen: "meal", params: { id: param }, query };
   }
-  return { screen: screen as ScreenId, params: {} };
+  return { screen: screen as ScreenId, params: {}, query };
 }
 
 const LONDON_TIME_ZONE = "Europe/London";
@@ -101,5 +116,5 @@ export function useHashRoute(): Route {
     }
   }, [hash]);
 
-  return parseHash(hash) ?? { screen: "today", params: {} };
+  return parseHash(hash) ?? { screen: "today", params: {}, query: "" };
 }

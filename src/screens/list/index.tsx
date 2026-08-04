@@ -1,8 +1,8 @@
 // LIST — till odometer (PLAN §6.9 / D7). Route: #/list, trip arrives via
-// "#/list?t=<lz-string>" (see tripIntake.ts for why that URL form needs a
-// screen-local workaround around a router gap — flagged in the build
-// report). Phase 2 wave 2 (docs/PHASE2-CONTRACT.md): this folder is
-// self-contained — no other screen folder imports from it, and it imports
+// "#/list?t=<lz-string>" — router.ts parses the query string and hands it to
+// us as `route.query`; see tripIntake.ts's resolveInitialTrip() for the
+// decode/cache logic. Phase 2 wave 2 (docs/PHASE2-CONTRACT.md): this folder
+// is self-contained — no other screen folder imports from it, and it imports
 // only components/engine/state/data, never another screen.
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { SceneProps } from "../../app/router";
@@ -35,14 +35,14 @@ import "./list.css";
 type PaneMode = "shop" | "market";
 type ViewMode = "list" | "summary";
 
-export default function ListScene(_props: SceneProps) {
+export default function ListScene({ route }: SceneProps) {
   const { state, dispatch } = useStore();
   const reducedMotion = useReducedMotion();
 
   // Resolved exactly once (fragment -> localStorage fallback) — see
   // tripIntake.ts. Trip content is static for the life of this mount; only
   // ticks/priceChecks (global store) change afterward.
-  const [trip] = useState<TripEnvelope | null>(() => resolveInitialTrip());
+  const [trip] = useState<TripEnvelope | null>(() => resolveInitialTrip(route.query));
 
   // Shared clock (src/state/useNow.ts, wave-1 integration review promotion
   // of what used to be four byte-identical per-screen copies) — 60s cadence

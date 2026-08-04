@@ -163,6 +163,16 @@ body {
 
   /* LIST row height: 56px (PLAN §6.1 — LIST rows + COOK controls get the larger target). */
   --fd-target-list: 3.5rem;
+
+  /*
+    Mobile loop-rail footprint: LoopRail is fixed-bottom at <=700px on every
+    screen (even non-rail screens like LIST/MEAL) — 64px keys + rail-keys
+    padding + border, headroom-rounded, plus safe-area. Shared here so any
+    screen needing to stack its own fixed UI above the rail (e.g. LIST's
+    thumb bar, src/screens/list/list.css) uses the same one value instead of
+    duplicating the calc().
+  */
+  --fd5-rail-footprint: calc(6rem + env(safe-area-inset-bottom, 0px));
 }
 
 /*
@@ -415,9 +425,7 @@ body {
   }
 
   .fd5-scene {
-    /* Reserve the fixed rail's full footprint: 64px keys + rail-keys padding + border
-       + safe-area, rounded up with headroom rather than summed exactly. */
-    padding-bottom: calc(6rem + env(safe-area-inset-bottom, 0px));
+    padding-bottom: var(--fd5-rail-footprint);
   }
 
   /* [data-lidclosed] .fd5-scene { padding: 0 } above already wins here (higher

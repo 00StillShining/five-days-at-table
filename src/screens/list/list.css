@@ -336,12 +336,10 @@
 
 @media (max-width: 700px) {
   .scr-list-thumbbar {
-    /* Stack ABOVE the chassis's own fixed loop rail footprint — tokens.css
-       documents that footprint on `.fd5-scene` as "6rem + safe-area"
-       (LoopRail is fixed-bottom for every screen, LIST included, even
-       though "list" isn't a rail station — same as MEAL). Duplicated
-       constant, flagged as a shared-change request in the build report. */
-    bottom: calc(6rem + env(safe-area-inset-bottom, 0px));
+    /* Stack ABOVE the chassis's own fixed loop rail — tokens.css's
+       --fd5-rail-footprint (LoopRail is fixed-bottom for every screen, LIST
+       included, even though "list" isn't a rail station — same as MEAL). */
+    bottom: var(--fd5-rail-footprint);
     border-bottom: 1px solid var(--sol-border);
     padding-bottom: 0.5rem;
   }
