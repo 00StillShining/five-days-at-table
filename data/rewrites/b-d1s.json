@@ -1,0 +1,81 @@
+{
+  "mealId": "b-d1s",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "pineapple": 200,
+      "cottage": 100,
+      "pumpkin_seeds": 8,
+      "chia": 6
+    },
+    "m": {
+      "pineapple": 260,
+      "cottage": 135,
+      "pumpkin_seeds": 11,
+      "chia": 8
+    }
+  },
+  "freebies": [
+    "chilli_flakes",
+    "lime",
+    "salt"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Pineapple (200/260 g) in thick chunks.",
+      "minutes": null,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": 0,
+      "untimed": true
+    },
+    {
+      "n": 2,
+      "text": "Optional but much better: 2 minutes a side on a dry griddle until it marks.",
+      "minutes": 4,
+      "tempC": null,
+      "track": null,
+      "station": "griddle",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Cottage cheese (100/135 g) into a bowl, chunks over.",
+      "minutes": null,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": 4,
+      "untimed": true
+    },
+    {
+      "n": 4,
+      "text": "Chilli flakes, lime, flaky salt.",
+      "minutes": null,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": 4,
+      "untimed": true
+    },
+    {
+      "n": 5,
+      "text": "Pumpkin seeds (8/11 g) and chia (6/8 g) scattered over.",
+      "minutes": null,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": 4,
+      "untimed": true
+    }
+  ],
+  "why": "Salt on pineapple. It does the same job it does on melon — pulls the sweetness back so the fruit reads as sharp, and the cottage cheese stops tasting bland beside it.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": [
+    "No ruled defects or D0-003 substitutions apply (no oil, no lettuce). The griddle step is explicitly optional in the original text; timed here at its stated 2-minutes-a-side when done. Skipping it drops the whole card to a genuinely untimed 3-minute assembly, matching the card's own chip."
+  ]
+}

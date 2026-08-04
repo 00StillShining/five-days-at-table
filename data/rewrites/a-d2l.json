@@ -1,0 +1,100 @@
+{
+  "mealId": "a-d2l",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "cauliflower": 120,
+      "black_beans": 95,
+      "beef_mince": 70,
+      "peppers_frozen": 70,
+      "brown_rice": 40,
+      "salsa": 60,
+      "sweetheart_cabbage": 50,
+      "red_onion": 30,
+      "sweetcorn": 25,
+      "olive_oil": 5,
+      "chipotle_adobo": 13
+    },
+    "m": {
+      "cauliflower": 155,
+      "black_beans": 105,
+      "beef_mince": 95,
+      "peppers_frozen": 90,
+      "brown_rice": 70,
+      "salsa": 70,
+      "sweetheart_cabbage": 60,
+      "red_onion": 40,
+      "sweetcorn": 30,
+      "olive_oil": 6,
+      "chipotle_adobo": 17
+    }
+  },
+  "freebies": [
+    "lime"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Out of the fridge: Sunday's chipotle beef (take 343 g her+him — the whole 165 g raw batch plus its 2 chopped chipotles in adobo, 30 g), Sunday's rice-and-cauliflower, and Sunday's roast peppers and onion.",
+      "minutes": null,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": true
+    },
+    {
+      "n": 2,
+      "text": "Beef and its adobo sauce (70/95 g beef, 13/17 g chipotle in adobo) and the peppers and onion (70/90 g + 30/40 g) into a pan on high for 3 minutes, until the edges catch again. The microwave works; the pan is better.",
+      "minutes": 3,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Rice and cauliflower (40/70 g dry cooked + 120/155 g) warmed through alongside.",
+      "minutes": 2,
+      "tempC": null,
+      "track": "micro",
+      "station": "microwave",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 4,
+      "text": "Build: rice base, beef over one side, black beans (95/105 g) and sweetcorn (25/30 g) the other, salsa (60/70 g) into the middle.",
+      "minutes": 2,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 5,
+      "text": "Shredded cabbage (50/60 g) on LAST, off the heat, with the oil (5/6 g) and lime hard over everything. The salsa is doing the job the guacamole used to.",
+      "minutes": 1,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    }
+  ],
+  "why": "Cold things after hot things, never before. Lettuce that has sat under hot beef for two minutes is soup, and it takes the rest of the bowl with it.",
+  "batchSource": "prep-a",
+  "batchTakeG": {
+    "w": 343,
+    "m": 467,
+    "total": 810
+  },
+  "notes": [
+    "D0-003: the finishing oil tossed through the shredded cabbage off the heat stays olive_oil (dressing use, not a hot pan).",
+    "D0-003: 'shredded lettuce' in the original step text is explicitly shredded → sweetheart_cabbage.",
+    "Seasoning weighing: Sunday's 'chipotle beef' pan uses 2 chopped chipotles in adobo — never gram-tracked in the original card. Standard-reference chipotle_adobo added, whole batch (30 g) consumed entirely by this single-consumer lunch, split 13/17 g proportional to the beef share. Drift +17/+21 kcal — see macro-drift table.",
+    "batchTakeG: beef 165 g + adobo 30 g + dry rice 110 g + riced cauliflower 275 g + roast peppers 160 g + roast onion 70 g, all from Sunday's prep; salsa and sweetcorn are fresh additions at plate time, excluded."
+  ]
+}

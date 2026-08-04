@@ -1,0 +1,69 @@
+{
+  "mealId": "a-d1s",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "banana": 130,
+      "greek_yog": 110,
+      "chia": 8,
+      "pumpkin_seeds": 6
+    },
+    "m": {
+      "banana": 175,
+      "greek_yog": 140,
+      "chia": 10,
+      "pumpkin_seeds": 8
+    }
+  },
+  "freebies": [
+    "lime",
+    "chilli_flakes",
+    "salt"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Yoghurt (110/140 g) into a bowl or jar.",
+      "minutes": 0.5,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 2,
+      "text": "Banana (130/175 g — about 1 medium / 1 large) sliced thick, straight on top.",
+      "minutes": 1,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Lime squeezed hard over the banana. Chilli flakes and a real pinch of flaky salt.",
+      "minutes": 0.5,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 4,
+      "text": "Chia (8/10 g) and pumpkin seeds (6/8 g) scattered over.",
+      "minutes": 0.5,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    }
+  ],
+  "why": "The lime is structural, not decoration. It stops the banana browning and cuts the sweetness so this eats as a snack rather than a dessert — the salt does the same job.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": []
+}

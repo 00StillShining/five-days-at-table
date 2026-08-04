@@ -1,0 +1,17 @@
+{
+  "week": "B",
+  "sessionName": "Deliberately wrong week field for the prep-a.json filename.",
+  "totalMin": 10,
+  "ops": [
+    {
+      "clock": "0:00",
+      "title": "Test op",
+      "body": "Test body.",
+      "station": "Board",
+      "minutes": 5,
+      "ingredients": [{ "ingId": "egg", "g": 100 }]
+    }
+  ],
+  "yields": [{ "component": "Test yield", "qty": "100 g", "consumers": null, "storage": "Fridge" }],
+  "midweek": []
+}

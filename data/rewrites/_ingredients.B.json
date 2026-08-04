@@ -1,0 +1,432 @@
+[
+  {
+    "id": "soy_sauce",
+    "name": {
+      "display": "Soy sauce, light",
+      "short": "Soy sauce",
+      "canonical": "Soy sauce"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 61,
+      "protein": 5.5,
+      "fat": 0.1,
+      "carb": 6.5,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": 18,
+      "unitSingular": "tbsp",
+      "unitPlural": "tbsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "addedInContentPass": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Introduced in the Phase 1 content pass for B-5-Dinner's teriyaki glaze, which methods.json quantified ('3 tbsp soy') but fd5/meals.json never turned into a tracked gram row. Standard light-soy-sauce reference values (generic UK supermarket label, ~60 kcal/100 ml).",
+      "life": {
+        "prose": "Months, opened",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    }
+  },
+  {
+    "id": "mirin",
+    "name": {
+      "display": "Mirin",
+      "short": "Mirin",
+      "canonical": "Mirin"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 225,
+      "protein": 0.2,
+      "fat": 0,
+      "carb": 43,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": 18,
+      "unitSingular": "tbsp",
+      "unitPlural": "tbsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "addedInContentPass": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Introduced in the Phase 1 content pass for B-5-Dinner's teriyaki glaze ('1 tbsp mirin or rice vinegar'). The rewrite assumes the mirin option (not the near-zero-cal rice-vinegar alternative) so the macro strip reflects the more calorific realistic choice — flagged in the meal's notes. Standard mirin reference values.",
+      "life": {
+        "prose": "Months, opened",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    }
+  },
+  {
+    "id": "honey",
+    "name": {
+      "display": "Honey",
+      "short": "Honey",
+      "canonical": "Honey"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 304,
+      "protein": 0.3,
+      "fat": 0,
+      "carb": 76,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": 7,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "addedInContentPass": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Introduced in the Phase 1 content pass for B-5-Dinner's teriyaki glaze ('1 tsp honey'). Standard honey reference values.",
+      "life": {
+        "prose": "Months, unopened or opened",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    }
+  },
+  {
+    "id": "sugar",
+    "name": {
+      "display": "Sugar, granulated",
+      "short": "Sugar",
+      "canonical": "Sugar"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 400,
+      "protein": 0,
+      "fat": 0,
+      "carb": 100,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": 4,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "addedInContentPass": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Introduced in the Phase 1 content pass for B-2-Dinner's escovitch pickle ('1 tsp sugar', 2 g). Also used at 1 g for the 'pinch of sugar' mentions in B-1-Dinner's tomato sauce and B-4-Breakfast's beans (matching the sibling Week A resolution of the same cross-file id, see a-d2d's notes — freebie:false throughout, so pinches are weighed at 1 g rather than listed in freebies[]). Standard granulated-sugar reference values.",
+      "life": {
+        "prose": "Years",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    }
+  },
+  {
+    "id": "suya_spice",
+    "name": {
+      "display": "Suya spice (ground roasted peanut, chilli, ginger, garlic, stock powder)",
+      "short": "Suya spice",
+      "canonical": "Suya spice"
+    },
+    "aliases": [
+      "Suya",
+      "Yaji"
+    ],
+    "per100g": {
+      "kcal": 520,
+      "protein": 22,
+      "fat": 41,
+      "carb": 20,
+      "fibre": 10
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": 4,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "addedInContentPass": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard, dark",
+      "note": "Homemade Sunday jar ('3 parts ground roasted peanut to 1 part chilli, plus ginger, garlic powder and stock powder'), not a shop SKU — no sku block is given here (nothing to price or pack). per100g is a derived estimate: 75% roasted-peanut reference (~602 kcal/25 p/50 f/21 c/8 fibre) blended with 25% dry chilli/aromatic-powder reference (~282 kcal/14 p/14 f/50 c/34 fibre), rounded. Used in B-3-Dinner (rub, dip, finishing dust) and B-5-Snack (dip); introduced in the Phase 1 content pass because methods.json quantifies every use in teaspoons but no suya row existed anywhere in meals.json.",
+      "life": {
+        "prose": "Cupboard, months (Sunday session prose)",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    }
+  },
+  {
+    "id": "vinegar",
+    "name": {
+      "display": "Vinegar",
+      "short": "Vinegar",
+      "canonical": "Vinegar"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 3,
+      "protein": 0,
+      "fat": 0,
+      "carb": 0.1,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": 15,
+      "unitSingular": "tbsp",
+      "unitPlural": "tbsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "addedInContentPass": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Introduced in the Phase 1 content pass for B-2-Dinner's escovitch pickle ('4 tbsp vinegar'). Near-zero calories at any realistic quantity — flagged freebie:true per rule 5, appears in the meal's freebies[] rather than its covers table.",
+      "life": {
+        "prose": "Years",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      }
+    }
+  },
+  {
+    "id": "allspice",
+    "name": {
+      "display": "Allspice berries",
+      "short": "Allspice",
+      "canonical": "Allspice"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 263,
+      "protein": 6.1,
+      "fat": 8.7,
+      "carb": 72,
+      "fibre": 21.6
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 2,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "addedInContentPass": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Introduced in the Phase 1 content pass — B-2-Dinner's escovitch pickle uses 'a few allspice berries' with no gram figure; freebie:true, matching the treatment of every other trace whole-spice mention in this dataset (cf. _ingredients.A.json's bay_leaf, scotch_bonnet).",
+      "life": { "prose": "Months", "sealedDays": null, "openDays": null, "frozenDays": null, "freshDays": null }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Allspice, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "all_purpose_seasoning",
+    "name": {
+      "display": "All-purpose seasoning",
+      "short": "All-purpose seasoning",
+      "canonical": "All-purpose seasoning"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 200,
+      "protein": 8,
+      "fat": 3,
+      "carb": 35,
+      "fibre": 10
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 3,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "addedInContentPass": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Introduced in the Phase 1 content pass — B-2-Dinner's escovitch fish is 'dusted with a little all-purpose seasoning', no gram figure. freebie:true.",
+      "life": { "prose": "Months", "sealedDays": null, "openDays": null, "frozenDays": null, "freshDays": null }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "All-purpose seasoning, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "worcestershire_sauce",
+    "name": {
+      "display": "Worcestershire sauce",
+      "short": "Worcestershire sauce",
+      "canonical": "Worcestershire sauce"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 78,
+      "protein": 0.5,
+      "fat": 0,
+      "carb": 19.5,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": 5,
+      "unitSingular": "dash",
+      "unitPlural": "dashes"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "addedInContentPass": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Introduced in the Phase 1 content pass — B-4-Breakfast's beans use 'a dash of Worcestershire', no gram figure. freebie:true.",
+      "life": { "prose": "Years, opened", "sealedDays": null, "openDays": null, "frozenDays": null, "freshDays": null }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Worcestershire sauce, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "dried_mint",
+    "name": {
+      "display": "Mint, dried",
+      "short": "Mint, dried",
+      "canonical": "Mint, dried"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 285,
+      "protein": 20,
+      "fat": 6,
+      "carb": 52,
+      "fibre": 32
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 1.5,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "addedInContentPass": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Introduced in the Phase 1 content pass — B-4-Lunch's cucumber yoghurt uses 'dried mint', no gram figure. freebie:true, same treatment as _ingredients.A.json's thyme.",
+      "life": { "prose": "Months", "sealedDays": null, "openDays": null, "frozenDays": null, "freshDays": null }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Mint, dried, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  },
+  {
+    "id": "ginger",
+    "name": {
+      "display": "Ginger, fresh root",
+      "short": "Ginger",
+      "canonical": "Ginger"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 80,
+      "protein": 1.8,
+      "fat": 0.8,
+      "carb": 18,
+      "fibre": 2
+    },
+    "spec": {
+      "weightState": "Raw",
+      "householdUnitG": 5,
+      "unitSingular": "tsp grated",
+      "unitPlural": "tsp grated"
+    },
+    "aisle": "Produce",
+    "freebie": true,
+    "addedInContentPass": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Fridge",
+      "note": "Introduced in the Phase 1 content pass — 'grated ginger' appears with no gram figure in B-5-Dinner's teriyaki glaze. freebie:true.",
+      "life": { "prose": "3-4 weeks", "sealedDays": null, "openDays": null, "frozenDays": null, "freshDays": null }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Ginger, fresh root, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    }
+  }
+]

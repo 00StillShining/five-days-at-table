@@ -1,0 +1,12 @@
+{
+  "_comment": "Small synthetic owner-rulings.json for testing loadOwnerRulings()'s file I/O + underscore-key stripping in isolation from the real tools/extract/owner-rulings.json.",
+  "checkpointDate": "2026-08-04",
+  "resolvedBy": "owner-checkpoint-2026-08-04",
+  "rulings": {
+    "D0-003": { "status": "resolved", "resolvedTo": "Test resolution text for D0-003." }
+  },
+  "confirmedDefaults": {
+    "note": "Test fixture.",
+    "confirmedCount": 2
+  }
+}

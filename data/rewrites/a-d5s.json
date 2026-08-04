@@ -1,0 +1,74 @@
+{
+  "mealId": "a-d5s",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "sweetcorn": 100,
+      "cottage": 80,
+      "greek_yog": 30,
+      "avocado": 20,
+      "olive_oil": 6
+    },
+    "m": {
+      "sweetcorn": 120,
+      "cottage": 110,
+      "greek_yog": 40,
+      "avocado": 25,
+      "olive_oil": 8
+    }
+  },
+  "freebies": [
+    "chilli_powder",
+    "lime",
+    "coriander",
+    "salt"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Sweetcorn (100/120 g) into a dry pan on high, spread thin. Leave it alone for 2 minutes until it blisters and pops. Shake, 1 minute more.",
+      "minutes": 3,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 2,
+      "text": "Cottage cheese (80/110 g) loosened with the yoghurt (30/40 g) and the oil (6/8 g), mashed together with the avocado (20/25 g).",
+      "minutes": 1.5,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Hot corn stirred through.",
+      "minutes": 0.5,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 4,
+      "text": "Chilli powder, lime hard, coriander, flaky salt.",
+      "minutes": 0.5,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    }
+  ],
+  "why": "It has to blister. Warm corn is just corn; charred corn is elote — the blackened kernels are where the entire flavour of the thing lives.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": [
+    "D0-003: the oil is stirred into the cold dip off the heat — a finishing use, stays olive_oil."
+  ]
+}

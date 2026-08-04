@@ -1,0 +1,120 @@
+{
+  "mealId": "a-d1d",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "passata": 100,
+      "peppers_frozen": 90,
+      "mushrooms": 90,
+      "spinach": 60,
+      "chicken_mince": 65,
+      "lettuce": 40,
+      "mozzarella": 30,
+      "red_onion": 30,
+      "egg": 25,
+      "rapeseed_oil": 5,
+      "olive_oil": 9,
+      "parmesan": 12
+    },
+    "m": {
+      "passata": 120,
+      "peppers_frozen": 110,
+      "mushrooms": 110,
+      "spinach": 80,
+      "chicken_mince": 75,
+      "lettuce": 50,
+      "mozzarella": 40,
+      "red_onion": 40,
+      "egg": 25,
+      "rapeseed_oil": 5,
+      "olive_oil": 12,
+      "parmesan": 15
+    }
+  },
+  "freebies": [
+    "salt",
+    "oregano",
+    "garlic_powder",
+    "lemon",
+    "black_pepper"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Oven to 220 °C fan. Tray lined with baking paper.",
+      "minutes": null,
+      "tempC": 220,
+      "track": "oven",
+      "station": "oven",
+      "clockStart": 0,
+      "untimed": true
+    },
+    {
+      "n": 2,
+      "text": "Base: chicken mince (65/75 g), parmesan (12/15 g), half a beaten egg (25 g), salt, oregano, garlic powder. Mix hard with your hands for a full minute — it should turn tacky and hold together in one mass.",
+      "minutes": 1,
+      "tempC": null,
+      "track": "prep",
+      "station": "counter",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Press onto the paper into a 20 cm round, 5–6 mm thick and even. Wet fingers stop it sticking. Bake 15 minutes.",
+      "minutes": 15,
+      "tempC": 220,
+      "track": "oven",
+      "station": "oven",
+      "clockStart": 1,
+      "untimed": false
+    },
+    {
+      "n": 4,
+      "text": "Meanwhile: pepper (90/110 g), mushrooms (90/110 g) and onion (30/40 g) sliced. Pan, 5 g of the rapeseed oil, high heat, 5 minutes — until the mushrooms have given up their water and taken colour. Spinach (60/80 g) in at the end to wilt. Season.",
+      "minutes": 5,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 1,
+      "untimed": false
+    },
+    {
+      "n": 5,
+      "text": "Base out. It should be firm, browned at the rim and lift cleanly off the paper. Blot the surface with kitchen paper.",
+      "minutes": 1,
+      "tempC": 220,
+      "track": "oven",
+      "station": "oven",
+      "clockStart": 16,
+      "untimed": false
+    },
+    {
+      "n": 6,
+      "text": "Passata (100/120 g) spread thin, mozzarella (30/40 g) torn over, vegetables on. Back in for 8 minutes.",
+      "minutes": 8,
+      "tempC": 220,
+      "track": "oven",
+      "station": "oven",
+      "clockStart": 17,
+      "untimed": false
+    },
+    {
+      "n": 7,
+      "text": "Salad alongside: lettuce (40/50 g), dressed properly with the remaining olive oil — 9/12 g, the rest of the table total after the 5 g that went into the pan — lemon, salt and plenty of black pepper.",
+      "minutes": 2,
+      "tempC": null,
+      "track": "prep",
+      "station": "counter",
+      "clockStart": 17,
+      "untimed": false
+    }
+  ],
+  "why": "Blot the base. Chicken mince releases water as it bakes, and a wet base steams instead of crisping. Press it thin and even too — a thick middle stays raw while the rim burns.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": [
+    "D0-003: oil hitting the hot pan (step 4, 5 g) is rapeseed_oil; the salad-finishing remainder (step 7) is olive_oil. Split rows sum to the table: her 5+9=14 g, him 5+12=17 g.",
+    "D0-017: step 7 wording fixed — 'remaining oil' now states the true remainder (9/12 g) instead of restating the full table total (14/17 g)."
+  ]
+}

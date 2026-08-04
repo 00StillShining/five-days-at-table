@@ -1,0 +1,94 @@
+{
+  "mealId": "a-d1l",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "cauliflower": 130,
+      "chicken": 75,
+      "tomato": 80,
+      "chickpeas": 70,
+      "brown_rice": 55,
+      "sweetheart_cabbage": 70,
+      "greek_yog": 50,
+      "red_onion": 30,
+      "rapeseed_oil": 6
+    },
+    "m": {
+      "cauliflower": 160,
+      "chicken": 100,
+      "tomato": 100,
+      "chickpeas": 90,
+      "brown_rice": 80,
+      "sweetheart_cabbage": 80,
+      "greek_yog": 65,
+      "red_onion": 40,
+      "rapeseed_oil": 8
+    }
+  },
+  "freebies": ["salt", "black_pepper"],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Out of the fridge: Sunday's roast chicken and Sunday's rice-and-cauliflower — this lunch takes 175 g of chicken (her 75 g / him 100 g) from Sunday's 600 g batch.",
+      "minutes": null,
+      "tempC": null,
+      "track": "prep",
+      "clockStart": 0,
+      "station": null,
+      "untimed": true
+    },
+    {
+      "n": 2,
+      "text": "Chicken (75/100 g) chopped into rough 2 cm pieces.",
+      "minutes": 1,
+      "tempC": null,
+      "track": "prep",
+      "clockStart": 0,
+      "station": "board"
+    },
+    {
+      "n": 3,
+      "text": "Pan, medium-high, rapeseed oil (her 6 g / him 8 g) — hits the hot pan, so it's the rapeseed portion per D0-003. Chicken in with ½ tsp oregano, ½ tsp cumin, ¼ tsp turmeric and salt. 3 minutes, moving it, until the edges catch.",
+      "minutes": 3,
+      "tempC": null,
+      "track": "pan",
+      "clockStart": 1,
+      "station": "hob 1"
+    },
+    {
+      "n": 4,
+      "text": "Rice and cauliflower (55/80 g dry cooked + 130/160 g riced) warmed through — 90 seconds in the microwave, or into the pan for the last minute with a splash of water.",
+      "minutes": 2,
+      "tempC": null,
+      "track": "pan",
+      "clockStart": 4,
+      "station": "hob 1"
+    },
+    {
+      "n": 5,
+      "text": "Build: rice base, chicken over, then chickpeas (70/90 g), shredded sweetheart cabbage (70/80 g — swapped for little gem per D0-003, it's shredded here) and diced tomato (80/100 g) around the edge. Raw red onion (30/40 g) over.",
+      "minutes": 1,
+      "tempC": null,
+      "track": "prep",
+      "clockStart": 6,
+      "station": "board"
+    },
+    {
+      "n": 6,
+      "text": "White sauce from Sunday's jar (50/65 g yoghurt, grated garlic, lemon, a great deal of black pepper). Hot sauce to taste.",
+      "minutes": null,
+      "tempC": null,
+      "track": "prep",
+      "clockStart": 7,
+      "station": null,
+      "untimed": true
+    }
+  ],
+  "why": "The spices go on in the pan, not on Sunday. One tray of deliberately plain roast chicken becomes three completely different lunches this week precisely because it was left neutral.",
+  "batchSource": "prep-a",
+  "batchTakeG": { "w": 75, "m": 100, "total": 175 },
+  "notes": [
+    "L5: takes 175 g of chicken from Sunday's 600 g roast-chicken batch (prep-a's 'Roast chicken' yield). The other two consumers (a-d3l, a-d5l) aren't in this fixture set, so the aggregate 175+?+?=575-with-25g-headroom check (D0-020) can't be evaluated here — lintL5Aggregate correctly withholds a verdict until all three have rewrites.",
+    "D0-003 applied twice in this card: oil into the hot pan becomes rapeseed_oil (6/8 g); the little gem is used shredded in the build step, so it becomes sweetheart_cabbage (70/80 g)."
+  ]
+}

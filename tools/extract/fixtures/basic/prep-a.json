@@ -1,0 +1,48 @@
+{
+  "week": "A",
+  "sessionName": "Sunday session — test fixture subset (2 of the real 10 ops)",
+  "totalMin": 13,
+  "ops": [
+    {
+      "clock": "0:00",
+      "title": "Trays in — chicken, chickpeas, peppers",
+      "body": "Chicken breast (600 g), chickpeas (250 g drained), frozen sliced peppers (160 g) and red onion (70 g) onto two trays. Oven 200°C fan, 25 minutes.",
+      "station": "Oven",
+      "minutes": 5,
+      "ingredients": [
+        { "ingId": "chicken", "g": 600 },
+        { "ingId": "chickpeas", "g": 250 },
+        { "ingId": "peppers_frozen", "g": 160 },
+        { "ingId": "red_onion", "g": 70 }
+      ]
+    },
+    {
+      "clock": "0:05",
+      "title": "Shred for two slaws — corrected per D0-014",
+      "body": "515 g red cabbage and 230 g carrot, shredded fine — Thursday's burger slaw, Friday's wrap AND Friday's salmon slaw all come out of this (the Phase 0 op text undercounted at 335 g by omitting the Friday-dinner salmon slaw; D0-014 corrects it here).",
+      "station": "Board",
+      "minutes": 8,
+      "ingredients": [
+        { "ingId": "red_cabbage", "g": 515 },
+        { "ingId": "carrot", "g": 230 }
+      ]
+    }
+  ],
+  "yields": [
+    {
+      "component": "Roast chicken",
+      "qty": "600 g raw",
+      "consumers": ["a-d1l", "a-d3l", "a-d5l"],
+      "storage": "Fridge, airtight, 3 days",
+      "note": "Cooks 600 g; the three consuming lunches plate 575 g combined (D0-020) — ~25 g headroom for tasting/loss, stated explicitly rather than silently tightened."
+    },
+    {
+      "component": "Slaw shred",
+      "qty": "515 g red cabbage + 230 g carrot",
+      "consumers": ["a-d4d", "a-d5l", "a-d5d"],
+      "storage": "Fridge, airtight, 4 days",
+      "note": null
+    }
+  ],
+  "midweek": []
+}

@@ -1,0 +1,95 @@
+{
+  "mealId": "a-d4b",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "spinach": 60,
+      "tomato": 60,
+      "egg": 50,
+      "beef_steak": 55,
+      "seeded_bread": 45,
+      "red_onion": 20,
+      "rapeseed_oil": 14
+    },
+    "m": {
+      "spinach": 80,
+      "tomato": 80,
+      "egg": 75,
+      "beef_steak": 58,
+      "seeded_bread": 50,
+      "red_onion": 25,
+      "rapeseed_oil": 17
+    }
+  },
+  "freebies": [
+    "salt"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Steak (55/58 g) out of the fridge 10 minutes ahead. Dry it hard with kitchen paper. Salt heavily.",
+      "minutes": 10,
+      "tempC": null,
+      "track": "prep",
+      "station": "counter",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 2,
+      "text": "Pan on high until it faintly smokes. 3 g rapeseed oil. Steak in — 90 seconds, flip, 90 seconds. Onto a board to rest. This is not optional.",
+      "minutes": 3,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 10,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Bread (45/50 g) toasting while it rests.",
+      "minutes": 2,
+      "tempC": null,
+      "track": "toast",
+      "station": "toaster",
+      "clockStart": 13,
+      "untimed": false
+    },
+    {
+      "n": 4,
+      "text": "Same pan, heat down to medium, 3 g rapeseed oil. Onion (20/25 g) 1 minute, spinach (60/80 g) in to wilt, out.",
+      "minutes": 2,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 13,
+      "untimed": false
+    },
+    {
+      "n": 5,
+      "text": "Remaining rapeseed oil (8/11 g). Eggs (50/75 g — 1 / 1½) cracked in, lid on, 2 minutes for a set white and a soft yolk.",
+      "minutes": 2,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 15,
+      "untimed": false
+    },
+    {
+      "n": 6,
+      "text": "Spinach onto the toast, sliced tomato (60/80 g) salted, steak sliced AGAINST the grain, egg on top. The pan juices spooned over — that is what the avocado was covering for.",
+      "minutes": 1,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": 17,
+      "untimed": false
+    }
+  ],
+  "why": "Dry meat, smoking pan. Steak this thin has about three minutes before it goes grey all the way through — the crust has to form fast, and it cannot form on a wet surface.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": [
+    "D0-003: every oil use in this dish hits a hot pan (searing steak, softening onion/wilting spinach, frying the egg) — no dressing use anywhere, so the full 14/17 g table total becomes rapeseed_oil, restated across the three pan steps: 3+3+8=14 g her, 3+3+11=17 g him."
+  ]
+}

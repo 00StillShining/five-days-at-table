@@ -1,0 +1,102 @@
+{
+  "mealId": "b-d4l",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "beef_mince": 110,
+      "greek_yog": 70,
+      "tomato": 70,
+      "cucumber": 70,
+      "sweetheart_cabbage": 50,
+      "lc_tortilla": 40,
+      "red_onion": 52,
+      "rapeseed_oil": 5,
+      "olive_oil": 3
+    },
+    "m": {
+      "beef_mince": 145,
+      "greek_yog": 90,
+      "tomato": 90,
+      "cucumber": 80,
+      "sweetheart_cabbage": 60,
+      "lc_tortilla": 55,
+      "red_onion": 68,
+      "rapeseed_oil": 5,
+      "olive_oil": 5
+    }
+  },
+  "freebies": [
+    "garlic",
+    "lemon",
+    "salt",
+    "dried_mint"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Sunday's koftas out — take all 6 fingers, 110/145 g (255 g total) of the ~255 g batch — from the fridge, or from the freezer if you moved them down on Wednesday night.",
+      "minutes": null,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 0,
+      "untimed": true
+    },
+    {
+      "n": 2,
+      "text": "Pan, medium-high, the oil (5 g flat, rapeseed — searing the whole batch). Koftas in, 6–7 minutes, turned to colour all sides. They are already cooked; this is purely about the crust.",
+      "minutes": 6.5,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Cucumber yoghurt: cucumber (70/80 g) coarsely grated and then SQUEEZED dry in your hands, into the yoghurt (70/90 g) with grated garlic, lemon, salt and dried mint.",
+      "minutes": null,
+      "tempC": null,
+      "track": "prep",
+      "station": "board",
+      "clockStart": 0,
+      "untimed": true
+    },
+    {
+      "n": 4,
+      "text": "Tortilla (40/55 g), 20 seconds a side.",
+      "minutes": 0.5,
+      "tempC": null,
+      "track": "prep",
+      "station": "hob 2",
+      "clockStart": 3,
+      "untimed": false
+    },
+    {
+      "n": 5,
+      "text": "Yoghurt down the middle, koftas, shredded sweetheart cabbage (50/60 g), tomato (70/90 g), raw onion (35/45 g — the wrap's own garnish; a further 17/23 g of Sunday's cooked-in kofta onion travels with the mince itself and needs no separate measuring here), the rest of the oil (3/5 g, olive — finishing drizzle). Roll tight.",
+      "minutes": null,
+      "tempC": null,
+      "track": "prep",
+      "station": "board",
+      "clockStart": 6.5,
+      "untimed": true
+    }
+  ],
+  "why": "Squeeze the cucumber. Grated cucumber holds an astonishing amount of water and will turn the yoghurt to soup inside a minute — wring it out over the sink until it stops dripping, then use it.",
+  "batchSource": "prep-b",
+  "batchTakeG": {
+    "w": 110,
+    "m": 145,
+    "total": 255
+  },
+  "notes": [
+    "PLAN §4 worst-offender fix: batchTakeG now states the kofta take (110/145 g), matching the ~255 g Sunday batch exactly (sole consumer, zero headroom) — see prep-b.json.",
+    "D0-015 applied: the original oil row was inverted (her 10 g / him 8 g). Corrected to her 8 g / him 10 g (him >= her).",
+    "D0-018 applied: the Sunday tray op folds 40 g grated onion into the 255 g mince before shaping (255 g mince + 40 g onion). This card's own ingredient table previously carried only the raw-garnish red_onion row (35/45 g) and never accounted for the cooked-in 40 g. Added here: the 40 g split proportionally to the mince ratio (110:145) -> 17 g (her) / 23 g (him), folded into the red_onion covers row (35+17=52 her, 45+23=68 him). The step text restates this explicitly rather than silently inflating the garnish figure, so the cook isn't told to add 17/23 g more onion by hand at assembly.",
+    "D0-003: oil is used twice for different purposes — a flat 5 g searing amount (rapeseed, crisping the whole batch of koftas in one pan before they're split by cover) and a per-cover remainder (3/5 g) drizzled raw into the wrap at assembly (olive, finishing). Split into two covers rows: rapeseed_oil 5/5, olive_oil 3/5 — sums to the corrected table (8/10).",
+    "D0-003: lettuce -> sweetheart_cabbage applied — this is a rolled wrap, matching the substitution note's own 'the wraps' category exactly. Grams unchanged (50/60 g).",
+    "Macro drift, recomputed from covers: her side +~6 kcal net (D0-015's oil swap costs her -18 kcal, D0-018's onion adds +7 kcal, the cabbage swap adds +6 kcal — nets out small). His side +~33 kcal (D0-015's oil swap gives him +18 kcal, D0-018's onion adds +9 kcal, the cabbage swap adds +6 kcal — these three ruled/D0-003 changes stack in the same direction and cross the 30 kcal note threshold together, though none of the three is individually large). This is an honest byproduct of stacking three separate ruled fixes on one card, not an error.",
+    "Two tracks: pan (kofta sear) and prep (cucumber yoghurt, tortilla, build) running during the 6.5-minute sear."
+  ]
+}

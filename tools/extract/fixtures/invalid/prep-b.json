@@ -1,0 +1,17 @@
+{
+  "week": "B",
+  "sessionName": "Schema-valid but references an unknown ingredient id.",
+  "totalMin": 10,
+  "ops": [
+    {
+      "clock": "0:00",
+      "title": "Test op",
+      "body": "Test body.",
+      "station": "Board",
+      "minutes": 5,
+      "ingredients": [{ "ingId": "totally_unknown_ingredient_id", "g": 100 }]
+    }
+  ],
+  "yields": [{ "component": "Test yield", "qty": "100 g", "consumers": null, "storage": "Fridge" }],
+  "midweek": []
+}

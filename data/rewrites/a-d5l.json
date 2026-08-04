@@ -1,0 +1,99 @@
+{
+  "mealId": "a-d5l",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "chicken": 95,
+      "red_cabbage": 70,
+      "greek_yog": 60,
+      "cucumber": 60,
+      "carrot": 50,
+      "lc_tortilla": 45,
+      "lettuce": 40,
+      "avocado": 25,
+      "olive_oil": 11
+    },
+    "m": {
+      "chicken": 110,
+      "red_cabbage": 80,
+      "greek_yog": 80,
+      "cucumber": 70,
+      "carrot": 60,
+      "lc_tortilla": 55,
+      "lettuce": 50,
+      "avocado": 35,
+      "olive_oil": 15
+    }
+  },
+  "freebies": [
+    "lemon",
+    "salt",
+    "garlic",
+    "shawarma_spice"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Slaw: cabbage (70/80 g), carrot (50/60 g) and cucumber (60/70 g) — cucumber deseeded and cut into BATONS, not rounds — with lemon, salt and the oil (11/15 g). Leave 5 minutes.",
+      "minutes": 5,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 2,
+      "text": "Chicken (95/110 g, from Sunday's roast) sliced thin. DRY pan, high. 2 minutes, then 1½ tsp shawarma spice and 30 seconds more. No oil — you want char, not fry.",
+      "minutes": 2.5,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Garlic yoghurt: yoghurt (60/80 g), grated garlic, lemon, salt.",
+      "minutes": 1,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 4,
+      "text": "Tortilla (45/55 g), 20 seconds a side in the same dry pan until pliable.",
+      "minutes": 0.67,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 5,
+      "text": "Build a LINE down the middle, not across the whole surface: yoghurt, chicken, slaw, lettuce (40/50 g), avocado (25/35 g). Fold the bottom up, then roll tight.",
+      "minutes": 1.5,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    }
+  ],
+  "why": "Batons, and dress the slaw early. Cucumber rounds go limp and slide out of the far end; batons hold their shape. And five minutes of sitting draws the water out onto the board now rather than into the wrap later.",
+  "batchSource": "prep-a",
+  "batchTakeG": {
+    "w": 215,
+    "m": 250,
+    "total": 465
+  },
+  "notes": [
+    "D0-003: the slaw oil (raw, tossed with lemon/salt, no heat) stays olive_oil — the chicken is explicitly dry-charred, no oil in that pan.",
+    "The lettuce here is a whole-leaf wrap layer, not shredded (unlike a-d1l/a-d2l's 'shredded lettuce') — D0-003's sweetheart_cabbage substitution does not apply.",
+    "D0-014 (Sunday cabbage 515 g): this wrap's red_cabbage (70/80 g) is one of the three consumers of Sunday's shred batch — see prep-a.json for the corrected 515 g / three-consumer fix.",
+    "batchTakeG: chicken 205 g (of the 600 g roast batch) + red cabbage 150 g + carrot 110 g (both from Sunday's shredded-slaw batch). Yoghurt, cucumber, tortilla, lettuce and avocado are fresh additions."
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "mealId": "b-d2b",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "apple": 150,
+      "skyr": 130,
+      "oats": 50,
+      "peanut_butter": 10,
+      "chia": 8
+    },
+    "m": {
+      "apple": 190,
+      "skyr": 175,
+      "oats": 70,
+      "peanut_butter": 13,
+      "chia": 10
+    }
+  },
+  "freebies": [
+    "cinnamon",
+    "salt",
+    "lemon"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "THE NIGHT BEFORE. Oats (50/70 g), skyr (130/175 g), chia (8/10 g), a full teaspoon of cinnamon, a pinch of salt and 60–80 ml water into a jar. Stir properly — chia clumps if you don't.",
+      "minutes": 2,
+      "tempC": null,
+      "track": "night-before",
+      "station": "counter",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 2,
+      "text": "Grate HALF the apple (75/95 g) in now, skin on, with lemon over it first.",
+      "minutes": 1,
+      "tempC": null,
+      "track": "night-before",
+      "station": "counter",
+      "clockStart": 2,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Lid on, into the fridge.",
+      "minutes": null,
+      "tempC": null,
+      "track": "night-before",
+      "station": "fridge",
+      "clockStart": 3,
+      "untimed": true
+    },
+    {
+      "n": 4,
+      "text": "In the morning: the other half (75/95 g) grated or sliced on top. Peanut butter (10/13 g) warmed 10 seconds and spooned over.",
+      "minutes": 1,
+      "tempC": null,
+      "track": "morning",
+      "station": "counter",
+      "clockStart": 0,
+      "untimed": false
+    }
+  ],
+  "why": "Half the apple in, half on. The half that soaks overnight disappears into the oats and sweetens the whole jar; the half added in the morning is the only part that still has any bite left in it.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": [
+    "No ruled defects or D0-003 substitutions apply (no oil, no lettuce). This is a self-made overnight prep, not a draw against the Sunday session's own yields table, so batchSource/batchTakeG stay null despite the batch tag (per D0-013, methods.json's tag wins over fd5's).",
+    "Two tracks used only to represent the overnight gap: 'night-before' and 'morning' each carry their own clockStart starting at 0, since a single continuous elapsed clock across an 8+ hour fridge rest isn't meaningful. Total active time across both (~4 min) matches the card's own chip."
+  ]
+}

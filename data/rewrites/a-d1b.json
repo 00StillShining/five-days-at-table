@@ -1,0 +1,97 @@
+{
+  "mealId": "a-d1b",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "spinach": 100,
+      "egg": 100,
+      "tomato": 80,
+      "lc_tortilla": 45,
+      "avocado": 35,
+      "cheddar_rf": 15,
+      "rapeseed_oil": 5
+    },
+    "m": {
+      "spinach": 120,
+      "egg": 100,
+      "tomato": 100,
+      "lc_tortilla": 50,
+      "avocado": 45,
+      "cheddar_rf": 20,
+      "rapeseed_oil": 8
+    }
+  },
+  "freebies": [
+    "salt",
+    "black_pepper",
+    "hot_sauce"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Non-stick pan, dry, medium-high. Spinach in (100/120 g) with a pinch of salt. 60 seconds, until it collapses. Tip onto a plate and press the water out with the back of a spoon.",
+      "minutes": 1,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 2,
+      "text": "Oil into the pan — rapeseed, it is about to fry (5/8 g). Beat the eggs (100 g — 2 eggs) with black pepper. Pour in and tilt to coat the base.",
+      "minutes": null,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": null,
+      "untimed": true
+    },
+    {
+      "n": 3,
+      "text": "Leave 45 seconds untouched. As the edge sets, draw it to the middle with a spatula and tilt again. Twice more — you want three or four soft folds, not scramble.",
+      "minutes": 1,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 4,
+      "text": "Spinach over one half, cheddar on top (15/20 g). Fold, lid on, heat OFF. 60 seconds to melt.",
+      "minutes": 1,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 5,
+      "text": "Warm the tortilla (45/50 g) 20 seconds a side in the dry pan while that happens.",
+      "minutes": 0.67,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 6,
+      "text": "Tomato (80/100 g) sliced thin and salted. Avocado (35/45 g) mashed onto the tortilla. Egg in, tomato on, hot sauce, fold and press.",
+      "minutes": 1,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    }
+  ],
+  "why": "Wilt and squeeze. Spinach is mostly water and it will steam the eggs into a wet mess otherwise. And take the pan off the heat before the cheese goes on — residual heat melts it and the egg stays tender.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": [
+    "D0-003: the pan-frying oil (whole 5/8 g figure — a single hot-pan use, no dressing/finishing use in this dish) becomes rapeseed_oil throughout."
+  ]
+}

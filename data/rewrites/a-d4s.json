@@ -1,0 +1,69 @@
+{
+  "mealId": "a-d4s",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "apple": 230,
+      "greek_yog": 120,
+      "pumpkin_seeds": 8,
+      "coconut_des": 5
+    },
+    "m": {
+      "apple": 300,
+      "greek_yog": 170,
+      "pumpkin_seeds": 11,
+      "coconut_des": 6
+    }
+  },
+  "freebies": [
+    "cinnamon",
+    "salt",
+    "lemon"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Coconut (5/6 g) into a dry pan, medium, 90 seconds, shaken constantly, until it just turns gold. Out of the pan immediately.",
+      "minutes": 1.5,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 2,
+      "text": "Apple (230/300 g — about 1½ / 2 medium) grated coarsely, SKIN ON. Lemon over it straight away.",
+      "minutes": 2,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Fold into the yoghurt (120/170 g) with a full teaspoon of cinnamon and a pinch of salt.",
+      "minutes": 1,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 4,
+      "text": "Toasted coconut and pumpkin seeds (8/11 g) over the top.",
+      "minutes": 0.5,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    }
+  ],
+  "why": "Skin on. That is most of the fibre in the apple and all of the texture — peeled and grated, this collapses into apple sauce with yoghurt in it.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": []
+}

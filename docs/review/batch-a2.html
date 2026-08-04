@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FD-5 Phase 1 review — batch a2</title>
+<style>
+  body { font-family: -apple-system, Helvetica, Arial, sans-serif; max-width: 1400px; margin: 0 auto; padding: 24px; color: #111; background: #fff; }
+  h1 { font-size: 22px; }
+  h2 { font-size: 18px; margin-top: 40px; border-top: 2px solid #333; padding-top: 12px; }
+  h3 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.04em; color: #555; }
+  .summary { background: #f4f4f4; padding: 12px 16px; border-radius: 4px; font-size: 14px; }
+  .meal-id { font-family: monospace; font-size: 13px; color: #666; font-weight: normal; }
+  .meta { color: #555; font-size: 13px; margin: 2px 0 8px; }
+  .cols { display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap; }
+  .col { flex: 1 1 460px; min-width: 360px; border: 1px solid #ddd; border-radius: 4px; padding: 12px 16px; }
+  .status { font-weight: bold; padding: 6px 10px; border-radius: 4px; display: inline-block; margin: 8px 0; }
+  .status-missing { background: #fff3cd; color: #7a5c00; }
+  .status-invalid { background: #f8d7da; color: #7a1520; }
+  .status-ok { background: #d4edda; color: #155724; }
+  .lint-pass { color: #155724; }
+  .lint-fail { color: #7a1520; font-weight: bold; }
+  .error { color: #7a1520; font-family: monospace; font-size: 12px; white-space: pre-wrap; }
+  .steps { padding-left: 20px; font-size: 14px; }
+  .steps li { margin-bottom: 6px; }
+  .step-meta { color: #888; font-size: 12px; }
+  .why { font-size: 13px; font-style: italic; color: #333; background: #fafafa; padding: 8px; border-radius: 4px; }
+  table.gram-table, table.op-table, table.yield-table { border-collapse: collapse; width: 100%; font-size: 13px; margin: 8px 0; }
+  table.gram-table th, table.gram-table td, table.op-table th, table.op-table td, table.yield-table th, table.yield-table td { border: 1px solid #ddd; padding: 4px 8px; text-align: left; vertical-align: top; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr.row-changed { background: #fff8e1; }
+  tr.row-dropped { background: #fbeaea; text-decoration: line-through; color: #888; }
+  .tag-new { background: #cce5ff; color: #004085; font-size: 10px; padding: 1px 5px; border-radius: 3px; }
+  .tag-changed { background: #fff3cd; color: #7a5c00; font-size: 11px; padding: 1px 5px; border-radius: 3px; }
+  .tag-dropped { background: #f8d7da; color: #7a1520; font-size: 10px; padding: 1px 5px; border-radius: 3px; }
+  .tag-batch, .tag-fresh { font-size: 11px; padding: 1px 6px; border-radius: 3px; font-weight: normal; }
+  .tag-batch { background: #e2d9f3; color: #4b3679; }
+  .tag-fresh { background: #d4edda; color: #155724; }
+  .macros { font-size: 13px; }
+  .batch-meta, .freebies { font-size: 12px; color: #444; }
+  .placeholder { color: #999; font-style: italic; }
+  .notes { font-size: 12px; margin-top: 8px; }
+  .notes summary { cursor: pointer; color: #555; }
+  .notes ul { padding-left: 18px; }
+  code { background: #f0f0f0; padding: 1px 4px; border-radius: 3px; }
+</style>
+</head>
+<body>
+<h1>FD-5 Phase 1 review — batch a2</h1>
+<div class="summary">
+  <strong>11 meal(s)</strong>
+  &middot; <strong>11/11</strong> rewritten
+  &middot; approvals.json batch approval: <strong>not yet approved</strong>
+  &middot; generated 2026-08-04T02:49:07.133Z
+</div>
+<section class="meal">
+    <h2>Steak &amp; egg breakfast sandwich <span class="meal-id">a-d4b</span> <span class="tag-fresh">fresh</span></h2>
+    <p class="meta">Thursday Breakfast &middot; 10 min &middot; origin: New York</p>
+    <p class="status status-ok">rev B &middot; <span class="lint-pass">LINT: PASS (0 findings)</span></p>
+    <div class="cols"><div class="col">
+    <h3>old (Phase 0, data/raw/methods.json)</h3>
+    <ol class="steps"><li>Steak (55/58 g) out of the fridge 10 minutes ahead. Dry it hard with kitchen paper. Salt heavily.</li>
+<li>Pan on high until it faintly smokes. 3 g oil. Steak in — 90 seconds, flip, 90 seconds. Onto a board to rest. This is not optional.</li>
+<li>Bread (45/50 g) toasting while it rests.</li>
+<li>Same pan, heat down to medium, 3 g oil. Onion (20/25 g) 1 minute, spinach (60/80 g) in to wilt, out.</li>
+<li>Remaining oil. Eggs (50/75 g — 1 / 1½) cracked in, lid on, 2 minutes for a set white and a soft yolk.</li>
+<li>Spinach onto the toast, sliced tomato (60/80 g) salted, steak sliced AGAINST the grain, egg on top. The pan juices spooned over — that is what the avocado was covering for.</li></ol>
+    <p class="why"><strong>why:</strong> Dry meat, smoking pan. Steak this thin has about three minutes before it goes grey all the way through — the crust has to form fast, and it cannot form on a wet surface.</p>
+    <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th><th>state</th></tr></thead><tbody><tr><td>Spinach, ugu or callaloo</td><td class="num">60</td><td class="num">80</td><td>Raw</td></tr>
+<tr><td>Tomatoes, ripe</td><td class="num">60</td><td class="num">80</td><td>Raw</td></tr>
+<tr><td>Eggs, medium, shell off</td><td class="num">50</td><td class="num">75</td><td>Shelled</td></tr>
+<tr><td>Sirloin steak, lean, trimmed</td><td class="num">55</td><td class="num">58</td><td>Raw</td></tr>
+<tr><td>Seeded low-carb loaf</td><td class="num">45</td><td class="num">50</td><td>As it comes</td></tr>
+<tr><td>Red onion, peeled</td><td class="num">20</td><td class="num">25</td><td>Prepared</td></tr>
+<tr><td>Extra virgin olive oil</td><td class="num">14</td><td class="num">17</td><td>As it comes</td></tr></tbody></table>
+    <p class="macros"><strong>her:</strong> kcal 425 &middot; protein 29 g &middot; net carb 9 g &middot; fat 28 g &middot; fibre 8.9 g<br><strong>him:</strong> kcal 515 &middot; protein 35 g &middot; net carb 11 g &middot; fat 35 g &middot; fibre 10.4 g</p>
+  </div><div class="col">
+      <h3>new</h3>
+      <ol class="steps"><li>Steak (55/58 g) out of the fridge 10 minutes ahead. Dry it hard with kitchen paper. Salt heavily. <span class="step-meta">[10 min &middot; track:prep &middot; clock:0 &middot; @ counter]</span></li>
+<li>Pan on high until it faintly smokes. 3 g rapeseed oil. Steak in — 90 seconds, flip, 90 seconds. Onto a board to rest. This is not optional. <span class="step-meta">[3 min &middot; track:pan &middot; clock:10 &middot; @ hob]</span></li>
+<li>Bread (45/50 g) toasting while it rests. <span class="step-meta">[2 min &middot; track:toast &middot; clock:13 &middot; @ toaster]</span></li>
+<li>Same pan, heat down to medium, 3 g rapeseed oil. Onion (20/25 g) 1 minute, spinach (60/80 g) in to wilt, out. <span class="step-meta">[2 min &middot; track:pan &middot; clock:13 &middot; @ hob]</span></li>
+<li>Remaining rapeseed oil (8/11 g). Eggs (50/75 g — 1 / 1½) cracked in, lid on, 2 minutes for a set white and a soft yolk. <span class="step-meta">[2 min &middot; track:pan &middot; clock:15 &middot; @ hob]</span></li>
+<li>Spinach onto the toast, sliced tomato (60/80 g) salted, steak sliced AGAINST the grain, egg on top. The pan juices spooned over — that is what the avocado was covering for. <span class="step-meta">[1 min &middot; clock:17]</span></li></ol>
+      <p class="why"><strong>why:</strong> Dry meat, smoking pan. Steak this thin has about three minutes before it goes grey all the way through — the crust has to form fast, and it cannot form on a wet surface.</p>
+      <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th></tr></thead><tbody><tr><td>Sirloin steak, lean, trimmed</td><td class="num">55</td><td class="num">58</td></tr>
+<tr><td>Eggs, medium, shell off</td><td class="num">50</td><td class="num">75</td></tr>
+<tr class="row-changed"><td>Rapeseed oil <span class="tag-new">new</span></td><td class="num">14</td><td class="num">17</td></tr>
+<tr><td>Red onion, peeled</td><td class="num">20</td><td class="num">25</td></tr>
+<tr><td>Seeded low-carb loaf</td><td class="num">45</td><td class="num">50</td></tr>
+<tr><td>Spinach, ugu or callaloo</td><td class="num">60</td><td class="num">80</td></tr>
+<tr><td>Tomatoes, ripe</td><td class="num">60</td><td class="num">80</td></tr><tr class="row-dropped"><td>Extra virgin olive oil <span class="tag-dropped">dropped</span></td><td class="num">&mdash;</td><td class="num">&mdash;</td></tr></tbody></table>
+      <p class="macros"><strong>her:</strong> kcal 425 &middot; protein 29 g &middot; net carb 9 g &middot; fat 28 g &middot; fibre 8.9 g<br><strong>him:</strong> kcal 515 &middot; protein 35 g &middot; net carb 11 g &middot; fat 35 g &middot; fibre 10.4 g</p>
+      
+      <p class="freebies">freebies: Salt</p>
+      <details class="notes"><summary>rewriter notes (1)</summary><ul><li>D0-003: every oil use in this dish hits a hot pan (searing steak, softening onion/wilting spinach, frying the egg) — no dressing use anywhere, so the full 14/17 g table total becomes rapeseed_oil, restated across the three pan steps: 3+3+8=14 g her, 3+3+11=17 g him.</li></ul></details>
+    </div></div>
+  </section>
+<section class="meal">
+    <h2>Turkey bolognese with edamame spaghetti <span class="meal-id">a-d4l</span> <span class="tag-batch">batch</span></h2>
+    <p class="meta">Thursday Lunch &middot; 8 min &middot; origin: Bologna, reconsidered</p>
+    <p class="status status-ok">rev B &middot; <span class="lint-pass">LINT: PASS (0 findings)</span></p>
+    <div class="cols"><div class="col">
+    <h3>old (Phase 0, data/raw/methods.json)</h3>
+    <ol class="steps"><li>Big pan of water on, salted hard.</li>
+<li>Sunday's bolognese into a pan on medium with a splash of water, 5 minutes.</li>
+<li>Edamame spaghetti (34/38 g) into the boiling water. 6–7 minutes, no more — it goes from firm to mush quickly and there is no rescuing it.</li>
+<li>Drain, keeping a mug of the cooking water. Pasta INTO the sauce, not sauce onto pasta.</li>
+<li>Toss hard for 30 seconds with a splash of that water and the oil (13/21 g), until it turns glossy and clings.</li>
+<li>Parmesan (10/14 g) off the heat.</li></ol>
+    <p class="why"><strong>why:</strong> Edamame pasta has no gluten and almost no starch, so it will not emulsify a sauce the way wheat does — the oil and the splash of cooking water are doing that job by force. Skip them and the sauce just sits in a puddle underneath.</p>
+    <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th><th>state</th></tr></thead><tbody><tr><td>Passata, plain</td><td class="num">190</td><td class="num">210</td><td>As it comes</td></tr>
+<tr><td>Courgette</td><td class="num">150</td><td class="num">180</td><td>Raw</td></tr>
+<tr><td>Turkey breast mince, 5% fat</td><td class="num">50</td><td class="num">70</td><td>Raw</td></tr>
+<tr><td>Carrots, peeled</td><td class="num">65</td><td class="num">70</td><td>Prepared</td></tr>
+<tr><td>Red onion, peeled</td><td class="num">40</td><td class="num">50</td><td>Prepared</td></tr>
+<tr><td>Edamame spaghetti</td><td class="num">34</td><td class="num">38</td><td>Dry</td></tr>
+<tr><td>Extra virgin olive oil</td><td class="num">13</td><td class="num">21</td><td>As it comes</td></tr>
+<tr><td>Parmesan, finely grated</td><td class="num">10</td><td class="num">14</td><td>As it comes</td></tr></tbody></table>
+    <p class="macros"><strong>her:</strong> kcal 467 &middot; protein 35 g &middot; net carb 26 g &middot; fat 22 g &middot; fibre 14.4 g<br><strong>him:</strong> kcal 612 &middot; protein 43 g &middot; net carb 30 g &middot; fat 32 g &middot; fibre 16.2 g</p>
+  </div><div class="col">
+      <h3>new</h3>
+      <ol class="steps"><li>Big pan of water on, salted hard. <span class="step-meta">[8 min &middot; track:pasta &middot; clock:0 &middot; @ hob]</span></li>
+<li>Sunday's bolognese — take the entire batch, nothing held back: passata (190/210 g), courgette (150/180 g), turkey mince (50/70 g), carrot (65/70 g) and onion (40/50 g), all cooked down into it — into a pan on medium with a splash of water, 5 minutes. <span class="step-meta">[5 min &middot; track:sauce &middot; clock:0 &middot; @ hob]</span></li>
+<li>Edamame spaghetti (34/38 g) into the boiling water. 6–7 minutes, no more — it goes from firm to mush quickly and there is no rescuing it. <span class="step-meta">[6.5 min &middot; track:pasta &middot; clock:8 &middot; @ hob]</span></li>
+<li>Drain, keeping a mug of the cooking water. Pasta INTO the sauce, not sauce onto pasta. <span class="step-meta">[0.5 min &middot; track:pasta &middot; clock:14.5 &middot; @ hob]</span></li>
+<li>Toss hard for 30 seconds with a splash of that water and the oil (13/21 g), until it turns glossy and clings. <span class="step-meta">[0.5 min &middot; track:sauce &middot; clock:15 &middot; @ hob]</span></li>
+<li>Parmesan (10/14 g) off the heat. <span class="step-meta">[0.5 min &middot; track:sauce &middot; clock:15.5 &middot; @ hob]</span></li></ol>
+      <p class="why"><strong>why:</strong> Edamame pasta has no gluten and almost no starch, so it will not emulsify a sauce the way wheat does — the oil and the splash of cooking water are doing that job by force. Skip them and the sauce just sits in a puddle underneath.</p>
+      <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th></tr></thead><tbody><tr><td>Carrots, peeled</td><td class="num">65</td><td class="num">70</td></tr>
+<tr><td>Courgette</td><td class="num">150</td><td class="num">180</td></tr>
+<tr><td>Edamame spaghetti</td><td class="num">34</td><td class="num">38</td></tr>
+<tr><td>Extra virgin olive oil</td><td class="num">13</td><td class="num">21</td></tr>
+<tr><td>Parmesan, finely grated</td><td class="num">10</td><td class="num">14</td></tr>
+<tr><td>Passata, plain</td><td class="num">190</td><td class="num">210</td></tr>
+<tr><td>Red onion, peeled</td><td class="num">40</td><td class="num">50</td></tr>
+<tr><td>Turkey breast mince, 5% fat</td><td class="num">50</td><td class="num">70</td></tr></tbody></table>
+      <p class="macros"><strong>her:</strong> kcal 467 &middot; protein 35 g &middot; net carb 26 g &middot; fat 22 g &middot; fibre 14.4 g<br><strong>him:</strong> kcal 612 &middot; protein 43 g &middot; net carb 30 g &middot; fat 32 g &middot; fibre 16.2 g</p>
+      <p class="batch-meta">batch: source <code>prep-a</code>, take her 495 g / him 580 g (total 1075 g)</p>
+      <p class="freebies">freebies: Salt</p>
+      <details class="notes"><summary>rewriter notes (2)</summary><ul><li>D0-003: the oil is added off the boil, tossed through at the end to emulsify the sauce onto pasta with no gluten of its own (per the why block) — a finishing technique, not a hot-pan frying use, so it stays olive_oil.</li><li>Named worst offender (PLAN §4): batchTakeG made explicit. Sunday's bolognese batch (90 g onion + 135 g carrot + 330 g courgette + 120 g turkey mince + 400 g passata = 1,075 g raw, cooking down to the yield table's stated '~1 kg') is consumed ENTIRELY by this single lunch — nothing held back this week, though the yield note flags the option to freeze half for a future week. Her raw-input share 495 g, him 580 g — tracked on the same raw/dry-weight basis the rest of this dataset already uses (e.g. rice by dry weight).</li></ul></details>
+    </div></div>
+  </section>
+<section class="meal">
+    <h2>Smash burger with slaw <span class="meal-id">a-d4d</span> <span class="tag-fresh">fresh</span></h2>
+    <p class="meta">Thursday Dinner &middot; 14 min &middot; origin: New York</p>
+    <p class="status status-ok">rev B &middot; <span class="lint-pass">LINT: PASS (0 findings)</span></p>
+    <div class="cols"><div class="col">
+    <h3>old (Phase 0, data/raw/methods.json)</h3>
+    <ol class="steps"><li>Slaw first: red cabbage (90/95 g) and carrot (55/65 g) from Sunday, with yoghurt (35/45 g), lemon, mustard, salt and pepper. Leave it to sit.</li>
+<li>Beef (72/85 g) into two loose balls. Do not season them. Do not compact them.</li>
+<li>Heavy pan, dry, on high for a full 3 minutes. It has to be too hot.</li>
+<li>Balls in, and immediately press flat and hard with a spatula for 10 seconds each. Salt the top. 90 seconds — no touching, no moving, no pressing again.</li>
+<li>Scrape underneath with a firm edge to keep the crust attached, flip, cheddar on (16/25 g). 45 seconds.</li>
+<li>Bread (45/50 g) toasted, avocado (30/40 g) mashed on the base. Patties, lettuce (40/50 g), tomato (60/80 g), raw onion (30/40 g).</li></ol>
+    <p class="why"><strong>why:</strong> The crust is the whole dish, and it only forms in the first ninety seconds against a dry, screaming pan. Oil in the pan, salt on the raw side, or one early poke and you have lost it.</p>
+    <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th><th>state</th></tr></thead><tbody><tr><td>Red cabbage, shredded</td><td class="num">90</td><td class="num">95</td><td>Prepared</td></tr>
+<tr><td>Beef mince, 5% fat</td><td class="num">72</td><td class="num">85</td><td>Raw</td></tr>
+<tr><td>Tomatoes, ripe</td><td class="num">60</td><td class="num">80</td><td>Raw</td></tr>
+<tr><td>Carrots, peeled</td><td class="num">55</td><td class="num">65</td><td>Prepared</td></tr>
+<tr><td>Seeded low-carb loaf</td><td class="num">45</td><td class="num">50</td><td>As it comes</td></tr>
+<tr><td>Little gem or romaine</td><td class="num">40</td><td class="num">50</td><td>Raw</td></tr>
+<tr><td>Greek yoghurt, 0% fat</td><td class="num">35</td><td class="num">45</td><td>As it comes</td></tr>
+<tr><td>Red onion, peeled</td><td class="num">30</td><td class="num">40</td><td>Prepared</td></tr>
+<tr><td>Avocado</td><td class="num">30</td><td class="num">40</td><td>Flesh only</td></tr>
+<tr><td>Cheddar, reduced fat (~14%)</td><td class="num">16</td><td class="num">25</td><td>As it comes</td></tr>
+<tr><td>Extra virgin olive oil</td><td class="num">9</td><td class="num">13</td><td>As it comes</td></tr></tbody></table>
+    <p class="macros"><strong>her:</strong> kcal 492 &middot; protein 36 g &middot; net carb 20 g &middot; fat 26 g &middot; fibre 14 g<br><strong>him:</strong> kcal 618 &middot; protein 44 g &middot; net carb 23 g &middot; fat 35 g &middot; fibre 16.4 g</p>
+  </div><div class="col">
+      <h3>new</h3>
+      <ol class="steps"><li>Slaw first: red cabbage (90/95 g) and carrot (55/65 g) from Sunday, with yoghurt (35/45 g), the oil (9/13 g), lemon, mustard, salt and pepper. Leave it to sit. <span class="step-meta">[2 min &middot; track:prep &middot; clock:0 &middot; @ counter]</span></li>
+<li>Beef (72/85 g) into two loose balls. Do not season them. Do not compact them. <span class="step-meta">[1 min &middot; track:prep &middot; clock:2 &middot; @ counter]</span></li>
+<li>Heavy pan, dry, on high for a full 3 minutes. It has to be too hot. <span class="step-meta">[3 min &middot; track:pan &middot; clock:0 &middot; @ hob]</span></li>
+<li>Balls in, and immediately press flat and hard with a spatula for 10 seconds each. Salt the top. 90 seconds — no touching, no moving, no pressing again. <span class="step-meta">[1.5 min &middot; track:pan &middot; clock:3 &middot; @ hob]</span></li>
+<li>Scrape underneath with a firm edge to keep the crust attached, flip, cheddar on (16/25 g). 45 seconds. <span class="step-meta">[0.75 min &middot; track:pan &middot; clock:4.5 &middot; @ hob]</span></li>
+<li>Bread (45/50 g) toasted. <span class="step-meta">[2 min &middot; track:toast &middot; clock:3.25 &middot; @ toaster]</span></li>
+<li>Avocado (30/40 g) mashed on the base. Patties, lettuce (40/50 g), tomato (60/80 g), raw onion (30/40 g). <span class="step-meta">[2 min &middot; clock:5.25]</span></li></ol>
+      <p class="why"><strong>why:</strong> The crust is the whole dish, and it only forms in the first ninety seconds against a dry, screaming pan. Oil in the pan, salt on the raw side, or one early poke and you have lost it.</p>
+      <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th></tr></thead><tbody><tr><td>Avocado</td><td class="num">30</td><td class="num">40</td></tr>
+<tr><td>Beef mince, 5% fat</td><td class="num">72</td><td class="num">85</td></tr>
+<tr><td>Carrots, peeled</td><td class="num">55</td><td class="num">65</td></tr>
+<tr><td>Cheddar, reduced fat (~14%)</td><td class="num">16</td><td class="num">25</td></tr>
+<tr><td>Greek yoghurt, 0% fat</td><td class="num">35</td><td class="num">45</td></tr>
+<tr><td>Little gem or romaine</td><td class="num">40</td><td class="num">50</td></tr>
+<tr><td>Extra virgin olive oil</td><td class="num">9</td><td class="num">13</td></tr>
+<tr><td>Red cabbage, shredded</td><td class="num">90</td><td class="num">95</td></tr>
+<tr><td>Red onion, peeled</td><td class="num">30</td><td class="num">40</td></tr>
+<tr><td>Seeded low-carb loaf</td><td class="num">45</td><td class="num">50</td></tr>
+<tr><td>Tomatoes, ripe</td><td class="num">60</td><td class="num">80</td></tr></tbody></table>
+      <p class="macros"><strong>her:</strong> kcal 492 &middot; protein 36 g &middot; net carb 20 g &middot; fat 26 g &middot; fibre 14 g<br><strong>him:</strong> kcal 618 &middot; protein 44 g &middot; net carb 23 g &middot; fat 35 g &middot; fibre 16.4 g</p>
+      
+      <p class="freebies">freebies: Lemon, Mustard, prepared, Salt, Black pepper, ground</p>
+      <details class="notes"><summary>rewriter notes (2)</summary><ul><li>D0-003: oil never appeared in this card's own step text — the why block explicitly says the patty pan must stay dry ('Oil in the pan... and you have lost it'). Placed at the slaw step instead, a raw dressing use alongside the yoghurt/lemon/mustard → olive_oil. Grams unchanged (9/13 g, matches table).</li><li>D0-014 (Sunday cabbage 515 g): this dish's red_cabbage (90/95 g) is one of the three consumers of Sunday's shred batch — see prep-a.json for the corrected 515 g / three-consumer fix.</li></ul></details>
+    </div></div>
+  </section>
+<section class="meal">
+    <h2>Callaloo &amp; egg skillet <span class="meal-id">a-d5b</span> <span class="tag-fresh">fresh</span></h2>
+    <p class="meta">Friday Breakfast &middot; 14 min &middot; origin: Jamaica</p>
+    <p class="status status-ok">rev B &middot; <span class="lint-pass">LINT: PASS (0 findings)</span></p>
+    <div class="cols"><div class="col">
+    <h3>old (Phase 0, data/raw/methods.json)</h3>
+    <ol class="steps"><li>Plantain (95/140 g) sliced thick on the diagonal, dry-griddled 3 minutes a side until black at the edges. Set aside.</li>
+<li>Oil (5/6 g) into a lidded pan, medium. Onion (30/40 g), 3 minutes. Tomato (80/100 g), thyme and scotch bonnet, 4 minutes until it thickens.</li>
+<li>Black beans (45/55 g) in. Spinach (130/160 g) in handfuls, each wilting before the next.</li>
+<li>Make 2–3 wells with the back of a spoon. Crack the eggs (125/150 g — 2½ / 3) into them. Salt.</li>
+<li>Lid on, heat low, 5 minutes. Whites set, yolks still moving.</li>
+<li>Plantain alongside. Hot sauce.</li></ol>
+    <p class="why"><strong>why:</strong> Wells, not on top. Sitting the eggs down into the greens cooks them in trapped steam and they set evenly — dropped on the surface they slide, spread thin and overcook at the edge long before the middle goes.</p>
+    <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th><th>state</th></tr></thead><tbody><tr><td>Spinach, ugu or callaloo</td><td class="num">130</td><td class="num">160</td><td>Raw</td></tr>
+<tr><td>Eggs, medium, shell off</td><td class="num">125</td><td class="num">150</td><td>Shelled</td></tr>
+<tr><td>Plantain, ripe</td><td class="num">95</td><td class="num">140</td><td>Peeled</td></tr>
+<tr><td>Tomatoes, ripe</td><td class="num">80</td><td class="num">100</td><td>Raw</td></tr>
+<tr><td>Black beans, tinned</td><td class="num">45</td><td class="num">55</td><td>Drained</td></tr>
+<tr><td>Red onion, peeled</td><td class="num">30</td><td class="num">40</td><td>Prepared</td></tr>
+<tr><td>Extra virgin olive oil</td><td class="num">5</td><td class="num">6</td><td>As it comes</td></tr></tbody></table>
+    <p class="macros"><strong>her:</strong> kcal 455 &middot; protein 26 g &middot; net carb 42 g &middot; fat 19 g &middot; fibre 10.4 g<br><strong>him:</strong> kcal 582 &middot; protein 32 g &middot; net carb 59 g &middot; fat 23 g &middot; fibre 13.4 g</p>
+  </div><div class="col">
+      <h3>new</h3>
+      <ol class="steps"><li>Plantain (95/140 g) sliced thick on the diagonal, dry-griddled 3 minutes a side until black at the edges. Set aside. <span class="step-meta">[6 min &middot; track:griddle &middot; clock:0 &middot; @ griddle]</span></li>
+<li>Rapeseed oil (5/6 g) into a lidded pan, medium. Onion (30/40 g), 3 minutes. <span class="step-meta">[3 min &middot; track:pan &middot; clock:0 &middot; @ hob]</span></li>
+<li>Tomato (80/100 g), thyme and scotch bonnet, 4 minutes until it thickens. <span class="step-meta">[4 min &middot; track:pan &middot; clock:3 &middot; @ hob]</span></li>
+<li>Black beans (45/55 g) in. Spinach (130/160 g) in handfuls, each wilting before the next. <span class="step-meta">[3 min &middot; track:pan &middot; clock:7 &middot; @ hob]</span></li>
+<li>Make 2–3 wells with the back of a spoon. Crack the eggs (125/150 g — 2½ / 3) into them. Salt. <span class="step-meta">[1 min &middot; track:pan &middot; clock:10 &middot; @ hob]</span></li>
+<li>Lid on, heat low, 5 minutes. Whites set, yolks still moving. <span class="step-meta">[5 min &middot; track:pan &middot; clock:11 &middot; @ hob]</span></li>
+<li>Plantain alongside. Hot sauce. <span class="step-meta">[0.5 min &middot; clock:16]</span></li></ol>
+      <p class="why"><strong>why:</strong> Wells, not on top. Sitting the eggs down into the greens cooks them in trapped steam and they set evenly — dropped on the surface they slide, spread thin and overcook at the edge long before the middle goes.</p>
+      <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th></tr></thead><tbody><tr><td>Black beans, tinned</td><td class="num">45</td><td class="num">55</td></tr>
+<tr><td>Eggs, medium, shell off</td><td class="num">125</td><td class="num">150</td></tr>
+<tr><td>Plantain, ripe</td><td class="num">95</td><td class="num">140</td></tr>
+<tr class="row-changed"><td>Rapeseed oil <span class="tag-new">new</span></td><td class="num">5</td><td class="num">6</td></tr>
+<tr><td>Red onion, peeled</td><td class="num">30</td><td class="num">40</td></tr>
+<tr><td>Spinach, ugu or callaloo</td><td class="num">130</td><td class="num">160</td></tr>
+<tr><td>Tomatoes, ripe</td><td class="num">80</td><td class="num">100</td></tr><tr class="row-dropped"><td>Extra virgin olive oil <span class="tag-dropped">dropped</span></td><td class="num">&mdash;</td><td class="num">&mdash;</td></tr></tbody></table>
+      <p class="macros"><strong>her:</strong> kcal 455 &middot; protein 26 g &middot; net carb 42 g &middot; fat 19 g &middot; fibre 10.4 g<br><strong>him:</strong> kcal 582 &middot; protein 32 g &middot; net carb 59 g &middot; fat 23 g &middot; fibre 13.4 g</p>
+      
+      <p class="freebies">freebies: Thyme, dried, Scotch bonnet, fresh, to taste, Salt, Hot sauce</p>
+      <details class="notes"><summary>rewriter notes (1)</summary><ul><li>D0-003: the pan oil (single hot-pan use, softening onion) becomes rapeseed_oil.</li></ul></details>
+    </div></div>
+  </section>
+<section class="meal">
+    <h2>Chicken shawarma wrap <span class="meal-id">a-d5l</span> <span class="tag-batch">batch</span></h2>
+    <p class="meta">Friday Lunch &middot; 8 min &middot; origin: Levant, by way of everywhere</p>
+    <p class="status status-ok">rev B &middot; <span class="lint-pass">LINT: PASS (0 findings)</span></p>
+    <div class="cols"><div class="col">
+    <h3>old (Phase 0, data/raw/methods.json)</h3>
+    <ol class="steps"><li>Slaw: cabbage (70/80 g), carrot (50/60 g) and cucumber (60/70 g) — cucumber deseeded and cut into BATONS, not rounds — with lemon, salt and the oil (11/15 g). Leave 5 minutes.</li>
+<li>Chicken (95/110 g) sliced thin. DRY pan, high. 2 minutes, then 1½ tsp shawarma spice and 30 seconds more. No oil — you want char, not fry.</li>
+<li>Garlic yoghurt: yoghurt (60/80 g), grated garlic, lemon, salt.</li>
+<li>Tortilla (45/55 g), 20 seconds a side in the same dry pan until pliable.</li>
+<li>Build a LINE down the middle, not across the whole surface: yoghurt, chicken, slaw, lettuce (40/50 g), avocado (25/35 g). Fold the bottom up, then roll tight.</li></ol>
+    <p class="why"><strong>why:</strong> Batons, and dress the slaw early. Cucumber rounds go limp and slide out of the far end; batons hold their shape. And five minutes of sitting draws the water out onto the board now rather than into the wrap later.</p>
+    <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th><th>state</th></tr></thead><tbody><tr><td>Chicken breast, skinless</td><td class="num">95</td><td class="num">110</td><td>Raw</td></tr>
+<tr><td>Red cabbage, shredded</td><td class="num">70</td><td class="num">80</td><td>Prepared</td></tr>
+<tr><td>Greek yoghurt, 0% fat</td><td class="num">60</td><td class="num">80</td><td>As it comes</td></tr>
+<tr><td>Cucumber</td><td class="num">60</td><td class="num">70</td><td>Raw</td></tr>
+<tr><td>Carrots, peeled</td><td class="num">50</td><td class="num">60</td><td>Prepared</td></tr>
+<tr><td>Tortilla, high-protein low-carb</td><td class="num">45</td><td class="num">55</td><td>As it comes</td></tr>
+<tr><td>Little gem or romaine</td><td class="num">40</td><td class="num">50</td><td>Raw</td></tr>
+<tr><td>Avocado</td><td class="num">25</td><td class="num">35</td><td>Flesh only</td></tr>
+<tr><td>Extra virgin olive oil</td><td class="num">11</td><td class="num">15</td><td>As it comes</td></tr></tbody></table>
+    <p class="macros"><strong>her:</strong> kcal 438 &middot; protein 38 g &middot; net carb 22 g &middot; fat 20 g &middot; fibre 15.6 g<br><strong>him:</strong> kcal 551 &middot; protein 46 g &middot; net carb 26 g &middot; fat 26 g &middot; fibre 19.2 g</p>
+  </div><div class="col">
+      <h3>new</h3>
+      <ol class="steps"><li>Slaw: cabbage (70/80 g), carrot (50/60 g) and cucumber (60/70 g) — cucumber deseeded and cut into BATONS, not rounds — with lemon, salt and the oil (11/15 g). Leave 5 minutes. <span class="step-meta">[5 min]</span></li>
+<li>Chicken (95/110 g, from Sunday's roast) sliced thin. DRY pan, high. 2 minutes, then 1½ tsp shawarma spice and 30 seconds more. No oil — you want char, not fry. <span class="step-meta">[2.5 min &middot; @ hob]</span></li>
+<li>Garlic yoghurt: yoghurt (60/80 g), grated garlic, lemon, salt. <span class="step-meta">[1 min]</span></li>
+<li>Tortilla (45/55 g), 20 seconds a side in the same dry pan until pliable. <span class="step-meta">[0.67 min &middot; @ hob]</span></li>
+<li>Build a LINE down the middle, not across the whole surface: yoghurt, chicken, slaw, lettuce (40/50 g), avocado (25/35 g). Fold the bottom up, then roll tight. <span class="step-meta">[1.5 min]</span></li></ol>
+      <p class="why"><strong>why:</strong> Batons, and dress the slaw early. Cucumber rounds go limp and slide out of the far end; batons hold their shape. And five minutes of sitting draws the water out onto the board now rather than into the wrap later.</p>
+      <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th></tr></thead><tbody><tr><td>Avocado</td><td class="num">25</td><td class="num">35</td></tr>
+<tr><td>Carrots, peeled</td><td class="num">50</td><td class="num">60</td></tr>
+<tr><td>Chicken breast, skinless</td><td class="num">95</td><td class="num">110</td></tr>
+<tr><td>Cucumber</td><td class="num">60</td><td class="num">70</td></tr>
+<tr><td>Greek yoghurt, 0% fat</td><td class="num">60</td><td class="num">80</td></tr>
+<tr><td>Tortilla, high-protein low-carb</td><td class="num">45</td><td class="num">55</td></tr>
+<tr><td>Little gem or romaine</td><td class="num">40</td><td class="num">50</td></tr>
+<tr><td>Extra virgin olive oil</td><td class="num">11</td><td class="num">15</td></tr>
+<tr><td>Red cabbage, shredded</td><td class="num">70</td><td class="num">80</td></tr></tbody></table>
+      <p class="macros"><strong>her:</strong> kcal 438 &middot; protein 38 g &middot; net carb 22 g &middot; fat 20 g &middot; fibre 15.6 g<br><strong>him:</strong> kcal 551 &middot; protein 46 g &middot; net carb 26 g &middot; fat 26 g &middot; fibre 19.2 g</p>
+      <p class="batch-meta">batch: source <code>prep-a</code>, take her 215 g / him 250 g (total 465 g)</p>
+      <p class="freebies">freebies: Lemon, Salt, Garlic, fresh clove, Shawarma spice blend</p>
+      <details class="notes"><summary>rewriter notes (4)</summary><ul><li>D0-003: the slaw oil (raw, tossed with lemon/salt, no heat) stays olive_oil — the chicken is explicitly dry-charred, no oil in that pan.</li><li>The lettuce here is a whole-leaf wrap layer, not shredded (unlike a-d1l/a-d2l's 'shredded lettuce') — D0-003's sweetheart_cabbage substitution does not apply.</li><li>D0-014 (Sunday cabbage 515 g): this wrap's red_cabbage (70/80 g) is one of the three consumers of Sunday's shred batch — see prep-a.json for the corrected 515 g / three-consumer fix.</li><li>batchTakeG: chicken 205 g (of the 600 g roast batch) + red cabbage 150 g + carrot 110 g (both from Sunday's shredded-slaw batch). Yoghurt, cucumber, tortilla, lettuce and avocado are fresh additions.</li></ul></details>
+    </div></div>
+  </section>
+<section class="meal">
+    <h2>Jerk salmon, rice &amp; red beans <span class="meal-id">a-d5d</span> <span class="tag-fresh">fresh</span></h2>
+    <p class="meta">Friday Dinner &middot; 18 min &middot; origin: Jamaica</p>
+    <p class="status status-ok">rev B &middot; <span class="lint-pass">LINT: PASS (0 findings)</span></p>
+    <div class="cols"><div class="col">
+    <h3>old (Phase 0, data/raw/methods.json)</h3>
+    <ol class="steps"><li>Rice (45/70 g dry) on with the kidney beans (70/90 g), a sprig of thyme, the spring onion (20/25 g) and a spoonful of coconut in the water. 20 minutes, covered.</li>
+<li>Salmon (80/105 g) rubbed with jerk paste and left while the rice cooks.</li>
+<li>Pineapple (70/90 g) in thick slices onto a dry griddle, high, 2 minutes a side until it caramelises and marks. Chop.</li>
+<li>Slaw: red cabbage (80/100 g), the charred pineapple, lime, salt and the oil (4/5 g).</li>
+<li>Grill the salmon 10–12 minutes at medium-high, not turned. It's done when it flakes at a light press and is still coral in the middle.</li>
+<li>Cauliflower (120/150 g) stirred through the rice for the last 2 minutes, lid on, to steam.</li></ol>
+    <p class="why"><strong>why:</strong> Char the pineapple. Raw, it is just sweet against an already sweet-hot fish; caramelised, it picks up a bitter edge and that is the thing stopping the whole plate from cloying.</p>
+    <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th><th>state</th></tr></thead><tbody><tr><td>Cauliflower, riced</td><td class="num">120</td><td class="num">150</td><td>Prepared</td></tr>
+<tr><td>Salmon fillet, skinless</td><td class="num">80</td><td class="num">105</td><td>Raw</td></tr>
+<tr><td>Red cabbage, shredded</td><td class="num">80</td><td class="num">100</td><td>Prepared</td></tr>
+<tr><td>Red kidney beans, tinned</td><td class="num">70</td><td class="num">90</td><td>Drained</td></tr>
+<tr><td>Pineapple</td><td class="num">70</td><td class="num">90</td><td>Flesh only</td></tr>
+<tr><td>Brown rice, long grain</td><td class="num">45</td><td class="num">70</td><td>Dry</td></tr>
+<tr><td>Spring onions, trimmed</td><td class="num">20</td><td class="num">25</td><td>Prepared</td></tr>
+<tr><td>Extra virgin olive oil</td><td class="num">4</td><td class="num">5</td><td>As it comes</td></tr></tbody></table>
+    <p class="macros"><strong>her:</strong> kcal 550 &middot; protein 30 g &middot; net carb 61 g &middot; fat 17 g &middot; fibre 11.6 g<br><strong>him:</strong> kcal 752 &middot; protein 40 g &middot; net carb 87 g &middot; fat 23 g &middot; fibre 15.2 g</p>
+  </div><div class="col">
+      <h3>new</h3>
+      <ol class="steps"><li>Rice (45/70 g dry) on with the kidney beans (70/90 g), a sprig of thyme, the spring onion (20/25 g) and a spoonful of coconut (3/5 g) in the water. 20 minutes, covered. <span class="step-meta">[20 min &middot; track:hob &middot; clock:0 &middot; @ hob]</span></li>
+<li>Salmon (80/105 g) rubbed with jerk paste (8/10 g) and left while the rice cooks. <span class="step-meta">[2 min &middot; track:prep &middot; clock:0 &middot; @ counter]</span></li>
+<li>Grill the salmon 10–12 minutes at medium-high, not turned. It's done when it flakes at a light press and is still coral in the middle. <span class="step-meta">[11 min &middot; 200&deg;C &middot; track:grill &middot; clock:8 &middot; @ grill]</span></li>
+<li>Pineapple (70/90 g) in thick slices onto a dry griddle, high, 2 minutes a side until it caramelises and marks. Chop. <span class="step-meta">[4 min &middot; track:griddle &middot; clock:8 &middot; @ griddle]</span></li>
+<li>Slaw: red cabbage (80/100 g), the charred pineapple, lime, salt and the oil (4/5 g). <span class="step-meta">[1.5 min &middot; track:griddle &middot; clock:12 &middot; @ counter]</span></li>
+<li>Cauliflower (120/150 g) stirred through the rice for the last 2 minutes, lid on, to steam. <span class="step-meta">[2 min &middot; track:hob &middot; clock:18 &middot; @ hob]</span></li></ol>
+      <p class="why"><strong>why:</strong> Char the pineapple. Raw, it is just sweet against an already sweet-hot fish; caramelised, it picks up a bitter edge and that is the thing stopping the whole plate from cloying.</p>
+      <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th></tr></thead><tbody><tr><td>Brown rice, long grain</td><td class="num">45</td><td class="num">70</td></tr>
+<tr><td>Cauliflower, riced</td><td class="num">120</td><td class="num">150</td></tr>
+<tr class="row-changed"><td>Coconut, desiccated unsweetened <span class="tag-new">new</span></td><td class="num">3</td><td class="num">5</td></tr>
+<tr class="row-changed"><td>Jerk paste, wet marinade <span class="tag-new">new</span></td><td class="num">8</td><td class="num">10</td></tr>
+<tr><td>Red kidney beans, tinned</td><td class="num">70</td><td class="num">90</td></tr>
+<tr><td>Extra virgin olive oil</td><td class="num">4</td><td class="num">5</td></tr>
+<tr><td>Pineapple</td><td class="num">70</td><td class="num">90</td></tr>
+<tr><td>Red cabbage, shredded</td><td class="num">80</td><td class="num">100</td></tr>
+<tr><td>Salmon fillet, skinless</td><td class="num">80</td><td class="num">105</td></tr>
+<tr><td>Spring onions, trimmed</td><td class="num">20</td><td class="num">25</td></tr></tbody></table>
+      <p class="macros"><strong>her:</strong> kcal 582 &middot; protein 30 g &middot; net carb 63 g &middot; fat 20 g &middot; fibre 12.3 g<br><strong>him:</strong> kcal 800 &middot; protein 40 g &middot; net carb 90 g &middot; fat 26 g &middot; fibre 16.3 g</p>
+      
+      <p class="freebies">freebies: Thyme, dried, Lime, Salt</p>
+      <details class="notes"><summary>rewriter notes (3)</summary><ul><li>D0-003: the pineapple-slaw oil is a raw finishing/dressing use → olive_oil.</li><li>D0-014 (Sunday cabbage 515 g): this dish's red_cabbage (80/100 g) is the THIRD consumer PLAN §4 flags as missing from the original Sunday op text (the op named only Thursday's burger and Friday's wrap) — see prep-a.json for the corrected 515 g / three-consumer fix.</li><li>Seasoning weighing: 'salmon rubbed with jerk paste' and 'a spoonful of coconut in the water' were never gram-tracked. Standard-reference jerk_paste (wet marinade, distinct product from the dry jerk_seasoning used on the chickpeas) added at a realistic rub quantity (8/10 g); coconut_des (already an established Week A ingredient) added at a realistic spoonful, split proportional to the rice dry-weight share (3/5 g). Combined drift +32/+48 kcal — her crosses the 30 kcal note threshold; both additions are named explicitly in PLAN §4's audit ('honey, sugar, soy, mirin, adobo, coconut, suya carry real calories').</li></ul></details>
+    </div></div>
+  </section>
+<section class="meal">
+    <h2>Lime &amp; chilli yoghurt with banana <span class="meal-id">a-d1s</span> <span class="tag-fresh">fresh</span></h2>
+    <p class="meta">Monday Snack &middot; 2 min &middot; origin: New York</p>
+    <p class="status status-ok">rev B &middot; <span class="lint-pass">LINT: PASS (0 findings)</span></p>
+    <div class="cols"><div class="col">
+    <h3>old (Phase 0, data/raw/methods.json)</h3>
+    <ol class="steps"><li>Yoghurt (110/140 g) into a bowl or jar.</li>
+<li>Banana (130/175 g — about 1 medium / 1 large) sliced thick, straight on top.</li>
+<li>Lime squeezed hard over the banana. Chilli flakes and a real pinch of flaky salt.</li>
+<li>Chia (8/10 g) and pumpkin seeds (6/8 g) scattered over.</li></ol>
+    <p class="why"><strong>why:</strong> The lime is structural, not decoration. It stops the banana browning and cuts the sweetness so this eats as a snack rather than a dessert — the salt does the same job.</p>
+    <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th><th>state</th></tr></thead><tbody><tr><td>Bananas</td><td class="num">130</td><td class="num">175</td><td>Peeled</td></tr>
+<tr><td>Greek yoghurt, 0% fat</td><td class="num">110</td><td class="num">140</td><td>As it comes</td></tr>
+<tr><td>Chia seeds</td><td class="num">8</td><td class="num">10</td><td>Dry</td></tr>
+<tr><td>Pumpkin seeds</td><td class="num">6</td><td class="num">8</td><td>Dry</td></tr></tbody></table>
+    <p class="macros"><strong>her:</strong> kcal 251 &middot; protein 16 g &middot; net carb 32 g &middot; fat 6 g &middot; fibre 6.5 g<br><strong>him:</strong> kcal 329 &middot; protein 20 g &middot; net carb 42 g &middot; fat 8 g &middot; fibre 8.5 g</p>
+  </div><div class="col">
+      <h3>new</h3>
+      <ol class="steps"><li>Yoghurt (110/140 g) into a bowl or jar. <span class="step-meta">[0.5 min]</span></li>
+<li>Banana (130/175 g — about 1 medium / 1 large) sliced thick, straight on top. <span class="step-meta">[1 min]</span></li>
+<li>Lime squeezed hard over the banana. Chilli flakes and a real pinch of flaky salt. <span class="step-meta">[0.5 min]</span></li>
+<li>Chia (8/10 g) and pumpkin seeds (6/8 g) scattered over. <span class="step-meta">[0.5 min]</span></li></ol>
+      <p class="why"><strong>why:</strong> The lime is structural, not decoration. It stops the banana browning and cuts the sweetness so this eats as a snack rather than a dessert — the salt does the same job.</p>
+      <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th></tr></thead><tbody><tr><td>Bananas</td><td class="num">130</td><td class="num">175</td></tr>
+<tr><td>Chia seeds</td><td class="num">8</td><td class="num">10</td></tr>
+<tr><td>Greek yoghurt, 0% fat</td><td class="num">110</td><td class="num">140</td></tr>
+<tr><td>Pumpkin seeds</td><td class="num">6</td><td class="num">8</td></tr></tbody></table>
+      <p class="macros"><strong>her:</strong> kcal 251 &middot; protein 16 g &middot; net carb 32 g &middot; fat 6 g &middot; fibre 6.5 g<br><strong>him:</strong> kcal 329 &middot; protein 20 g &middot; net carb 42 g &middot; fat 8 g &middot; fibre 8.5 g</p>
+      
+      <p class="freebies">freebies: Lime, Chilli flakes, dried, Salt</p>
+      
+    </div></div>
+  </section>
+<section class="meal">
+    <h2>Suya-spiced eggs &amp; carrots <span class="meal-id">a-d2s</span> <span class="tag-batch">batch</span></h2>
+    <p class="meta">Tuesday Snack &middot; 2 min &middot; origin: Nigeria</p>
+    <p class="status status-ok">rev B &middot; <span class="lint-pass">LINT: PASS (0 findings)</span></p>
+    <div class="cols"><div class="col">
+    <h3>old (Phase 0, data/raw/methods.json)</h3>
+    <ol class="steps"><li>Sunday's boiled eggs (50/75 g — 1 / 1½), peeled and halved.</li>
+<li>Dust the cut faces heavily with suya — ground roasted peanut, chilli, ginger, garlic, stock powder. More than looks sensible.</li>
+<li>Dip: peanut butter (16/20 g) loosened with warm water and lemon, mashed together with the avocado (25/35 g) and salt.</li>
+<li>Carrot (100 g) cut into batons to scoop with.</li></ol>
+    <p class="why"><strong>why:</strong> Suya is mostly ground peanut, so it needs fat and salt around it to open up. Dry on a cold egg it tastes dusty; against the avocado dip it tastes like the thing you get at a roadside stand.</p>
+    <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th><th>state</th></tr></thead><tbody><tr><td>Carrots, peeled</td><td class="num">100</td><td class="num">100</td><td>Prepared</td></tr>
+<tr><td>Eggs, medium, shell off</td><td class="num">50</td><td class="num">75</td><td>Shelled</td></tr>
+<tr><td>Avocado</td><td class="num">25</td><td class="num">35</td><td>Flesh only</td></tr>
+<tr><td>Peanut butter, 100% nuts</td><td class="num">16</td><td class="num">20</td><td>As it comes</td></tr></tbody></table>
+    <p class="macros"><strong>her:</strong> kcal 247 &middot; protein 12 g &middot; net carb 10 g &middot; fat 17 g &middot; fibre 5.4 g<br><strong>him:</strong> kcal 322 &middot; protein 16 g &middot; net carb 11 g &middot; fat 23 g &middot; fibre 6.3 g</p>
+  </div><div class="col">
+      <h3>new</h3>
+      <ol class="steps"><li>Sunday's boiled eggs (50/100 g — 1 / 2 whole eggs), peeled and halved. <span class="step-meta">[0.5 min]</span></li>
+<li>Dust the cut faces heavily with suya (5/7 g) — ground roasted peanut, chilli, ginger, garlic, stock powder. More than looks sensible. <span class="step-meta">[0.5 min]</span></li>
+<li>Dip: peanut butter (16/20 g) loosened with warm water and lime, mashed together with the avocado (25/35 g) and salt. <span class="step-meta">[1 min]</span></li>
+<li>Carrot (100 g) cut into batons to scoop with. <span class="step-meta">[1.5 min]</span></li></ol>
+      <p class="why"><strong>why:</strong> Suya is mostly ground peanut, so it needs fat and salt around it to open up. Dry on a cold egg it tastes dusty; against the avocado dip it tastes like the thing you get at a roadside stand.</p>
+      <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th></tr></thead><tbody><tr><td>Avocado</td><td class="num">25</td><td class="num">35</td></tr>
+<tr><td>Carrots, peeled</td><td class="num">100</td><td class="num">100</td></tr>
+<tr class="row-changed"><td>Eggs, medium, shell off <span class="tag-changed">&Delta;</span></td><td class="num">50</td><td class="num">100</td></tr>
+<tr><td>Peanut butter, 100% nuts</td><td class="num">16</td><td class="num">20</td></tr>
+<tr class="row-changed"><td>Suya spice (ground roasted peanut, chilli, ginger, garlic, stock powder) <span class="tag-new">new</span></td><td class="num">5</td><td class="num">7</td></tr></tbody></table>
+      <p class="macros"><strong>her:</strong> kcal 273 &middot; protein 13 g &middot; net carb 10 g &middot; fat 19 g &middot; fibre 5.9 g<br><strong>him:</strong> kcal 394 &middot; protein 21 g &middot; net carb 12 g &middot; fat 28 g &middot; fibre 7 g</p>
+      <p class="batch-meta">batch: source <code>prep-a</code>, take her 55 g / him 107 g (total 162 g)</p>
+      <p class="freebies">freebies: Lime, Salt</p>
+      <details class="notes"><summary>rewriter notes (4)</summary><ul><li>D0-019 (egg count 2 vs 2.5): resolved cleanly per the ruling's own recommended direction — Sunday now boils 5 eggs (not 4), earmarking 3 whole eggs (150 g: 1 her/50 g + 2 him/100 g) for this snack instead of the fractional '1½ eggs' (75 g) the original card asked for. him.egg changes 75→100 g; 2 spare eggs remain, as before. See prep-a.json Sunday op and macro-drift table (him +71 kcal / +4.6 g protein, driven mostly by this fix plus the suya weighing below).</li><li>Seasoning weighing: suya spice dusting was previously unweighed. Standard-reference suya_spice added (own-mix: 3 parts ground roasted peanut : 1 part chilli, ginger/garlic/stock powder to taste, per Sunday's jar). A realistic 'heavy dust' on the cut egg faces: her 5 g, him 7 g. Drift +25/+71 kcal combined with the egg fix above — both intentional, explained.</li><li>batchTakeG covers only the Sunday-batched components eaten here: eggs (55/107 g) and suya spice (5/7 g, also mixed on Sunday). Carrot, avocado and peanut butter are fresh additions at plate time.</li><li>Cross-file id conflict resolved: this file does NOT define its own 'suya_spice' record in _ingredients.A.json. _ingredients.B.json (Week B rewriter, parallel) already publishes a canonical suya_spice record (520 kcal/22 p/41 f/20 c/10 fibre per 100 g, freebie:false) for its own suya uses — very close to this rewriter's independent 505/20/38/31/12 estimate, but not identical, and shipping both under the same id would fail L9. This card's 5/7 g grams are unchanged; they now price against B's published per100g instead. Macro-drift table below uses B's values.</li></ul></details>
+    </div></div>
+  </section>
+<section class="meal">
+    <h2>Jerk-roasted chickpeas with skyr <span class="meal-id">a-d3s</span> <span class="tag-batch">batch</span></h2>
+    <p class="meta">Wednesday Snack &middot; 1 min &middot; origin: Jamaica</p>
+    <p class="status status-ok">rev B &middot; <span class="lint-pass">LINT: PASS (0 findings)</span></p>
+    <div class="cols"><div class="col">
+    <h3>old (Phase 0, data/raw/methods.json)</h3>
+    <ol class="steps"><li>Sunday's jerk chickpeas (110/135 g), straight from the jar. If they've softened, 4 minutes in a hot dry pan brings the crunch back.</li>
+<li>Skyr (50/70 g) in a small bowl, mashed with the avocado (20/28 g), lime and salt.</li>
+<li>Chickpeas by the handful, dipped.</li></ol>
+    <p class="why"><strong>why:</strong> Store them in a jar with the lid OFF, not a sealed box. Sealed, the residual steam softens them overnight and you lose the rattle, which is the entire point of them.</p>
+    <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th><th>state</th></tr></thead><tbody><tr><td>Chickpeas, tinned</td><td class="num">110</td><td class="num">135</td><td>Drained</td></tr>
+<tr><td>Skyr, plain natural</td><td class="num">50</td><td class="num">70</td><td>As it comes</td></tr>
+<tr><td>Avocado</td><td class="num">20</td><td class="num">28</td><td>Flesh only</td></tr>
+<tr><td>Extra virgin olive oil</td><td class="num">7</td><td class="num">9</td><td>As it comes</td></tr></tbody></table>
+    <p class="macros"><strong>her:</strong> kcal 278 &middot; protein 14 g &middot; net carb 19 g &middot; fat 13 g &middot; fibre 9.7 g<br><strong>him:</strong> kcal 356 &middot; protein 18 g &middot; net carb 23 g &middot; fat 17 g &middot; fibre 12.1 g</p>
+  </div><div class="col">
+      <h3>new</h3>
+      <ol class="steps"><li>Sunday's jerk chickpeas (110/135 g, seasoned with 2/3 g of the jar's jerk rub), straight from the jar. If they've softened, 4 minutes in a hot dry pan brings the crunch back. <span class="step-meta">[untimed]</span></li>
+<li>Skyr (50/70 g) in a small bowl, mashed with the avocado (20/28 g) and the oil (7/9 g), lime and salt. <span class="step-meta">[1.5 min]</span></li>
+<li>Chickpeas by the handful, dipped. <span class="step-meta">[0.5 min]</span></li></ol>
+      <p class="why"><strong>why:</strong> Store them in a jar with the lid OFF, not a sealed box. Sealed, the residual steam softens them overnight and you lose the rattle, which is the entire point of them.</p>
+      <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th></tr></thead><tbody><tr><td>Avocado</td><td class="num">20</td><td class="num">28</td></tr>
+<tr><td>Chickpeas, tinned</td><td class="num">110</td><td class="num">135</td></tr>
+<tr class="row-changed"><td>Jerk seasoning, dry rub <span class="tag-new">new</span></td><td class="num">2</td><td class="num">3</td></tr>
+<tr><td>Extra virgin olive oil</td><td class="num">7</td><td class="num">9</td></tr>
+<tr><td>Skyr, plain natural</td><td class="num">50</td><td class="num">70</td></tr></tbody></table>
+      <p class="macros"><strong>her:</strong> kcal 284 &middot; protein 14 g &middot; net carb 20 g &middot; fat 13 g &middot; fibre 10 g<br><strong>him:</strong> kcal 365 &middot; protein 19 g &middot; net carb 25 g &middot; fat 17 g &middot; fibre 12.6 g</p>
+      <p class="batch-meta">batch: source <code>prep-a</code>, take her 112 g / him 138 g (total 250 g)</p>
+      <p class="freebies">freebies: Lime, Salt</p>
+      <details class="notes"><summary>rewriter notes (3)</summary><ul><li>D0-020 (yield headroom): Sunday roasts 250 g drained chickpeas; this snack's covers sum to 245 g (110+135) — 5 g headroom, now stated explicitly in prep-a.json's yield rather than left silent.</li><li>D0-003: the finishing oil in the dip (mashed with skyr/avocado, no heat) stays olive_oil.</li><li>Seasoning weighing: the 2 tsp jerk seasoning on Sunday's chickpea tray was never gram-tracked. Standard-reference jerk_seasoning (dry rub) added, 5 g total for the tray, split 2/3 g her/him proportional to the chickpea share consumed. Drift +6/+9 kcal, both under the 30 kcal note threshold but recorded here for traceability.</li></ul></details>
+    </div></div>
+  </section>
+<section class="meal">
+    <h2>Grated apple, cinnamon &amp; coconut yoghurt <span class="meal-id">a-d4s</span> <span class="tag-fresh">fresh</span></h2>
+    <p class="meta">Thursday Snack &middot; 3 min &middot; origin: Caribbean</p>
+    <p class="status status-ok">rev B &middot; <span class="lint-pass">LINT: PASS (0 findings)</span></p>
+    <div class="cols"><div class="col">
+    <h3>old (Phase 0, data/raw/methods.json)</h3>
+    <ol class="steps"><li>Coconut (5/6 g) into a dry pan, medium, 90 seconds, shaken constantly, until it just turns gold. Out of the pan immediately.</li>
+<li>Apple (230/300 g — about 1½ / 2 medium) grated coarsely, SKIN ON. Lemon over it straight away.</li>
+<li>Fold into the yoghurt (120/170 g) with a full teaspoon of cinnamon and a pinch of salt.</li>
+<li>Toasted coconut and pumpkin seeds (8/11 g) over the top.</li></ol>
+    <p class="why"><strong>why:</strong> Skin on. That is most of the fibre in the apple and all of the texture — peeled and grated, this collapses into apple sauce with yoghurt in it.</p>
+    <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th><th>state</th></tr></thead><tbody><tr><td>Apples</td><td class="num">230</td><td class="num">300</td><td>Whole, skin on</td></tr>
+<tr><td>Greek yoghurt, 0% fat</td><td class="num">120</td><td class="num">170</td><td>As it comes</td></tr>
+<tr><td>Pumpkin seeds</td><td class="num">8</td><td class="num">11</td><td>Dry</td></tr>
+<tr><td>Coconut, desiccated unsweetened</td><td class="num">5</td><td class="num">6</td><td>Dry</td></tr></tbody></table>
+    <p class="macros"><strong>her:</strong> kcal 266 &middot; protein 16 g &middot; net carb 32 g &middot; fat 8 g &middot; fibre 6.8 g<br><strong>him:</strong> kcal 354 &middot; protein 22 g &middot; net carb 43 g &middot; fat 10 g &middot; fibre 8.8 g</p>
+  </div><div class="col">
+      <h3>new</h3>
+      <ol class="steps"><li>Coconut (5/6 g) into a dry pan, medium, 90 seconds, shaken constantly, until it just turns gold. Out of the pan immediately. <span class="step-meta">[1.5 min &middot; @ hob]</span></li>
+<li>Apple (230/300 g — about 1½ / 2 medium) grated coarsely, SKIN ON. Lemon over it straight away. <span class="step-meta">[2 min]</span></li>
+<li>Fold into the yoghurt (120/170 g) with a full teaspoon of cinnamon and a pinch of salt. <span class="step-meta">[1 min]</span></li>
+<li>Toasted coconut and pumpkin seeds (8/11 g) over the top. <span class="step-meta">[0.5 min]</span></li></ol>
+      <p class="why"><strong>why:</strong> Skin on. That is most of the fibre in the apple and all of the texture — peeled and grated, this collapses into apple sauce with yoghurt in it.</p>
+      <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th></tr></thead><tbody><tr><td>Apples</td><td class="num">230</td><td class="num">300</td></tr>
+<tr><td>Coconut, desiccated unsweetened</td><td class="num">5</td><td class="num">6</td></tr>
+<tr><td>Greek yoghurt, 0% fat</td><td class="num">120</td><td class="num">170</td></tr>
+<tr><td>Pumpkin seeds</td><td class="num">8</td><td class="num">11</td></tr></tbody></table>
+      <p class="macros"><strong>her:</strong> kcal 266 &middot; protein 16 g &middot; net carb 32 g &middot; fat 8 g &middot; fibre 6.8 g<br><strong>him:</strong> kcal 354 &middot; protein 22 g &middot; net carb 43 g &middot; fat 10 g &middot; fibre 8.8 g</p>
+      
+      <p class="freebies">freebies: Cinnamon, ground, Salt, Lemon</p>
+      
+    </div></div>
+  </section>
+<section class="meal">
+    <h2>Elote-style corn cup <span class="meal-id">a-d5s</span> <span class="tag-fresh">fresh</span></h2>
+    <p class="meta">Friday Snack &middot; 4 min &middot; origin: Street corner</p>
+    <p class="status status-ok">rev B &middot; <span class="lint-pass">LINT: PASS (0 findings)</span></p>
+    <div class="cols"><div class="col">
+    <h3>old (Phase 0, data/raw/methods.json)</h3>
+    <ol class="steps"><li>Sweetcorn (100/120 g) into a dry pan on high, spread thin. Leave it alone for 2 minutes until it blisters and pops. Shake, 1 minute more.</li>
+<li>Cottage cheese (80/110 g) loosened with the yoghurt (30/40 g) and the oil (6/8 g), mashed together with the avocado (20/25 g).</li>
+<li>Hot corn stirred through.</li>
+<li>Chilli powder, lime hard, coriander, flaky salt.</li></ol>
+    <p class="why"><strong>why:</strong> It has to blister. Warm corn is just corn; charred corn is elote — the blackened kernels are where the entire flavour of the thing lives.</p>
+    <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th><th>state</th></tr></thead><tbody><tr><td>Sweetcorn</td><td class="num">100</td><td class="num">120</td><td>Frozen or tinned</td></tr>
+<tr><td>Cottage cheese, natural</td><td class="num">80</td><td class="num">110</td><td>As it comes</td></tr>
+<tr><td>Greek yoghurt, 0% fat</td><td class="num">30</td><td class="num">40</td><td>As it comes</td></tr>
+<tr><td>Avocado</td><td class="num">20</td><td class="num">25</td><td>Flesh only</td></tr>
+<tr><td>Extra virgin olive oil</td><td class="num">6</td><td class="num">8</td><td>As it comes</td></tr></tbody></table>
+    <p class="macros"><strong>her:</strong> kcal 251 &middot; protein 17 g &middot; net carb 21 g &middot; fat 12 g &middot; fibre 4 g<br><strong>him:</strong> kcal 324 &middot; protein 22 g &middot; net carb 26 g &middot; fat 15 g &middot; fibre 4.9 g</p>
+  </div><div class="col">
+      <h3>new</h3>
+      <ol class="steps"><li>Sweetcorn (100/120 g) into a dry pan on high, spread thin. Leave it alone for 2 minutes until it blisters and pops. Shake, 1 minute more. <span class="step-meta">[3 min &middot; @ hob]</span></li>
+<li>Cottage cheese (80/110 g) loosened with the yoghurt (30/40 g) and the oil (6/8 g), mashed together with the avocado (20/25 g). <span class="step-meta">[1.5 min]</span></li>
+<li>Hot corn stirred through. <span class="step-meta">[0.5 min]</span></li>
+<li>Chilli powder, lime hard, coriander, flaky salt. <span class="step-meta">[0.5 min]</span></li></ol>
+      <p class="why"><strong>why:</strong> It has to blister. Warm corn is just corn; charred corn is elote — the blackened kernels are where the entire flavour of the thing lives.</p>
+      <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th></tr></thead><tbody><tr><td>Avocado</td><td class="num">20</td><td class="num">25</td></tr>
+<tr><td>Cottage cheese, natural</td><td class="num">80</td><td class="num">110</td></tr>
+<tr><td>Greek yoghurt, 0% fat</td><td class="num">30</td><td class="num">40</td></tr>
+<tr><td>Extra virgin olive oil</td><td class="num">6</td><td class="num">8</td></tr>
+<tr><td>Sweetcorn</td><td class="num">100</td><td class="num">120</td></tr></tbody></table>
+      <p class="macros"><strong>her:</strong> kcal 251 &middot; protein 17 g &middot; net carb 21 g &middot; fat 12 g &middot; fibre 4 g<br><strong>him:</strong> kcal 324 &middot; protein 22 g &middot; net carb 26 g &middot; fat 15 g &middot; fibre 4.9 g</p>
+      
+      <p class="freebies">freebies: Chilli powder, Lime, Coriander, fresh, Salt</p>
+      <details class="notes"><summary>rewriter notes (1)</summary><ul><li>D0-003: the oil is stirred into the cold dip off the heat — a finishing use, stays olive_oil.</li></ul></details>
+    </div></div>
+  </section>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "_comment": "Phase 0 checkpoint rulings overlay (owner ruling, 2026-08-04). Consumed by join.js: merged into decisions-queue.json by decision id. Never edited by any parser or the join logic itself — hand-authored, re-read every run. See tools/extract/REWRITE-SPEC.md file layout and PLAN.md §9.3/§9.6.",
+  "checkpointDate": "2026-08-04",
+  "resolvedBy": "owner-checkpoint-2026-08-04",
+  "rulings": {
+    "D0-003": {
+      "status": "resolved",
+      "resolvedTo": "Owner ruling 2026-08-04: link during Phase 1 — rewriters apply the two substitution rules meal-by-meal where each condition holds (rapeseed for pan heat, olive for finishing; sweetheart cabbage where little gem is only shredded); reviewer verifies each application."
+    },
+    "D0-030": {
+      "status": "resolved",
+      "resolvedTo": "Owner ruling 2026-08-04: keep the truncation heuristic (comma/paren truncation for name.canonical) as implemented in join.js; revisit only if Phase 2 search needs more."
+    },
+    "D0-031": {
+      "status": "resolved",
+      "resolvedTo": "Owner ruling 2026-08-04: sku.verifiedOn stays null at extraction time; it is populated only by real price-check events recorded through LIST's verify flow (§5 runtime state priceChecks), never backfilled from a file date or extraction timestamp."
+    }
+  },
+  "confirmedDefaults": {
+    "note": "Every decisions-queue.json entry with status 'resolved-by-default' that is NOT named in `rulings` above was skim-reviewed and confirmed AS-IS by the owner at the 2026-08-04 Phase 0 checkpoint — no changes, no overturns. join.js stamps resolvedBy on these entries the same way it does for the explicit rulings above, recording the confirmation. confirmedCount is a self-check: join.js STOPs if the actual count of such entries in decisions-queue.json ever drifts from this number, since that would mean the checkpoint's confirmation no longer covers the full queue and the owner needs to re-review.",
+    "confirmedCount": 31
+  }
+}

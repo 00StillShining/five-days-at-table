@@ -1,0 +1,98 @@
+{
+  "mealId": "b-d2l",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "chicken": 110,
+      "black_beans": 110,
+      "tomato": 90,
+      "sweetheart_cabbage": 70,
+      "salsa": 50,
+      "avocado": 40,
+      "sweetcorn": 40,
+      "red_onion": 30,
+      "olive_oil": 6
+    },
+    "m": {
+      "chicken": 145,
+      "black_beans": 145,
+      "tomato": 110,
+      "sweetheart_cabbage": 80,
+      "salsa": 60,
+      "avocado": 55,
+      "sweetcorn": 55,
+      "red_onion": 40,
+      "olive_oil": 8
+    }
+  },
+  "freebies": [
+    "lime",
+    "chilli_flakes",
+    "cumin",
+    "salt"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Dressing first: oil (6/8 g, olive — dressing and finishing only), the juice of a whole lime, 1 tsp chilli flakes, ½ tsp cumin, salt. Shake it.",
+      "minutes": null,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": 0,
+      "untimed": true
+    },
+    {
+      "n": 2,
+      "text": "Sweetcorn (40/55 g) into a dry pan on high, 2 minutes, until it blisters. Out.",
+      "minutes": 2,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Sunday's chicken (110/145 g — 255 g total, of the ~760 g roast batch) sliced and tossed in HALF the dressing in the warm pan — 30 seconds off the heat is enough to wake the spice up.",
+      "minutes": 0.5,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": 2,
+      "untimed": false
+    },
+    {
+      "n": 4,
+      "text": "Black beans (110/145 g), tomato (90/110 g), red onion (30/40 g), the corn and shredded sweetheart cabbage (70/80 g) into a bowl with the rest of the dressing.",
+      "minutes": null,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": 2.5,
+      "untimed": true
+    },
+    {
+      "n": 5,
+      "text": "Chicken over. Salsa (50/60 g) and avocado (40/55 g) last.",
+      "minutes": null,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": 2.5,
+      "untimed": true
+    }
+  ],
+  "why": "Dress the chicken separately, and warm. Cold roast chicken tossed straight into a cold salad tastes like leftovers; thirty seconds in a warm pan with lime and chilli on it tastes like it was cooked for this.",
+  "batchSource": "prep-b",
+  "batchTakeG": {
+    "w": 110,
+    "m": 145,
+    "total": 255
+  },
+  "notes": [
+    "D0-003: this dish's oil is entirely a raw dressing (whisked before any heat and used to dress, never poured into a hot pan) — stays olive_oil, unchanged, no rename.",
+    "D0-003: lettuce -> sweetheart_cabbage applied. This is a chopped bowl salad (beans, corn, diced onion/tomato) rather than whole/torn leaves, matching the substitution note's own 'the bowls' category — id and grams unchanged (70/80 g), macro impact negligible (~7-8 kcal/cover, cabbage's per100g runs slightly higher than lettuce's).",
+    "batchTakeG covers the roast-chicken take (110/145 g of the 760 g Sunday batch, second of three consumers — see prep-b.json for the full 755/760 g reconciliation)."
+  ]
+}

@@ -2713,5 +2713,1954 @@
       "verifiedOn": null,
       "sharedSkuWith": null
     }
+  },
+  {
+    "id": "jerk_seasoning",
+    "name": {
+      "display": "Jerk seasoning, dry rub",
+      "short": "Jerk seasoning, dry rub",
+      "canonical": "Jerk seasoning, dry rub"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 300,
+      "protein": 8,
+      "fat": 5,
+      "carb": 58,
+      "fibre": 14
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 2.5,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Dry rub used on the jerk chickpeas tray.",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Months, sealed"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Jerk seasoning, dry, 65 g jar",
+      "packG": 65,
+      "price": 1.6,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "jerk_paste",
+    "name": {
+      "display": "Jerk paste, wet marinade",
+      "short": "Jerk paste, wet marinade",
+      "canonical": "Jerk paste, wet marinade"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 150,
+      "protein": 2,
+      "fat": 5,
+      "carb": 25,
+      "fibre": 3
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": 15,
+      "unitSingular": "tbsp",
+      "unitPlural": "tbsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Fridge, once opened",
+      "note": "Wet marinade used to rub the Friday salmon — distinct product from the dry jerk seasoning used on the chickpeas.",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "2–3 weeks open"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Jerk paste, 195 g jar",
+      "packG": 195,
+      "price": 2.1,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "chipotle_adobo",
+    "name": {
+      "display": "Chipotles in adobo sauce, chopped",
+      "short": "Chipotles in adobo sauce, chopped",
+      "canonical": "Chipotles in adobo sauce, chopped"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 90,
+      "protein": 3.5,
+      "fat": 2,
+      "carb": 16,
+      "fibre": 5
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": null,
+      "unitSingular": "chipotle",
+      "unitPlural": "chipotles"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Fridge, once opened",
+      "note": "Tinned chipotle peppers in adobo sauce — the whole Sunday chipotle-beef batch uses 2 peppers with clinging sauce.",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "2 weeks open, or freeze in ice-cube portions"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Chipotles in adobo sauce, 200 g tin",
+      "packG": 200,
+      "price": 1.8,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "salt",
+    "name": {
+      "display": "Salt",
+      "short": "Salt",
+      "canonical": "Salt"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 0,
+      "protein": 0,
+      "fat": 0,
+      "carb": 0,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": null,
+      "unitSingular": "",
+      "unitPlural": ""
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Pinches throughout; no gram tracking.",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Months"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Salt, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "black_pepper",
+    "name": {
+      "display": "Black pepper, ground",
+      "short": "Black pepper, ground",
+      "canonical": "Black pepper, ground"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 251,
+      "protein": 10.4,
+      "fat": 3.3,
+      "carb": 64,
+      "fibre": 25
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 2,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Months"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Black pepper, ground, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "garlic_powder",
+    "name": {
+      "display": "Garlic powder",
+      "short": "Garlic powder",
+      "canonical": "Garlic powder"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 331,
+      "protein": 16.6,
+      "fat": 0.7,
+      "carb": 72.7,
+      "fibre": 9
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 3,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Months"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Garlic powder, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "onion_powder",
+    "name": {
+      "display": "Onion powder",
+      "short": "Onion powder",
+      "canonical": "Onion powder"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 341,
+      "protein": 10.1,
+      "fat": 1,
+      "carb": 79,
+      "fibre": 15
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 3,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Months"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Onion powder, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "oregano",
+    "name": {
+      "display": "Oregano, dried",
+      "short": "Oregano, dried",
+      "canonical": "Oregano, dried"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 265,
+      "protein": 9,
+      "fat": 4.3,
+      "carb": 69,
+      "fibre": 42.5
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 1.5,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Months"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Oregano, dried, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "cumin",
+    "name": {
+      "display": "Cumin, ground",
+      "short": "Cumin, ground",
+      "canonical": "Cumin, ground"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 375,
+      "protein": 17.8,
+      "fat": 22.3,
+      "carb": 44,
+      "fibre": 10.5
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 2,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Months"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Cumin, ground, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "turmeric",
+    "name": {
+      "display": "Turmeric, ground",
+      "short": "Turmeric, ground",
+      "canonical": "Turmeric, ground"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 312,
+      "protein": 9.7,
+      "fat": 3.3,
+      "carb": 67,
+      "fibre": 22.7
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 2.2,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Months"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Turmeric, ground, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "hot_sauce",
+    "name": {
+      "display": "Hot sauce",
+      "short": "Hot sauce",
+      "canonical": "Hot sauce"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 12,
+      "protein": 0.5,
+      "fat": 0.2,
+      "carb": 2,
+      "fibre": 0.3
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": 5,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Months, sealed"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Hot sauce, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "lime",
+    "name": {
+      "display": "Lime",
+      "short": "Lime",
+      "canonical": "Lime"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 30,
+      "protein": 0.7,
+      "fat": 0.2,
+      "carb": 10.5,
+      "fibre": 2.8
+    },
+    "spec": {
+      "weightState": "Whole",
+      "householdUnitG": 67,
+      "unitSingular": "lime",
+      "unitPlural": "limes"
+    },
+    "aisle": "Produce",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Fridge",
+      "note": "",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "1–2 weeks"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Lime, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "lemon",
+    "name": {
+      "display": "Lemon",
+      "short": "Lemon",
+      "canonical": "Lemon"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 29,
+      "protein": 1.1,
+      "fat": 0.3,
+      "carb": 9.3,
+      "fibre": 2.8
+    },
+    "spec": {
+      "weightState": "Whole",
+      "householdUnitG": 58,
+      "unitSingular": "lemon",
+      "unitPlural": "lemons"
+    },
+    "aisle": "Produce",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Fridge",
+      "note": "",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "1–2 weeks"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Lemon, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "chilli_flakes",
+    "name": {
+      "display": "Chilli flakes, dried",
+      "short": "Chilli flakes, dried",
+      "canonical": "Chilli flakes, dried"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 282,
+      "protein": 12,
+      "fat": 15,
+      "carb": 50,
+      "fibre": 35
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 1.5,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Months"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Chilli flakes, dried, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "baking_powder",
+    "name": {
+      "display": "Baking powder",
+      "short": "Baking powder",
+      "canonical": "Baking powder"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 53,
+      "protein": 0,
+      "fat": 0,
+      "carb": 28,
+      "fibre": 0.2
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 4.6,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Months"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Baking powder, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "curry_powder",
+    "name": {
+      "display": "Curry powder",
+      "short": "Curry powder",
+      "canonical": "Curry powder"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 325,
+      "protein": 12.7,
+      "fat": 14,
+      "carb": 58,
+      "fibre": 33
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 2.2,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Months"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Curry powder, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "garam_masala",
+    "name": {
+      "display": "Garam masala",
+      "short": "Garam masala",
+      "canonical": "Garam masala"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 379,
+      "protein": 13,
+      "fat": 15,
+      "carb": 55,
+      "fibre": 22
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 2,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Months"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Garam masala, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "thyme",
+    "name": {
+      "display": "Thyme, dried",
+      "short": "Thyme, dried",
+      "canonical": "Thyme, dried"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 276,
+      "protein": 9.1,
+      "fat": 7.4,
+      "carb": 63.9,
+      "fibre": 37
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 1.4,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Months"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Thyme, dried, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "bay_leaf",
+    "name": {
+      "display": "Bay leaf",
+      "short": "Bay leaf",
+      "canonical": "Bay leaf"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 313,
+      "protein": 7.6,
+      "fat": 8.4,
+      "carb": 75,
+      "fibre": 26.3
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 0.2,
+      "unitSingular": "leaf",
+      "unitPlural": "leaves"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Months"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Bay leaf, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "scotch_bonnet",
+    "name": {
+      "display": "Scotch bonnet, fresh, to taste",
+      "short": "Scotch bonnet, fresh, to taste",
+      "canonical": "Scotch bonnet, fresh, to taste"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 40,
+      "protein": 1.9,
+      "fat": 0.4,
+      "carb": 8.8,
+      "fibre": 1.5
+    },
+    "spec": {
+      "weightState": "Raw",
+      "householdUnitG": 8,
+      "unitSingular": "pepper",
+      "unitPlural": "peppers"
+    },
+    "aisle": "Produce",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Fridge",
+      "note": "",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "1–2 weeks"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Scotch bonnet, fresh, to taste, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "coriander",
+    "name": {
+      "display": "Coriander, fresh",
+      "short": "Coriander, fresh",
+      "canonical": "Coriander, fresh"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 23,
+      "protein": 2.1,
+      "fat": 0.5,
+      "carb": 3.7,
+      "fibre": 2.8
+    },
+    "spec": {
+      "weightState": "Raw",
+      "householdUnitG": null,
+      "unitSingular": "",
+      "unitPlural": ""
+    },
+    "aisle": "Produce",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Fridge",
+      "note": "",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "4–5 days"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Coriander, fresh, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "chilli_powder",
+    "name": {
+      "display": "Chilli powder",
+      "short": "Chilli powder",
+      "canonical": "Chilli powder"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 282,
+      "protein": 13.5,
+      "fat": 14.3,
+      "carb": 49.7,
+      "fibre": 34.8
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 2.6,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Months"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Chilli powder, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "mustard",
+    "name": {
+      "display": "Mustard, prepared",
+      "short": "Mustard, prepared",
+      "canonical": "Mustard, prepared"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 66,
+      "protein": 4.4,
+      "fat": 3.3,
+      "carb": 8,
+      "fibre": 3.3
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": 5,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Fridge, once opened",
+      "note": "",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "6 months open"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Mustard, prepared, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "cinnamon",
+    "name": {
+      "display": "Cinnamon, ground",
+      "short": "Cinnamon, ground",
+      "canonical": "Cinnamon, ground"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 247,
+      "protein": 4,
+      "fat": 1.2,
+      "carb": 81,
+      "fibre": 53.1
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 2.6,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Months"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Cinnamon, ground, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "garlic",
+    "name": {
+      "display": "Garlic, fresh clove",
+      "short": "Garlic, fresh clove",
+      "canonical": "Garlic, fresh clove"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 149,
+      "protein": 6.4,
+      "fat": 0.5,
+      "carb": 33,
+      "fibre": 2.1
+    },
+    "spec": {
+      "weightState": "Raw",
+      "householdUnitG": 3,
+      "unitSingular": "clove",
+      "unitPlural": "cloves"
+    },
+    "aisle": "Produce",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cool, dark, not the fridge",
+      "note": "",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "3–4 weeks"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Garlic, fresh clove, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "stock_powder",
+    "name": {
+      "display": "Stock powder / bouillon",
+      "short": "Stock powder / bouillon",
+      "canonical": "Stock powder / bouillon"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 250,
+      "protein": 10,
+      "fat": 5,
+      "carb": 40,
+      "fibre": 1
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 4,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Months"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Stock powder / bouillon, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "shawarma_spice",
+    "name": {
+      "display": "Shawarma spice blend",
+      "short": "Shawarma spice blend",
+      "canonical": "Shawarma spice blend"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 300,
+      "protein": 11,
+      "fat": 10,
+      "carb": 48,
+      "fibre": 20
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 2.5,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Months"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Shawarma spice blend, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "pepper_soup_spice",
+    "name": {
+      "display": "Pepper soup spice blend",
+      "short": "Pepper soup spice blend",
+      "canonical": "Pepper soup spice blend"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 320,
+      "protein": 10,
+      "fat": 8,
+      "carb": 55,
+      "fibre": 25
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 2.5,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Months"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Pepper soup spice blend, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "smoked_paprika",
+    "name": {
+      "display": "Smoked paprika",
+      "short": "Smoked paprika",
+      "canonical": "Smoked paprika"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 282,
+      "protein": 14.1,
+      "fat": 12.9,
+      "carb": 54,
+      "fibre": 34.9
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 2.3,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Months"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Smoked paprika, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "A"
+    ]
+  },
+  {
+    "id": "soy_sauce",
+    "name": {
+      "display": "Soy sauce, light",
+      "short": "Soy sauce",
+      "canonical": "Soy sauce"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 61,
+      "protein": 5.5,
+      "fat": 0.1,
+      "carb": 6.5,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": 18,
+      "unitSingular": "tbsp",
+      "unitPlural": "tbsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Introduced in the Phase 1 content pass for B-5-Dinner's teriyaki glaze, which methods.json quantified ('3 tbsp soy') but fd5/meals.json never turned into a tracked gram row. Standard light-soy-sauce reference values (generic UK supermarket label, ~60 kcal/100 ml).",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Months, opened"
+      }
+    },
+    "sku": null,
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "B"
+    ]
+  },
+  {
+    "id": "mirin",
+    "name": {
+      "display": "Mirin",
+      "short": "Mirin",
+      "canonical": "Mirin"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 225,
+      "protein": 0.2,
+      "fat": 0,
+      "carb": 43,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": 18,
+      "unitSingular": "tbsp",
+      "unitPlural": "tbsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Introduced in the Phase 1 content pass for B-5-Dinner's teriyaki glaze ('1 tbsp mirin or rice vinegar'). The rewrite assumes the mirin option (not the near-zero-cal rice-vinegar alternative) so the macro strip reflects the more calorific realistic choice — flagged in the meal's notes. Standard mirin reference values.",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Months, opened"
+      }
+    },
+    "sku": null,
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "B"
+    ]
+  },
+  {
+    "id": "honey",
+    "name": {
+      "display": "Honey",
+      "short": "Honey",
+      "canonical": "Honey"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 304,
+      "protein": 0.3,
+      "fat": 0,
+      "carb": 76,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": 7,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Introduced in the Phase 1 content pass for B-5-Dinner's teriyaki glaze ('1 tsp honey'). Standard honey reference values.",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Months, unopened or opened"
+      }
+    },
+    "sku": null,
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "B"
+    ]
+  },
+  {
+    "id": "sugar",
+    "name": {
+      "display": "Sugar, granulated",
+      "short": "Sugar",
+      "canonical": "Sugar"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 400,
+      "protein": 0,
+      "fat": 0,
+      "carb": 100,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": 4,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Introduced in the Phase 1 content pass for B-2-Dinner's escovitch pickle ('1 tsp sugar', 2 g). Also used at 1 g for the 'pinch of sugar' mentions in B-1-Dinner's tomato sauce and B-4-Breakfast's beans (matching the sibling Week A resolution of the same cross-file id, see a-d2d's notes — freebie:false throughout, so pinches are weighed at 1 g rather than listed in freebies[]). Standard granulated-sugar reference values.",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Years"
+      }
+    },
+    "sku": null,
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "B"
+    ]
+  },
+  {
+    "id": "suya_spice",
+    "name": {
+      "display": "Suya spice (ground roasted peanut, chilli, ginger, garlic, stock powder)",
+      "short": "Suya spice",
+      "canonical": "Suya spice"
+    },
+    "aliases": [
+      "Suya",
+      "Yaji"
+    ],
+    "per100g": {
+      "kcal": 520,
+      "protein": 22,
+      "fat": 41,
+      "carb": 20,
+      "fibre": 10
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": 4,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard, dark",
+      "note": "Homemade Sunday jar ('3 parts ground roasted peanut to 1 part chilli, plus ginger, garlic powder and stock powder'), not a shop SKU — no sku block is given here (nothing to price or pack). per100g is a derived estimate: 75% roasted-peanut reference (~602 kcal/25 p/50 f/21 c/8 fibre) blended with 25% dry chilli/aromatic-powder reference (~282 kcal/14 p/14 f/50 c/34 fibre), rounded. Used in B-3-Dinner (rub, dip, finishing dust) and B-5-Snack (dip); introduced in the Phase 1 content pass because methods.json quantifies every use in teaspoons but no suya row existed anywhere in meals.json.",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Cupboard, months (Sunday session prose)"
+      }
+    },
+    "sku": null,
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "B"
+    ]
+  },
+  {
+    "id": "vinegar",
+    "name": {
+      "display": "Vinegar",
+      "short": "Vinegar",
+      "canonical": "Vinegar"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 3,
+      "protein": 0,
+      "fat": 0,
+      "carb": 0.1,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": 15,
+      "unitSingular": "tbsp",
+      "unitPlural": "tbsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Introduced in the Phase 1 content pass for B-2-Dinner's escovitch pickle ('4 tbsp vinegar'). Near-zero calories at any realistic quantity — flagged freebie:true per rule 5, appears in the meal's freebies[] rather than its covers table.",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Years"
+      }
+    },
+    "sku": null,
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "B"
+    ]
+  },
+  {
+    "id": "allspice",
+    "name": {
+      "display": "Allspice berries",
+      "short": "Allspice",
+      "canonical": "Allspice"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 263,
+      "protein": 6.1,
+      "fat": 8.7,
+      "carb": 72,
+      "fibre": 21.6
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 2,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Introduced in the Phase 1 content pass — B-2-Dinner's escovitch pickle uses 'a few allspice berries' with no gram figure; freebie:true, matching the treatment of every other trace whole-spice mention in this dataset (cf. _ingredients.A.json's bay_leaf, scotch_bonnet).",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Months"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Allspice, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "B"
+    ]
+  },
+  {
+    "id": "all_purpose_seasoning",
+    "name": {
+      "display": "All-purpose seasoning",
+      "short": "All-purpose seasoning",
+      "canonical": "All-purpose seasoning"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 200,
+      "protein": 8,
+      "fat": 3,
+      "carb": 35,
+      "fibre": 10
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 3,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Introduced in the Phase 1 content pass — B-2-Dinner's escovitch fish is 'dusted with a little all-purpose seasoning', no gram figure. freebie:true.",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Months"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "All-purpose seasoning, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "B"
+    ]
+  },
+  {
+    "id": "worcestershire_sauce",
+    "name": {
+      "display": "Worcestershire sauce",
+      "short": "Worcestershire sauce",
+      "canonical": "Worcestershire sauce"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 78,
+      "protein": 0.5,
+      "fat": 0,
+      "carb": 19.5,
+      "fibre": 0
+    },
+    "spec": {
+      "weightState": "As it comes",
+      "householdUnitG": 5,
+      "unitSingular": "dash",
+      "unitPlural": "dashes"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Introduced in the Phase 1 content pass — B-4-Breakfast's beans use 'a dash of Worcestershire', no gram figure. freebie:true.",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Years, opened"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Worcestershire sauce, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "B"
+    ]
+  },
+  {
+    "id": "dried_mint",
+    "name": {
+      "display": "Mint, dried",
+      "short": "Mint, dried",
+      "canonical": "Mint, dried"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 285,
+      "protein": 20,
+      "fat": 6,
+      "carb": 52,
+      "fibre": 32
+    },
+    "spec": {
+      "weightState": "Dry",
+      "householdUnitG": 1.5,
+      "unitSingular": "tsp",
+      "unitPlural": "tsp"
+    },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Introduced in the Phase 1 content pass — B-4-Lunch's cucumber yoghurt uses 'dried mint', no gram figure. freebie:true, same treatment as _ingredients.A.json's thyme.",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "Months"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Mint, dried, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "B"
+    ]
+  },
+  {
+    "id": "ginger",
+    "name": {
+      "display": "Ginger, fresh root",
+      "short": "Ginger",
+      "canonical": "Ginger"
+    },
+    "aliases": [],
+    "per100g": {
+      "kcal": 80,
+      "protein": 1.8,
+      "fat": 0.8,
+      "carb": 18,
+      "fibre": 2
+    },
+    "spec": {
+      "weightState": "Raw",
+      "householdUnitG": 5,
+      "unitSingular": "tsp grated",
+      "unitPlural": "tsp grated"
+    },
+    "aisle": "Produce",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Fridge",
+      "note": "Introduced in the Phase 1 content pass — 'grated ginger' appears with no gram figure in B-5-Dinner's teriyaki glaze. freebie:true.",
+      "life": {
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null,
+        "prose": "3-4 weeks"
+      }
+    },
+    "sku": {
+      "shop": "M",
+      "product": "Ginger, fresh root, jar/packet",
+      "packG": 40,
+      "price": 0.9,
+      "estimate": true,
+      "estimateSource": "content-pass-assumed",
+      "verifiedOn": null,
+      "sharedSkuWith": null
+    },
+    "addedInContentPass": true,
+    "contentPassSources": [
+      "B"
+    ]
   }
 ]

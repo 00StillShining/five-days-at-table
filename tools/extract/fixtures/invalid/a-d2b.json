@@ -1,0 +1,16 @@
+{
+  "mealId": "a-d2b",
+  "rev": "B",
+  "covers": {
+    "w": { "totally_unknown_ingredient_id": 10 },
+    "m": { "totally_unknown_ingredient_id": 12 }
+  },
+  "freebies": [],
+  "steps": [
+    { "n": 1, "text": "Test step referencing an id nothing defines.", "minutes": 1, "tempC": null, "track": null, "clockStart": 0, "station": null }
+  ],
+  "why": "Test why block.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": []
+}

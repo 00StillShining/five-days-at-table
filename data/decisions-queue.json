@@ -9,7 +9,8 @@
     ],
     "recommendation": "Retire all 5 to retired.json, preserving full data + reason.",
     "status": "resolved-by-default",
-    "resolvedTo": "retired.json holds all 5 (milk, egg_white, whey, edamame, mango)."
+    "resolvedTo": "retired.json holds all 5 (milk, egg_white, whey, edamame, mango).",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-002",
@@ -21,7 +22,8 @@
     ],
     "recommendation": "Create the 3 records; no meal in meals.json references sweetheart_cabbage or rapeseed_oil (methods.json prose never distinguishes them from their siblings) — they exist as shopping-list/basket SKUs only. peppers_frozen IS wired into meals.json per the raw/cooked split decision below.",
     "status": "resolved-by-default",
-    "resolvedTo": "ingredients.json carries all 3 with addedInExtraction:true; sweetheart_cabbage and rapeseed_oil have no meals.json linkage (see separate decision entries for why that linkage was not attempted)."
+    "resolvedTo": "ingredients.json carries all 3 with addedInExtraction:true; sweetheart_cabbage and rapeseed_oil have no meals.json linkage (see separate decision entries for why that linkage was not attempted).",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-003",
@@ -32,8 +34,9 @@
       "Leave lettuce/olive_oil meal references as-is; sweetheart_cabbage/rapeseed_oil exist only as basket SKUs (chosen)"
     ],
     "recommendation": "As chosen. Revisit in Phase 1 if the methods rewrite adds per-step oil/lettuce attribution.",
-    "status": "open",
-    "resolvedTo": null
+    "status": "resolved",
+    "resolvedTo": "Owner ruling 2026-08-04: link during Phase 1 — rewriters apply the two substitution rules meal-by-meal where each condition holds (rapeseed for pan heat, olive for finishing; sweetheart cabbage where little gem is only shredded); reviewer verifies each application.",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-004",
@@ -45,7 +48,8 @@
     ],
     "recommendation": "As chosen — fully derived from the two shopping-list row notes, zero guessing.",
     "status": "resolved-by-default",
-    "resolvedTo": "meals.json: peppers id used only for B-2-Dinner and B-3-Dinner; peppers_frozen id used for the other 8 pepper-bearing cards."
+    "resolvedTo": "meals.json: peppers id used only for B-2-Dinner and B-3-Dinner; peppers_frozen id used for the other 8 pepper-bearing cards.",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-005",
@@ -57,7 +61,8 @@
     ],
     "recommendation": "Overlay wins per PLAN.md §2 ('overlay wins — newer'). estimateSource recorded per ingredient.",
     "status": "resolved-by-default",
-    "resolvedTo": "ingredients.json sku.estimate uses the overlay value for these 19 ids; sku.estimateSource='provisioning' for them, 'fd5' otherwise."
+    "resolvedTo": "ingredients.json sku.estimate uses the overlay value for these 19 ids; sku.estimateSource='provisioning' for them, 'fd5' otherwise.",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-006",
@@ -69,7 +74,8 @@
     ],
     "recommendation": "As chosen, consistent with the named greek_yog/skyr precedent.",
     "status": "resolved-by-default",
-    "resolvedTo": "raspberries and blueberries are both real ingredients.json entries with sku.sharedSkuWith pointing at each other."
+    "resolvedTo": "raspberries and blueberries are both real ingredients.json entries with sku.sharedSkuWith pointing at each other.",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-007",
@@ -81,7 +87,8 @@
     ],
     "recommendation": "ingredients.json sku.price is always the canonical-basket price; fd5.prices is never written into sku directly, only used for the ver:0 base-layer estimate flag and the legacy checksum.",
     "status": "resolved-by-default",
-    "resolvedTo": "20/54 ids repriced relative to fd5.json; ingredients.json uses canonical-basket prices throughout."
+    "resolvedTo": "20/54 ids repriced relative to fd5.json; ingredients.json uses canonical-basket prices throughout.",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-008",
@@ -93,7 +100,8 @@
     ],
     "recommendation": "No action — this is a rounding discrepancy present in the source HTML itself, already flagged by provisioning.js. Recorded here for visibility per task brief.",
     "status": "resolved-by-default",
-    "resolvedTo": "No correction applied; both figures cited in this entry."
+    "resolvedTo": "No correction applied; both figures cited in this entry.",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-009",
@@ -105,7 +113,8 @@
     ],
     "recommendation": "No action — this is a rounding discrepancy present in the source HTML itself, already flagged by provisioning.js. Recorded here for visibility per task brief.",
     "status": "resolved-by-default",
-    "resolvedTo": "No correction applied; both figures cited in this entry."
+    "resolvedTo": "No correction applied; both figures cited in this entry.",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-010",
@@ -117,7 +126,8 @@
     ],
     "recommendation": "Report 40/40. The oil-inversion and red-cabbage-quantity defects are separately logged (see the §4 content-defect entries) since they are real content issues, just not macro-recompute failures.",
     "status": "resolved-by-default",
-    "resolvedTo": "validation.json checksum 'macro-recompute' reports 40/40 cards within tolerance, zero disputed."
+    "resolvedTo": "validation.json checksum 'macro-recompute' reports 40/40 cards within tolerance, zero disputed.",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-011",
@@ -129,7 +139,8 @@
     ],
     "recommendation": "Report recomputed totals as canonical (methods.json is plate-truth); keep the legacy totals in this entry for audit trail.",
     "status": "resolved-by-default",
-    "resolvedTo": "validation.json week-A-day-totals check reports the recomputed 1671/1675/1670/1650/1694 alongside the legacy 1667/1663/1670/1646/1694, asserting the exact +4/+12/0/+4/0 deltas (avocado-drop + compensating-oil net effect) rather than accepting any diff."
+    "resolvedTo": "validation.json week-A-day-totals check reports the recomputed 1671/1675/1670/1650/1694 alongside the legacy 1667/1663/1670/1646/1694, asserting the exact +4/+12/0/+4/0 deltas (avocado-drop + compensating-oil net effect) rather than accepting any diff.",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-012",
@@ -141,7 +152,8 @@
     ],
     "recommendation": "meals.json b-d5b is 'Scrambled eggs & tomato on seeded toast', no salmon.",
     "status": "resolved-by-default",
-    "resolvedTo": "meals.json b-d5b matches methods.json exactly; fd5.json's salmon version is superseded, not separately retained."
+    "resolvedTo": "meals.json b-d5b matches methods.json exactly; fd5.json's salmon version is superseded, not separately retained.",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-013",
@@ -153,7 +165,8 @@
     ],
     "recommendation": "methods.json wins per D10 ('Methods files are plate-truth'), consistent with how the named avocado/salmon diffs were resolved.",
     "status": "resolved-by-default",
-    "resolvedTo": "meals.json b-d2b.tag='batch', b-d3s.tag='fresh' (both from methods.json)."
+    "resolvedTo": "meals.json b-d2b.tag='batch', b-d3s.tag='fresh' (both from methods.json).",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-014",
@@ -165,7 +178,8 @@
     ],
     "recommendation": "Phase 1 rewrite corrects the Sunday-prep instruction to '515 g red cabbage... Thursday's burger slaw, Friday's wrap AND Friday's salmon slaw all come out of this.' Phase 0 ships prep.json's op body verbatim from methods.json (335g, two consumers named).",
     "status": "resolved-by-default",
-    "resolvedTo": "applied in Phase 1 rewrite; prep.json op body text kept as-extracted (335g, naming only the wrap+burger consumers) for now. prep.json's 'Slaw shred' yield consumers array is limited to the two the op text itself names (a-d4d, a-d5l) since yield-consumer mapping is drawn from the yields table, not the op body — a-d5d's separate red_cabbage need is real but is not part of THIS yield's stated consumer list, per the source table."
+    "resolvedTo": "applied in Phase 1 rewrite; prep.json op body text kept as-extracted (335g, naming only the wrap+burger consumers) for now. prep.json's 'Slaw shred' yield consumers array is limited to the two the op text itself names (a-d4d, a-d5l) since yield-consumer mapping is drawn from the yields table, not the op body — a-d5d's separate red_cabbage need is real but is not part of THIS yield's stated consumer list, per the source table.",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-015",
@@ -177,7 +191,8 @@
     ],
     "recommendation": "Phase 1 rewrite corrects. Phase 0 meals.json carries the inverted figures as methods.json states them (covers.w.olive_oil=12/10, covers.m.olive_oil=10/8 respectively).",
     "status": "resolved-by-default",
-    "resolvedTo": "applied in Phase 1 rewrite; meals.json b-d2d and b-d4l keep the inverted grams as-extracted."
+    "resolvedTo": "applied in Phase 1 rewrite; meals.json b-d2d and b-d4l keep the inverted grams as-extracted.",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-016",
@@ -189,7 +204,8 @@
     ],
     "recommendation": "No Phase 1 action required beyond cosmetic 'half' wording softened to 'about half' if desired.",
     "status": "resolved-by-default",
-    "resolvedTo": "No numeric correction applied — the two halves already sum exactly to the ingredient-table total on both covers."
+    "resolvedTo": "No numeric correction applied — the two halves already sum exactly to the ingredient-table total on both covers.",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-017",
@@ -201,7 +217,8 @@
     ],
     "recommendation": "Phase 1 rewrite should read '9 g of the remaining oil' or similar.",
     "status": "resolved-by-default",
-    "resolvedTo": "applied in Phase 1 rewrite; meals.json a-d1d step text kept verbatim for now."
+    "resolvedTo": "applied in Phase 1 rewrite; meals.json a-d1d step text kept verbatim for now.",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-018",
@@ -213,7 +230,8 @@
     ],
     "recommendation": "Phase 1 methods rewrite should either add a per-cover onion row to B-4-Lunch or explicitly note it as a freebie-level seasoning-onion within the kofta mix.",
     "status": "resolved-by-default",
-    "resolvedTo": "applied in Phase 1 rewrite; meals.json b-d4l macros unchanged (as methods.json states), defect flagged."
+    "resolvedTo": "applied in Phase 1 rewrite; meals.json b-d4l macros unchanged (as methods.json states), defect flagged.",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-019",
@@ -225,7 +243,8 @@
     ],
     "recommendation": "Phase 1 rewrite should either boil an odd number of eggs or adjust the him-cover gram figure to a clean multiple of 50g.",
     "status": "resolved-by-default",
-    "resolvedTo": "applied in Phase 1 rewrite; meals.json a-d2s.covers.m.egg=75 kept as-extracted."
+    "resolvedTo": "applied in Phase 1 rewrite; meals.json a-d2s.covers.m.egg=75 kept as-extracted.",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-020",
@@ -237,7 +256,8 @@
     ],
     "recommendation": "Phase 1 rewrite should either explain the headroom explicitly (e.g. 'cooks 600g, ~25g extra for taste/loss') or tighten the batch quantity to match consumer demand exactly.",
     "status": "resolved-by-default",
-    "resolvedTo": "applied in Phase 1 rewrite; prep.json yields keep the as-extracted 600g/250g batch figures; the 575g/245g consumer-demand figures are derivable on demand from meals.json and are cited here for the record."
+    "resolvedTo": "applied in Phase 1 rewrite; prep.json yields keep the as-extracted 600g/250g batch figures; the 575g/245g consumer-demand figures are derivable on demand from meals.json and are cited here for the record.",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-021",
@@ -249,7 +269,8 @@
     ],
     "recommendation": "No Phase 0 data changes from any of the seven; Phase 1 methods rewrite addresses them.",
     "status": "resolved-by-default",
-    "resolvedTo": "meals.json and prep.json carry all seven defects as-extracted from methods.json, matching Phase 0 scope ('Phase 0 ships originals')."
+    "resolvedTo": "meals.json and prep.json carry all seven defects as-extracted from methods.json, matching Phase 0 scope ('Phase 0 ships originals').",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-022",
@@ -261,7 +282,8 @@
     ],
     "recommendation": "Keep b-d1s as extracted.",
     "status": "resolved-by-default",
-    "resolvedTo": "meals.json b-d1s present, unmodified, tag='fresh' per methods.json."
+    "resolvedTo": "meals.json b-d1s present, unmodified, tag='fresh' per methods.json.",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-023",
@@ -273,7 +295,8 @@
     ],
     "recommendation": "As chosen.",
     "status": "resolved-by-default",
-    "resolvedTo": "prep.json yields[].consumers is a meal-id array for 9/11 (Week A) and 6/8 (Week B) yields; null for the 2 seasoning-jar yields in Week B."
+    "resolvedTo": "prep.json yields[].consumers is a meal-id array for 9/11 (Week A) and 6/8 (Week B) yields; null for the 2 seasoning-jar yields in Week B.",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-024",
@@ -285,7 +308,8 @@
     ],
     "recommendation": "As chosen — moveForOp() is now the single source of truth for both the a+b and a-twice variants' item moves.",
     "status": "resolved-by-default",
-    "resolvedTo": "calendar.json a+b day-7 items (chicken, turkey_mince, beef_mince/kofta) now carry move:'freezer → fridge'."
+    "resolvedTo": "calendar.json a+b day-7 items (chicken, turkey_mince, beef_mince/kofta) now carry move:'freezer → fridge'.",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-025",
@@ -297,7 +321,8 @@
     ],
     "recommendation": "As chosen. Reviewable — if freezer stock timing differs between pass 1 and pass 2 in practice (e.g. because pass 1 already drew down some frozen stock), that is a Phase 2 inventory-tracking concern, not a Phase 0 calendar-authoring one.",
     "status": "resolved-by-default",
-    "resolvedTo": "data/calendar.json contains both variant:'a+b' (10 ops, as extracted, day-7 items now correctly move:'freezer → fridge') and variant:'a-twice' (11 ops: day0 adapted, days1/3/4/5 verbatim, day7 top-up+chicken-bring-down, day8 mozzarella-down (new), days8/10/11/12 = +7 shift of days1/3/4/5 with day8's body corrected)."
+    "resolvedTo": "data/calendar.json contains both variant:'a+b' (10 ops, as extracted, day-7 items now correctly move:'freezer → fridge') and variant:'a-twice' (11 ops: day0 adapted, days1/3/4/5 verbatim, day7 top-up+chicken-bring-down, day8 mozzarella-down (new), days8/10/11/12 = +7 shift of days1/3/4/5 with day8's body corrected).",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-026",
@@ -309,7 +334,8 @@
     ],
     "recommendation": "As chosen — plan.json.targets is now {A:{w,m}, B:{w,m}}, four independent bands instead of one shared pair.",
     "status": "resolved-by-default",
-    "resolvedTo": "plan.json.targets holds the 4 recomputed bands; old fd5.json bands preserved only in this decisions-queue entry."
+    "resolvedTo": "plan.json.targets holds the 4 recomputed bands; old fd5.json bands preserved only in this decisions-queue entry.",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-027",
@@ -321,7 +347,8 @@
     ],
     "recommendation": "validation.json records: 54/54 legacy rows matched fd5.prices.ver with zero conflicts; fd5.prices' 41st ver:0 entry (whey) has no legacy counterpart, fully explained by whey's retired/vestigial status.",
     "status": "resolved-by-default",
-    "resolvedTo": "validation.json checksum reports 54/54 matched, 0 conflicts, and cites the whey orphan explicitly."
+    "resolvedTo": "validation.json checksum reports 54/54 matched, 0 conflicts, and cites the whey orphan explicitly.",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-028",
@@ -333,7 +360,8 @@
     ],
     "recommendation": "As chosen — fully mechanical, zero ambiguity encountered in practice (all 54 rows matched one of the 5 known pills).",
     "status": "resolved-by-default",
-    "resolvedTo": "ingredients.json storage.class populated for all 57 ids; 54 from day0.pill, 3 by documented analogy."
+    "resolvedTo": "ingredients.json storage.class populated for all 57 ids; 54 from day0.pill, 3 by documented analogy.",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-029",
@@ -345,7 +373,8 @@
     ],
     "recommendation": "No further action; the join is airtight.",
     "status": "resolved-by-default",
-    "resolvedTo": "register-map.json's 54 entries are all exact-name matches; see tools/extract/register-map.json's own header comment."
+    "resolvedTo": "register-map.json's 54 entries are all exact-name matches; see tools/extract/register-map.json's own header comment.",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-030",
@@ -356,8 +385,9 @@
       "Derive via comma/paren truncation (chosen)"
     ],
     "recommendation": "Revisit in Phase 1/2 if the dashboard's search/filter UI needs a different canonicalisation rule (e.g. singular/plural normalisation).",
-    "status": "open",
-    "resolvedTo": null
+    "status": "resolved",
+    "resolvedTo": "Owner ruling 2026-08-04: keep the truncation heuristic (comma/paren truncation for name.canonical) as implemented in join.js; revisit only if Phase 2 search needs more.",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-031",
@@ -368,8 +398,9 @@
       "Leave null (chosen)"
     ],
     "recommendation": "Populate verifiedOn only from real future price-check events (the localStorage priceChecks mechanism in §5's runtime state), not from extraction-time guesses.",
-    "status": "open",
-    "resolvedTo": null
+    "status": "resolved",
+    "resolvedTo": "Owner ruling 2026-08-04: sku.verifiedOn stays null at extraction time; it is populated only by real price-check events recorded through LIST's verify flow (§5 runtime state priceChecks), never backfilled from a file date or extraction timestamp.",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-032",
@@ -381,7 +412,8 @@
     ],
     "recommendation": "As chosen. If Phase 1's methods rewrite adds structured per-op ingredient data to methods.js's own output, this hand-built table should be retired in favour of reading it directly.",
     "status": "resolved-by-default",
-    "resolvedTo": "prep.json ops[].ingredients populated for 12/25 ops (the ones with an explicit gram figure); the other 13 have ingredients:[] (process-only steps: oven preheat, portioning, cooling, jar-making with tsp/tbsp-only seasoning quantities)."
+    "resolvedTo": "prep.json ops[].ingredients populated for 12/25 ops (the ones with an explicit gram figure); the other 13 have ingredients:[] (process-only steps: oven preheat, portioning, cooling, jar-making with tsp/tbsp-only seasoning quantities).",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-033",
@@ -393,7 +425,8 @@
     ],
     "recommendation": "No action needed — both figures are preserved (totalMin=75 is derived/objective, sessionName carries the original 'eighty minutes' prose verbatim).",
     "status": "resolved-by-default",
-    "resolvedTo": "prep.json[1].totalMin=75; prep.json[1].sessionName='one session, eighty minutes — lighter than Week A' (verbatim)."
+    "resolvedTo": "prep.json[1].totalMin=75; prep.json[1].sessionName='one session, eighty minutes — lighter than Week A' (verbatim).",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   },
   {
     "id": "D0-034",
@@ -405,6 +438,7 @@
     ],
     "recommendation": "As chosen.",
     "status": "resolved-by-default",
-    "resolvedTo": "calendar.json's a-twice day-0 entry body = a+b's original text + one appended sentence; item list unchanged."
+    "resolvedTo": "calendar.json's a-twice day-0 entry body = a+b's original text + one appended sentence; item list unchanged.",
+    "resolvedBy": "owner-checkpoint-2026-08-04"
   }
 ]

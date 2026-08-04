@@ -1,0 +1,16 @@
+{
+  "mealId": "b-d1x",
+  "rev": "B",
+  "covers": {
+    "w": { "egg": 100 },
+    "m": { "egg": 100 }
+  },
+  "freebies": [],
+  "steps": [
+    { "n": 1, "text": "Test step — mealId field deliberately does not match the filename.", "minutes": 1, "tempC": null, "track": null, "clockStart": 0, "station": null }
+  ],
+  "why": "Test why block.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": []
+}

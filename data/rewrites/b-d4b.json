@@ -1,0 +1,111 @@
+{
+  "mealId": "b-d4b",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "egg": 100,
+      "passata": 80,
+      "kidney_beans": 75,
+      "spinach": 60,
+      "seeded_bread": 45,
+      "red_onion": 25,
+      "rapeseed_oil": 9,
+      "sugar": 1
+    },
+    "m": {
+      "egg": 150,
+      "passata": 100,
+      "kidney_beans": 85,
+      "spinach": 80,
+      "seeded_bread": 55,
+      "red_onion": 30,
+      "rapeseed_oil": 11,
+      "sugar": 1
+    }
+  },
+  "freebies": [
+    "smoked_paprika",
+    "mustard",
+    "worcestershire_sauce"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Onion (25/30 g) finely diced into the oil (4 g flat, rapeseed — hot pan), medium, 4 minutes.",
+      "minutes": 4,
+      "tempC": null,
+      "track": "beans",
+      "station": "hob 1",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 2,
+      "text": "Passata (80/100 g), 1 tsp smoked paprika, ½ tsp mustard, a dash of Worcestershire, a pinch of sugar (1 g). 3 minutes.",
+      "minutes": 3,
+      "tempC": null,
+      "track": "beans",
+      "station": "hob 1",
+      "clockStart": 4,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Kidney beans (75/85 g) in. 3 minutes more, mashing six or seven of them against the side to thicken it. This is baked beans, made properly and without the sugar.",
+      "minutes": 3,
+      "tempC": null,
+      "track": "beans",
+      "station": "hob 1",
+      "clockStart": 7,
+      "untimed": false
+    },
+    {
+      "n": 4,
+      "text": "Bread (45/55 g) toasting.",
+      "minutes": 3,
+      "tempC": null,
+      "track": "toast-eggs",
+      "station": "toaster",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 5,
+      "text": "Spinach (60/80 g) wilted in a second pan,",
+      "minutes": 1,
+      "tempC": null,
+      "track": "toast-eggs",
+      "station": "hob 2",
+      "clockStart": 6,
+      "untimed": false
+    },
+    {
+      "n": 6,
+      "text": "then the eggs (100/150 g — 2 / 3) fried in the rest of the oil (5/7 g, rapeseed).",
+      "minutes": 3,
+      "tempC": null,
+      "track": "toast-eggs",
+      "station": "hob 2",
+      "clockStart": 7,
+      "untimed": false
+    },
+    {
+      "n": 7,
+      "text": "Beans onto the toast, spinach, eggs over.",
+      "minutes": null,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": 10,
+      "untimed": true
+    }
+  ],
+  "why": "Mash a few of the beans. There is no starch and no sugar syrup in this doing the thickening, so the sauce has to get its body from the beans themselves — half a dozen crushed against the pan is the difference between a sauce and a puddle.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": [
+    "D0-003: both oil uses (the onion sauté and the egg fry) are cooking uses — whole row renames olive_oil -> rapeseed_oil (9/11 g, unchanged grams), restated as 4 g flat at the first hob step plus 5/7 g remainder at the egg step (4+5=9 her, 4+7=11 him).",
+    "Genuinely two pans running at once — the original text explicitly calls out 'a second pan' for the spinach/eggs — so this breakfast gets track markup despite rule 2's general 'single-pan breakfasts stay sequential', since it is not single-pan. Critical path lands both tracks at clockStart 10, matching the card's 10-minute chip exactly.",
+    "Seasoning: 'a pinch of sugar' weighed at 1 g (both covers), matching the sibling Week A resolution of the same cross-file sugar id (see a-d2d, and _ingredients.B.json's sugar note). Macro impact negligible (~4 kcal/cover)."
+  ]
+}

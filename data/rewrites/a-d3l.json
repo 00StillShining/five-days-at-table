@@ -1,0 +1,93 @@
+{
+  "mealId": "a-d3l",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "spinach": 200,
+      "cauliflower": 110,
+      "passata": 100,
+      "chicken": 85,
+      "peppers_frozen": 70,
+      "brown_rice": 40,
+      "red_onion": 40,
+      "egusi": 12,
+      "rapeseed_oil": 6
+    },
+    "m": {
+      "spinach": 240,
+      "cauliflower": 140,
+      "passata": 120,
+      "chicken": 110,
+      "peppers_frozen": 90,
+      "brown_rice": 55,
+      "red_onion": 50,
+      "egusi": 15,
+      "rapeseed_oil": 8
+    }
+  },
+  "freebies": [],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Out of the fridge: Sunday's efo riro base — take all of it, the whole ~450 g batch (100/120 g passata, 70/90 g pepper, 40/50 g onion and 12/15 g egusi cooked down into it) — and Sunday's jollof (all 40/55 g dry rice, plus 110/140 g of the riced cauliflower batch warmed in with it).",
+      "minutes": null,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": true
+    },
+    {
+      "n": 2,
+      "text": "Base into a pan on medium with the rapeseed oil (6/8 g) and a splash of water — it sets hard when cold. 3 minutes.",
+      "minutes": 3,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Chicken (85/110 g) sliced in and warmed through, 2 minutes.",
+      "minutes": 2,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 3,
+      "untimed": false
+    },
+    {
+      "n": 4,
+      "text": "Spinach (200/240 g) is a mountain. Add it in three goes, letting each wilt before the next. It comes down to about a quarter of its volume.",
+      "minutes": 3,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 5,
+      "untimed": false
+    },
+    {
+      "n": 5,
+      "text": "Jollof (40/55 g dry rice + 110/140 g cauliflower) warmed alongside, covered, 2 minutes.",
+      "minutes": 2,
+      "tempC": null,
+      "track": "pan2",
+      "station": "hob",
+      "clockStart": 6,
+      "untimed": false
+    }
+  ],
+  "why": "The spinach goes in at the plate, not on Sunday. Reheated wilted greens turn grey and bitter; folded fresh into a hot base they stay green and the dish tastes like it was made today.",
+  "batchSource": "prep-a",
+  "batchTakeG": {
+    "w": 457,
+    "m": 580,
+    "total": 1037
+  },
+  "notes": [
+    "D0-003: oil never appeared in this card's own step text (one of the 32 rows PLAN §4 flags as missing from its own method). Placed at the base-reheat step, where a little fat re-emulsifies a sauce that 'sets hard when cold' — a hot-pan use → rapeseed_oil. Grams unchanged (6/8 g, matches table).",
+    "Named worst offender (PLAN §4): batchTakeG is now explicit. The efo riro base (passata 100/120, peppers_frozen 70/90, red_onion 40/50, egusi 12/15 — matches Sunday's Pan 3 op exactly, 497 g raw cooking to the yield table's ~450 g) is entirely consumed by this single lunch. The jollof (95 g dry rice, all of it) and a 250 g share of the riced-cauliflower batch are the second Sunday component, reheated alongside. Roast chicken (195 g of the 600 g batch) is the third.",
+    "batchTakeG.total (1,037 g) is the sum of everything this plate draws from Sunday's prep: efo-riro-base inputs 497 g + jollof rice 95 g + cauliflower 250 g + chicken 195 g. Fresh-added spinach is excluded (it goes in at the plate, per the why block)."
+  ]
+}

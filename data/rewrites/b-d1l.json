@@ -1,0 +1,108 @@
+{
+  "mealId": "b-d1l",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "cauliflower": 130,
+      "chicken": 105,
+      "passata": 80,
+      "peppers_frozen": 70,
+      "brown_rice": 55,
+      "red_onion": 30,
+      "egg": 25,
+      "spring_onion": 15,
+      "rapeseed_oil": 7
+    },
+    "m": {
+      "cauliflower": 160,
+      "chicken": 140,
+      "passata": 100,
+      "peppers_frozen": 90,
+      "brown_rice": 72,
+      "red_onion": 40,
+      "egg": 25,
+      "spring_onion": 20,
+      "rapeseed_oil": 9
+    }
+  },
+  "freebies": [
+    "curry_powder",
+    "thyme",
+    "stock_powder"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Out of the fridge: Sunday's chicken — take 105/140 g (245 g total) of the ~760 g roast batch — and Sunday's rice — take 55/72 g dry (127 g total) of the 380 g dry batch.",
+      "minutes": null,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": 0,
+      "untimed": true
+    },
+    {
+      "n": 2,
+      "text": "The widest pan you own — or a wok — on high with the oil (7/9 g, rapeseed — it's hitting a hot wok). Onion (30/40 g) and pepper (70/90 g) diced, 3 minutes. You want colour on them, not softness.",
+      "minutes": 3,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Passata (80/100 g) with 1 tsp curry powder, ½ tsp thyme and a pinch of stock powder. Cook it down hard for 3 minutes, until it stops being loose.",
+      "minutes": 3,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": 3,
+      "untimed": false
+    },
+    {
+      "n": 4,
+      "text": "Rice (55/72 g dry, cooked) and raw cauliflower (130/160 g) in. Press it flat and LEAVE it 60 seconds to catch before stirring. Then twice more.",
+      "minutes": 3,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": 6,
+      "untimed": false
+    },
+    {
+      "n": 5,
+      "text": "Push everything to one side. Beaten egg (25 g) into the gap, scrambled fast, then folded through.",
+      "minutes": 1,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": 9,
+      "untimed": false
+    },
+    {
+      "n": 6,
+      "text": "Chicken (105/140 g) in for the last minute. Spring onion (15/20 g) off the heat.",
+      "minutes": 1,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": 10,
+      "untimed": false
+    }
+  ],
+  "why": "Leave the rice alone. Fried rice is made by contact with hot metal, not by stirring — every time you move it you drop the pan temperature and end up steaming it into porridge.",
+  "batchSource": "prep-b",
+  "batchTakeG": {
+    "w": 105,
+    "m": 140,
+    "total": 245
+  },
+  "notes": [
+    "D0-003: oil is a hot-wok cooking use throughout (frying onion, pepper, rice, chicken) — no dressing/finishing use in this dish, so the whole row renames olive_oil -> rapeseed_oil (7/9 g, unchanged grams).",
+    "batchTakeG covers the roast-chicken take only (105/140 g of the 760 g Sunday batch, one of three consumers alongside b-d2l and b-d5l — 755 g taken in total, 5 g headroom, see prep-b.json). This card also draws a second Sunday component, brown rice (55/72 g dry of the 380 g dry batch); its take is stated in step 1 and in prep-b.json's yields rather than in a second batchTakeG field, since the schema carries one batch figure per card.",
+    "Single wide-pan/wok flow — genuinely sequential, no parallel track markup needed.",
+    "No macro drift beyond the oil relabel (identical per100g to olive_oil, zero kcal change)."
+  ]
+}

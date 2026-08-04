@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FD-5 Phase 1 review — batch a1</title>
+<style>
+  body { font-family: -apple-system, Helvetica, Arial, sans-serif; max-width: 1400px; margin: 0 auto; padding: 24px; color: #111; background: #fff; }
+  h1 { font-size: 22px; }
+  h2 { font-size: 18px; margin-top: 40px; border-top: 2px solid #333; padding-top: 12px; }
+  h3 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.04em; color: #555; }
+  .summary { background: #f4f4f4; padding: 12px 16px; border-radius: 4px; font-size: 14px; }
+  .meal-id { font-family: monospace; font-size: 13px; color: #666; font-weight: normal; }
+  .meta { color: #555; font-size: 13px; margin: 2px 0 8px; }
+  .cols { display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap; }
+  .col { flex: 1 1 460px; min-width: 360px; border: 1px solid #ddd; border-radius: 4px; padding: 12px 16px; }
+  .status { font-weight: bold; padding: 6px 10px; border-radius: 4px; display: inline-block; margin: 8px 0; }
+  .status-missing { background: #fff3cd; color: #7a5c00; }
+  .status-invalid { background: #f8d7da; color: #7a1520; }
+  .status-ok { background: #d4edda; color: #155724; }
+  .lint-pass { color: #155724; }
+  .lint-fail { color: #7a1520; font-weight: bold; }
+  .error { color: #7a1520; font-family: monospace; font-size: 12px; white-space: pre-wrap; }
+  .steps { padding-left: 20px; font-size: 14px; }
+  .steps li { margin-bottom: 6px; }
+  .step-meta { color: #888; font-size: 12px; }
+  .why { font-size: 13px; font-style: italic; color: #333; background: #fafafa; padding: 8px; border-radius: 4px; }
+  table.gram-table, table.op-table, table.yield-table { border-collapse: collapse; width: 100%; font-size: 13px; margin: 8px 0; }
+  table.gram-table th, table.gram-table td, table.op-table th, table.op-table td, table.yield-table th, table.yield-table td { border: 1px solid #ddd; padding: 4px 8px; text-align: left; vertical-align: top; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr.row-changed { background: #fff8e1; }
+  tr.row-dropped { background: #fbeaea; text-decoration: line-through; color: #888; }
+  .tag-new { background: #cce5ff; color: #004085; font-size: 10px; padding: 1px 5px; border-radius: 3px; }
+  .tag-changed { background: #fff3cd; color: #7a5c00; font-size: 11px; padding: 1px 5px; border-radius: 3px; }
+  .tag-dropped { background: #f8d7da; color: #7a1520; font-size: 10px; padding: 1px 5px; border-radius: 3px; }
+  .tag-batch, .tag-fresh { font-size: 11px; padding: 1px 6px; border-radius: 3px; font-weight: normal; }
+  .tag-batch { background: #e2d9f3; color: #4b3679; }
+  .tag-fresh { background: #d4edda; color: #155724; }
+  .macros { font-size: 13px; }
+  .batch-meta, .freebies { font-size: 12px; color: #444; }
+  .placeholder { color: #999; font-style: italic; }
+  .notes { font-size: 12px; margin-top: 8px; }
+  .notes summary { cursor: pointer; color: #555; }
+  .notes ul { padding-left: 18px; }
+  code { background: #f0f0f0; padding: 1px 4px; border-radius: 3px; }
+</style>
+</head>
+<body>
+<h1>FD-5 Phase 1 review — batch a1</h1>
+<div class="summary">
+  <strong>9 meal(s)</strong> + <strong>1 session(s)</strong> (prep-a)
+  &middot; <strong>9/9</strong> rewritten
+  &middot; approvals.json batch approval: <strong>not yet approved</strong>
+  &middot; generated 2026-08-04T02:49:07.063Z
+</div>
+<section class="meal">
+    <h2>Bodega egg &amp; cheese <span class="meal-id">a-d1b</span> <span class="tag-fresh">fresh</span></h2>
+    <p class="meta">Monday Breakfast &middot; 7 min &middot; origin: New York</p>
+    <p class="status status-ok">rev B &middot; <span class="lint-pass">LINT: PASS (0 findings)</span></p>
+    <div class="cols"><div class="col">
+    <h3>old (Phase 0, data/raw/methods.json)</h3>
+    <ol class="steps"><li>Non-stick pan, dry, medium-high. Spinach in (100/120 g) with a pinch of salt. 60 seconds, until it collapses. Tip onto a plate and press the water out with the back of a spoon.</li>
+<li>Oil into the pan (5/8 g). Beat the eggs (100 g — 2 eggs) with black pepper. Pour in and tilt to coat the base.</li>
+<li>Leave 45 seconds untouched. As the edge sets, draw it to the middle with a spatula and tilt again. Twice more — you want three or four soft folds, not scramble.</li>
+<li>Spinach over one half, cheddar on top (15/20 g). Fold, lid on, heat OFF. 60 seconds to melt.</li>
+<li>Warm the tortilla (45/50 g) 20 seconds a side in the dry pan while that happens.</li>
+<li>Tomato (80/100 g) sliced thin and salted. Avocado (35/45 g) mashed onto the tortilla. Egg in, tomato on, hot sauce, fold and press.</li></ol>
+    <p class="why"><strong>why:</strong> Wilt and squeeze. Spinach is mostly water and it will steam the eggs into a wet mess otherwise. And take the pan off the heat before the cheese goes on — residual heat melts it and the egg stays tender.</p>
+    <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th><th>state</th></tr></thead><tbody><tr><td>Spinach, ugu or callaloo</td><td class="num">100</td><td class="num">120</td><td>Raw</td></tr>
+<tr><td>Eggs, medium, shell off</td><td class="num">100</td><td class="num">100</td><td>Shelled</td></tr>
+<tr><td>Tomatoes, ripe</td><td class="num">80</td><td class="num">100</td><td>Raw</td></tr>
+<tr><td>Tortilla, high-protein low-carb</td><td class="num">45</td><td class="num">50</td><td>As it comes</td></tr>
+<tr><td>Avocado</td><td class="num">35</td><td class="num">45</td><td>Flesh only</td></tr>
+<tr><td>Cheddar, reduced fat (~14%)</td><td class="num">15</td><td class="num">20</td><td>As it comes</td></tr>
+<tr><td>Extra virgin olive oil</td><td class="num">5</td><td class="num">8</td><td>As it comes</td></tr></tbody></table>
+    <p class="macros"><strong>her:</strong> kcal 426 &middot; protein 27 g &middot; net carb 14 g &middot; fat 26 g &middot; fibre 15.4 g<br><strong>him:</strong> kcal 502 &middot; protein 31 g &middot; net carb 16 g &middot; fat 32 g &middot; fibre 17.9 g</p>
+  </div><div class="col">
+      <h3>new</h3>
+      <ol class="steps"><li>Non-stick pan, dry, medium-high. Spinach in (100/120 g) with a pinch of salt. 60 seconds, until it collapses. Tip onto a plate and press the water out with the back of a spoon. <span class="step-meta">[1 min &middot; @ hob]</span></li>
+<li>Oil into the pan — rapeseed, it is about to fry (5/8 g). Beat the eggs (100 g — 2 eggs) with black pepper. Pour in and tilt to coat the base. <span class="step-meta">[untimed &middot; @ hob]</span></li>
+<li>Leave 45 seconds untouched. As the edge sets, draw it to the middle with a spatula and tilt again. Twice more — you want three or four soft folds, not scramble. <span class="step-meta">[1 min &middot; @ hob]</span></li>
+<li>Spinach over one half, cheddar on top (15/20 g). Fold, lid on, heat OFF. 60 seconds to melt. <span class="step-meta">[1 min &middot; @ hob]</span></li>
+<li>Warm the tortilla (45/50 g) 20 seconds a side in the dry pan while that happens. <span class="step-meta">[0.67 min &middot; @ hob]</span></li>
+<li>Tomato (80/100 g) sliced thin and salted. Avocado (35/45 g) mashed onto the tortilla. Egg in, tomato on, hot sauce, fold and press. <span class="step-meta">[1 min]</span></li></ol>
+      <p class="why"><strong>why:</strong> Wilt and squeeze. Spinach is mostly water and it will steam the eggs into a wet mess otherwise. And take the pan off the heat before the cheese goes on — residual heat melts it and the egg stays tender.</p>
+      <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th></tr></thead><tbody><tr><td>Avocado</td><td class="num">35</td><td class="num">45</td></tr>
+<tr><td>Cheddar, reduced fat (~14%)</td><td class="num">15</td><td class="num">20</td></tr>
+<tr><td>Eggs, medium, shell off</td><td class="num">100</td><td class="num">100</td></tr>
+<tr><td>Tortilla, high-protein low-carb</td><td class="num">45</td><td class="num">50</td></tr>
+<tr class="row-changed"><td>Rapeseed oil <span class="tag-new">new</span></td><td class="num">5</td><td class="num">8</td></tr>
+<tr><td>Spinach, ugu or callaloo</td><td class="num">100</td><td class="num">120</td></tr>
+<tr><td>Tomatoes, ripe</td><td class="num">80</td><td class="num">100</td></tr><tr class="row-dropped"><td>Extra virgin olive oil <span class="tag-dropped">dropped</span></td><td class="num">&mdash;</td><td class="num">&mdash;</td></tr></tbody></table>
+      <p class="macros"><strong>her:</strong> kcal 426 &middot; protein 27 g &middot; net carb 14 g &middot; fat 26 g &middot; fibre 15.4 g<br><strong>him:</strong> kcal 502 &middot; protein 31 g &middot; net carb 16 g &middot; fat 32 g &middot; fibre 17.9 g</p>
+      
+      <p class="freebies">freebies: Salt, Black pepper, ground, Hot sauce</p>
+      <details class="notes"><summary>rewriter notes (1)</summary><ul><li>D0-003: the pan-frying oil (whole 5/8 g figure — a single hot-pan use, no dressing/finishing use in this dish) becomes rapeseed_oil throughout.</li></ul></details>
+    </div></div>
+  </section>
+<section class="meal">
+    <h2>Halal cart chicken over rice <span class="meal-id">a-d1l</span> <span class="tag-batch">batch</span></h2>
+    <p class="meta">Monday Lunch &middot; 6 min &middot; origin: New York</p>
+    <p class="status status-ok">rev B &middot; <span class="lint-pass">LINT: PASS (0 findings)</span></p>
+    <div class="cols"><div class="col">
+    <h3>old (Phase 0, data/raw/methods.json)</h3>
+    <ol class="steps"><li>Out of the fridge: Sunday's roast chicken and Sunday's rice-and-cauliflower.</li>
+<li>Chicken (75/100 g) chopped into rough 2 cm pieces.</li>
+<li>Pan, medium-high, oil (6/8 g). Chicken in with ½ tsp oregano, ½ tsp cumin, ¼ tsp turmeric and salt. 3 minutes, moving it, until the edges catch.</li>
+<li>Rice and cauliflower (55/80 g dry cooked + 130/160 g riced) warmed through — 90 seconds in the microwave, or into the pan for the last minute with a splash of water.</li>
+<li>Build: rice base, chicken over, then chickpeas (70/90 g), shredded lettuce (70/80 g) and diced tomato (80/100 g) around the edge. Raw red onion (30/40 g) over.</li>
+<li>White sauce from Sunday's jar (50/65 g yoghurt, grated garlic, lemon, a great deal of black pepper). Hot sauce to taste.</li></ol>
+    <p class="why"><strong>why:</strong> The spices go on in the pan, not on Sunday. One tray of deliberately plain roast chicken becomes three completely different lunches this week precisely because it was left neutral.</p>
+    <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th><th>state</th></tr></thead><tbody><tr><td>Cauliflower, riced</td><td class="num">130</td><td class="num">160</td><td>Prepared</td></tr>
+<tr><td>Chicken breast, skinless</td><td class="num">75</td><td class="num">100</td><td>Raw</td></tr>
+<tr><td>Tomatoes, ripe</td><td class="num">80</td><td class="num">100</td><td>Raw</td></tr>
+<tr><td>Chickpeas, tinned</td><td class="num">70</td><td class="num">90</td><td>Drained</td></tr>
+<tr><td>Brown rice, long grain</td><td class="num">55</td><td class="num">80</td><td>Dry</td></tr>
+<tr><td>Little gem or romaine</td><td class="num">70</td><td class="num">80</td><td>Raw</td></tr>
+<tr><td>Greek yoghurt, 0% fat</td><td class="num">50</td><td class="num">65</td><td>As it comes</td></tr>
+<tr><td>Red onion, peeled</td><td class="num">30</td><td class="num">40</td><td>Prepared</td></tr>
+<tr><td>Extra virgin olive oil</td><td class="num">6</td><td class="num">8</td><td>As it comes</td></tr></tbody></table>
+    <p class="macros"><strong>her:</strong> kcal 528 &middot; protein 37 g &middot; net carb 62 g &middot; fat 11 g &middot; fibre 12.7 g<br><strong>him:</strong> kcal 716 &middot; protein 49 g &middot; net carb 86 g &middot; fat 15 g &middot; fibre 16.3 g</p>
+  </div><div class="col">
+      <h3>new</h3>
+      <ol class="steps"><li>Out of the fridge: Sunday's roast chicken (take 175 g her+him of the 600 g batch — see prep notes), Sunday's rice-and-cauliflower, and Sunday's white sauce jar. <span class="step-meta">[untimed]</span></li>
+<li>Chicken (75/100 g) chopped into rough 2 cm pieces. <span class="step-meta">[1 min]</span></li>
+<li>Pan, medium-high, rapeseed oil (6/8 g). Chicken in with ½ tsp oregano, ½ tsp cumin, ¼ tsp turmeric and salt. 3 minutes, moving it, until the edges catch. <span class="step-meta">[3 min &middot; @ hob]</span></li>
+<li>Rice and cauliflower (55/80 g dry cooked + 130/160 g riced) warmed through — 90 seconds in the microwave, or into the pan for the last minute with a splash of water. <span class="step-meta">[1.5 min]</span></li>
+<li>Build: rice base, chicken over, then chickpeas (70/90 g), shredded cabbage (70/80 g) and diced tomato (80/100 g) around the edge. Raw red onion (30/40 g) over. <span class="step-meta">[2 min]</span></li>
+<li>White sauce from Sunday's jar (50/65 g yoghurt, grated garlic, lemon, a great deal of black pepper). Hot sauce to taste. <span class="step-meta">[1 min]</span></li></ol>
+      <p class="why"><strong>why:</strong> The spices go on in the pan, not on Sunday. One tray of deliberately plain roast chicken becomes three completely different lunches this week precisely because it was left neutral.</p>
+      <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th></tr></thead><tbody><tr><td>Brown rice, long grain</td><td class="num">55</td><td class="num">80</td></tr>
+<tr><td>Cauliflower, riced</td><td class="num">130</td><td class="num">160</td></tr>
+<tr><td>Chicken breast, skinless</td><td class="num">75</td><td class="num">100</td></tr>
+<tr><td>Chickpeas, tinned</td><td class="num">70</td><td class="num">90</td></tr>
+<tr><td>Greek yoghurt, 0% fat</td><td class="num">50</td><td class="num">65</td></tr>
+<tr class="row-changed"><td>Rapeseed oil <span class="tag-new">new</span></td><td class="num">6</td><td class="num">8</td></tr>
+<tr><td>Red onion, peeled</td><td class="num">30</td><td class="num">40</td></tr>
+<tr class="row-changed"><td>Sweetheart cabbage <span class="tag-new">new</span></td><td class="num">70</td><td class="num">80</td></tr>
+<tr><td>Tomatoes, ripe</td><td class="num">80</td><td class="num">100</td></tr><tr class="row-dropped"><td>Little gem or romaine <span class="tag-dropped">dropped</span></td><td class="num">&mdash;</td><td class="num">&mdash;</td></tr>
+<tr class="row-dropped"><td>Extra virgin olive oil <span class="tag-dropped">dropped</span></td><td class="num">&mdash;</td><td class="num">&mdash;</td></tr></tbody></table>
+      <p class="macros"><strong>her:</strong> kcal 535 &middot; protein 37 g &middot; net carb 63 g &middot; fat 11 g &middot; fibre 12.9 g<br><strong>him:</strong> kcal 724 &middot; protein 49 g &middot; net carb 87 g &middot; fat 15 g &middot; fibre 16.5 g</p>
+      <p class="batch-meta">batch: source <code>prep-a</code>, take her 310 g / him 405 g (total 715 g)</p>
+      <p class="freebies">freebies: Oregano, dried, Cumin, ground, Turmeric, ground, Salt, Garlic, fresh clove, Lemon, Black pepper, ground, Hot sauce</p>
+      <details class="notes"><summary>rewriter notes (3)</summary><ul><li>D0-003: the pan-frying oil (single hot-pan use, chicken searing) becomes rapeseed_oil.</li><li>D0-003: 'shredded lettuce' in the original step text is explicitly shredded → sweetheart_cabbage.</li><li>batchTakeG sums everything drawn from Sunday's prep for this plate: chicken 175 g (of the 600 g roast, 25 g batch headroom — see prep-a.json), dry rice 135 g (of the 320 g batch), riced cauliflower 290 g (of the ~1.4 kg batch), white sauce 115 g (all of Sunday's jar).</li></ul></details>
+    </div></div>
+  </section>
+<section class="meal">
+    <h2>Chicken-crust pizza <span class="meal-id">a-d1d</span> <span class="tag-fresh">fresh</span></h2>
+    <p class="meta">Monday Dinner &middot; 25 min &middot; origin: Naples, reconsidered</p>
+    <p class="status status-ok">rev B &middot; <span class="lint-pass">LINT: PASS (0 findings)</span></p>
+    <div class="cols"><div class="col">
+    <h3>old (Phase 0, data/raw/methods.json)</h3>
+    <ol class="steps"><li>Oven to 220 °C fan. Tray lined with baking paper.</li>
+<li>Base: chicken mince (65/75 g), parmesan (12/15 g), half a beaten egg (25 g), salt, oregano, garlic powder. Mix hard with your hands for a full minute — it should turn tacky and hold together in one mass.</li>
+<li>Press onto the paper into a 20 cm round, 5–6 mm thick and even. Wet fingers stop it sticking. Bake 15 minutes.</li>
+<li>Meanwhile: pepper (90/110 g), mushrooms (90/110 g) and onion (30/40 g) sliced. Pan, 5 g of the oil, high heat, 5 minutes — until the mushrooms have given up their water and taken colour. Spinach (60/80 g) in at the end to wilt. Season.</li>
+<li>Base out. It should be firm, browned at the rim and lift cleanly off the paper. Blot the surface with kitchen paper.</li>
+<li>Passata (100/120 g) spread thin, mozzarella (30/40 g) torn over, vegetables on. Back in for 8 minutes.</li>
+<li>Salad alongside: lettuce (40/50 g), dressed properly with the remaining oil (14/17 g total across the dish), lemon, salt and plenty of black pepper.</li></ol>
+    <p class="why"><strong>why:</strong> Blot the base. Chicken mince releases water as it bakes, and a wet base steams instead of crisping. Press it thin and even too — a thick middle stays raw while the rim burns.</p>
+    <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th><th>state</th></tr></thead><tbody><tr><td>Passata, plain</td><td class="num">100</td><td class="num">120</td><td>As it comes</td></tr>
+<tr><td>Red pepper, deseeded</td><td class="num">90</td><td class="num">110</td><td>Prepared</td></tr>
+<tr><td>Chestnut mushrooms</td><td class="num">90</td><td class="num">110</td><td>Raw</td></tr>
+<tr><td>Spinach, ugu or callaloo</td><td class="num">60</td><td class="num">80</td><td>Raw</td></tr>
+<tr><td>Chicken breast mince, 2-3% fat</td><td class="num">65</td><td class="num">75</td><td>Raw</td></tr>
+<tr><td>Little gem or romaine</td><td class="num">40</td><td class="num">50</td><td>Raw</td></tr>
+<tr><td>Mozzarella, reduced fat, block</td><td class="num">30</td><td class="num">40</td><td>As it comes</td></tr>
+<tr><td>Red onion, peeled</td><td class="num">30</td><td class="num">40</td><td>Prepared</td></tr>
+<tr><td>Eggs, medium, shell off</td><td class="num">25</td><td class="num">25</td><td>Shelled</td></tr>
+<tr><td>Extra virgin olive oil</td><td class="num">14</td><td class="num">17</td><td>As it comes</td></tr>
+<tr><td>Parmesan, finely grated</td><td class="num">12</td><td class="num">15</td><td>As it comes</td></tr></tbody></table>
+    <p class="macros"><strong>her:</strong> kcal 466 &middot; protein 38 g &middot; net carb 15 g &middot; fat 27 g &middot; fibre 6.9 g<br><strong>him:</strong> kcal 568 &middot; protein 45 g &middot; net carb 18 g &middot; fat 33 g &middot; fibre 8.6 g</p>
+  </div><div class="col">
+      <h3>new</h3>
+      <ol class="steps"><li>Oven to 220 °C fan. Tray lined with baking paper. <span class="step-meta">[220&deg;C &middot; untimed &middot; track:oven &middot; clock:0 &middot; @ oven]</span></li>
+<li>Base: chicken mince (65/75 g), parmesan (12/15 g), half a beaten egg (25 g), salt, oregano, garlic powder. Mix hard with your hands for a full minute — it should turn tacky and hold together in one mass. <span class="step-meta">[1 min &middot; track:prep &middot; clock:0 &middot; @ counter]</span></li>
+<li>Press onto the paper into a 20 cm round, 5–6 mm thick and even. Wet fingers stop it sticking. Bake 15 minutes. <span class="step-meta">[15 min &middot; 220&deg;C &middot; track:oven &middot; clock:1 &middot; @ oven]</span></li>
+<li>Meanwhile: pepper (90/110 g), mushrooms (90/110 g) and onion (30/40 g) sliced. Pan, 5 g of the rapeseed oil, high heat, 5 minutes — until the mushrooms have given up their water and taken colour. Spinach (60/80 g) in at the end to wilt. Season. <span class="step-meta">[5 min &middot; track:pan &middot; clock:1 &middot; @ hob]</span></li>
+<li>Base out. It should be firm, browned at the rim and lift cleanly off the paper. Blot the surface with kitchen paper. <span class="step-meta">[1 min &middot; 220&deg;C &middot; track:oven &middot; clock:16 &middot; @ oven]</span></li>
+<li>Passata (100/120 g) spread thin, mozzarella (30/40 g) torn over, vegetables on. Back in for 8 minutes. <span class="step-meta">[8 min &middot; 220&deg;C &middot; track:oven &middot; clock:17 &middot; @ oven]</span></li>
+<li>Salad alongside: lettuce (40/50 g), dressed properly with the remaining olive oil — 9/12 g, the rest of the table total after the 5 g that went into the pan — lemon, salt and plenty of black pepper. <span class="step-meta">[2 min &middot; track:prep &middot; clock:17 &middot; @ counter]</span></li></ol>
+      <p class="why"><strong>why:</strong> Blot the base. Chicken mince releases water as it bakes, and a wet base steams instead of crisping. Press it thin and even too — a thick middle stays raw while the rim burns.</p>
+      <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th></tr></thead><tbody><tr><td>Chicken breast mince, 2-3% fat</td><td class="num">65</td><td class="num">75</td></tr>
+<tr><td>Eggs, medium, shell off</td><td class="num">25</td><td class="num">25</td></tr>
+<tr><td>Little gem or romaine</td><td class="num">40</td><td class="num">50</td></tr>
+<tr><td>Mozzarella, reduced fat, block</td><td class="num">30</td><td class="num">40</td></tr>
+<tr><td>Chestnut mushrooms</td><td class="num">90</td><td class="num">110</td></tr>
+<tr class="row-changed"><td>Extra virgin olive oil <span class="tag-changed">&Delta;</span></td><td class="num">9</td><td class="num">12</td></tr>
+<tr><td>Parmesan, finely grated</td><td class="num">12</td><td class="num">15</td></tr>
+<tr><td>Passata, plain</td><td class="num">100</td><td class="num">120</td></tr>
+<tr><td>Red pepper, deseeded (frozen sliced)</td><td class="num">90</td><td class="num">110</td></tr>
+<tr class="row-changed"><td>Rapeseed oil <span class="tag-new">new</span></td><td class="num">5</td><td class="num">5</td></tr>
+<tr><td>Red onion, peeled</td><td class="num">30</td><td class="num">40</td></tr>
+<tr><td>Spinach, ugu or callaloo</td><td class="num">60</td><td class="num">80</td></tr></tbody></table>
+      <p class="macros"><strong>her:</strong> kcal 466 &middot; protein 38 g &middot; net carb 15 g &middot; fat 27 g &middot; fibre 6.9 g<br><strong>him:</strong> kcal 568 &middot; protein 45 g &middot; net carb 18 g &middot; fat 33 g &middot; fibre 8.6 g</p>
+      
+      <p class="freebies">freebies: Salt, Oregano, dried, Garlic powder, Lemon, Black pepper, ground</p>
+      <details class="notes"><summary>rewriter notes (2)</summary><ul><li>D0-003: oil hitting the hot pan (step 4, 5 g) is rapeseed_oil; the salad-finishing remainder (step 7) is olive_oil. Split rows sum to the table: her 5+9=14 g, him 5+12=17 g.</li><li>D0-017: step 7 wording fixed — 'remaining oil' now states the true remainder (9/12 g) instead of restating the full table total (14/17 g).</li></ul></details>
+    </div></div>
+  </section>
+<section class="meal">
+    <h2>Protein pancakes with berries <span class="meal-id">a-d2b</span> <span class="tag-fresh">fresh</span></h2>
+    <p class="meta">Tuesday Breakfast &middot; 10 min &middot; origin: The gym canteen</p>
+    <p class="status status-ok">rev B &middot; <span class="lint-pass">LINT: PASS (0 findings)</span></p>
+    <div class="cols"><div class="col">
+    <h3>old (Phase 0, data/raw/methods.json)</h3>
+    <ol class="steps"><li>Blitz the oats (40/58 g) to a rough flour, 20 seconds in a blender or bullet.</li>
+<li>Add the egg (50/75 g — 1 / 1½), half the skyr (48/70 g), ½ tsp baking powder and a pinch of salt. Blitz 15 seconds to a thick, just-pourable batter. Rest 2 minutes.</li>
+<li>Non-stick pan, medium-LOW. Oil (3/4 g) wiped round with kitchen paper.</li>
+<li>Drop 3–4 small rounds, 7–8 cm across. Do not make them large. 2 minutes, until bubbles hold their shape on the surface, then flip. 1 minute more.</li>
+<li>Stack. Remaining skyr (47/70 g) on top, berries heaped over (60 g raspberries, 60/75 g blueberries), peanut butter (8/11 g) warmed 10 seconds and drizzled.</li></ol>
+    <p class="why"><strong>why:</strong> Medium-low, and small. High heat browns the outside before the middle sets, and a large pancake made of oats and skyr has nothing structural holding it together when you try to turn it.</p>
+    <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th><th>state</th></tr></thead><tbody><tr><td>Skyr, plain natural</td><td class="num">95</td><td class="num">140</td><td>As it comes</td></tr>
+<tr><td>Eggs, medium, shell off</td><td class="num">50</td><td class="num">75</td><td>Shelled</td></tr>
+<tr><td>Blueberries</td><td class="num">60</td><td class="num">75</td><td>Fresh or frozen</td></tr>
+<tr><td>Raspberries</td><td class="num">60</td><td class="num">60</td><td>Fresh or frozen</td></tr>
+<tr><td>Porridge oats</td><td class="num">40</td><td class="num">58</td><td>Dry</td></tr>
+<tr><td>Peanut butter, 100% nuts</td><td class="num">8</td><td class="num">11</td><td>As it comes</td></tr>
+<tr><td>Extra virgin olive oil</td><td class="num">3</td><td class="num">4</td><td>As it comes</td></tr></tbody></table>
+    <p class="macros"><strong>her:</strong> kcal 422 &middot; protein 25 g &middot; net carb 39 g &middot; fat 15 g &middot; fibre 9.9 g<br><strong>him:</strong> kcal 589 &middot; protein 37 g &middot; net carb 53 g &middot; fat 22 g &middot; fibre 12.2 g</p>
+  </div><div class="col">
+      <h3>new</h3>
+      <ol class="steps"><li>Blitz the oats (40/58 g) to a rough flour, 20 seconds in a blender or bullet. <span class="step-meta">[0.33 min]</span></li>
+<li>Add the egg (50/75 g — 1 / 1½), about half the skyr (48/70 g), ½ tsp baking powder and a pinch of salt. Blitz 15 seconds to a thick, just-pourable batter. Rest 2 minutes. <span class="step-meta">[2.25 min]</span></li>
+<li>Non-stick pan, medium-LOW. Rapeseed oil (3/4 g) wiped round with kitchen paper. <span class="step-meta">[0.5 min &middot; @ hob]</span></li>
+<li>Drop 3–4 small rounds, 7–8 cm across. Do not make them large. 2 minutes, until bubbles hold their shape on the surface, then flip. 1 minute more. <span class="step-meta">[3 min &middot; @ hob]</span></li>
+<li>Stack. Remaining skyr (47/70 g) on top, berries heaped over (60 g raspberries, 60/75 g blueberries), peanut butter (8/11 g) warmed 10 seconds and drizzled. <span class="step-meta">[1 min]</span></li></ol>
+      <p class="why"><strong>why:</strong> Medium-low, and small. High heat browns the outside before the middle sets, and a large pancake made of oats and skyr has nothing structural holding it together when you try to turn it.</p>
+      <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th></tr></thead><tbody><tr><td>Blueberries</td><td class="num">60</td><td class="num">75</td></tr>
+<tr><td>Eggs, medium, shell off</td><td class="num">50</td><td class="num">75</td></tr>
+<tr><td>Porridge oats</td><td class="num">40</td><td class="num">58</td></tr>
+<tr><td>Peanut butter, 100% nuts</td><td class="num">8</td><td class="num">11</td></tr>
+<tr class="row-changed"><td>Rapeseed oil <span class="tag-new">new</span></td><td class="num">3</td><td class="num">4</td></tr>
+<tr><td>Raspberries</td><td class="num">60</td><td class="num">60</td></tr>
+<tr><td>Skyr, plain natural</td><td class="num">95</td><td class="num">140</td></tr><tr class="row-dropped"><td>Extra virgin olive oil <span class="tag-dropped">dropped</span></td><td class="num">&mdash;</td><td class="num">&mdash;</td></tr></tbody></table>
+      <p class="macros"><strong>her:</strong> kcal 422 &middot; protein 25 g &middot; net carb 39 g &middot; fat 15 g &middot; fibre 9.9 g<br><strong>him:</strong> kcal 589 &middot; protein 37 g &middot; net carb 53 g &middot; fat 22 g &middot; fibre 12.2 g</p>
+      
+      <p class="freebies">freebies: Baking powder, Salt</p>
+      <details class="notes"><summary>rewriter notes (2)</summary><ul><li>D0-003: the wiped-round griddle oil is a hot-pan use → rapeseed_oil.</li><li>D0-016: reviewed — the 48/47 g (her) and 70/70 g (him) batter/topping split already sums exactly to the table skyr total (95/140 g); 'half' softened to 'about half' per the ruling's optional cosmetic note. No gram change.</li></ul></details>
+    </div></div>
+  </section>
+<section class="meal">
+    <h2>Chipotle burrito bowl <span class="meal-id">a-d2l</span> <span class="tag-batch">batch</span></h2>
+    <p class="meta">Tuesday Lunch &middot; 5 min &middot; origin: Tex-Mex</p>
+    <p class="status status-ok">rev B &middot; <span class="lint-pass">LINT: PASS (0 findings)</span></p>
+    <div class="cols"><div class="col">
+    <h3>old (Phase 0, data/raw/methods.json)</h3>
+    <ol class="steps"><li>Out of the fridge: Sunday's chipotle beef, Sunday's rice-and-cauliflower, Sunday's roast peppers and onion.</li>
+<li>Beef (70/95 g) and the peppers and onion (70/90 g + 30/40 g) into a pan on high for 3 minutes, until the edges catch again. The microwave works; the pan is better.</li>
+<li>Rice and cauliflower (40/70 g dry cooked + 120/155 g) warmed through alongside.</li>
+<li>Build: rice base, beef over one side, black beans (95/105 g) and sweetcorn (25/30 g) the other, salsa (60/70 g) into the middle.</li>
+<li>Shredded lettuce (50/60 g) on LAST, off the heat, with the oil (5/6 g) and lime hard over everything. The salsa is doing the job the guacamole used to.</li></ol>
+    <p class="why"><strong>why:</strong> Cold things after hot things, never before. Lettuce that has sat under hot beef for two minutes is soup, and it takes the rest of the bowl with it.</p>
+    <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th><th>state</th></tr></thead><tbody><tr><td>Cauliflower, riced</td><td class="num">120</td><td class="num">155</td><td>Prepared</td></tr>
+<tr><td>Black beans, tinned</td><td class="num">95</td><td class="num">105</td><td>Drained</td></tr>
+<tr><td>Beef mince, 5% fat</td><td class="num">70</td><td class="num">95</td><td>Raw</td></tr>
+<tr><td>Red pepper, deseeded</td><td class="num">70</td><td class="num">90</td><td>Prepared</td></tr>
+<tr><td>Brown rice, long grain</td><td class="num">40</td><td class="num">70</td><td>Dry</td></tr>
+<tr><td>Tomato salsa, no added sugar</td><td class="num">60</td><td class="num">70</td><td>As it comes</td></tr>
+<tr><td>Little gem or romaine</td><td class="num">50</td><td class="num">60</td><td>Raw</td></tr>
+<tr><td>Red onion, peeled</td><td class="num">30</td><td class="num">40</td><td>Prepared</td></tr>
+<tr><td>Sweetcorn</td><td class="num">25</td><td class="num">30</td><td>Frozen or tinned</td></tr>
+<tr><td>Extra virgin olive oil</td><td class="num">5</td><td class="num">6</td><td>As it comes</td></tr></tbody></table>
+    <p class="macros"><strong>her:</strong> kcal 522 &middot; protein 32 g &middot; net carb 60 g &middot; fat 11 g &middot; fibre 16.6 g<br><strong>him:</strong> kcal 715 &middot; protein 42 g &middot; net carb 87 g &middot; fat 15 g &middot; fibre 20.3 g</p>
+  </div><div class="col">
+      <h3>new</h3>
+      <ol class="steps"><li>Out of the fridge: Sunday's chipotle beef (take 343 g her+him — the whole 165 g raw batch plus its 2 chopped chipotles in adobo, 30 g), Sunday's rice-and-cauliflower, and Sunday's roast peppers and onion. <span class="step-meta">[untimed]</span></li>
+<li>Beef and its adobo sauce (70/95 g beef, 13/17 g chipotle in adobo) and the peppers and onion (70/90 g + 30/40 g) into a pan on high for 3 minutes, until the edges catch again. The microwave works; the pan is better. <span class="step-meta">[3 min &middot; track:pan &middot; clock:0 &middot; @ hob]</span></li>
+<li>Rice and cauliflower (40/70 g dry cooked + 120/155 g) warmed through alongside. <span class="step-meta">[2 min &middot; track:micro &middot; clock:0 &middot; @ microwave]</span></li>
+<li>Build: rice base, beef over one side, black beans (95/105 g) and sweetcorn (25/30 g) the other, salsa (60/70 g) into the middle. <span class="step-meta">[2 min]</span></li>
+<li>Shredded cabbage (50/60 g) on LAST, off the heat, with the oil (5/6 g) and lime hard over everything. The salsa is doing the job the guacamole used to. <span class="step-meta">[1 min]</span></li></ol>
+      <p class="why"><strong>why:</strong> Cold things after hot things, never before. Lettuce that has sat under hot beef for two minutes is soup, and it takes the rest of the bowl with it.</p>
+      <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th></tr></thead><tbody><tr><td>Beef mince, 5% fat</td><td class="num">70</td><td class="num">95</td></tr>
+<tr><td>Black beans, tinned</td><td class="num">95</td><td class="num">105</td></tr>
+<tr><td>Brown rice, long grain</td><td class="num">40</td><td class="num">70</td></tr>
+<tr><td>Cauliflower, riced</td><td class="num">120</td><td class="num">155</td></tr>
+<tr class="row-changed"><td>Chipotles in adobo sauce, chopped <span class="tag-new">new</span></td><td class="num">13</td><td class="num">17</td></tr>
+<tr><td>Extra virgin olive oil</td><td class="num">5</td><td class="num">6</td></tr>
+<tr><td>Red pepper, deseeded (frozen sliced)</td><td class="num">70</td><td class="num">90</td></tr>
+<tr><td>Red onion, peeled</td><td class="num">30</td><td class="num">40</td></tr>
+<tr><td>Tomato salsa, no added sugar</td><td class="num">60</td><td class="num">70</td></tr>
+<tr><td>Sweetcorn</td><td class="num">25</td><td class="num">30</td></tr>
+<tr class="row-changed"><td>Sweetheart cabbage <span class="tag-new">new</span></td><td class="num">50</td><td class="num">60</td></tr><tr class="row-dropped"><td>Little gem or romaine <span class="tag-dropped">dropped</span></td><td class="num">&mdash;</td><td class="num">&mdash;</td></tr></tbody></table>
+      <p class="macros"><strong>her:</strong> kcal 539 &middot; protein 32 g &middot; net carb 62 g &middot; fat 12 g &middot; fibre 17.4 g<br><strong>him:</strong> kcal 736 &middot; protein 42 g &middot; net carb 90 g &middot; fat 15 g &middot; fibre 21.3 g</p>
+      <p class="batch-meta">batch: source <code>prep-a</code>, take her 343 g / him 467 g (total 810 g)</p>
+      <p class="freebies">freebies: Lime</p>
+      <details class="notes"><summary>rewriter notes (4)</summary><ul><li>D0-003: the finishing oil tossed through the shredded cabbage off the heat stays olive_oil (dressing use, not a hot pan).</li><li>D0-003: 'shredded lettuce' in the original step text is explicitly shredded → sweetheart_cabbage.</li><li>Seasoning weighing: Sunday's 'chipotle beef' pan uses 2 chopped chipotles in adobo — never gram-tracked in the original card. Standard-reference chipotle_adobo added, whole batch (30 g) consumed entirely by this single-consumer lunch, split 13/17 g proportional to the beef share. Drift +17/+21 kcal — see macro-drift table.</li><li>batchTakeG: beef 165 g + adobo 30 g + dry rice 110 g + riced cauliflower 275 g + roast peppers 160 g + roast onion 70 g, all from Sunday's prep; salsa and sweetcorn are fresh additions at plate time, excluded.</li></ul></details>
+    </div></div>
+  </section>
+<section class="meal">
+    <h2>Chicken katsu curry <span class="meal-id">a-d2d</span> <span class="tag-fresh">fresh</span></h2>
+    <p class="meta">Tuesday Dinner &middot; 22 min &middot; origin: Japan</p>
+    <p class="status status-ok">rev B &middot; <span class="lint-pass">LINT: PASS (0 findings)</span></p>
+    <div class="cols"><div class="col">
+    <h3>old (Phase 0, data/raw/methods.json)</h3>
+    <ol class="steps"><li>Oven to 220 °C fan with a baking tray inside to heat.</li>
+<li>Sauce first. Onion (40/50 g) and carrot (60/70 g) diced small, into a pan with 3 g of the oil, medium, 6 minutes until soft. 1½ tsp curry powder, ½ tsp garam masala and a pinch of sugar — 60 seconds more. 150 ml stock, simmer 6 minutes.</li>
+<li>Chicken (85/110 g) between two sheets of paper, bashed to an even 1 cm. Salt both sides.</li>
+<li>Beaten egg (25 g) in one bowl, seasoned panko (20/25 g) in another. Egg, then panko, pressed on firmly.</li>
+<li>Onto the HOT tray, the rest of the oil brushed over the crumb. 18 minutes, turned once at 10.</li>
+<li>Blitz the sauce smooth with a stick blender. It should coat the back of a spoon — loosen with a splash of water if it's gone too far.</li>
+<li>Rice and cauliflower (30/42 g dry + 130/160 g) warmed. Broccoli (140/165 g) steamed 4 minutes, still squeaky.</li>
+<li>Slice the chicken across. Sauce poured BESIDE it, not over.</li></ol>
+    <p class="why"><strong>why:</strong> The preheated tray is what replaces the deep fryer — the underside starts cooking on contact instead of sitting in its own steam. And blitzing the carrot and onion is what thickens the sauce; there is no flour anywhere in this.</p>
+    <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th><th>state</th></tr></thead><tbody><tr><td>Broccoli florets</td><td class="num">140</td><td class="num">165</td><td>Raw</td></tr>
+<tr><td>Cauliflower, riced</td><td class="num">130</td><td class="num">160</td><td>Prepared</td></tr>
+<tr><td>Chicken breast, skinless</td><td class="num">85</td><td class="num">110</td><td>Raw</td></tr>
+<tr><td>Carrots, peeled</td><td class="num">60</td><td class="num">70</td><td>Prepared</td></tr>
+<tr><td>Red onion, peeled</td><td class="num">40</td><td class="num">50</td><td>Prepared</td></tr>
+<tr><td>Brown rice, long grain</td><td class="num">30</td><td class="num">42</td><td>Dry</td></tr>
+<tr><td>Panko breadcrumbs</td><td class="num">20</td><td class="num">25</td><td>Dry</td></tr>
+<tr><td>Eggs, medium, shell off</td><td class="num">25</td><td class="num">25</td><td>Shelled</td></tr>
+<tr><td>Extra virgin olive oil</td><td class="num">6</td><td class="num">8</td><td>As it comes</td></tr></tbody></table>
+    <p class="macros"><strong>her:</strong> kcal 484 &middot; protein 36 g &middot; net carb 53 g &middot; fat 12 g &middot; fibre 10.4 g<br><strong>him:</strong> kcal 615 &middot; protein 45 g &middot; net carb 68 g &middot; fat 15 g &middot; fibre 12.7 g</p>
+  </div><div class="col">
+      <h3>new</h3>
+      <ol class="steps"><li>Oven to 220 °C fan with a baking tray inside to heat. <span class="step-meta">[220&deg;C &middot; untimed &middot; track:oven &middot; clock:0 &middot; @ oven]</span></li>
+<li>Chicken (85/110 g) between two sheets of paper, bashed to an even 1 cm. Salt both sides. Beaten egg (25 g) in one bowl, seasoned panko (20/25 g) in another. Egg, then panko, pressed on firmly. <span class="step-meta">[3 min &middot; track:prep &middot; clock:0 &middot; @ counter]</span></li>
+<li>Onto the HOT tray, 3 g of the rapeseed oil brushed over the crumb. 18 minutes, turned once at 10. <span class="step-meta">[18 min &middot; 220&deg;C &middot; track:oven &middot; clock:3 &middot; @ oven]</span></li>
+<li>Sauce: onion (40/50 g) and carrot (60/70 g) diced small, into a pan with the remaining 3/5 g rapeseed oil, medium, 6 minutes until soft. 1½ tsp curry powder, ½ tsp garam masala and a pinch of sugar (1 g) — 60 seconds more. <span class="step-meta">[7 min &middot; track:sauce &middot; clock:3 &middot; @ hob 1]</span></li>
+<li>150 ml stock, simmer 6 minutes. <span class="step-meta">[6 min &middot; track:sauce &middot; clock:10 &middot; @ hob 1]</span></li>
+<li>Blitz the sauce smooth with a stick blender. It should coat the back of a spoon — loosen with a splash of water if it's gone too far. <span class="step-meta">[1 min &middot; track:sauce &middot; clock:16 &middot; @ hob 1]</span></li>
+<li>Rice and cauliflower (30/42 g dry + 130/160 g) warmed. <span class="step-meta">[2 min &middot; track:rice &middot; clock:15 &middot; @ hob 2]</span></li>
+<li>Broccoli (140/165 g) steamed 4 minutes, still squeaky. <span class="step-meta">[4 min &middot; track:veg &middot; clock:17 &middot; @ hob 3]</span></li>
+<li>Chicken out, rested a minute, sliced across. Sauce poured BESIDE it, not over. <span class="step-meta">[1 min &middot; 220&deg;C &middot; track:oven &middot; clock:21 &middot; @ counter]</span></li></ol>
+      <p class="why"><strong>why:</strong> The preheated tray is what replaces the deep fryer — the underside starts cooking on contact instead of sitting in its own steam. And blitzing the carrot and onion is what thickens the sauce; there is no flour anywhere in this.</p>
+      <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th></tr></thead><tbody><tr><td>Broccoli florets</td><td class="num">140</td><td class="num">165</td></tr>
+<tr><td>Brown rice, long grain</td><td class="num">30</td><td class="num">42</td></tr>
+<tr><td>Carrots, peeled</td><td class="num">60</td><td class="num">70</td></tr>
+<tr><td>Cauliflower, riced</td><td class="num">130</td><td class="num">160</td></tr>
+<tr><td>Chicken breast, skinless</td><td class="num">85</td><td class="num">110</td></tr>
+<tr><td>Eggs, medium, shell off</td><td class="num">25</td><td class="num">25</td></tr>
+<tr><td>Panko breadcrumbs</td><td class="num">20</td><td class="num">25</td></tr>
+<tr class="row-changed"><td>Rapeseed oil <span class="tag-new">new</span></td><td class="num">6</td><td class="num">8</td></tr>
+<tr><td>Red onion, peeled</td><td class="num">40</td><td class="num">50</td></tr>
+<tr class="row-changed"><td>Sugar, granulated <span class="tag-new">new</span></td><td class="num">1</td><td class="num">1</td></tr><tr class="row-dropped"><td>Extra virgin olive oil <span class="tag-dropped">dropped</span></td><td class="num">&mdash;</td><td class="num">&mdash;</td></tr></tbody></table>
+      <p class="macros"><strong>her:</strong> kcal 488 &middot; protein 36 g &middot; net carb 54 g &middot; fat 12 g &middot; fibre 10.4 g<br><strong>him:</strong> kcal 619 &middot; protein 45 g &middot; net carb 69 g &middot; fat 15 g &middot; fibre 12.7 g</p>
+      
+      <p class="freebies">freebies: Salt</p>
+      <details class="notes"><summary>rewriter notes (2)</summary><ul><li>D0-003: the whole 6/8 g table total is oil that hits either the sauce pan (step 4, 3 g) or the hot roasting tray (step 3, remainder 3/5 g) — no raw dressing use anywhere in this dish, so it becomes rapeseed_oil in full, restated across the two steps (3+3=6 her, 3+5=8 him).</li><li>Cross-file id conflict resolved: _ingredients.A.json originally defined its own 'sugar' record (freebie:true, matching this card's trace 'pinch of sugar'). _ingredients.B.json (Week B rewriter, parallel) independently defines 'sugar' too, for an explicit 1 tsp in a B dish, freebie:false. Rather than ship two conflicting per100g/freebie records under the same id (fails L9), this file now weighs the pinch as 1/1 g in covers using B's canonical sugar record (400 kcal/100 g) instead of listing it as a freebie. Drift is nil (well under 1 kcal at 1 g).</li></ul></details>
+    </div></div>
+  </section>
+<section class="meal">
+    <h2>Nigerian egg sauce with plantain <span class="meal-id">a-d3b</span> <span class="tag-fresh">fresh</span></h2>
+    <p class="meta">Wednesday Breakfast &middot; 12 min &middot; origin: Nigeria</p>
+    <p class="status status-ok">rev B &middot; <span class="lint-pass">LINT: PASS (0 findings)</span></p>
+    <div class="cols"><div class="col">
+    <h3>old (Phase 0, data/raw/methods.json)</h3>
+    <ol class="steps"><li>Plantain (80/120 g) peeled and sliced 1.5 cm thick on the diagonal. Griddle or heavy pan, DRY, high. 3 minutes a side until blackened in patches. Set aside and salt.</li>
+<li>Same pan, oil (5/6 g), medium-high. Onion (40/50 g) and pepper (80/100 g), diced, 4 minutes.</li>
+<li>Tomato (100/120 g) chopped, plus scotch bonnet to taste and a pinch of stock powder. Cook 4–5 minutes, pressing it down, until it darkens and the oil separates at the edges.</li>
+<li>Beat the eggs (150/175 g — 3 / 3½) loosely. Pour in, leave 20 seconds, then draw through in slow ribbons. Off the heat while still glossy.</li>
+<li>Spinach (60/80 g) folded through on the residual heat.</li></ol>
+    <p class="why"><strong>why:</strong> Wait for the oil to separate before the eggs go in. That's the moment the tomato stops being raw and the sauce gets its depth — go early and the whole thing tastes thin and slightly metallic.</p>
+    <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th><th>state</th></tr></thead><tbody><tr><td>Eggs, medium, shell off</td><td class="num">150</td><td class="num">175</td><td>Shelled</td></tr>
+<tr><td>Tomatoes, ripe</td><td class="num">100</td><td class="num">120</td><td>Raw</td></tr>
+<tr><td>Plantain, ripe</td><td class="num">80</td><td class="num">120</td><td>Peeled</td></tr>
+<tr><td>Red pepper, deseeded</td><td class="num">80</td><td class="num">100</td><td>Prepared</td></tr>
+<tr><td>Spinach, ugu or callaloo</td><td class="num">60</td><td class="num">80</td><td>Raw</td></tr>
+<tr><td>Red onion, peeled</td><td class="num">40</td><td class="num">50</td><td>Prepared</td></tr>
+<tr><td>Extra virgin olive oil</td><td class="num">5</td><td class="num">6</td><td>As it comes</td></tr></tbody></table>
+    <p class="macros"><strong>her:</strong> kcal 429 &middot; protein 24 g &middot; net carb 35 g &middot; fat 21 g &middot; fibre 6.7 g<br><strong>him:</strong> kcal 541 &middot; protein 29 g &middot; net carb 49 g &middot; fat 25 g &middot; fibre 8.9 g</p>
+  </div><div class="col">
+      <h3>new</h3>
+      <ol class="steps"><li>Plantain (80/120 g) peeled and sliced 1.5 cm thick on the diagonal. Griddle or heavy pan, DRY, high. 3 minutes a side until blackened in patches. Set aside and salt. <span class="step-meta">[6 min &middot; @ hob]</span></li>
+<li>Same pan, rapeseed oil (5/6 g), medium-high. Onion (40/50 g) and pepper (80/100 g), diced, 4 minutes. <span class="step-meta">[4 min &middot; @ hob]</span></li>
+<li>Tomato (100/120 g) chopped, plus scotch bonnet to taste and a pinch of stock powder. Cook 4–5 minutes, pressing it down, until it darkens and the oil separates at the edges. <span class="step-meta">[4.5 min &middot; @ hob]</span></li>
+<li>Beat the eggs (150/175 g — 3 / 3½) loosely. Pour in, leave 20 seconds, then draw through in slow ribbons. Off the heat while still glossy. <span class="step-meta">[1.5 min &middot; @ hob]</span></li>
+<li>Spinach (60/80 g) folded through on the residual heat. <span class="step-meta">[0.5 min]</span></li></ol>
+      <p class="why"><strong>why:</strong> Wait for the oil to separate before the eggs go in. That's the moment the tomato stops being raw and the sauce gets its depth — go early and the whole thing tastes thin and slightly metallic.</p>
+      <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th></tr></thead><tbody><tr><td>Eggs, medium, shell off</td><td class="num">150</td><td class="num">175</td></tr>
+<tr><td>Red pepper, deseeded (frozen sliced)</td><td class="num">80</td><td class="num">100</td></tr>
+<tr><td>Plantain, ripe</td><td class="num">80</td><td class="num">120</td></tr>
+<tr class="row-changed"><td>Rapeseed oil <span class="tag-new">new</span></td><td class="num">5</td><td class="num">6</td></tr>
+<tr><td>Red onion, peeled</td><td class="num">40</td><td class="num">50</td></tr>
+<tr><td>Spinach, ugu or callaloo</td><td class="num">60</td><td class="num">80</td></tr>
+<tr><td>Tomatoes, ripe</td><td class="num">100</td><td class="num">120</td></tr><tr class="row-dropped"><td>Extra virgin olive oil <span class="tag-dropped">dropped</span></td><td class="num">&mdash;</td><td class="num">&mdash;</td></tr></tbody></table>
+      <p class="macros"><strong>her:</strong> kcal 429 &middot; protein 24 g &middot; net carb 35 g &middot; fat 21 g &middot; fibre 6.7 g<br><strong>him:</strong> kcal 541 &middot; protein 29 g &middot; net carb 49 g &middot; fat 25 g &middot; fibre 8.9 g</p>
+      
+      <p class="freebies">freebies: Salt, Scotch bonnet, fresh, to taste, Stock powder / bouillon</p>
+      <details class="notes"><summary>rewriter notes (1)</summary><ul><li>D0-003: the pan-frying oil (single hot-pan use, softening onion/pepper) becomes rapeseed_oil.</li></ul></details>
+    </div></div>
+  </section>
+<section class="meal">
+    <h2>Efo riro with chicken &amp; jollof <span class="meal-id">a-d3l</span> <span class="tag-batch">batch</span></h2>
+    <p class="meta">Wednesday Lunch &middot; 6 min &middot; origin: Nigeria</p>
+    <p class="status status-ok">rev B &middot; <span class="lint-pass">LINT: PASS (0 findings)</span></p>
+    <div class="cols"><div class="col">
+    <h3>old (Phase 0, data/raw/methods.json)</h3>
+    <ol class="steps"><li>Out of the fridge: Sunday's efo riro base and Sunday's jollof.</li>
+<li>Base into a pan on medium with a splash of water — it sets hard when cold. 3 minutes.</li>
+<li>Chicken (85/110 g) sliced in and warmed through, 2 minutes.</li>
+<li>Spinach (200/240 g) is a mountain. Add it in three goes, letting each wilt before the next. It comes down to about a quarter of its volume.</li>
+<li>Jollof (40/55 g dry rice + 110/140 g cauliflower) warmed alongside, covered, 2 minutes.</li></ol>
+    <p class="why"><strong>why:</strong> The spinach goes in at the plate, not on Sunday. Reheated wilted greens turn grey and bitter; folded fresh into a hot base they stay green and the dish tastes like it was made today.</p>
+    <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th><th>state</th></tr></thead><tbody><tr><td>Spinach, ugu or callaloo</td><td class="num">200</td><td class="num">240</td><td>Raw</td></tr>
+<tr><td>Cauliflower, riced</td><td class="num">110</td><td class="num">140</td><td>Prepared</td></tr>
+<tr><td>Passata, plain</td><td class="num">100</td><td class="num">120</td><td>As it comes</td></tr>
+<tr><td>Chicken breast, skinless</td><td class="num">85</td><td class="num">110</td><td>Raw</td></tr>
+<tr><td>Red pepper, deseeded</td><td class="num">70</td><td class="num">90</td><td>Prepared</td></tr>
+<tr><td>Brown rice, long grain</td><td class="num">40</td><td class="num">55</td><td>Dry</td></tr>
+<tr><td>Red onion, peeled</td><td class="num">40</td><td class="num">50</td><td>Prepared</td></tr>
+<tr><td>Egusi, ground melon seed</td><td class="num">12</td><td class="num">15</td><td>Dry</td></tr>
+<tr><td>Extra virgin olive oil</td><td class="num">6</td><td class="num">8</td><td>As it comes</td></tr></tbody></table>
+    <p class="macros"><strong>her:</strong> kcal 500 &middot; protein 37 g &middot; net carb 47 g &middot; fat 15 g &middot; fibre 12 g<br><strong>him:</strong> kcal 649 &middot; protein 47 g &middot; net carb 62 g &middot; fat 20 g &middot; fibre 15 g</p>
+  </div><div class="col">
+      <h3>new</h3>
+      <ol class="steps"><li>Out of the fridge: Sunday's efo riro base — take all of it, the whole ~450 g batch (100/120 g passata, 70/90 g pepper, 40/50 g onion and 12/15 g egusi cooked down into it) — and Sunday's jollof (all 40/55 g dry rice, plus 110/140 g of the riced cauliflower batch warmed in with it). <span class="step-meta">[untimed]</span></li>
+<li>Base into a pan on medium with the rapeseed oil (6/8 g) and a splash of water — it sets hard when cold. 3 minutes. <span class="step-meta">[3 min &middot; track:pan &middot; clock:0 &middot; @ hob]</span></li>
+<li>Chicken (85/110 g) sliced in and warmed through, 2 minutes. <span class="step-meta">[2 min &middot; track:pan &middot; clock:3 &middot; @ hob]</span></li>
+<li>Spinach (200/240 g) is a mountain. Add it in three goes, letting each wilt before the next. It comes down to about a quarter of its volume. <span class="step-meta">[3 min &middot; track:pan &middot; clock:5 &middot; @ hob]</span></li>
+<li>Jollof (40/55 g dry rice + 110/140 g cauliflower) warmed alongside, covered, 2 minutes. <span class="step-meta">[2 min &middot; track:pan2 &middot; clock:6 &middot; @ hob]</span></li></ol>
+      <p class="why"><strong>why:</strong> The spinach goes in at the plate, not on Sunday. Reheated wilted greens turn grey and bitter; folded fresh into a hot base they stay green and the dish tastes like it was made today.</p>
+      <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th></tr></thead><tbody><tr><td>Brown rice, long grain</td><td class="num">40</td><td class="num">55</td></tr>
+<tr><td>Cauliflower, riced</td><td class="num">110</td><td class="num">140</td></tr>
+<tr><td>Chicken breast, skinless</td><td class="num">85</td><td class="num">110</td></tr>
+<tr><td>Egusi, ground melon seed</td><td class="num">12</td><td class="num">15</td></tr>
+<tr><td>Passata, plain</td><td class="num">100</td><td class="num">120</td></tr>
+<tr><td>Red pepper, deseeded (frozen sliced)</td><td class="num">70</td><td class="num">90</td></tr>
+<tr class="row-changed"><td>Rapeseed oil <span class="tag-new">new</span></td><td class="num">6</td><td class="num">8</td></tr>
+<tr><td>Red onion, peeled</td><td class="num">40</td><td class="num">50</td></tr>
+<tr><td>Spinach, ugu or callaloo</td><td class="num">200</td><td class="num">240</td></tr><tr class="row-dropped"><td>Extra virgin olive oil <span class="tag-dropped">dropped</span></td><td class="num">&mdash;</td><td class="num">&mdash;</td></tr></tbody></table>
+      <p class="macros"><strong>her:</strong> kcal 500 &middot; protein 37 g &middot; net carb 47 g &middot; fat 15 g &middot; fibre 12 g<br><strong>him:</strong> kcal 649 &middot; protein 47 g &middot; net carb 62 g &middot; fat 20 g &middot; fibre 15 g</p>
+      <p class="batch-meta">batch: source <code>prep-a</code>, take her 457 g / him 580 g (total 1037 g)</p>
+      
+      <details class="notes"><summary>rewriter notes (3)</summary><ul><li>D0-003: oil never appeared in this card's own step text (one of the 32 rows PLAN §4 flags as missing from its own method). Placed at the base-reheat step, where a little fat re-emulsifies a sauce that 'sets hard when cold' — a hot-pan use → rapeseed_oil. Grams unchanged (6/8 g, matches table).</li><li>Named worst offender (PLAN §4): batchTakeG is now explicit. The efo riro base (passata 100/120, peppers_frozen 70/90, red_onion 40/50, egusi 12/15 — matches Sunday's Pan 3 op exactly, 497 g raw cooking to the yield table's ~450 g) is entirely consumed by this single lunch. The jollof (95 g dry rice, all of it) and a 250 g share of the riced-cauliflower batch are the second Sunday component, reheated alongside. Roast chicken (195 g of the 600 g batch) is the third.</li><li>batchTakeG.total (1,037 g) is the sum of everything this plate draws from Sunday's prep: efo-riro-base inputs 497 g + jollof rice 95 g + cauliflower 250 g + chicken 195 g. Fresh-added spinach is excluded (it goes in at the plate, per the why block).</li></ul></details>
+    </div></div>
+  </section>
+<section class="meal">
+    <h2>Catfish pepper soup with okra <span class="meal-id">a-d3d</span> <span class="tag-fresh">fresh</span></h2>
+    <p class="meta">Wednesday Dinner &middot; 20 min &middot; origin: Nigeria</p>
+    <p class="status status-ok">rev B &middot; <span class="lint-pass">LINT: PASS (0 findings)</span></p>
+    <div class="cols"><div class="col">
+    <h3>old (Phase 0, data/raw/methods.json)</h3>
+    <ol class="steps"><li>Plantain (140/185 g) sliced thick, dry-griddled 3 minutes a side. Set aside.</li>
+<li>Onion (40/50 g) and pepper (60/80 g) into a wide pan with the oil (6/8 g), 4 minutes. Tomato (80/100 g) and scotch bonnet, 3 minutes.</li>
+<li>500 ml stock, 2 tsp pepper soup spice, a bay leaf. Bring to a BARE simmer — never a boil.</li>
+<li>Okra (100/120 g) topped and halved, in for 5 minutes.</li>
+<li>Fish (100/130 g) in whole pieces, laid on top. Lid on, 8 minutes. Do not stir it.</li>
+<li>Prawns (40/55 g) in for the last 3 minutes. Spinach (120/150 g) folded through for the last 1.</li>
+<li>Lime at the table. Plantain on the side.</li></ol>
+    <p class="why"><strong>why:</strong> A bare simmer and no stirring. Catfish and tilapia are soft, and a rolling boil shreds them into the broth — you want whole pieces you can lift out with a spoon.</p>
+    <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th><th>state</th></tr></thead><tbody><tr><td>Plantain, ripe</td><td class="num">140</td><td class="num">185</td><td>Peeled</td></tr>
+<tr><td>Spinach, ugu or callaloo</td><td class="num">120</td><td class="num">150</td><td>Raw</td></tr>
+<tr><td>Catfish or tilapia fillet</td><td class="num">100</td><td class="num">130</td><td>Raw</td></tr>
+<tr><td>Okra</td><td class="num">100</td><td class="num">120</td><td>Fresh or frozen</td></tr>
+<tr><td>Tomatoes, ripe</td><td class="num">80</td><td class="num">100</td><td>Raw</td></tr>
+<tr><td>Red pepper, deseeded</td><td class="num">60</td><td class="num">80</td><td>Prepared</td></tr>
+<tr><td>King prawns, peeled</td><td class="num">40</td><td class="num">55</td><td>Raw</td></tr>
+<tr><td>Red onion, peeled</td><td class="num">40</td><td class="num">50</td><td>Prepared</td></tr>
+<tr><td>Extra virgin olive oil</td><td class="num">6</td><td class="num">8</td><td>As it comes</td></tr></tbody></table>
+    <p class="macros"><strong>her:</strong> kcal 463 &middot; protein 37 g &middot; net carb 55 g &middot; fat 10 g &middot; fibre 12 g<br><strong>him:</strong> kcal 605 &middot; protein 48 g &middot; net carb 72 g &middot; fat 13 g &middot; fibre 15.1 g</p>
+  </div><div class="col">
+      <h3>new</h3>
+      <ol class="steps"><li>Onion (40/50 g) and pepper (60/80 g) into a wide pan with the rapeseed oil (6/8 g), 4 minutes. <span class="step-meta">[4 min &middot; track:pan &middot; clock:0 &middot; @ hob]</span></li>
+<li>Tomato (80/100 g) and scotch bonnet in, 3 minutes, pressing it down. <span class="step-meta">[3 min &middot; track:pan &middot; clock:4 &middot; @ hob]</span></li>
+<li>500 ml stock, 2 tsp pepper soup spice, a bay leaf. Bring to a BARE simmer — never a boil. <span class="step-meta">[untimed &middot; track:pan &middot; clock:7 &middot; @ hob]</span></li>
+<li>Okra (100/120 g) topped and halved, in for 5 minutes. <span class="step-meta">[5 min &middot; track:pan &middot; clock:7 &middot; @ hob]</span></li>
+<li>Fish (100/130 g) in whole pieces, laid on top. Lid on, 8 minutes. Do not stir it. <span class="step-meta">[8 min &middot; track:pan &middot; clock:12 &middot; @ hob]</span></li>
+<li>Prawns (40/55 g) in for the last 3 minutes. <span class="step-meta">[3 min &middot; track:pan &middot; clock:17 &middot; @ hob]</span></li>
+<li>Spinach (120/150 g) folded through for the last 1. <span class="step-meta">[1 min &middot; track:pan &middot; clock:19 &middot; @ hob]</span></li>
+<li>Plantain (140/185 g) sliced thick, dry-griddled 3 minutes a side. Set aside. <span class="step-meta">[6 min &middot; track:griddle &middot; clock:0 &middot; @ griddle]</span></li>
+<li>Lime at the table. Plantain on the side. <span class="step-meta">[0.5 min &middot; clock:20]</span></li></ol>
+      <p class="why"><strong>why:</strong> A bare simmer and no stirring. Catfish and tilapia are soft, and a rolling boil shreds them into the broth — you want whole pieces you can lift out with a spoon.</p>
+      <table class="gram-table"><thead><tr><th>ingredient</th><th>her g</th><th>him g</th></tr></thead><tbody><tr><td>Okra</td><td class="num">100</td><td class="num">120</td></tr>
+<tr><td>Red pepper, deseeded (frozen sliced)</td><td class="num">60</td><td class="num">80</td></tr>
+<tr><td>Plantain, ripe</td><td class="num">140</td><td class="num">185</td></tr>
+<tr><td>King prawns, peeled</td><td class="num">40</td><td class="num">55</td></tr>
+<tr class="row-changed"><td>Rapeseed oil <span class="tag-new">new</span></td><td class="num">6</td><td class="num">8</td></tr>
+<tr><td>Red onion, peeled</td><td class="num">40</td><td class="num">50</td></tr>
+<tr><td>Spinach, ugu or callaloo</td><td class="num">120</td><td class="num">150</td></tr>
+<tr><td>Catfish or tilapia fillet</td><td class="num">100</td><td class="num">130</td></tr>
+<tr><td>Tomatoes, ripe</td><td class="num">80</td><td class="num">100</td></tr><tr class="row-dropped"><td>Extra virgin olive oil <span class="tag-dropped">dropped</span></td><td class="num">&mdash;</td><td class="num">&mdash;</td></tr></tbody></table>
+      <p class="macros"><strong>her:</strong> kcal 463 &middot; protein 37 g &middot; net carb 55 g &middot; fat 10 g &middot; fibre 12 g<br><strong>him:</strong> kcal 605 &middot; protein 48 g &middot; net carb 72 g &middot; fat 13 g &middot; fibre 15.1 g</p>
+      
+      <p class="freebies">freebies: Salt, Scotch bonnet, fresh, to taste, Bay leaf, Stock powder / bouillon, Lime</p>
+      <details class="notes"><summary>rewriter notes (2)</summary><ul><li>D0-003: the pan-softening oil (single hot-pan use for onion/pepper) becomes rapeseed_oil.</li><li>Griddle track (plantain) runs in parallel with the soup pan from clock 0, finishing at 0:06 and sitting ready well before the pot's 0:20 finish — the original 20 min time chip only holds if the two happen side by side, not back to back.</li></ul></details>
+    </div></div>
+  </section>
+<section class="meal session">
+    <h2>Week A Sunday session <span class="meal-id">prep-a</span></h2>
+    <p class="status status-ok">rev B &middot; totalMin 95</p>
+    <div class="cols">
+      <div class="col"><h3>old (Phase 0)</h3><p class="meta">one session, ninety-five minutes, mostly waiting</p><table class="op-table"><thead><tr><th>clock</th><th>op</th><th>station</th><th>ingredients</th></tr></thead><tbody><tr>
+    <td>0:00</td>
+    <td><strong>Oven on, three trays out</strong><br>220 °C fan while you load, dropping to 200 °C once the trays go in. Line all three with paper. Drain and dry the chickpeas on a tea towel now — they will not crisp wet.</td>
+    <td>Oven · 3 trays</td>
+    <td>&mdash;</td>
+  </tr>
+<tr>
+    <td>0:10</td>
+    <td><strong>Trays in — chicken, chickpeas, peppers</strong><br>TRAY A: 600 g chicken breast, salt, garlic powder, onion powder. Nothing else. 25 min. TRAY B: 250 g drained chickpeas, 1 tbsp oil, 2 tsp jerk seasoning. 35 min, shaken twice. TRAY C: 160 g red pepper and 70 g red onion in wedges, 1 tsp oil. 25 min.</td>
+    <td>Oven</td>
+    <td>&mdash;</td>
+  </tr>
+<tr>
+    <td>0:12</td>
+    <td><strong>Pan 1 — the bolognese (longest job, start it early)</strong><br>90 g onion, 135 g carrot and 330 g courgette, all grated, into oil on medium for 6 min. 120 g turkey mince in, broken up and browned properly — 5 min, don't rush it. 400 g passata, oregano, a bay leaf, salt. Lid ajar, lowest heat, 30 min.</td>
+    <td>Hob 1</td>
+    <td>&mdash;</td>
+  </tr>
+<tr>
+    <td>0:20</td>
+    <td><strong>Pan 2 — chipotle beef</strong><br>165 g 5% beef mince browned hard in a dry pan. 2 chopped chipotles in adobo, 1 tsp cumin, 1 tsp smoked paprika, 100 ml water. 10 min until it's thick and glossy.</td>
+    <td>Hob 2</td>
+    <td>&mdash;</td>
+  </tr>
+<tr>
+    <td>0:28</td>
+    <td><strong>Pan 3 — efo riro base (no spinach)</strong><br>Blend 160 g red pepper with 90 g red onion. Into 1 tbsp oil on medium-high and cook down 8 min until it darkens and thickens. 220 g passata, 10 min. Then 27 g egusi slaked with a little water, stirred in, 5 min until it thickens and goes grainy. Stop there — the spinach belongs at the plate on Wednesday, not here.</td>
+    <td>Hob 3</td>
+    <td>&mdash;</td>
+  </tr>
+<tr>
+    <td>0:32</td>
+    <td><strong>Eggs on</strong><br>4 medium eggs into boiling water for 8 minutes, then straight into cold. Peel them now while they're easy. Two are for Tuesday's snack; the spares will get eaten.</td>
+    <td>Hob 4</td>
+    <td>&mdash;</td>
+  </tr>
+<tr>
+    <td>0:37</td>
+    <td><strong>Chicken and peppers out</strong><br>Chicken rested 5 min, then sliced or left whole — whole keeps better. Peppers and onion into their own box. Chickpeas stay in until 0:45.</td>
+    <td>Oven</td>
+    <td>&mdash;</td>
+  </tr>
+<tr>
+    <td>0:40</td>
+    <td><strong>Pan 2 free — plain rice on</strong><br>320 g brown rice, dry, cooked plain. 25 min. This covers Monday's lunch, Tuesday's lunch and Tuesday's dinner.</td>
+    <td>Hob 2</td>
+    <td>&mdash;</td>
+  </tr>
+<tr>
+    <td>0:45</td>
+    <td><strong>Chickpeas out — jar, lid OFF</strong><br>They should rattle on the tray. Into a jar, uncovered, on the counter. Sealed in a box they go soft by Tuesday.</td>
+    <td>Oven off</td>
+    <td>&mdash;</td>
+  </tr>
+<tr>
+    <td>0:46</td>
+    <td><strong>Pan 3 free — the jollof</strong><br>95 g brown rice, dry, cooked in a blended base of pepper, tomato, onion and a little stock until the liquid is gone. 25 min. Keep it slightly under — it gets a second heating on Wednesday.</td>
+    <td>Hob 3</td>
+    <td>&mdash;</td>
+  </tr>
+<tr>
+    <td>0:50</td>
+    <td><strong>Rice the cauliflower — the big job</strong><br>Two heads, about 1.4 kg once florets are riced in a food processor (pulse, don't run it — you want couscous, not paste). Store it RAW. It cooks in three minutes at the plate and holds far better uncooked.</td>
+    <td>Processor</td>
+    <td>&mdash;</td>
+  </tr>
+<tr>
+    <td>1:05</td>
+    <td><strong>Shred for two slaws</strong><br>335 g red cabbage and 230 g carrot, shredded fine, into one box with a piece of kitchen paper on top to take the moisture. Thursday's burger slaw and Friday's wrap both come out of this.</td>
+    <td>Mandoline / processor</td>
+    <td>&mdash;</td>
+  </tr>
+<tr>
+    <td>1:12</td>
+    <td><strong>The two jars</strong><br>WHITE SAUCE: 115 g Greek yoghurt, 1 grated garlic clove, lemon juice, salt, and far more black pepper than feels reasonable. Shake. SUYA: mix your own if you like — 3 parts ground roasted peanut, 1 part chilli, then ginger, garlic powder and stock powder to taste.</td>
+    <td>2 jars</td>
+    <td>&mdash;</td>
+  </tr>
+<tr>
+    <td>1:20</td>
+    <td><strong>Bolognese and rice off — cool them FAST</strong><br>Spread the rice out on a cold tray in a thin layer. Both into the fridge within the hour. This is the one genuine food-safety point of the day: rice left to cool slowly at room temperature is the classic way to make yourself ill.</td>
+    <td>Trays</td>
+    <td>&mdash;</td>
+  </tr>
+<tr>
+    <td>1:35</td>
+    <td><strong>Portion and label</strong><br>Everything into boxes marked with the day it's for. Five minutes now saves the Wednesday evening argument about what the orange one is.</td>
+    <td>Boxes</td>
+    <td>&mdash;</td>
+  </tr></tbody></table><table class="yield-table"><thead><tr><th>component</th><th>qty</th><th>consumers</th><th>storage</th></tr></thead><tbody><tr><td>Roast chicken</td><td>600 g raw</td><td>&amp;mdash;</td><td>Fridge, whole, 4 days</td></tr>
+<tr><td>Chipotle beef</td><td>165 g raw</td><td>&amp;mdash;</td><td>Fridge, 3 days</td></tr>
+<tr><td>Turkey bolognese</td><td>makes ~1 kg</td><td>&amp;mdash;</td><td>Fridge 4 days, or freeze half</td></tr>
+<tr><td>Efo riro base</td><td>~450 g</td><td>&amp;mdash;</td><td>Fridge, 4 days</td></tr>
+<tr><td>Jerk chickpeas</td><td>250 g drained</td><td>&amp;mdash;</td><td>Jar, lid off, counter</td></tr>
+<tr><td>Boiled eggs</td><td>4</td><td>&amp;mdash;</td><td>Fridge, peeled, 4 days</td></tr>
+<tr><td>Plain brown rice</td><td>320 g dry</td><td>&amp;mdash;</td><td>Fridge ≤3 days, cooled fast</td></tr>
+<tr><td>Jollof</td><td>95 g dry</td><td>&amp;mdash;</td><td>Fridge ≤3 days, cooled fast</td></tr>
+<tr><td>Riced cauliflower</td><td>~1.4 kg raw</td><td>&amp;mdash;</td><td>Fridge raw, 4 days</td></tr>
+<tr><td>Slaw shred</td><td>335 g cabbage + 230 g carrot</td><td>&amp;mdash;</td><td>Fridge, paper on top</td></tr>
+<tr><td>White sauce</td><td>115 g</td><td>&amp;mdash;</td><td>Jar, 4 days</td></tr></tbody></table></div>
+      <div class="col"><h3>new</h3><p class="meta">one session, ninety-five minutes, mostly waiting</p><table class="op-table"><thead><tr><th>clock</th><th>op</th><th>station</th><th>ingredients</th></tr></thead><tbody><tr>
+    <td>0:00</td>
+    <td><strong>Oven on, three trays out</strong> <span class="step-meta">[10 min &middot; 220&deg;C]</span><br>220 °C fan while you load, dropping to 200 °C once the trays go in. Line all three with paper. Drain and dry the chickpeas on a tea towel now — they will not crisp wet.</td>
+    <td>Oven · 3 trays</td>
+    <td>&mdash;</td>
+  </tr>
+<tr>
+    <td>0:10</td>
+    <td><strong>Trays in — chicken, chickpeas, peppers</strong> <span class="step-meta">[2 min &middot; 200&deg;C]</span><br>TRAY A: 600 g chicken breast, salt, garlic powder, onion powder. Nothing else. 25 min. TRAY B: 250 g drained chickpeas, 1 tbsp rapeseed oil, 2 tsp jerk seasoning (5 g). 35 min, shaken twice. TRAY C: 160 g red pepper and 70 g red onion in wedges, 1 tsp rapeseed oil. 25 min.</td>
+    <td>Oven</td>
+    <td>Chicken breast, skinless 600 g, Chickpeas, tinned 250 g, Jerk seasoning, dry rub 5 g, Red pepper, deseeded (frozen sliced) 160 g, Red onion, peeled 70 g</td>
+  </tr>
+<tr>
+    <td>0:12</td>
+    <td><strong>Pan 1 — the bolognese (longest job, start it early)</strong> <span class="step-meta">[8 min]</span><br>90 g onion, 135 g carrot and 330 g courgette, all grated, into rapeseed oil on medium for 6 min. 120 g turkey mince in, broken up and browned properly — 5 min, don't rush it. 400 g passata, oregano, a bay leaf, salt. Lid ajar, lowest heat, 30 min.</td>
+    <td>Hob 1</td>
+    <td>Red onion, peeled 90 g, Carrots, peeled 135 g, Courgette 330 g, Turkey breast mince, 5% fat 120 g, Passata, plain 400 g</td>
+  </tr>
+<tr>
+    <td>0:20</td>
+    <td><strong>Pan 2 — chipotle beef</strong> <span class="step-meta">[8 min]</span><br>165 g 5% beef mince browned hard in a dry pan. 2 chopped chipotles in adobo (30 g), 1 tsp cumin, 1 tsp smoked paprika, 100 ml water. 10 min until it's thick and glossy.</td>
+    <td>Hob 2</td>
+    <td>Beef mince, 5% fat 165 g, Chipotles in adobo sauce, chopped 30 g</td>
+  </tr>
+<tr>
+    <td>0:28</td>
+    <td><strong>Pan 3 — efo riro base (no spinach)</strong> <span class="step-meta">[4 min]</span><br>Blend 160 g red pepper with 90 g red onion. Into 1 tbsp rapeseed oil on medium-high and cook down 8 min until it darkens and thickens. 220 g passata, 10 min. Then 27 g egusi slaked with a little water, stirred in, 5 min until it thickens and goes grainy. Stop there — the spinach belongs at the plate on Wednesday, not here.</td>
+    <td>Hob 3</td>
+    <td>Red pepper, deseeded (frozen sliced) 160 g, Red onion, peeled 90 g, Passata, plain 220 g, Egusi, ground melon seed 27 g</td>
+  </tr>
+<tr>
+    <td>0:32</td>
+    <td><strong>Eggs on</strong> <span class="step-meta">[5 min]</span><br>5 medium eggs into boiling water for 8 minutes, then straight into cold. Peel them now while they're easy. Three are for Tuesday's snack (1 her + 2 him); the other two will get eaten.</td>
+    <td>Hob 4</td>
+    <td>Eggs, medium, shell off 250 g</td>
+  </tr>
+<tr>
+    <td>0:37</td>
+    <td><strong>Chicken and peppers out</strong> <span class="step-meta">[3 min &middot; 200&deg;C]</span><br>Chicken rested 5 min, then sliced or left whole — whole keeps better. Peppers and onion into their own box. Chickpeas stay in until 0:45.</td>
+    <td>Oven</td>
+    <td>&mdash;</td>
+  </tr>
+<tr>
+    <td>0:40</td>
+    <td><strong>Pan 2 free — plain rice on</strong> <span class="step-meta">[5 min]</span><br>320 g brown rice, dry, cooked plain. 25 min. This covers Monday's lunch, Tuesday's lunch and Tuesday's dinner.</td>
+    <td>Hob 2</td>
+    <td>Brown rice, long grain 320 g</td>
+  </tr>
+<tr>
+    <td>0:45</td>
+    <td><strong>Chickpeas out — jar, lid OFF</strong> <span class="step-meta">[1 min]</span><br>They should rattle on the tray. Into a jar, uncovered, on the counter. Sealed in a box they go soft by Tuesday.</td>
+    <td>Oven off</td>
+    <td>&mdash;</td>
+  </tr>
+<tr>
+    <td>0:46</td>
+    <td><strong>Pan 3 free — the jollof</strong> <span class="step-meta">[4 min]</span><br>95 g brown rice, dry, cooked in a blended base of pepper, tomato, onion and a little stock until the liquid is gone. 25 min. Keep it slightly under — it gets a second heating on Wednesday.</td>
+    <td>Hob 3</td>
+    <td>Brown rice, long grain 95 g</td>
+  </tr>
+<tr>
+    <td>0:50</td>
+    <td><strong>Rice the cauliflower — the big job</strong> <span class="step-meta">[15 min]</span><br>Two heads, about 1.4 kg once florets are riced in a food processor (pulse, don't run it — you want couscous, not paste). Store it RAW. It cooks in three minutes at the plate and holds far better uncooked.</td>
+    <td>Processor</td>
+    <td>Cauliflower, riced 1400 g</td>
+  </tr>
+<tr>
+    <td>1:05</td>
+    <td><strong>Shred for two slaws — and Friday's salmon slaw</strong> <span class="step-meta">[7 min]</span><br>515 g red cabbage and 230 g carrot, shredded fine, into one box with a piece of kitchen paper on top to take the moisture. Thursday's burger slaw, Friday's wrap AND Friday's salmon slaw all come out of this.</td>
+    <td>Mandoline / processor</td>
+    <td>Red cabbage, shredded 515 g, Carrots, peeled 230 g</td>
+  </tr>
+<tr>
+    <td>1:12</td>
+    <td><strong>The two jars</strong> <span class="step-meta">[8 min]</span><br>WHITE SAUCE: 115 g Greek yoghurt, 1 grated garlic clove, lemon juice, salt, and far more black pepper than feels reasonable. Shake. SUYA: mix your own — 3 parts ground roasted peanut, 1 part chilli, then ginger, garlic powder and stock powder to taste (12 g total covers Tuesday's snack).</td>
+    <td>2 jars</td>
+    <td>Greek yoghurt, 0% fat 115 g, Suya spice (ground roasted peanut, chilli, ginger, garlic, stock powder) 12 g</td>
+  </tr>
+<tr>
+    <td>1:20</td>
+    <td><strong>Bolognese and rice off — cool them FAST</strong> <span class="step-meta">[15 min]</span><br>Spread the rice out on a cold tray in a thin layer. Both into the fridge within the hour. This is the one genuine food-safety point of the day: rice left to cool slowly at room temperature is the classic way to make yourself ill.</td>
+    <td>Trays</td>
+    <td>&mdash;</td>
+  </tr>
+<tr>
+    <td>1:35</td>
+    <td><strong>Portion and label</strong> <span class="step-meta">[5 min]</span><br>Everything into boxes marked with the day it's for. Five minutes now saves the Wednesday evening argument about what the orange one is.</td>
+    <td>Boxes</td>
+    <td>&mdash;</td>
+  </tr></tbody></table><table class="yield-table"><thead><tr><th>component</th><th>qty</th><th>consumers</th><th>storage</th></tr></thead><tbody><tr><td>Roast chicken</td><td>600 g raw</td><td>a-d1l, a-d3l, a-d5l</td><td>Fridge, whole, 4 days<br><em>D0-020: 575 g needed across the three lunches (a-d1l 175 g + a-d3l 195 g + a-d5l 205 g) — 25 g headroom cooked in for trimming and loss.</em></td></tr>
+<tr><td>Chipotle beef</td><td>165 g raw (+ 2 chipotles in adobo, 30 g)</td><td>a-d2l</td><td>Fridge, 3 days</td></tr>
+<tr><td>Turkey bolognese</td><td>makes ~1 kg (1,075 g raw onion/carrot/courgette/turkey mince/passata)</td><td>a-d4l</td><td>Fridge 4 days, or freeze half</td></tr>
+<tr><td>Efo riro base</td><td>~450 g (497 g raw pepper/onion/passata/egusi)</td><td>a-d3l</td><td>Fridge, 4 days</td></tr>
+<tr><td>Jerk chickpeas</td><td>250 g drained (+ 2 tsp jerk seasoning, 5 g)</td><td>a-d3s</td><td>Jar, lid off, counter<br><em>D0-020: 245 g needed for Wednesday's snack — 5 g headroom.</em></td></tr>
+<tr><td>Boiled eggs</td><td>5</td><td>a-d2s</td><td>Fridge, peeled, 4 days<br><em>D0-019: 3 whole eggs (150 g: 1 her/50 g + 2 him/100 g) go to Tuesday's snack — a clean whole-egg split that replaces the original fractional '1½ eggs' figure. 2 spare eggs get eaten separately.</em></td></tr>
+<tr><td>Plain brown rice</td><td>320 g dry</td><td>a-d1l, a-d2l, a-d2d</td><td>Fridge ≤3 days, cooled fast</td></tr>
+<tr><td>Jollof</td><td>95 g dry</td><td>a-d3l</td><td>Fridge ≤3 days, cooled fast</td></tr>
+<tr><td>Riced cauliflower</td><td>~1.4 kg raw</td><td>a-d1l, a-d2l, a-d2d, a-d3l, a-d5d</td><td>Fridge raw, 4 days</td></tr>
+<tr><td>Slaw shred</td><td>515 g cabbage + 230 g carrot</td><td>a-d4d, a-d5l, a-d5d</td><td>Fridge, paper on top<br><em>D0-014: corrected from the original 335 g/two-consumer figure — Friday's salmon slaw (a-d5d, 180 g cabbage) was omitted from the original op text. 185+150+180=515 g exactly, matching provisioning's need figure. Carrot stays 230 g (a-d5d uses no carrot from this batch).</em></td></tr>
+<tr><td>White sauce</td><td>115 g</td><td>a-d1l</td><td>Jar, 4 days</td></tr>
+<tr><td>Suya spice</td><td>12 g</td><td>a-d2s</td><td>Jar, cupboard, weeks<br><em>Seasoning weighing (PLAN §4): the original op gave a mix ratio only, no batch gram figure. 12 g is grounded to a-d2s's actual consumption (5 g her + 7 g him) rather than an arbitrary jar size.</em></td></tr></tbody></table><details class="notes"><summary>rewriter notes (6)</summary><ul><li>D0-014 (cabbage 515 g): applied — see 'Shred for two slaws' op and 'Slaw shred' yield.</li><li>D0-019 (egg count): applied — Sunday now boils 5 eggs (was 4); see 'Eggs on' op and 'Boiled eggs' yield.</li><li>D0-020 (yield headroom): stated explicitly rather than tightened, for both roast chicken (25 g headroom) and jerk chickpeas (5 g headroom) — see yields[].note.</li><li>Seasoning weighing (PLAN §4): jerk_seasoning (5 g, chickpea tray), chipotle_adobo (30 g, chipotle beef pan) and suya_spice (12 g, Sunday jar — resolves to _ingredients.B.json's canonical suya_spice record, see a-d2s.json notes) added to op ingredients, standard-reference per100g in _ingredients.A.json (jerk_seasoning, chipotle_adobo) flagged addedInContentPass:true.</li><li>D0-003 substitution applied to prose throughout (chickpea/pepper trays, bolognese pan, efo riro base pan) — all Sunday cooking oil hits a hot pan or hot oven, so it's named 'rapeseed oil' in the op text. None of these Sunday-only cooking oils carry a gram figure in the source (volume measures only — tbsp/tsp) and none map to a per-cover covers entry in any consuming meal, so no new gram figures are invented here (rule 9); only the word is substituted.</li><li>'minutes' per op is the elapsed time until the next op begins (from the original clock stamps), i.e. the hands-on window before attention moves elsewhere — not the full background cook time already stated inline in each op's own body text (e.g. the chicken tray's 25 min, the bolognese's 30 min simmer).</li></ul></details></div>
+    </div>
+  </section>
+</body>
+</html>

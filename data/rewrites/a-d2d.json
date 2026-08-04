@@ -1,0 +1,132 @@
+{
+  "mealId": "a-d2d",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "broccoli": 140,
+      "cauliflower": 130,
+      "chicken": 85,
+      "carrot": 60,
+      "red_onion": 40,
+      "brown_rice": 30,
+      "panko": 20,
+      "egg": 25,
+      "rapeseed_oil": 6,
+      "sugar": 1
+    },
+    "m": {
+      "broccoli": 165,
+      "cauliflower": 160,
+      "chicken": 110,
+      "carrot": 70,
+      "red_onion": 50,
+      "brown_rice": 42,
+      "panko": 25,
+      "egg": 25,
+      "rapeseed_oil": 8,
+      "sugar": 1
+    }
+  },
+  "freebies": [
+    "salt"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Oven to 220 °C fan with a baking tray inside to heat.",
+      "minutes": null,
+      "tempC": 220,
+      "track": "oven",
+      "station": "oven",
+      "clockStart": 0,
+      "untimed": true
+    },
+    {
+      "n": 2,
+      "text": "Chicken (85/110 g) between two sheets of paper, bashed to an even 1 cm. Salt both sides. Beaten egg (25 g) in one bowl, seasoned panko (20/25 g) in another. Egg, then panko, pressed on firmly.",
+      "minutes": 3,
+      "tempC": null,
+      "track": "prep",
+      "station": "counter",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Onto the HOT tray, 3 g of the rapeseed oil brushed over the crumb. 18 minutes, turned once at 10.",
+      "minutes": 18,
+      "tempC": 220,
+      "track": "oven",
+      "station": "oven",
+      "clockStart": 3,
+      "untimed": false
+    },
+    {
+      "n": 4,
+      "text": "Sauce: onion (40/50 g) and carrot (60/70 g) diced small, into a pan with the remaining 3/5 g rapeseed oil, medium, 6 minutes until soft. 1½ tsp curry powder, ½ tsp garam masala and a pinch of sugar (1 g) — 60 seconds more.",
+      "minutes": 7,
+      "tempC": null,
+      "track": "sauce",
+      "station": "hob 1",
+      "clockStart": 3,
+      "untimed": false
+    },
+    {
+      "n": 5,
+      "text": "150 ml stock, simmer 6 minutes.",
+      "minutes": 6,
+      "tempC": null,
+      "track": "sauce",
+      "station": "hob 1",
+      "clockStart": 10,
+      "untimed": false
+    },
+    {
+      "n": 6,
+      "text": "Blitz the sauce smooth with a stick blender. It should coat the back of a spoon — loosen with a splash of water if it's gone too far.",
+      "minutes": 1,
+      "tempC": null,
+      "track": "sauce",
+      "station": "hob 1",
+      "clockStart": 16,
+      "untimed": false
+    },
+    {
+      "n": 7,
+      "text": "Rice and cauliflower (30/42 g dry + 130/160 g) warmed.",
+      "minutes": 2,
+      "tempC": null,
+      "track": "rice",
+      "station": "hob 2",
+      "clockStart": 15,
+      "untimed": false
+    },
+    {
+      "n": 8,
+      "text": "Broccoli (140/165 g) steamed 4 minutes, still squeaky.",
+      "minutes": 4,
+      "tempC": null,
+      "track": "veg",
+      "station": "hob 3",
+      "clockStart": 17,
+      "untimed": false
+    },
+    {
+      "n": 9,
+      "text": "Chicken out, rested a minute, sliced across. Sauce poured BESIDE it, not over.",
+      "minutes": 1,
+      "tempC": 220,
+      "track": "oven",
+      "station": "counter",
+      "clockStart": 21,
+      "untimed": false
+    }
+  ],
+  "why": "The preheated tray is what replaces the deep fryer — the underside starts cooking on contact instead of sitting in its own steam. And blitzing the carrot and onion is what thickens the sauce; there is no flour anywhere in this.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": [
+    "D0-003: the whole 6/8 g table total is oil that hits either the sauce pan (step 4, 3 g) or the hot roasting tray (step 3, remainder 3/5 g) — no raw dressing use anywhere in this dish, so it becomes rapeseed_oil in full, restated across the two steps (3+3=6 her, 3+5=8 him).",
+    "Cross-file id conflict resolved: _ingredients.A.json originally defined its own 'sugar' record (freebie:true, matching this card's trace 'pinch of sugar'). _ingredients.B.json (Week B rewriter, parallel) independently defines 'sugar' too, for an explicit 1 tsp in a B dish, freebie:false. Rather than ship two conflicting per100g/freebie records under the same id (fails L9), this file now weighs the pinch as 1/1 g in covers using B's canonical sugar record (400 kcal/100 g) instead of listing it as a freebie. Drift is nil (well under 1 kcal at 1 g)."
+  ]
+}

@@ -1,0 +1,212 @@
+{
+  "week": "B",
+  "sessionName": "one session, eighty minutes — lighter than Week A",
+  "totalMin": 75,
+  "ops": [
+    {
+      "clock": "0:00",
+      "title": "Oven on, two trays",
+      "body": "200 °C fan. Two trays lined. Week B is a lighter prep than Week A — one roast, one stew, one batch of koftas, and rice.",
+      "station": "Oven · 2 trays",
+      "minutes": 8,
+      "tempC": 200,
+      "ingredients": []
+    },
+    {
+      "clock": "0:08",
+      "title": "Tray A — the week's chicken",
+      "body": "760 g chicken breast, salt, garlic powder, onion powder. Nothing else, again. 28 min for a tray this size. It carries Monday's fried rice, Tuesday's salad and Friday's club sandwich.",
+      "station": "Oven",
+      "minutes": 28,
+      "tempC": 200,
+      "ingredients": [
+        { "ingId": "chicken", "g": 760 }
+      ]
+    },
+    {
+      "clock": "0:10",
+      "title": "Pan 1 — turkey and okra stew",
+      "body": "90 g red onion and 160 g red pepper into oil, 5 min. 280 g turkey mince broken up and browned, 5 min. 260 g passata, 200 ml stock, thyme, a pinch of stock powder, scotch bonnet. 12 min. Then 270 g okra in for the LAST 5 MINUTES ONLY.",
+      "station": "Hob 1",
+      "minutes": 22,
+      "tempC": null,
+      "ingredients": [
+        { "ingId": "red_onion", "g": 90 },
+        { "ingId": "peppers_frozen", "g": 160 },
+        { "ingId": "turkey_mince", "g": 280 },
+        { "ingId": "passata", "g": 260 },
+        { "ingId": "okra", "g": 270 }
+      ]
+    },
+    {
+      "clock": "0:14",
+      "title": "Tray B — the koftas",
+      "body": "255 g 5% beef mince with 40 g grated onion squeezed dry, 1 tsp cumin, 1 tsp ground coriander, dried mint, salt, pepper. Worked hard for a minute, then shaped into 6 fingers. 18 min.",
+      "station": "Oven",
+      "minutes": 18,
+      "tempC": 200,
+      "ingredients": [
+        { "ingId": "beef_mince", "g": 255 },
+        { "ingId": "red_onion", "g": 40 }
+      ]
+    },
+    {
+      "clock": "0:24",
+      "title": "Eggs on",
+      "body": "6 medium eggs, 8 minutes in boiling water, straight into cold. Peel now. Five are Tuesday's snack across the two of you; the spare gets eaten.",
+      "station": "Hob 2",
+      "minutes": 8,
+      "tempC": null,
+      "ingredients": [
+        { "ingId": "egg", "g": 300 }
+      ]
+    },
+    {
+      "clock": "0:32",
+      "title": "Koftas out",
+      "body": "Cooled on a rack, then straight into the FREEZER in one bag. Sunday to Thursday is too long in the fridge for cooked mince — move them down to the fridge on Wednesday night.",
+      "station": "Oven",
+      "minutes": null,
+      "untimed": true,
+      "tempC": null,
+      "ingredients": []
+    },
+    {
+      "clock": "0:34",
+      "title": "Pan 3 — the rice",
+      "body": "380 g brown rice, dry, plain. 25 min. This covers Monday's fried rice, Tuesday's dinner and Wednesday's lunch — and stops there. Friday's rice is cooked fresh inside the dish.",
+      "station": "Hob 3",
+      "minutes": 25,
+      "tempC": null,
+      "ingredients": [
+        { "ingId": "brown_rice", "g": 380 }
+      ]
+    },
+    {
+      "clock": "0:38",
+      "title": "Chicken out",
+      "body": "Rested 5 minutes. Left whole rather than sliced — it dries out far more slowly that way, and Friday is a long way off.",
+      "station": "Oven off",
+      "minutes": 5,
+      "tempC": null,
+      "ingredients": []
+    },
+    {
+      "clock": "0:45",
+      "title": "Rice the cauliflower",
+      "body": "One large head, about 810 g riced. Pulse it, don't run the processor — couscous, not paste. Stored RAW; it cooks in three minutes at the plate.",
+      "station": "Processor",
+      "minutes": 3,
+      "tempC": null,
+      "ingredients": [
+        { "ingId": "cauliflower", "g": 810 }
+      ]
+    },
+    {
+      "clock": "0:55",
+      "title": "Two jars",
+      "body": "SUYA: 3 parts ground roasted peanut to 1 part chilli, plus ginger, garlic powder and stock powder. It appears on Wednesday dinner (rub, dip and finishing dust) and Friday's carrot snack. CHILLI SALT: 2 parts flaky salt to 1 part chilli flakes, briefly ground together.",
+      "station": "2 jars",
+      "minutes": 7,
+      "tempC": null,
+      "ingredients": []
+    },
+    {
+      "clock": "1:02",
+      "title": "Rice off — cool it fast",
+      "body": "Spread thin on a cold tray, into the fridge within the hour. Same rule as Week A and the same reason: slowly-cooled rice is the classic way to make yourself ill.",
+      "station": "Tray",
+      "minutes": 2,
+      "tempC": null,
+      "ingredients": []
+    },
+    {
+      "clock": "1:15",
+      "title": "Portion, label, and check the freezer",
+      "body": "Boxes marked with the day. Then look ahead: Tuesday needs 370 g basa or tilapia and Friday needs 255 g salmon. If they're frozen, they need moving down in good time.",
+      "station": "Boxes",
+      "minutes": 5,
+      "tempC": null,
+      "ingredients": []
+    }
+  ],
+  "yields": [
+    {
+      "component": "Roast chicken",
+      "qty": "760 g raw",
+      "consumers": ["b-d1l", "b-d2l", "b-d5l"],
+      "storage": "Fridge, whole, 5 days",
+      "headroomNote": "Consumers take 245 g + 255 g + 255 g = 755 g; 5 g headroom against the 760 g batch — trivial, not a ruled defect (unlike the Week A chicken/chickpea yields named in D0-020)."
+    },
+    {
+      "component": "Turkey & okra stew",
+      "qty": "~1.05 kg",
+      "consumers": ["b-d3l"],
+      "storage": "Fridge, 4 days",
+      "headroomNote": "Sole consumer b-d3l takes the batch in full (1,060 g exact, per its own ingredient sum) — zero headroom, as expected for a single-consumer yield."
+    },
+    {
+      "component": "Beef koftas",
+      "qty": "255 g raw · 6 fingers",
+      "consumers": ["b-d4l"],
+      "storage": "FREEZER — down Wed night",
+      "headroomNote": "Sole consumer b-d4l's beef_mince covers (110+145=255 g) match the batch exactly. The 40 g grated onion folded into the mix on Sunday (D0-018) travels with the mince and is not part of this 255 g figure, matching the op text's own wording."
+    },
+    {
+      "component": "Boiled eggs",
+      "qty": "6",
+      "consumers": ["b-d2s"],
+      "storage": "Fridge, peeled, 4 days",
+      "headroomNote": "b-d2s takes 250 g (5 eggs); the 6th (50 g) is the spare the op text itself earmarks as eaten straight away — explicit headroom, not a defect."
+    },
+    {
+      "component": "Brown rice",
+      "qty": "380 g dry",
+      "consumers": ["b-d1l", "b-d3l", "b-d2d"],
+      "storage": "Fridge ≤3 days, cooled fast",
+      "headroomNote": "Consumers take 127 g + 147 g + 108 g = 382 g dry against a 380 g dry batch — 2 g over, rounding-level, not a ruled defect."
+    },
+    {
+      "component": "Riced cauliflower",
+      "qty": "~810 g raw",
+      "consumers": ["b-d1l", "b-d2d", "b-d5d"],
+      "storage": "Fridge raw, 4 days",
+      "headroomNote": "Consumers take 290 g + 290 g + 230 g = 810 g exactly — no headroom, no shortfall."
+    },
+    {
+      "component": "Suya jar",
+      "qty": "makes plenty",
+      "consumers": null,
+      "storage": "Cupboard, months"
+    },
+    {
+      "component": "Chilli salt jar",
+      "qty": "makes plenty",
+      "consumers": null,
+      "storage": "Cupboard, months"
+    }
+  ],
+  "midweek": [
+    {
+      "heading": "Monday night",
+      "body": "Make the overnight oats — 4 minutes. Oats, skyr, chia, cinnamon, water and half the grated apple into a jar. It is the only dish this week that has to be started the day before."
+    },
+    {
+      "heading": "Kept raw on purpose",
+      "body": "Wednesday's suya skewers use raw chicken, not Sunday's roast — 305 g of it, cubed on the night. Roast chicken on a skewer is a sad thing."
+    },
+    {
+      "heading": "Tuesday",
+      "body": "Basa or tilapia bought fresh, or moved down from the freezer on Monday night. Escovitch wants fish that has never been near a reheat."
+    },
+    {
+      "heading": "Wednesday night",
+      "body": "Koftas from the freezer to the fridge. Friday's salmon down too if it's frozen — 255 g, for the teriyaki."
+    }
+  ],
+  "notes": [
+    "totalMin=75 is the clock-derived total (last op at 1:15) per D0-033; sessionName carries the theme prose ('eighty minutes') verbatim — the 5-minute gap is accounted for by this rewrite's own final-op minutes (5), matching D0-033's own reasoning exactly.",
+    "Op-level minutes are the task's own real duration (explicit where the body states one — chicken 28, koftas 18, eggs 8, rice 25, chicken-rest 5), not the raw gap to the next op's clock — several ops (chicken, stew, koftas) run unattended in the oven/on the hob while later ops start in parallel, exactly as the Sunday run-order's own clock column already implies.",
+    "'Two jars' op body corrected from the original's 'It appears on Tuesday, twice on Wednesday and again on Friday' to name the actual consumers verified against the two Week B cards that use suya (b-d3d: rub, dip, finishing dust; b-d5s: dip) — no Tuesday card mentions suya anywhere in methods.json. This is a wording clarification, not a gram change; flagged here for the reviewer rather than silently left contradicting the meal-level rewrites."
+  ]
+}

@@ -12,6 +12,8 @@
 import { describe, it, expect, beforeAll } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
+import { phase0CoversForCard } from "./lint-rules.js";
+import { recomputeMacros } from "./rewrite-overlay.js";
 
 const ROOT = process.cwd();
 const DATA = path.join(ROOT, "data");
@@ -102,26 +104,37 @@ describe("checksum 1: card counts, macro shape, methods<->spec join", () => {
 // ---------------------------------------------------------------------------
 // Checksum 2: recomputed macros match every mac-strip value within tolerance
 // on undisputed cards; disputed cards must each be explained.
+//
+// NOTE: this checksum is a Phase 0 EXTRACTION fidelity check — it validates
+// that methods.json's own gram tables x ingredients.json's own per100g
+// reproduce methods.json's own mac-strips. It deliberately does NOT read
+// data/meals.json's macros field, because meals.json is the POST-OVERLAY
+// output: once a Phase 1 rewrite lands for a meal, its macros legitimately
+// change (new seasonings weighed in, D0-003 substitutions, etc.) and would
+// no longer match the Phase 0 mac-strip — that is correct Phase 1 behavior,
+// not a Phase 0 extraction defect, and this checksum must stay blind to it.
+// Recomputing straight from data/raw/* (via phase0CoversForCard, the same
+// helper the P1 lint suite uses) keeps this checksum meaningful regardless
+// of how much Phase 1 overlay content currently exists.
 // ---------------------------------------------------------------------------
 
 describe("checksum 2: macro recompute vs mac-strip, +-1 unit (+-0.2 fibre)", () => {
-  it("recomputes every one of the 40 cards x 2 covers within tolerance (or the failure is a cited, explained defect)", () => {
+  it("recomputes every one of the 40 cards x 2 covers, from RAW Phase 0 data, within tolerance", () => {
     const tol = { kcal: 1, protein: 1, netCarb: 1, fat: 1, fibre: 0.2 };
     const disputed = [];
-    for (const m of meals) {
-      const card = allCards().find(
-        (c) => c.week === m.week && c.slot === SLOT_CAP(m.slot) && c.dayNo === m.day
-      );
+    const ingById = new Map(ingredients.map((i) => [i.id, i]));
+    for (const card of allCards()) {
+      const phase0Covers = phase0CoversForCard(fd5, card);
       for (const [coverKey, cover] of [
         ["w", "her"],
         ["m", "him"],
       ]) {
-        const recomputed = m.macros[coverKey];
+        const recomputed = recomputeMacros(phase0Covers[coverKey], ingById);
         const actual = card.macros[cover];
         for (const k of ["kcal", "protein", "netCarb", "fat", "fibre"]) {
           const diff = Math.abs(recomputed[k] - actual[k]);
           if (diff > tol[k] + 1e-9) {
-            disputed.push({ meal: m.id, cover, key: k, diff });
+            disputed.push({ card: `${card.week}${card.dayNo}${card.slot}`, cover, key: k, diff });
           }
         }
       }
@@ -135,15 +148,16 @@ describe("checksum 2: macro recompute vs mac-strip, +-1 unit (+-0.2 fibre)", () 
     }
     expect(disputed.length).toBe(0);
   });
-
-  function SLOT_CAP(slot) {
-    return { breakfast: "Breakfast", lunch: "Lunch", dinner: "Dinner", snack: "Snack" }[slot];
-  }
 });
 
 // ---------------------------------------------------------------------------
 // Checksum 3: Week A day totals (her, recomputed), +-1 per day, reconciled
 // against the D10 avocado-drop explanation for days 1/2/4.
+//
+// Same Phase-0-fidelity note as checksum 2: recomputed from data/raw/*
+// directly, not from data/meals.json, so a Phase 1 rewrite legitimately
+// changing a day's kcal (seasonings, substitutions) never masquerades as a
+// Phase 0 extraction failure here.
 // ---------------------------------------------------------------------------
 
 describe("checksum 3: Week A day totals (her, recomputed)", () => {
@@ -152,10 +166,10 @@ describe("checksum 3: Week A day totals (her, recomputed)", () => {
     // Deltas caused by the verified D10 avocado-garnish drop (see decisions-queue D0-011):
     // day1 +4 (pizza), day2 +12 (burrito bowl), day4 +4 (steak sandwich).
     const explainedDelta = { 1: 4, 2: 12, 3: 0, 4: 4, 5: 0 };
+    const ingById = new Map(ingredients.map((i) => [i.id, i]));
     for (let d = 1; d <= 5; d++) {
-      const sum = meals
-        .filter((m) => m.week === "A" && m.day === d)
-        .reduce((s, m) => s + m.macros.w.kcal, 0);
+      const cards = allCards().filter((c) => c.week === "A" && c.dayNo === d);
+      const sum = cards.reduce((s, c) => s + recomputeMacros(phase0CoversForCard(fd5, c).w, ingById).kcal, 0);
       const expected = legacy[d - 1] + explainedDelta[d];
       expect(Math.abs(sum - expected)).toBeLessThanOrEqual(1);
     }
@@ -212,7 +226,11 @@ describe("checksum 5: register + map coverage", () => {
   });
 
   it("ingredients.json's 54 non-added ingredients all carry storage.location + storage.life.prose", () => {
-    const nonAdded = ingredients.filter((i) => !i.addedInExtraction);
+    // Excludes BOTH Phase 0's addedInExtraction ids (sweetheart_cabbage etc.)
+    // AND any Phase 1 addedInContentPass seasonings merged in from
+    // data/rewrites/_ingredients.A/B.json — neither is one of the original
+    // 54 storage-register rows this checksum is about.
+    const nonAdded = ingredients.filter((i) => !i.addedInExtraction && !i.addedInContentPass);
     expect(nonAdded.length).toBe(54);
     for (const i of nonAdded) {
       expect(i.storage.location).toBeTruthy();
@@ -300,7 +318,7 @@ describe("structural sanity", () => {
     for (const d of decisionsQueue) {
       expect(d.detail.length).toBeGreaterThan(20);
       expect(d.recommendation.length).toBeGreaterThan(5);
-      expect(["resolved-by-default", "open"]).toContain(d.status);
+      expect(["resolved-by-default", "resolved", "open"]).toContain(d.status);
     }
   });
 
@@ -340,5 +358,42 @@ describe("structural sanity", () => {
 
   it("no decision-request.join.json was left behind by a STOP", () => {
     expect(fs.existsSync(path.join(RAW, "decision-request.join.json"))).toBe(false);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Owner-checkpoint overlay (tools/extract/owner-rulings.json merged into
+// decisions-queue.json by join.js). See tools/extract/rewrite-overlay.js.
+// ---------------------------------------------------------------------------
+
+describe("owner-rulings checkpoint overlay", () => {
+  let ownerRulings;
+  beforeAll(() => {
+    ownerRulings = readJSON(path.join(ROOT, "tools", "extract", "owner-rulings.json"));
+  });
+
+  it("D0-003, D0-030, D0-031 are flipped from open to resolved, each stamped resolvedBy the checkpoint", () => {
+    for (const id of ["D0-003", "D0-030", "D0-031"]) {
+      const entry = decisionsQueue.find((d) => d.id === id);
+      expect(entry).toBeTruthy();
+      expect(entry.status).toBe("resolved");
+      expect(entry.resolvedTo).toBe(ownerRulings.rulings[id].resolvedTo);
+      expect(entry.resolvedBy).toBe("owner-checkpoint-2026-08-04");
+    }
+  });
+
+  it("no decisions-queue entry is left with status 'open' after the checkpoint (all 34 are resolved-by-default or resolved)", () => {
+    const open = decisionsQueue.filter((d) => d.status === "open");
+    expect(open).toEqual([]);
+  });
+
+  it("every resolved-by-default entry not named in owner-rulings.rulings is also stamped resolvedBy the checkpoint (confirmed-as-is)", () => {
+    const rulingIds = new Set(Object.keys(ownerRulings.rulings));
+    const defaults = decisionsQueue.filter((d) => d.status === "resolved-by-default");
+    expect(defaults.length).toBe(ownerRulings.confirmedDefaults.confirmedCount);
+    for (const d of defaults) {
+      expect(rulingIds.has(d.id)).toBe(false);
+      expect(d.resolvedBy).toBe("owner-checkpoint-2026-08-04");
+    }
   });
 });

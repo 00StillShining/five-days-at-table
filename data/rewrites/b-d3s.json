@@ -1,0 +1,30 @@
+{
+  "mealId": "b-d3s",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "greek_yog": 150,
+      "raspberries": 90,
+      "pumpkin_seeds": 10,
+      "chia": 6
+    },
+    "m": {
+      "greek_yog": 195,
+      "raspberries": 110,
+      "pumpkin_seeds": 13,
+      "chia": 8
+    }
+  },
+  "freebies": ["lemon"],
+  "steps": [
+    { "n": 1, "text": "Half the raspberries (45/55 g) crushed with a fork and a squeeze of lemon, into the bottom of the bowl.", "minutes": null, "tempC": null, "track": null, "station": null, "clockStart": 0, "untimed": true },
+    { "n": 2, "text": "Yoghurt (150/195 g) over.", "minutes": null, "tempC": null, "track": null, "station": null, "clockStart": 0, "untimed": true },
+    { "n": 3, "text": "The rest of the raspberries (45/55 g) whole on top, then pumpkin seeds (10/13 g) and chia (6/8 g).", "minutes": null, "tempC": null, "track": null, "station": null, "clockStart": 0, "untimed": true }
+  ],
+  "why": "Crush half. A broken raspberry releases its acid into the yoghurt and does the job a spoonful of honey would otherwise be doing — the whole ones on top are there for the texture.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": [
+    "No ruled defects or D0-003 substitutions apply. Tag corrected to 'fresh' per D0-013 already reflected in Phase 0 meals.json — no Sunday-batch draw, batchSource stays null. Entirely untimed no-cook assembly, consistent with the card's 2-minute chip."
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "mealId": "b-d2s",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "egg": 100,
+      "avocado": 55,
+      "cucumber": 60
+    },
+    "m": {
+      "egg": 150,
+      "avocado": 70,
+      "cucumber": 70
+    }
+  },
+  "freebies": ["salt", "chilli_flakes"],
+  "steps": [
+    { "n": 1, "text": "Sunday's boiled eggs — take 100/150 g (250 g total, 5 of the 6 boiled) — peeled and halved.", "minutes": null, "tempC": null, "track": null, "station": null, "clockStart": 0, "untimed": true },
+    { "n": 2, "text": "Avocado (55/70 g) sliced, or roughly mashed straight onto the plate.", "minutes": null, "tempC": null, "track": null, "station": null, "clockStart": 0, "untimed": true },
+    { "n": 3, "text": "Chilli salt over both — 2 parts flaky salt to 1 part chilli flakes, briefly ground together.", "minutes": null, "tempC": null, "track": null, "station": null, "clockStart": 0, "untimed": true },
+    { "n": 4, "text": "Cucumber (60/70 g) in thick batons alongside.", "minutes": null, "tempC": null, "track": null, "station": null, "clockStart": 0, "untimed": true }
+  ],
+  "why": "Make the chilli salt in a jar, once. This is three ingredients and no cooking, so it lives or dies on seasoning — and reaching for a jar is the difference between doing that properly and not bothering.",
+  "batchSource": "prep-b",
+  "batchTakeG": { "w": 100, "m": 150, "total": 250 },
+  "notes": [
+    "No D0-003 substitutions apply (no oil, no lettuce). batchTakeG covers the boiled-egg take: 250 g (5 eggs) of Sunday's 6-egg/300 g batch — the 6th egg (50 g) is the spare the Sunday op text itself earmarks as eaten straight away, explicit headroom rather than a defect (see prep-b.json)."
+  ]
+}

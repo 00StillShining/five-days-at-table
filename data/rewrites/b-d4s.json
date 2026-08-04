@@ -1,0 +1,57 @@
+{
+  "mealId": "b-d4s",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "skyr": 170,
+      "blueberries": 90,
+      "pumpkin_seeds": 8,
+      "coconut_des": 6
+    },
+    "m": {
+      "skyr": 220,
+      "blueberries": 110,
+      "pumpkin_seeds": 11,
+      "coconut_des": 8
+    }
+  },
+  "freebies": [],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Coconut (6/8 g) toasted in a dry pan, 90 seconds, shaken constantly, out the moment it turns gold.",
+      "minutes": 1.5,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 2,
+      "text": "Blueberries (90/110 g) — if frozen, straight from the freezer into the skyr and left 5 minutes. They bleed, and it turns purple, which is better.",
+      "minutes": 5,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": 1.5,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Skyr (170/220 g), berries, then coconut and pumpkin seeds (8/11 g) over.",
+      "minutes": null,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": 6.5,
+      "untimed": true
+    }
+  ],
+  "why": "Frozen berries beat fresh here, and cost a third as much. As they thaw against the skyr they release juice that sweetens the whole pot — fresh ones just sit on top of it.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": [
+    "No ruled defects or D0-003 substitutions apply (no oil, no lettuce; coconut is already fully weighed in the existing covers table). The berries' 5-minute steep is passive, not active — active time (~2 min toast+assembly) matches the card's 3-minute chip; total wall-clock is longer because of the passive wait."
+  ]
+}

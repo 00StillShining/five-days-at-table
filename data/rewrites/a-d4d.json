@@ -1,0 +1,117 @@
+{
+  "mealId": "a-d4d",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "red_cabbage": 90,
+      "beef_mince": 72,
+      "tomato": 60,
+      "carrot": 55,
+      "seeded_bread": 45,
+      "lettuce": 40,
+      "greek_yog": 35,
+      "red_onion": 30,
+      "avocado": 30,
+      "cheddar_rf": 16,
+      "olive_oil": 9
+    },
+    "m": {
+      "red_cabbage": 95,
+      "beef_mince": 85,
+      "tomato": 80,
+      "carrot": 65,
+      "seeded_bread": 50,
+      "lettuce": 50,
+      "greek_yog": 45,
+      "red_onion": 40,
+      "avocado": 40,
+      "cheddar_rf": 25,
+      "olive_oil": 13
+    }
+  },
+  "freebies": [
+    "lemon",
+    "mustard",
+    "salt",
+    "black_pepper"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Slaw first: red cabbage (90/95 g) and carrot (55/65 g) from Sunday, with yoghurt (35/45 g), the oil (9/13 g), lemon, mustard, salt and pepper. Leave it to sit.",
+      "minutes": 2,
+      "tempC": null,
+      "track": "prep",
+      "station": "counter",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 2,
+      "text": "Beef (72/85 g) into two loose balls. Do not season them. Do not compact them.",
+      "minutes": 1,
+      "tempC": null,
+      "track": "prep",
+      "station": "counter",
+      "clockStart": 2,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Heavy pan, dry, on high for a full 3 minutes. It has to be too hot.",
+      "minutes": 3,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 4,
+      "text": "Balls in, and immediately press flat and hard with a spatula for 10 seconds each. Salt the top. 90 seconds — no touching, no moving, no pressing again.",
+      "minutes": 1.5,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 3,
+      "untimed": false
+    },
+    {
+      "n": 5,
+      "text": "Scrape underneath with a firm edge to keep the crust attached, flip, cheddar on (16/25 g). 45 seconds.",
+      "minutes": 0.75,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 4.5,
+      "untimed": false
+    },
+    {
+      "n": 6,
+      "text": "Bread (45/50 g) toasted.",
+      "minutes": 2,
+      "tempC": null,
+      "track": "toast",
+      "station": "toaster",
+      "clockStart": 3.25,
+      "untimed": false
+    },
+    {
+      "n": 7,
+      "text": "Avocado (30/40 g) mashed on the base. Patties, lettuce (40/50 g), tomato (60/80 g), raw onion (30/40 g).",
+      "minutes": 2,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": 5.25,
+      "untimed": false
+    }
+  ],
+  "why": "The crust is the whole dish, and it only forms in the first ninety seconds against a dry, screaming pan. Oil in the pan, salt on the raw side, or one early poke and you have lost it.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": [
+    "D0-003: oil never appeared in this card's own step text — the why block explicitly says the patty pan must stay dry ('Oil in the pan... and you have lost it'). Placed at the slaw step instead, a raw dressing use alongside the yoghurt/lemon/mustard → olive_oil. Grams unchanged (9/13 g, matches table).",
+    "D0-014 (Sunday cabbage 515 g): this dish's red_cabbage (90/95 g) is one of the three consumers of Sunday's shred batch — see prep-a.json for the corrected 515 g / three-consumer fix."
+  ]
+}

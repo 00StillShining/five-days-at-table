@@ -15,6 +15,19 @@
 import fs from "node:fs";
 import path from "node:path";
 import { z } from "zod";
+import {
+  RewriteFileError,
+  loadOwnerRulings,
+  applyOwnerRulings,
+  loadContentPassIngredients,
+  mergeContentPassIngredients,
+  loadMealRewrite,
+  applyMealRewrite,
+  loadPrepRewrite,
+  applyPrepRewrite,
+  loadApprovals,
+  batchApprovalMap,
+} from "./rewrite-overlay.js";
 
 const ROOT = process.cwd();
 const RAW = path.join(ROOT, "data", "raw");
@@ -47,7 +60,7 @@ const shoppinglist = readJSON(path.join(RAW, "shoppinglist.json"));
 const aliasMap = readJSON(path.join(HERE, "alias-map.json"));
 const registerMap = readJSON(path.join(HERE, "register-map.json"));
 
-const decisions = []; // decisions-queue.json accumulator
+let decisions = []; // decisions-queue.json accumulator
 let decisionSeq = 0;
 function decide({ topic, detail, options = [], recommendation, status, resolvedTo }) {
   decisionSeq += 1;
@@ -401,7 +414,7 @@ const ESTIMATE_OVERLAY = {}; // id -> {estimate, source}
   });
 }
 
-const ingredients = [];
+let ingredients = [];
 
 for (const id of ALL_ING_IDS) {
   const isNew = id in NEW_INGREDIENTS;
@@ -611,7 +624,7 @@ function round1(x) {
   return Math.round(x * 10) / 10;
 }
 
-const meals = [];
+let meals = [];
 const mealsByKey = {}; // "A-2-Dinner" -> meal
 
 for (const c of allCards) {
@@ -1022,7 +1035,7 @@ function parseTotalMin(ops) {
   return m ? +m[1] * 60 + +m[2] : null;
 }
 
-const prep = ["A", "B"].map((wk) => {
+let prep = ["A", "B"].map((wk) => {
   const s = methods.weeks[wk].sunday;
   return {
     week: wk,
@@ -1042,6 +1055,8 @@ const prep = ["A", "B"].map((wk) => {
       storage: y.storage,
     })),
     midweek: s.midweek,
+    rev: "A",
+    approved: false,
   };
 });
 
@@ -1483,6 +1498,171 @@ decide({
 });
 
 // ---------------------------------------------------------------------------
+// Phase 1 overlay (REWRITE-SPEC.md): owner-rulings.json -> decisions-queue;
+// data/rewrites/* -> meals.json / prep.json / ingredients.json; approvals.json
+// -> method.approved. Everything here runs AFTER every Phase 0 checksum/
+// decide() above (which must see pure Phase 0 data), and BEFORE the zod
+// validation + write pass below (which must see the final, overlaid data).
+//
+// With zero files in data/rewrites/ (current repo state) every block below
+// is a no-op and meals/prep/ingredients/decisions pass through unchanged —
+// this is what keeps `npm run extract` producing exactly Phase 0 output
+// (plus the owner-rulings stamps) until the rewriters' files land.
+// ---------------------------------------------------------------------------
+
+const REWRITES_DIR = path.join(ROOT, "data", "rewrites");
+
+// --- owner-rulings.json -> decisions-queue.json -----------------------------
+{
+  let ownerRulings;
+  try {
+    ownerRulings = loadOwnerRulings(path.join(HERE, "owner-rulings.json"));
+  } catch (err) {
+    if (err instanceof RewriteFileError) {
+      stop(`owner-rulings.json is present but invalid: ${err.message}`, { file: err.file }, ["Fix tools/extract/owner-rulings.json"]);
+    }
+    throw err;
+  }
+  if (ownerRulings) {
+    const { decisions: merged, appliedRulingIds, confirmedDefaultIds, unknownRulingIds } = applyOwnerRulings(decisions, ownerRulings);
+    if (unknownRulingIds.length) {
+      stop(
+        `owner-rulings.json references decision id(s) not present in decisions-queue.json: ${unknownRulingIds.join(", ")}`,
+        { unknownRulingIds },
+        ["Fix the ruling's id in owner-rulings.json", "Investigate why join.js's decision sequence changed"]
+      );
+    }
+    const expectedConfirmed = ownerRulings.confirmedDefaults.confirmedCount;
+    check(
+      "owner-rulings-confirmed-defaults-count",
+      confirmedDefaultIds.length === expectedConfirmed,
+      `owner-rulings.json declares confirmedCount=${expectedConfirmed}; actual un-ruled resolved-by-default entries=${confirmedDefaultIds.length}`
+    );
+    if (confirmedDefaultIds.length !== expectedConfirmed) {
+      stop(
+        `owner-rulings.json's confirmedDefaults.confirmedCount (${expectedConfirmed}) no longer matches the actual number of un-ruled resolved-by-default decisions-queue entries (${confirmedDefaultIds.length}) — the checkpoint's confirmation coverage has drifted and needs a fresh owner skim-review.`,
+        { expected: expectedConfirmed, actual: confirmedDefaultIds.length, confirmedDefaultIds },
+        ["Update owner-rulings.json's confirmedCount after a fresh owner skim-review", "Investigate why the decisions-queue entry set changed shape"]
+      );
+    }
+    decisions = merged;
+    console.log(
+      `owner-rulings: applied ${appliedRulingIds.length} explicit ruling(s) [${appliedRulingIds.join(", ")}], stamped ${confirmedDefaultIds.length} confirmed default(s), resolvedBy="${ownerRulings.resolvedBy}".`
+    );
+  } else {
+    console.warn("owner-rulings.json not found — decisions-queue.json ships with Phase 0 statuses, no owner-checkpoint stamp.");
+  }
+}
+
+// --- data/rewrites/_ingredients.A.json, _ingredients.B.json -> ingredients.json
+let contentPassFreebieIds = new Set();
+{
+  const { entries, invalid } = loadContentPassIngredients(REWRITES_DIR);
+  for (const inv of invalid) console.warn(`SKIPPED invalid content-pass ingredients file ${inv.file}: ${inv.message}`);
+
+  const existingIds = new Set(ingredients.map((i) => i.id));
+  const { merged, conflicts, collisions } = mergeContentPassIngredients(entries, existingIds);
+
+  for (const c of collisions) {
+    console.warn(`SKIPPED content-pass ingredient "${c.id}" from _ingredients.${c.week}.json: id already exists in Phase 0 ingredients.json.`);
+  }
+  if (conflicts.length) {
+    stop(
+      `Conflicting content-pass ingredient definitions across _ingredients.A.json/_ingredients.B.json for id(s): ${conflicts.map((c) => c.id).join(", ")}`,
+      { conflicts },
+      ["Make the two rewriters' definitions for this id identical", "Pick one definition and remove it from the other file"]
+    );
+  }
+
+  ingredients = [...ingredients, ...merged];
+  for (const rec of merged) if (rec.freebie) contentPassFreebieIds.add(rec.id);
+  if (merged.length) {
+    console.log(`content-pass ingredients: merged ${merged.length} new record(s) [${merged.map((r) => r.id).join(", ")}].`);
+  }
+}
+
+// --- data/rewrites/<mealId>.json -> meals.json ------------------------------
+let ingredientsById = new Map(ingredients.map((i) => [i.id, i]));
+const freebieIdsFromMeals = new Set();
+{
+  let appliedCount = 0;
+  meals = meals.map((meal) => {
+    const loaded = loadMealRewrite(REWRITES_DIR, meal.id);
+    if (loaded.status === "missing") return meal;
+    if (loaded.status === "invalid") {
+      console.warn(`SKIPPED invalid rewrite ${loaded.file}: ${loaded.message} — meal ${meal.id} keeps Phase 0 content (rev A).`);
+      return meal;
+    }
+    const result = applyMealRewrite(meal, loaded.data, ingredientsById);
+    if (result.status === "invalid") {
+      console.warn(`SKIPPED rewrite ${loaded.file}: ${result.message} — meal ${meal.id} keeps Phase 0 content (rev A).`);
+      return meal;
+    }
+    for (const id of result.freebies) freebieIdsFromMeals.add(id);
+    appliedCount += 1;
+    return result.meal;
+  });
+  if (appliedCount) console.log(`meal rewrites: applied ${appliedCount}/${meals.length}.`);
+}
+
+// --- freebies (from meal rewrites) -> freebie:true on the referenced record -
+{
+  const allFreebieIds = new Set([...freebieIdsFromMeals, ...contentPassFreebieIds]);
+  if (allFreebieIds.size) {
+    ingredients = ingredients.map((ing) => (allFreebieIds.has(ing.id) ? { ...ing, freebie: true } : ing));
+    ingredientsById = new Map(ingredients.map((i) => [i.id, i]));
+  }
+}
+
+// --- data/rewrites/prep-a.json, prep-b.json -> prep.json --------------------
+{
+  const knownIds = new Set(ingredients.map((i) => i.id));
+  prep = prep.map((session) => {
+    const loaded = loadPrepRewrite(REWRITES_DIR, session.week);
+    if (loaded.status === "missing") return session;
+    if (loaded.status === "invalid") {
+      console.warn(`SKIPPED invalid rewrite ${loaded.file}: ${loaded.message} — Week ${session.week} session keeps Phase 0 content (rev A).`);
+      return session;
+    }
+    const result = applyPrepRewrite(session, loaded.data, knownIds);
+    if (result.status === "invalid") {
+      console.warn(`SKIPPED rewrite ${loaded.file}: ${result.message} — Week ${session.week} session keeps Phase 0 content (rev A).`);
+      return session;
+    }
+    console.log(`prep rewrite applied: Week ${session.week} session.`);
+    return result.session;
+  });
+}
+
+// --- tools/extract/approvals.json -> method.approved / prep session approved
+{
+  let approvals;
+  try {
+    approvals = loadApprovals(path.join(HERE, "approvals.json"));
+  } catch (err) {
+    if (err instanceof RewriteFileError) {
+      stop(`approvals.json is present but invalid: ${err.message}`, { file: err.file }, ["Fix tools/extract/approvals.json"]);
+    }
+    throw err;
+  }
+  const approvalMap = batchApprovalMap(approvals);
+
+  // L10: approved is set by approvals.json ONLY — derived here from batch
+  // membership, and only ever true when a rewrite was actually applied
+  // (rev "B"); a meal/session with no content pass is never "approved".
+  meals = meals.map((m) => {
+    const approved = m.method.rev === "B" && (approvalMap.get(m.id) ?? false);
+    if (approved === m.method.approved) return m;
+    return { ...m, method: { ...m.method, approved } };
+  });
+  prep = prep.map((s) => {
+    const approved = s.rev === "B" && (approvalMap.get(`prep-${s.week.toLowerCase()}`) ?? false);
+    if (approved === s.approved) return s;
+    return { ...s, approved };
+  });
+}
+
+// ---------------------------------------------------------------------------
 // Write outputs
 // ---------------------------------------------------------------------------
 
@@ -1505,6 +1685,8 @@ const IngredientSchema = z.object({
   aisle: z.string().nullable(),
   freebie: z.boolean(),
   addedInExtraction: z.boolean().optional(),
+  addedInContentPass: z.boolean().optional(),
+  contentPassSources: z.array(z.enum(["A", "B"])).optional(),
   storage: z.object({
     class: StorageClass,
     location: z.string(),
@@ -1538,7 +1720,13 @@ const StepSchema = z.object({
   tempC: z.number().nullable(),
   track: z.string().nullable(),
   station: z.string().nullable(),
-  clockStart: z.string().nullable(),
+  // Elapsed minutes from meal/session start (REWRITE-SPEC.md: "clockStart:
+  // 0|null"). Phase 0 steps always carry null here, so widening this from
+  // the prior (mistaken) z.string().nullable() to z.number().nullable() is
+  // a non-breaking correction — it only starts mattering once a rewrite
+  // supplies a real numeric clockStart.
+  clockStart: z.number().nullable(),
+  untimed: z.boolean().optional(),
 });
 
 const MacroSchema = z.object({ kcal: z.number(), protein: z.number(), netCarb: z.number(), fat: z.number(), fibre: z.number() });
@@ -1557,8 +1745,10 @@ const MealSchema = z.object({
   method: z.object({
     steps: z.array(StepSchema),
     why: z.string(),
-    batchSource: z.null(),
-    batchTakeG: z.null(),
+    // Phase 0 output is always null here; a Phase 1 rewrite may set a real
+    // batchSource/batchTakeG (REWRITE-SPEC.md meal rewrite schema).
+    batchSource: z.string().nullable(),
+    batchTakeG: z.object({ w: z.number(), m: z.number(), total: z.number() }).nullable(),
     approved: z.boolean(),
     rev: z.string(),
   }),
@@ -1575,6 +1765,11 @@ const PrepSchema = z.object({
       body: z.string(),
       station: z.string(),
       ingredients: z.array(z.object({ ingId: z.string(), g: z.number() })),
+      // Only present once a Phase 1 prep rewrite supplies it (REWRITE-SPEC.md
+      // rule 10: "minutes per op"); Phase 0 ops never carry this key.
+      minutes: z.number().nullable().optional(),
+      tempC: z.number().nullable().optional(),
+      untimed: z.boolean().optional(),
     })
   ),
   yields: z.array(
@@ -1583,9 +1778,18 @@ const PrepSchema = z.object({
       qty: z.string(),
       consumers: z.array(z.string()).nullable(),
       storage: z.string(),
+      // Free-text remark on the yield — D0-020 headroom is the common case.
+      note: z.string().nullable().optional(),
     })
   ),
   midweek: z.array(z.object({ heading: z.string(), body: z.string() })),
+  // rev/approved mirror meals.json's method.{rev,approved} at the session
+  // level, so render-batch.js and the reviewer can show session old-vs-new
+  // and approval state the same way they do for meals (REWRITE-SPEC.md's
+  // approval batches explicitly include prep-a/prep-b).
+  rev: z.string(),
+  approved: z.boolean(),
+  notes: z.array(z.string()).optional(),
 });
 
 const CalendarItemSchema = z.object({
@@ -1619,8 +1823,14 @@ const DecisionSchema = z.object({
   detail: z.string(),
   options: z.array(z.string()),
   recommendation: z.string(),
-  status: z.enum(["resolved-by-default", "open"]),
+  // "resolved" = an explicit owner ruling from owner-rulings.json overrode
+  // an "open" Phase 0 item (D0-003/030/031 at the 2026-08-04 checkpoint).
+  status: z.enum(["resolved-by-default", "resolved", "open"]),
   resolvedTo: z.string().nullable(),
+  // Present only once owner-rulings.json has stamped this entry (either an
+  // explicit ruling or a confirmed-as-is default) — absent for any entry
+  // still genuinely open.
+  resolvedBy: z.string().optional(),
 });
 
 function validateOrStop(schema, data, label) {
@@ -1680,7 +1890,11 @@ write("validation.json", validation);
 
 const anyFail = validation.some((v) => !v.pass);
 console.log(`\n${validation.length} checksums run, ${validation.filter((v) => v.pass).length} passed, ${validation.filter((v) => !v.pass).length} failed.`);
-console.log(`${decisions.length} decisions-queue entries (${decisions.filter((d) => d.status === "open").length} open, ${decisions.filter((d) => d.status === "resolved-by-default").length} resolved-by-default).`);
+console.log(
+  `${decisions.length} decisions-queue entries (${decisions.filter((d) => d.status === "open").length} open, ${
+    decisions.filter((d) => d.status === "resolved-by-default").length
+  } resolved-by-default, ${decisions.filter((d) => d.status === "resolved").length} resolved-by-owner-ruling).`
+);
 
 if (anyFail) {
   console.error("One or more checksums failed. See validation.json.");

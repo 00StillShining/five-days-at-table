@@ -1,0 +1,134 @@
+{
+  "mealId": "a-d3d",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "plantain": 140,
+      "spinach": 120,
+      "tilapia": 100,
+      "okra": 100,
+      "tomato": 80,
+      "peppers_frozen": 60,
+      "prawns": 40,
+      "red_onion": 40,
+      "rapeseed_oil": 6
+    },
+    "m": {
+      "plantain": 185,
+      "spinach": 150,
+      "tilapia": 130,
+      "okra": 120,
+      "tomato": 100,
+      "peppers_frozen": 80,
+      "prawns": 55,
+      "red_onion": 50,
+      "rapeseed_oil": 8
+    }
+  },
+  "freebies": [
+    "salt",
+    "scotch_bonnet",
+    "bay_leaf",
+    "stock_powder",
+    "lime"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Onion (40/50 g) and pepper (60/80 g) into a wide pan with the rapeseed oil (6/8 g), 4 minutes.",
+      "minutes": 4,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 2,
+      "text": "Tomato (80/100 g) and scotch bonnet in, 3 minutes, pressing it down.",
+      "minutes": 3,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 4,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "500 ml stock, 2 tsp pepper soup spice, a bay leaf. Bring to a BARE simmer — never a boil.",
+      "minutes": null,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 7,
+      "untimed": true
+    },
+    {
+      "n": 4,
+      "text": "Okra (100/120 g) topped and halved, in for 5 minutes.",
+      "minutes": 5,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 7,
+      "untimed": false
+    },
+    {
+      "n": 5,
+      "text": "Fish (100/130 g) in whole pieces, laid on top. Lid on, 8 minutes. Do not stir it.",
+      "minutes": 8,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 12,
+      "untimed": false
+    },
+    {
+      "n": 6,
+      "text": "Prawns (40/55 g) in for the last 3 minutes.",
+      "minutes": 3,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 17,
+      "untimed": false
+    },
+    {
+      "n": 7,
+      "text": "Spinach (120/150 g) folded through for the last 1.",
+      "minutes": 1,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 19,
+      "untimed": false
+    },
+    {
+      "n": 8,
+      "text": "Plantain (140/185 g) sliced thick, dry-griddled 3 minutes a side. Set aside.",
+      "minutes": 6,
+      "tempC": null,
+      "track": "griddle",
+      "station": "griddle",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 9,
+      "text": "Lime at the table. Plantain on the side.",
+      "minutes": 0.5,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": 20,
+      "untimed": false
+    }
+  ],
+  "why": "A bare simmer and no stirring. Catfish and tilapia are soft, and a rolling boil shreds them into the broth — you want whole pieces you can lift out with a spoon.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": [
+    "D0-003: the pan-softening oil (single hot-pan use for onion/pepper) becomes rapeseed_oil.",
+    "Griddle track (plantain) runs in parallel with the soup pan from clock 0, finishing at 0:06 and sitting ready well before the pot's 0:20 finish — the original 20 min time chip only holds if the two happen side by side, not back to back."
+  ]
+}

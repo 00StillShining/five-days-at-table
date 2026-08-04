@@ -1,0 +1,102 @@
+{
+  "mealId": "a-d4l",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "passata": 190,
+      "courgette": 150,
+      "turkey_mince": 50,
+      "carrot": 65,
+      "red_onion": 40,
+      "edamame_pasta": 34,
+      "olive_oil": 13,
+      "parmesan": 10
+    },
+    "m": {
+      "passata": 210,
+      "courgette": 180,
+      "turkey_mince": 70,
+      "carrot": 70,
+      "red_onion": 50,
+      "edamame_pasta": 38,
+      "olive_oil": 21,
+      "parmesan": 14
+    }
+  },
+  "freebies": [
+    "salt"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Big pan of water on, salted hard.",
+      "minutes": 8,
+      "tempC": null,
+      "track": "pasta",
+      "station": "hob",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 2,
+      "text": "Sunday's bolognese — take the entire batch, nothing held back: passata (190/210 g), courgette (150/180 g), turkey mince (50/70 g), carrot (65/70 g) and onion (40/50 g), all cooked down into it — into a pan on medium with a splash of water, 5 minutes.",
+      "minutes": 5,
+      "tempC": null,
+      "track": "sauce",
+      "station": "hob",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Edamame spaghetti (34/38 g) into the boiling water. 6–7 minutes, no more — it goes from firm to mush quickly and there is no rescuing it.",
+      "minutes": 6.5,
+      "tempC": null,
+      "track": "pasta",
+      "station": "hob",
+      "clockStart": 8,
+      "untimed": false
+    },
+    {
+      "n": 4,
+      "text": "Drain, keeping a mug of the cooking water. Pasta INTO the sauce, not sauce onto pasta.",
+      "minutes": 0.5,
+      "tempC": null,
+      "track": "pasta",
+      "station": "hob",
+      "clockStart": 14.5,
+      "untimed": false
+    },
+    {
+      "n": 5,
+      "text": "Toss hard for 30 seconds with a splash of that water and the oil (13/21 g), until it turns glossy and clings.",
+      "minutes": 0.5,
+      "tempC": null,
+      "track": "sauce",
+      "station": "hob",
+      "clockStart": 15,
+      "untimed": false
+    },
+    {
+      "n": 6,
+      "text": "Parmesan (10/14 g) off the heat.",
+      "minutes": 0.5,
+      "tempC": null,
+      "track": "sauce",
+      "station": "hob",
+      "clockStart": 15.5,
+      "untimed": false
+    }
+  ],
+  "why": "Edamame pasta has no gluten and almost no starch, so it will not emulsify a sauce the way wheat does — the oil and the splash of cooking water are doing that job by force. Skip them and the sauce just sits in a puddle underneath.",
+  "batchSource": "prep-a",
+  "batchTakeG": {
+    "w": 495,
+    "m": 580,
+    "total": 1075
+  },
+  "notes": [
+    "D0-003: the oil is added off the boil, tossed through at the end to emulsify the sauce onto pasta with no gluten of its own (per the why block) — a finishing technique, not a hot-pan frying use, so it stays olive_oil.",
+    "Named worst offender (PLAN §4): batchTakeG made explicit. Sunday's bolognese batch (90 g onion + 135 g carrot + 330 g courgette + 120 g turkey mince + 400 g passata = 1,075 g raw, cooking down to the yield table's stated '~1 kg') is consumed ENTIRELY by this single lunch — nothing held back this week, though the yield note flags the option to freeze half for a future week. Her raw-input share 495 g, him 580 g — tracked on the same raw/dry-weight basis the rest of this dataset already uses (e.g. rice by dry weight)."
+  ]
+}

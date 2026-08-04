@@ -1,0 +1,105 @@
+{
+  "mealId": "a-d5d",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "cauliflower": 120,
+      "salmon": 80,
+      "red_cabbage": 80,
+      "kidney_beans": 70,
+      "pineapple": 70,
+      "brown_rice": 45,
+      "spring_onion": 20,
+      "olive_oil": 4,
+      "jerk_paste": 8,
+      "coconut_des": 3
+    },
+    "m": {
+      "cauliflower": 150,
+      "salmon": 105,
+      "red_cabbage": 100,
+      "kidney_beans": 90,
+      "pineapple": 90,
+      "brown_rice": 70,
+      "spring_onion": 25,
+      "olive_oil": 5,
+      "jerk_paste": 10,
+      "coconut_des": 5
+    }
+  },
+  "freebies": [
+    "thyme",
+    "lime",
+    "salt"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Rice (45/70 g dry) on with the kidney beans (70/90 g), a sprig of thyme, the spring onion (20/25 g) and a spoonful of coconut (3/5 g) in the water. 20 minutes, covered.",
+      "minutes": 20,
+      "tempC": null,
+      "track": "hob",
+      "station": "hob",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 2,
+      "text": "Salmon (80/105 g) rubbed with jerk paste (8/10 g) and left while the rice cooks.",
+      "minutes": 2,
+      "tempC": null,
+      "track": "prep",
+      "station": "counter",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Grill the salmon 10–12 minutes at medium-high, not turned. It's done when it flakes at a light press and is still coral in the middle.",
+      "minutes": 11,
+      "tempC": 200,
+      "track": "grill",
+      "station": "grill",
+      "clockStart": 8,
+      "untimed": false
+    },
+    {
+      "n": 4,
+      "text": "Pineapple (70/90 g) in thick slices onto a dry griddle, high, 2 minutes a side until it caramelises and marks. Chop.",
+      "minutes": 4,
+      "tempC": null,
+      "track": "griddle",
+      "station": "griddle",
+      "clockStart": 8,
+      "untimed": false
+    },
+    {
+      "n": 5,
+      "text": "Slaw: red cabbage (80/100 g), the charred pineapple, lime, salt and the oil (4/5 g).",
+      "minutes": 1.5,
+      "tempC": null,
+      "track": "griddle",
+      "station": "counter",
+      "clockStart": 12,
+      "untimed": false
+    },
+    {
+      "n": 6,
+      "text": "Cauliflower (120/150 g) stirred through the rice for the last 2 minutes, lid on, to steam.",
+      "minutes": 2,
+      "tempC": null,
+      "track": "hob",
+      "station": "hob",
+      "clockStart": 18,
+      "untimed": false
+    }
+  ],
+  "why": "Char the pineapple. Raw, it is just sweet against an already sweet-hot fish; caramelised, it picks up a bitter edge and that is the thing stopping the whole plate from cloying.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": [
+    "D0-003: the pineapple-slaw oil is a raw finishing/dressing use → olive_oil.",
+    "D0-014 (Sunday cabbage 515 g): this dish's red_cabbage (80/100 g) is the THIRD consumer PLAN §4 flags as missing from the original Sunday op text (the op named only Thursday's burger and Friday's wrap) — see prep-a.json for the corrected 515 g / three-consumer fix.",
+    "Seasoning weighing: 'salmon rubbed with jerk paste' and 'a spoonful of coconut in the water' were never gram-tracked. Standard-reference jerk_paste (wet marinade, distinct product from the dry jerk_seasoning used on the chickpeas) added at a realistic rub quantity (8/10 g); coconut_des (already an established Week A ingredient) added at a realistic spoonful, split proportional to the rice dry-weight share (3/5 g). Combined drift +32/+48 kcal — her crosses the 30 kcal note threshold; both additions are named explicitly in PLAN §4's audit ('honey, sugar, soy, mirin, adobo, coconut, suya carry real calories')."
+  ]
+}

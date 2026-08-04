@@ -1,0 +1,88 @@
+{
+  "mealId": "b-d3l",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "turkey_mince": 120,
+      "okra": 120,
+      "passata": 120,
+      "spinach": 100,
+      "peppers_frozen": 70,
+      "brown_rice": 62,
+      "red_onion": 40,
+      "rapeseed_oil": 7
+    },
+    "m": {
+      "turkey_mince": 160,
+      "okra": 150,
+      "passata": 140,
+      "spinach": 130,
+      "peppers_frozen": 90,
+      "brown_rice": 85,
+      "red_onion": 50,
+      "rapeseed_oil": 9
+    }
+  },
+  "freebies": [
+    "lime",
+    "lemon",
+    "thyme",
+    "stock_powder",
+    "scotch_bonnet"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Sunday's turkey & okra stew — take the lot, 470/590 g (1,060 g total) of the ~1.05 kg batch: turkey (120/160 g), okra (120/150 g), passata (120/140 g), pepper (70/90 g), onion (40/50 g) and the oil (7/9 g) they were cooked in — into a pan on medium with a splash of water. 4 minutes, no more.",
+      "minutes": 4,
+      "tempC": null,
+      "track": "stew",
+      "station": "hob 1",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 2,
+      "text": "Spinach (100/130 g) in two handfuls, wilted through.",
+      "minutes": 1,
+      "tempC": null,
+      "track": "stew",
+      "station": "hob 1",
+      "clockStart": 4,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Sunday's rice (62/85 g dry) warmed alongside, covered, 2 minutes.",
+      "minutes": 2,
+      "tempC": null,
+      "track": "rice",
+      "station": "hob 2",
+      "clockStart": 4,
+      "untimed": false
+    },
+    {
+      "n": 4,
+      "text": "Lime or lemon at the table. Okra wants acid.",
+      "minutes": null,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": 6,
+      "untimed": true
+    }
+  ],
+  "why": "The okra was cooked briefly on Sunday and will not survive a second long heating. Four minutes to warm through — go longer and you get the slime everyone complains about instead of the body it is supposed to give the stew.",
+  "batchSource": "prep-b",
+  "batchTakeG": {
+    "w": 470,
+    "m": 590,
+    "total": 1060
+  },
+  "notes": [
+    "PLAN §4 worst-offender fix: this batch lunch previously had no stated portion against Sunday's ~1.05 kg stew. batchTakeG now states the exact take (470/590 g), which matches the Sunday yield exactly (single consumer, zero headroom) — see prep-b.json's yields.headroomNote for the reconciliation (470+590=1,060, matching the op's own ingredient sum of 90+160+280+260+270).",
+    "D0-003: oil (7/9 g) is entirely a Sunday cooking use (sautéing the stew's onion and pepper before the mince, passata and okra go in) — renamed olive_oil -> rapeseed_oil, unchanged grams. It is folded into the batch take at step 1 rather than added fresh at reheat, since it was never a separate ingredient the reheat itself uses.",
+    "Two short parallel tracks (stew pan + rice pan warming 'alongside', per the original wording) rather than treating the rice as a strictly sequential afterthought.",
+    "freebies carry the Sunday op's own trace seasoning (thyme, stock powder, scotch bonnet) forward with the batch take, same logic as the oil; lime/lemon are this card's own table seasoning."
+  ]
+}

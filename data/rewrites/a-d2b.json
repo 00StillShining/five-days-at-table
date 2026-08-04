@@ -1,0 +1,87 @@
+{
+  "mealId": "a-d2b",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "skyr": 95,
+      "egg": 50,
+      "blueberries": 60,
+      "raspberries": 60,
+      "oats": 40,
+      "peanut_butter": 8,
+      "rapeseed_oil": 3
+    },
+    "m": {
+      "skyr": 140,
+      "egg": 75,
+      "blueberries": 75,
+      "raspberries": 60,
+      "oats": 58,
+      "peanut_butter": 11,
+      "rapeseed_oil": 4
+    }
+  },
+  "freebies": [
+    "baking_powder",
+    "salt"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Blitz the oats (40/58 g) to a rough flour, 20 seconds in a blender or bullet.",
+      "minutes": 0.33,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 2,
+      "text": "Add the egg (50/75 g — 1 / 1½), about half the skyr (48/70 g), ½ tsp baking powder and a pinch of salt. Blitz 15 seconds to a thick, just-pourable batter. Rest 2 minutes.",
+      "minutes": 2.25,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Non-stick pan, medium-LOW. Rapeseed oil (3/4 g) wiped round with kitchen paper.",
+      "minutes": 0.5,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 4,
+      "text": "Drop 3–4 small rounds, 7–8 cm across. Do not make them large. 2 minutes, until bubbles hold their shape on the surface, then flip. 1 minute more.",
+      "minutes": 3,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 5,
+      "text": "Stack. Remaining skyr (47/70 g) on top, berries heaped over (60 g raspberries, 60/75 g blueberries), peanut butter (8/11 g) warmed 10 seconds and drizzled.",
+      "minutes": 1,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    }
+  ],
+  "why": "Medium-low, and small. High heat browns the outside before the middle sets, and a large pancake made of oats and skyr has nothing structural holding it together when you try to turn it.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": [
+    "D0-003: the wiped-round griddle oil is a hot-pan use → rapeseed_oil.",
+    "D0-016: reviewed — the 48/47 g (her) and 70/70 g (him) batter/topping split already sums exactly to the table skyr total (95/140 g); 'half' softened to 'about half' per the ruling's optional cosmetic note. No gram change."
+  ]
+}

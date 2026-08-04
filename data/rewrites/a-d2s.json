@@ -1,0 +1,79 @@
+{
+  "mealId": "a-d2s",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "carrot": 100,
+      "egg": 50,
+      "avocado": 25,
+      "peanut_butter": 16,
+      "suya_spice": 5
+    },
+    "m": {
+      "carrot": 100,
+      "egg": 100,
+      "avocado": 35,
+      "peanut_butter": 20,
+      "suya_spice": 7
+    }
+  },
+  "freebies": [
+    "lime",
+    "salt"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Sunday's boiled eggs (50/100 g — 1 / 2 whole eggs), peeled and halved.",
+      "minutes": 0.5,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 2,
+      "text": "Dust the cut faces heavily with suya (5/7 g) — ground roasted peanut, chilli, ginger, garlic, stock powder. More than looks sensible.",
+      "minutes": 0.5,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Dip: peanut butter (16/20 g) loosened with warm water and lime, mashed together with the avocado (25/35 g) and salt.",
+      "minutes": 1,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 4,
+      "text": "Carrot (100 g) cut into batons to scoop with.",
+      "minutes": 1.5,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    }
+  ],
+  "why": "Suya is mostly ground peanut, so it needs fat and salt around it to open up. Dry on a cold egg it tastes dusty; against the avocado dip it tastes like the thing you get at a roadside stand.",
+  "batchSource": "prep-a",
+  "batchTakeG": {
+    "w": 55,
+    "m": 107,
+    "total": 162
+  },
+  "notes": [
+    "D0-019 (egg count 2 vs 2.5): resolved cleanly per the ruling's own recommended direction — Sunday now boils 5 eggs (not 4), earmarking 3 whole eggs (150 g: 1 her/50 g + 2 him/100 g) for this snack instead of the fractional '1½ eggs' (75 g) the original card asked for. him.egg changes 75→100 g; 2 spare eggs remain, as before. See prep-a.json Sunday op and macro-drift table (him +71 kcal / +4.6 g protein, driven mostly by this fix plus the suya weighing below).",
+    "Seasoning weighing: suya spice dusting was previously unweighed. Standard-reference suya_spice added (own-mix: 3 parts ground roasted peanut : 1 part chilli, ginger/garlic/stock powder to taste, per Sunday's jar). A realistic 'heavy dust' on the cut egg faces: her 5 g, him 7 g. Drift +25/+71 kcal combined with the egg fix above — both intentional, explained.",
+    "batchTakeG covers only the Sunday-batched components eaten here: eggs (55/107 g) and suya spice (5/7 g, also mixed on Sunday). Carrot, avocado and peanut butter are fresh additions at plate time.",
+    "Cross-file id conflict resolved: this file does NOT define its own 'suya_spice' record in _ingredients.A.json. _ingredients.B.json (Week B rewriter, parallel) already publishes a canonical suya_spice record (520 kcal/22 p/41 f/20 c/10 fibre per 100 g, freebie:false) for its own suya uses — very close to this rewriter's independent 505/20/38/31/12 estimate, but not identical, and shipping both under the same id would fail L9. This card's 5/7 g grams are unchanged; they now price against B's published per100g instead. Macro-drift table below uses B's values."
+  ]
+}

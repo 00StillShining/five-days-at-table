@@ -1,0 +1,17 @@
+[
+  {
+    "id": "honey",
+    "name": { "display": "Honey", "short": "Honey", "canonical": "Honey" },
+    "per100g": { "kcal": 306, "protein": 0.3, "fat": 0, "carb": 76.4, "fibre": 0.2 },
+    "spec": { "weightState": "As it comes", "householdUnitG": null, "unitSingular": "tsp", "unitPlural": "tsp" },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Week B rewriter's definition — deliberately DIFFERENT kcal (306 vs 304) from _ingredients.A.json's honey, to exercise the conflicting-duplicate-id detection.",
+      "life": { "prose": "2 years" }
+    },
+    "sku": null
+  }
+]

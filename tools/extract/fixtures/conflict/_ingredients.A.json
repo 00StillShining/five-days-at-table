@@ -1,0 +1,17 @@
+[
+  {
+    "id": "honey",
+    "name": { "display": "Honey", "short": "Honey", "canonical": "Honey" },
+    "per100g": { "kcal": 304, "protein": 0.3, "fat": 0, "carb": 76.4, "fibre": 0.2 },
+    "spec": { "weightState": "As it comes", "householdUnitG": null, "unitSingular": "tsp", "unitPlural": "tsp" },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Week A rewriter's definition.",
+      "life": { "prose": "2 years" }
+    },
+    "sku": null
+  }
+]

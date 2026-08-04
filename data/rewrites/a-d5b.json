@@ -1,0 +1,108 @@
+{
+  "mealId": "a-d5b",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "spinach": 130,
+      "egg": 125,
+      "plantain": 95,
+      "tomato": 80,
+      "black_beans": 45,
+      "red_onion": 30,
+      "rapeseed_oil": 5
+    },
+    "m": {
+      "spinach": 160,
+      "egg": 150,
+      "plantain": 140,
+      "tomato": 100,
+      "black_beans": 55,
+      "red_onion": 40,
+      "rapeseed_oil": 6
+    }
+  },
+  "freebies": [
+    "thyme",
+    "scotch_bonnet",
+    "salt",
+    "hot_sauce"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Plantain (95/140 g) sliced thick on the diagonal, dry-griddled 3 minutes a side until black at the edges. Set aside.",
+      "minutes": 6,
+      "tempC": null,
+      "track": "griddle",
+      "station": "griddle",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 2,
+      "text": "Rapeseed oil (5/6 g) into a lidded pan, medium. Onion (30/40 g), 3 minutes.",
+      "minutes": 3,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Tomato (80/100 g), thyme and scotch bonnet, 4 minutes until it thickens.",
+      "minutes": 4,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 3,
+      "untimed": false
+    },
+    {
+      "n": 4,
+      "text": "Black beans (45/55 g) in. Spinach (130/160 g) in handfuls, each wilting before the next.",
+      "minutes": 3,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 7,
+      "untimed": false
+    },
+    {
+      "n": 5,
+      "text": "Make 2–3 wells with the back of a spoon. Crack the eggs (125/150 g — 2½ / 3) into them. Salt.",
+      "minutes": 1,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 10,
+      "untimed": false
+    },
+    {
+      "n": 6,
+      "text": "Lid on, heat low, 5 minutes. Whites set, yolks still moving.",
+      "minutes": 5,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 11,
+      "untimed": false
+    },
+    {
+      "n": 7,
+      "text": "Plantain alongside. Hot sauce.",
+      "minutes": 0.5,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": 16,
+      "untimed": false
+    }
+  ],
+  "why": "Wells, not on top. Sitting the eggs down into the greens cooks them in trapped steam and they set evenly — dropped on the surface they slide, spread thin and overcook at the edge long before the middle goes.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": [
+    "D0-003: the pan oil (single hot-pan use, softening onion) becomes rapeseed_oil."
+  ]
+}

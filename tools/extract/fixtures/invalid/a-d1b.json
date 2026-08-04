@@ -1,0 +1,14 @@
+{
+  "mealId": "a-d1b",
+  "rev": "B",
+  "covers": {
+    "w": { "spinach": 100 },
+    "m": { "spinach": 120 }
+  },
+  "freebies": [],
+  "steps": [
+    { "n": 1, "text": "Test step.", "minutes": 1, "tempC": null, "track": null, "clockStart": 0, "station": null }
+  ],
+  "batchSource": null,
+  "batchTakeG": null
+}

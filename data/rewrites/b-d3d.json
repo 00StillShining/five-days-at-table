@@ -1,0 +1,130 @@
+{
+  "mealId": "b-d3d",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "chicken": 130,
+      "plantain": 85,
+      "peppers": 100,
+      "tomato": 100,
+      "lettuce": 60,
+      "cucumber": 60,
+      "red_onion": 40,
+      "peanut_butter": 12,
+      "rapeseed_oil": 3,
+      "olive_oil": 3,
+      "suya_spice": 7
+    },
+    "m": {
+      "chicken": 175,
+      "plantain": 130,
+      "peppers": 120,
+      "tomato": 120,
+      "lettuce": 70,
+      "cucumber": 70,
+      "red_onion": 50,
+      "peanut_butter": 15,
+      "rapeseed_oil": 3,
+      "olive_oil": 5,
+      "suya_spice": 9
+    }
+  },
+  "freebies": [
+    "lime",
+    "salt",
+    "lemon"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Chicken (130/175 g) in 3 cm cubes. Rubbed with the oil (3 g flat, rapeseed — it's going under the grill), then 2 tsp suya (4/5 g) worked in with your hands.",
+      "minutes": null,
+      "tempC": null,
+      "track": "chicken",
+      "station": "board",
+      "clockStart": 0,
+      "untimed": true
+    },
+    {
+      "n": 2,
+      "text": "Leave it 10 minutes while everything else happens — longer if you have it.",
+      "minutes": 10,
+      "tempC": null,
+      "track": "chicken",
+      "station": "counter",
+      "clockStart": 1,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Plantain (85/130 g) sliced thick, dry-griddled 3 minutes a side.",
+      "minutes": 6,
+      "tempC": null,
+      "track": "sides",
+      "station": "hob 2",
+      "clockStart": 1,
+      "untimed": false
+    },
+    {
+      "n": 4,
+      "text": "Salad: pepper (100/120 g), tomato (100/120 g), cucumber (60/70 g) and red onion (40/50 g) diced small and rough, lettuce (60/70 g) torn in. Lime, salt, the rest of the oil (3/5 g, olive — finishing).",
+      "minutes": null,
+      "tempC": null,
+      "track": "sides",
+      "station": "board",
+      "clockStart": 7,
+      "untimed": true
+    },
+    {
+      "n": 5,
+      "text": "Dip: peanut butter (12/15 g) loosened with warm water, lemon, 1 tsp suya (2/2 g), salt.",
+      "minutes": null,
+      "tempC": null,
+      "track": "sides",
+      "station": "board",
+      "clockStart": 9,
+      "untimed": true
+    },
+    {
+      "n": 6,
+      "text": "Onto skewers, packed loosely, not crammed.",
+      "minutes": null,
+      "tempC": null,
+      "track": "chicken",
+      "station": "board",
+      "clockStart": 11,
+      "untimed": true
+    },
+    {
+      "n": 7,
+      "text": "Grill, griddle or a very hot dry pan: 3–4 minutes a side, about 12 minutes total, until charred at the corners and just firm.",
+      "minutes": 12,
+      "tempC": null,
+      "track": "chicken",
+      "station": "grill",
+      "clockStart": 12,
+      "untimed": false
+    },
+    {
+      "n": 8,
+      "text": "More suya (1/2 g) dusted over the skewers OFF the heat.",
+      "minutes": null,
+      "tempC": null,
+      "track": "chicken",
+      "station": "grill",
+      "clockStart": 24,
+      "untimed": true
+    }
+  ],
+  "why": "Suya twice — on before, dusted on after. It is a spice blend with ground peanut in it, and peanut burns. What goes on before the grill gives you the char; what goes on after gives you the flavour.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": [
+    "D0-003: oil is used twice for genuinely different purposes — a flat 3 g rub (rapeseed, going under a hot grill) applied before the chicken is split by cover, and a per-cover remainder (3/5 g) dressing the raw salad at the end (olive, finishing). Split into two covers rows: rapeseed_oil 3/3, olive_oil 3/5 — sums to the original table (6/8).",
+    "'Lettuce ... torn in' is explicit whole-leaf preparation in the original step text, not shredded — D0-003's substitution does not apply here; stays lettuce (little gem/romaine), unchanged.",
+    "Seasoning addition (rule 5): suya appears three times in this card (2 tsp rub, 1 tsp dip, an unquantified 'more' dust) with no tracked gram row anywhere in meals.json. Total suya taken as 4 tsp (~16 g, new suya_spice id, see _ingredients.B.json), split proportionally to the chicken weight ratio (130:175) to get 7/9 g total, then apportioned across the three uses by their stated tsp ratio (2:1:1 -> rub 4/5 g, dip 2/2 g, dust 1/2 g); all three portions sum to the covers total (4+2+1=7 her, 5+2+2=9 him).",
+    "Macro drift from the suya addition is real: +36/+47 kcal roughly and +1.5/+2 g protein per cover (her/him) — above the 30 kcal note threshold. This is genuine, not an error: suya is a peanut-forward spice blend and was previously entirely unweighed in this dish despite being used three separate times.",
+    "Two tracks: chicken (rub -> marinate -> skewer -> grill -> finish) and sides (plantain, salad, dip) prepared during the 10-minute marinade wait. The 10-minute marinade is passive, not active — critical-path wall-clock total (~25 min) exceeds the card's activeMin (18) because of that wait, consistent with how activeMin is computed elsewhere in this dataset.",
+    "Step 7's 'Grill, griddle or a very hot dry pan' is left tempC:null — the original offers three hob-equivalent methods, not a committed oven/grill-appliance instruction, matching the same treatment given to every dry-griddle step elsewhere in this dataset (e.g. b-d3b's plantain, a-d3d's and a-d5b's plantain). No numeric grill temperature is stated anywhere in the source for this dish."
+  ]
+}

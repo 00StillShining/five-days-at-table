@@ -1,0 +1,47 @@
+[
+  {
+    "id": "salt",
+    "name": { "display": "Salt, fine", "short": "Salt", "canonical": "Salt" },
+    "per100g": { "kcal": 0, "protein": 0, "fat": 0, "carb": 0, "fibre": 0 },
+    "spec": { "weightState": "As it comes", "householdUnitG": null, "unitSingular": "pinch", "unitPlural": "pinches" },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Trace masses at these quantities — zero-cal freebie per REWRITE-SPEC rule 5.",
+      "life": { "prose": "Indefinite" }
+    },
+    "sku": null
+  },
+  {
+    "id": "black_pepper",
+    "name": { "display": "Black pepper, ground", "short": "Black pepper", "canonical": "Black pepper" },
+    "per100g": { "kcal": 251, "protein": 10.4, "fat": 3.3, "carb": 64.8, "fibre": 26.5 },
+    "spec": { "weightState": "As it comes", "householdUnitG": null, "unitSingular": "pinch", "unitPlural": "pinches" },
+    "aisle": "Cupboard",
+    "freebie": true,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Trace masses at these quantities — zero-cal freebie per REWRITE-SPEC rule 5.",
+      "life": { "prose": "Years" }
+    },
+    "sku": null
+  },
+  {
+    "id": "oregano_dried",
+    "name": { "display": "Oregano, dried", "short": "Oregano", "canonical": "Oregano" },
+    "per100g": { "kcal": 265, "protein": 9.0, "fat": 4.3, "carb": 68.9, "fibre": 42.5 },
+    "spec": { "weightState": "As it comes", "householdUnitG": null, "unitSingular": "tsp", "unitPlural": "tsp" },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Weighed at real (if small) masses — enters covers/macros per REWRITE-SPEC rule 5.",
+      "life": { "prose": "2 years" }
+    },
+    "sku": null
+  }
+]

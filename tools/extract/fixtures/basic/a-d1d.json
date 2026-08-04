@@ -1,0 +1,114 @@
+{
+  "mealId": "a-d1d",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "passata": 100,
+      "peppers_frozen": 90,
+      "mushrooms": 90,
+      "spinach": 60,
+      "chicken_mince": 65,
+      "lettuce": 40,
+      "mozzarella": 30,
+      "red_onion": 30,
+      "egg": 25,
+      "rapeseed_oil": 5,
+      "olive_oil": 9,
+      "parmesan": 12,
+      "oregano_dried": 1
+    },
+    "m": {
+      "passata": 120,
+      "peppers_frozen": 110,
+      "mushrooms": 110,
+      "spinach": 80,
+      "chicken_mince": 75,
+      "lettuce": 50,
+      "mozzarella": 40,
+      "red_onion": 40,
+      "egg": 25,
+      "rapeseed_oil": 6,
+      "olive_oil": 11,
+      "parmesan": 15,
+      "oregano_dried": 1
+    }
+  },
+  "freebies": ["salt", "black_pepper"],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Oven to 220°C fan. Tray lined with baking paper.",
+      "minutes": null,
+      "tempC": 220,
+      "track": "oven",
+      "clockStart": 0,
+      "station": "oven",
+      "untimed": true
+    },
+    {
+      "n": 2,
+      "text": "Base: chicken mince (65/75 g), parmesan (12/15 g), oregano (1 g), half a beaten egg (25 g), salt, garlic powder. Mix hard with your hands for a full minute — it should turn tacky and hold together in one mass.",
+      "minutes": 2,
+      "tempC": null,
+      "track": "prep",
+      "clockStart": 0,
+      "station": "board"
+    },
+    {
+      "n": 3,
+      "text": "Press onto the paper into a 20 cm round, 5–6 mm thick and even. Wet fingers stop it sticking. Bake 15 minutes.",
+      "minutes": 15,
+      "tempC": 220,
+      "track": "oven",
+      "clockStart": 2,
+      "station": "oven"
+    },
+    {
+      "n": 4,
+      "text": "Meanwhile: pepper (90/110 g), mushrooms (90/110 g) and onion (30/40 g) sliced. Pan, rapeseed oil (her 5 g / him 6 g), high heat, 5 minutes — until the mushrooms have given up their water and taken colour. Spinach (60/80 g) in at the end to wilt. Season.",
+      "minutes": 5,
+      "tempC": null,
+      "track": "pan",
+      "clockStart": 2,
+      "station": "hob 1"
+    },
+    {
+      "n": 5,
+      "text": "Base out. It should be firm, browned at the rim and lift cleanly off the paper. Blot the surface with kitchen paper.",
+      "minutes": 1,
+      "tempC": 220,
+      "track": "oven",
+      "clockStart": 17,
+      "station": "oven"
+    },
+    {
+      "n": 6,
+      "text": "Passata (100/120 g) spread thin, mozzarella (30/40 g) torn over, vegetables on. Back in for 8 minutes.",
+      "minutes": 8,
+      "tempC": 220,
+      "track": "oven",
+      "clockStart": 18,
+      "station": "oven"
+    },
+    {
+      "n": 7,
+      "text": "Salad alongside: lettuce (40/50 g), dressed with the olive oil (her 9 g / him 11 g — the finishing portion, per the D0-003 pan/finish oil split), lemon, salt and plenty of black pepper.",
+      "minutes": null,
+      "tempC": null,
+      "track": "prep",
+      "clockStart": 18,
+      "station": "board",
+      "untimed": true
+    }
+  ],
+  "why": "Blot the base. Chicken mince releases water as it bakes, and a wet base steams instead of crisping. Press it thin and even too — a thick middle stays raw while the rim burns.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": [
+    "L2 coverage: every oven step (n1,3,5,6) carries tempC 220.",
+    "L4/L7 D0-003 split: table total oil was 14/17 g olive_oil in Phase 0. Split into rapeseed_oil (pan-heat portion, 5/6 g, matching the original step 4's own '5 g of the oil' pan figure) + olive_oil (finishing/dressing portion, 9/11 g) — 5+9=14, 6+11=17, sums exactly to the Phase 0 table total, no new grams introduced (rule 9).",
+    "Lettuce is NOT swapped to sweetheart_cabbage — this card's lettuce is used as whole salad leaves, not shredded, so the D0-003 condition does not hold here (rule 8's explicit carve-out).",
+    "L7 addedInContentPass case: oregano_dried (1/1 g) is a genuinely new covers entry not present in Phase 0 at all — allowed because it is flagged addedInContentPass in _ingredients.A.json (a weighed seasoning addition, rule 5), not a guessed re-plan.",
+    "L8: three tracks (oven, pan, prep) with clockStart coverage throughout — a genuine multi-component dinner."
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "mealId": "b-d5s",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "carrot": 120,
+      "greek_yog": 80,
+      "peanut_butter": 20,
+      "suya_spice": 2
+    },
+    "m": {
+      "carrot": 140,
+      "greek_yog": 100,
+      "peanut_butter": 25,
+      "suya_spice": 2
+    }
+  },
+  "freebies": [
+    "lime",
+    "salt"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Peanut butter (20/25 g) and yoghurt (80/100 g) beaten together. It will look split for a moment — keep going, it comes back.",
+      "minutes": 0.5,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 2,
+      "text": "1 tsp suya (2/2 g), lime, salt, then warm water a teaspoon at a time until it's just scoopable.",
+      "minutes": null,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": 0.5,
+      "untimed": true
+    },
+    {
+      "n": 3,
+      "text": "Carrots (120/140 g) in long batons.",
+      "minutes": 1.5,
+      "tempC": null,
+      "track": null,
+      "station": "board",
+      "clockStart": 0.5,
+      "untimed": false
+    }
+  ],
+  "why": "It splits, then it doesn't. Peanut butter and yoghurt seize when they first meet and it looks wrong — thirty seconds of hard beating brings it smooth, and adding the water too early stops that ever happening.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": [
+    "Seasoning addition (rule 5): reuses the suya_spice id introduced for b-d3d (see _ingredients.B.json). 1 tsp suya (~4 g total) split by the dip-base ratio (peanut butter + yoghurt, 100:125) -> 2/2 g (both round the same). Macro impact is trivial (~10 kcal/cover) — no >30 kcal note required.",
+    "No oil, no lettuce — no D0-003 substitutions apply."
+  ]
+}

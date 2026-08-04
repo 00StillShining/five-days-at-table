@@ -1,0 +1,107 @@
+{
+  "mealId": "b-d2d",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "tilapia": 160,
+      "cauliflower": 130,
+      "peppers": 90,
+      "carrot": 70,
+      "brown_rice": 48,
+      "red_onion": 45,
+      "rapeseed_oil": 10,
+      "sugar": 2
+    },
+    "m": {
+      "tilapia": 210,
+      "cauliflower": 160,
+      "peppers": 110,
+      "carrot": 85,
+      "brown_rice": 60,
+      "red_onion": 55,
+      "rapeseed_oil": 12,
+      "sugar": 2
+    }
+  },
+  "freebies": [
+    "vinegar",
+    "salt",
+    "allspice",
+    "scotch_bonnet",
+    "bay_leaf",
+    "all_purpose_seasoning"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Fish (160/210 g) dried hard, salted, dusted with a little all-purpose seasoning.",
+      "minutes": null,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 0,
+      "untimed": true
+    },
+    {
+      "n": 2,
+      "text": "Pan on high with the oil (10/12 g, rapeseed — this is frying, not the good stuff). Fish in, 3–4 minutes a side until the edges are properly crisp. Out onto a plate and left there — it's meant to sit.",
+      "minutes": 7,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 1,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Same pan, heat down. Onion (45/55 g), pepper (90/110 g) and carrot (70/85 g) all cut into thin strips. 2 minutes ONLY — they have to stay crunchy.",
+      "minutes": 2,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 8,
+      "untimed": false
+    },
+    {
+      "n": 4,
+      "text": "4 tbsp vinegar, 1 tsp sugar (2 g), a few allspice berries, a scotch bonnet pierced but left whole, a bay leaf. Bring it up hard for 60 seconds.",
+      "minutes": 1,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 10,
+      "untimed": false
+    },
+    {
+      "n": 5,
+      "text": "Pour the whole hot pickle over the fish. Leave 5 minutes at least, longer if you can stand it.",
+      "minutes": 5,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 11,
+      "untimed": false
+    },
+    {
+      "n": 6,
+      "text": "Sunday's rice (48/60 g dry) warmed with the cauliflower (130/160 g) stirred through, lid on, 3 minutes.",
+      "minutes": 3,
+      "tempC": null,
+      "track": "rice",
+      "station": "hob 2",
+      "clockStart": 11,
+      "untimed": false
+    }
+  ],
+  "why": "Two minutes on the vegetables, not ten. Escovitch is a hot pickle poured over fried fish, and the whole dish is the contrast between crunchy vegetables in sharp vinegar and soft fish underneath. Cook them soft and it's just fish in sauce.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": [
+    "D0-015 applied: the original oil row was inverted (her 12 g / him 10 g — the smaller cover getting more oil, backwards from every other row in the dataset). Corrected to her 10 g / him 12 g (him >= her). Day (Tuesday) oil totals stay sane either way, but the row itself now matches every other ingredient row's convention.",
+    "The original step 2 text stated a flat '8 g of the oil' that matched neither cover's true total (12 nor 10, before or after the swap) and left no second oil mention anywhere in the method to account for the remainder — unlike the genuine split-oil cases elsewhere in Week B. Since this dish uses oil in exactly one place (frying the fish), the step is corrected here to state the full, accurate her/him split (10/12 g) rather than repeat the original's unexplained flat figure.",
+    "D0-003: oil is a hot-pan frying use, no dressing/finishing use anywhere in this dish — whole row renames olive_oil -> rapeseed_oil.",
+    "Seasoning additions (rule 5): the escovitch pickle's '1 tsp sugar' is an explicit, non-trace quantity (unlike the various 'pinch' mentions elsewhere) — added to covers as sugar (2/2 g, new id, addedInContentPass:true, see _ingredients.B.json), split by the fish weight ratio (160:210) and rounded (both round to 2 g). The pickle's '4 tbsp vinegar' is explicit but calorically negligible — added to freebies as vinegar (new id, freebie:true) rather than to covers, per rule 5.",
+    "Two tracks: pan (fish -> vegetables -> pickle -> rest) and rice (Sunday's rice+cauliflower, warmed during the fish's 5-minute rest — genuine parallelism, not just restated sequentially).",
+    "Macro drift from the sugar addition is trivial (~8 kcal/cover) — no >30 kcal note required."
+  ]
+}

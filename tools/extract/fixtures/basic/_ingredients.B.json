@@ -1,0 +1,32 @@
+[
+  {
+    "id": "oregano_dried",
+    "name": { "display": "Oregano, dried", "short": "Oregano", "canonical": "Oregano" },
+    "per100g": { "kcal": 265, "protein": 9.0, "fat": 4.3, "carb": 68.9, "fibre": 42.5 },
+    "spec": { "weightState": "As it comes", "householdUnitG": null, "unitSingular": "tsp", "unitPlural": "tsp" },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Weighed at real (if small) masses — enters covers/macros per REWRITE-SPEC rule 5.",
+      "life": { "prose": "2 years" }
+    },
+    "sku": null
+  },
+  {
+    "id": "suya_spice_blend",
+    "name": { "display": "Suya spice blend", "short": "Suya spice", "canonical": "Suya spice" },
+    "per100g": { "kcal": 300, "protein": 15, "fat": 12, "carb": 30, "fibre": 10 },
+    "spec": { "weightState": "As it comes", "householdUnitG": null, "unitSingular": "tsp", "unitPlural": "tsp" },
+    "aisle": "Cupboard",
+    "freebie": false,
+    "storage": {
+      "class": "buy-once",
+      "location": "Cupboard",
+      "note": "Week B suya jar — weighed per portion once used in a card.",
+      "life": { "prose": "6 months" }
+    },
+    "sku": null
+  }
+]

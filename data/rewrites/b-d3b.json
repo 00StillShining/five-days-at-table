@@ -1,0 +1,98 @@
+{
+  "mealId": "b-d3b",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "egg": 125,
+      "plantain": 100,
+      "peppers_frozen": 80,
+      "tomato": 80,
+      "spinach": 60,
+      "red_onion": 40,
+      "rapeseed_oil": 6
+    },
+    "m": {
+      "egg": 150,
+      "plantain": 130,
+      "peppers_frozen": 100,
+      "tomato": 100,
+      "spinach": 80,
+      "red_onion": 50,
+      "rapeseed_oil": 7
+    }
+  },
+  "freebies": [
+    "thyme",
+    "scotch_bonnet",
+    "stock_powder"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Plantain (100/130 g) in 1.5 cm DICE, not slices. This is a hash.",
+      "minutes": null,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": 0,
+      "untimed": true
+    },
+    {
+      "n": 2,
+      "text": "Wide pan, oil (6/7 g, rapeseed), medium-high. Plantain in a single layer, 4 minutes without touching it, then turned and 3 minutes more until the faces are dark.",
+      "minutes": 7,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Onion (40/50 g) and pepper (80/100 g) in, 4 minutes.",
+      "minutes": 4,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": 7,
+      "untimed": false
+    },
+    {
+      "n": 4,
+      "text": "Tomato (80/100 g), thyme, scotch bonnet and a pinch of stock powder. 3 minutes, until it clings to everything rather than sitting in the pan.",
+      "minutes": 3,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": 11,
+      "untimed": false
+    },
+    {
+      "n": 5,
+      "text": "Spinach (60/80 g) folded through.",
+      "minutes": 1,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": 14,
+      "untimed": false
+    },
+    {
+      "n": 6,
+      "text": "Push the hash into two heaps, clear a space, and fry the eggs (125/150 g — 2½ / 3) alongside on a hard heat so the whites frill and brown at the edge.",
+      "minutes": 3,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": 15,
+      "untimed": false
+    }
+  ],
+  "why": "Single layer, and don't touch it. Plantain browns by contact, and a crowded pan steams it into something sweet and wet instead of caramelising it at the corners.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": [
+    "D0-003: oil is a hot-pan frying use only — whole row renames olive_oil -> rapeseed_oil (6/7 g, unchanged grams).",
+    "Single wide-pan flow, genuinely sequential — no parallel tracks needed. Total ~18 min against the card's 14-minute chip; the difference is honest (dicing/fold/plating time not itemised in the original prose), not padding."
+  ]
+}

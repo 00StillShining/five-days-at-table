@@ -1,0 +1,23 @@
+{
+  "_comment": "Owner batch approvals (REWRITE-SPEC.md §Owner approval batches). join.js reads this file only — it is the SOLE source that ever flips meals.json method.approved (and the mirrored prep session approved flag) to true (L10). Hand-edited by the orchestrator once the owner approves a batch at its review checkpoint (docs/review/batch-<id>.html); never written by any parser or by join.js itself.",
+  "a1": {
+    "approved": false,
+    "mealIds": ["a-d1b", "a-d1l", "a-d1d", "a-d2b", "a-d2l", "a-d2d", "a-d3b", "a-d3l", "a-d3d"],
+    "sessionIds": ["prep-a"]
+  },
+  "a2": {
+    "approved": false,
+    "mealIds": ["a-d4b", "a-d4l", "a-d4d", "a-d5b", "a-d5l", "a-d5d", "a-d1s", "a-d2s", "a-d3s", "a-d4s", "a-d5s"],
+    "sessionIds": []
+  },
+  "b1": {
+    "approved": false,
+    "mealIds": ["b-d1b", "b-d1l", "b-d1d", "b-d2b", "b-d2l", "b-d2d", "b-d3b", "b-d3l", "b-d3d"],
+    "sessionIds": ["prep-b"]
+  },
+  "b2": {
+    "approved": false,
+    "mealIds": ["b-d4b", "b-d4l", "b-d4d", "b-d5b", "b-d5l", "b-d5d", "b-d1s", "b-d2s", "b-d3s", "b-d4s", "b-d5s"],
+    "sessionIds": []
+  }
+}

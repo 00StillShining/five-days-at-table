@@ -1,0 +1,87 @@
+{
+  "mealId": "a-d3b",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "egg": 150,
+      "tomato": 100,
+      "plantain": 80,
+      "peppers_frozen": 80,
+      "spinach": 60,
+      "red_onion": 40,
+      "rapeseed_oil": 5
+    },
+    "m": {
+      "egg": 175,
+      "tomato": 120,
+      "plantain": 120,
+      "peppers_frozen": 100,
+      "spinach": 80,
+      "red_onion": 50,
+      "rapeseed_oil": 6
+    }
+  },
+  "freebies": [
+    "salt",
+    "scotch_bonnet",
+    "stock_powder"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Plantain (80/120 g) peeled and sliced 1.5 cm thick on the diagonal. Griddle or heavy pan, DRY, high. 3 minutes a side until blackened in patches. Set aside and salt.",
+      "minutes": 6,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 2,
+      "text": "Same pan, rapeseed oil (5/6 g), medium-high. Onion (40/50 g) and pepper (80/100 g), diced, 4 minutes.",
+      "minutes": 4,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Tomato (100/120 g) chopped, plus scotch bonnet to taste and a pinch of stock powder. Cook 4–5 minutes, pressing it down, until it darkens and the oil separates at the edges.",
+      "minutes": 4.5,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 4,
+      "text": "Beat the eggs (150/175 g — 3 / 3½) loosely. Pour in, leave 20 seconds, then draw through in slow ribbons. Off the heat while still glossy.",
+      "minutes": 1.5,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 5,
+      "text": "Spinach (60/80 g) folded through on the residual heat.",
+      "minutes": 0.5,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    }
+  ],
+  "why": "Wait for the oil to separate before the eggs go in. That's the moment the tomato stops being raw and the sauce gets its depth — go early and the whole thing tastes thin and slightly metallic.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": [
+    "D0-003: the pan-frying oil (single hot-pan use, softening onion/pepper) becomes rapeseed_oil."
+  ]
+}

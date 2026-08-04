@@ -1,0 +1,123 @@
+{
+  "mealId": "b-d4d",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "beef_mince": 110,
+      "tomato": 70,
+      "lettuce": 50,
+      "salsa": 50,
+      "lc_tortilla": 42,
+      "avocado": 35,
+      "red_onion": 30,
+      "cheddar_rf": 15,
+      "olive_oil": 9
+    },
+    "m": {
+      "beef_mince": 145,
+      "tomato": 90,
+      "lettuce": 60,
+      "salsa": 60,
+      "lc_tortilla": 55,
+      "avocado": 50,
+      "red_onion": 40,
+      "cheddar_rf": 20,
+      "olive_oil": 11
+    }
+  },
+  "freebies": [
+    "salt",
+    "lime"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Beef (110/145 g) into THREE loose balls per person. Don't season them, don't compact them.",
+      "minutes": null,
+      "tempC": null,
+      "track": "pan",
+      "station": "board",
+      "clockStart": 0,
+      "untimed": true
+    },
+    {
+      "n": 2,
+      "text": "Tortillas (42/55 g) — cut down into smaller rounds if yours are large.",
+      "minutes": null,
+      "tempC": null,
+      "track": "prep",
+      "station": "board",
+      "clockStart": 0,
+      "untimed": true
+    },
+    {
+      "n": 3,
+      "text": "Avocado (35/50 g) mashed with the oil (9/11 g, olive — finishing) and a squeeze of lime.",
+      "minutes": null,
+      "tempC": null,
+      "track": "prep",
+      "station": "board",
+      "clockStart": 1,
+      "untimed": true
+    },
+    {
+      "n": 4,
+      "text": "Heavy pan, dry, high, a full 3 minutes.",
+      "minutes": 3,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 1,
+      "untimed": false
+    },
+    {
+      "n": 5,
+      "text": "Balls in, pressed flat and hard with a spatula for 10 seconds each. Salt the tops. 90 seconds untouched.",
+      "minutes": 2,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 4,
+      "untimed": false
+    },
+    {
+      "n": 6,
+      "text": "Flip, cheddar (15/20 g) on, 45 seconds. Out.",
+      "minutes": 0.75,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 6,
+      "untimed": false
+    },
+    {
+      "n": 7,
+      "text": "Tortillas 20 seconds a side in the beef fat left behind.",
+      "minutes": 1,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 6.75,
+      "untimed": false
+    },
+    {
+      "n": 8,
+      "text": "Build onto the avocado: patty, salsa (50/60 g), lettuce (50/60 g), tomato (70/90 g), raw onion (30/40 g). Lime hard.",
+      "minutes": null,
+      "tempC": null,
+      "track": "prep",
+      "station": "board",
+      "clockStart": 8,
+      "untimed": true
+    }
+  ],
+  "why": "Three small patties, not one big one. Crust-to-meat ratio is the entire reason a smashed patty tastes the way it does, and splitting the same mince three ways gives you half again as much of it.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": [
+    "Ingredient-in-method-text gap fixed (PLAN §4 audit finding, not a numbered D0 defect): the original card's oil row (9/11 g) never appeared in any step despite being in the ingredient table — the pan is explicitly dry and the tortillas finish in rendered beef fat, so oil was never mentioned at all. Placed here in the avocado-mash step as a finishing drizzle; grams unchanged, no macro impact from this fix.",
+    "D0-003: since this oil's only sensible use is the raw avocado finish (the pan is dry by the card's own instruction, so no pan-heat use exists to assign rapeseed to), it stays olive_oil, unchanged.",
+    "Lettuce substitution considered and NOT applied: the build step gives no 'shredded'/'torn'/'leaf' descriptor either way (unlike b-d3d's explicit 'torn' or b-d5l's why-text 'a leaf of lettuce'), so this is left as lettuce rather than guessed into sweetheart_cabbage.",
+    "Two light tracks (pan: patties+tortillas; prep: tortilla-cutting, avocado, build) — the patties cook fast enough that the parallelism is modest, but genuinely there (avocado/tortilla prep happens during the pan's 3-minute preheat)."
+  ]
+}

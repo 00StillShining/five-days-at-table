@@ -1,0 +1,64 @@
+{
+  "mealId": "a-d1b",
+  "rev": "B",
+  "covers": {
+    "w": { "spinach": 100, "egg": 100, "tomato": 80, "lc_tortilla": 45, "avocado": 35, "cheddar_rf": 15, "rapeseed_oil": 5 },
+    "m": { "spinach": 120, "egg": 100, "tomato": 100, "lc_tortilla": 50, "avocado": 45, "cheddar_rf": 20, "rapeseed_oil": 8 }
+  },
+  "freebies": ["salt", "black_pepper"],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Non-stick pan, dry, medium-high. Spinach in (100/120 g) with a pinch of salt. 60 seconds, until it collapses. Tip onto a plate and press the water out with the back of a spoon.",
+      "minutes": 1,
+      "tempC": null,
+      "track": null,
+      "clockStart": 0,
+      "station": "hob 1"
+    },
+    {
+      "n": 2,
+      "text": "Rapeseed oil into the pan (her 5 g / him 8 g) — it hits a hot base, so it's the pan oil per the D0-003 ruling. Beat the eggs (100 g — 2 eggs) with black pepper. Pour in and tilt to coat the base.",
+      "minutes": 1,
+      "tempC": null,
+      "track": null,
+      "clockStart": 1,
+      "station": "hob 1"
+    },
+    {
+      "n": 3,
+      "text": "Leave 45 seconds untouched. As the edge sets, draw it to the middle with a spatula and tilt again. Twice more — you want three or four soft folds, not scramble.",
+      "minutes": 1,
+      "tempC": null,
+      "track": null,
+      "clockStart": 2,
+      "station": "hob 1"
+    },
+    {
+      "n": 4,
+      "text": "Tomato (80/100 g) and tortilla (45/50 g) warmed alongside. Spinach over one half, cheddar on top (15/20 g). Fold, lid on, heat OFF. 60 seconds to melt.",
+      "minutes": 1,
+      "tempC": null,
+      "track": null,
+      "clockStart": 3,
+      "station": "hob 1"
+    },
+    {
+      "n": 5,
+      "text": "Avocado (35/45 g) sliced onto the tortilla. Fold the egg in. Plate.",
+      "minutes": null,
+      "tempC": null,
+      "track": null,
+      "clockStart": null,
+      "station": null,
+      "untimed": true
+    }
+  ],
+  "why": "Wilt and squeeze. Spinach is mostly water and it will steam the eggs into a wet mess otherwise. And take the pan off the heat before the cheese goes on — residual heat melts it and the egg stays tender.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": [
+    "L3 format coverage: spinach uses (100/120 g), egg uses (100 g) [equal], rapeseed_oil uses 'her 5 g / him 8 g', tomato/tortilla/cheddar/avocado use (x/y g).",
+    "D0-003 applied: this card's whole oil allowance goes into the pan under the eggs on medium-high heat (no separate dressing/finishing use), so the full 5/8 g becomes rapeseed_oil, not olive_oil."
+  ]
+}

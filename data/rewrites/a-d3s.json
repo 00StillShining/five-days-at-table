@@ -1,0 +1,68 @@
+{
+  "mealId": "a-d3s",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "chickpeas": 110,
+      "skyr": 50,
+      "avocado": 20,
+      "olive_oil": 7,
+      "jerk_seasoning": 2
+    },
+    "m": {
+      "chickpeas": 135,
+      "skyr": 70,
+      "avocado": 28,
+      "olive_oil": 9,
+      "jerk_seasoning": 3
+    }
+  },
+  "freebies": [
+    "lime",
+    "salt"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Sunday's jerk chickpeas (110/135 g, seasoned with 2/3 g of the jar's jerk rub), straight from the jar. If they've softened, 4 minutes in a hot dry pan brings the crunch back.",
+      "minutes": null,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": true
+    },
+    {
+      "n": 2,
+      "text": "Skyr (50/70 g) in a small bowl, mashed with the avocado (20/28 g) and the oil (7/9 g), lime and salt.",
+      "minutes": 1.5,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Chickpeas by the handful, dipped.",
+      "minutes": 0.5,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    }
+  ],
+  "why": "Store them in a jar with the lid OFF, not a sealed box. Sealed, the residual steam softens them overnight and you lose the rattle, which is the entire point of them.",
+  "batchSource": "prep-a",
+  "batchTakeG": {
+    "w": 112,
+    "m": 138,
+    "total": 250
+  },
+  "notes": [
+    "D0-020 (yield headroom): Sunday roasts 250 g drained chickpeas; this snack's covers sum to 245 g (110+135) — 5 g headroom, now stated explicitly in prep-a.json's yield rather than left silent.",
+    "D0-003: the finishing oil in the dip (mashed with skyr/avocado, no heat) stays olive_oil.",
+    "Seasoning weighing: the 2 tsp jerk seasoning on Sunday's chickpea tray was never gram-tracked. Standard-reference jerk_seasoning (dry rub) added, 5 g total for the tray, split 2/3 g her/him proportional to the chickpea share consumed. Drift +6/+9 kcal, both under the 30 kcal note threshold but recorded here for traceability."
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "mealId": "a-d1l",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "cauliflower": 130,
+      "chicken": 75,
+      "tomato": 80,
+      "chickpeas": 70,
+      "brown_rice": 55,
+      "sweetheart_cabbage": 70,
+      "greek_yog": 50,
+      "red_onion": 30,
+      "rapeseed_oil": 6
+    },
+    "m": {
+      "cauliflower": 160,
+      "chicken": 100,
+      "tomato": 100,
+      "chickpeas": 90,
+      "brown_rice": 80,
+      "sweetheart_cabbage": 80,
+      "greek_yog": 65,
+      "red_onion": 40,
+      "rapeseed_oil": 8
+    }
+  },
+  "freebies": [
+    "oregano",
+    "cumin",
+    "turmeric",
+    "salt",
+    "garlic",
+    "lemon",
+    "black_pepper",
+    "hot_sauce"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Out of the fridge: Sunday's roast chicken (take 175 g her+him of the 600 g batch — see prep notes), Sunday's rice-and-cauliflower, and Sunday's white sauce jar.",
+      "minutes": null,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": true
+    },
+    {
+      "n": 2,
+      "text": "Chicken (75/100 g) chopped into rough 2 cm pieces.",
+      "minutes": 1,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Pan, medium-high, rapeseed oil (6/8 g). Chicken in with ½ tsp oregano, ½ tsp cumin, ¼ tsp turmeric and salt. 3 minutes, moving it, until the edges catch.",
+      "minutes": 3,
+      "tempC": null,
+      "track": null,
+      "station": "hob",
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 4,
+      "text": "Rice and cauliflower (55/80 g dry cooked + 130/160 g riced) warmed through — 90 seconds in the microwave, or into the pan for the last minute with a splash of water.",
+      "minutes": 1.5,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 5,
+      "text": "Build: rice base, chicken over, then chickpeas (70/90 g), shredded cabbage (70/80 g) and diced tomato (80/100 g) around the edge. Raw red onion (30/40 g) over.",
+      "minutes": 2,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    },
+    {
+      "n": 6,
+      "text": "White sauce from Sunday's jar (50/65 g yoghurt, grated garlic, lemon, a great deal of black pepper). Hot sauce to taste.",
+      "minutes": 1,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": null,
+      "untimed": false
+    }
+  ],
+  "why": "The spices go on in the pan, not on Sunday. One tray of deliberately plain roast chicken becomes three completely different lunches this week precisely because it was left neutral.",
+  "batchSource": "prep-a",
+  "batchTakeG": {
+    "w": 310,
+    "m": 405,
+    "total": 715
+  },
+  "notes": [
+    "D0-003: the pan-frying oil (single hot-pan use, chicken searing) becomes rapeseed_oil.",
+    "D0-003: 'shredded lettuce' in the original step text is explicitly shredded → sweetheart_cabbage.",
+    "batchTakeG sums everything drawn from Sunday's prep for this plate: chicken 175 g (of the 600 g roast, 25 g batch headroom — see prep-a.json), dry rice 135 g (of the 320 g batch), riced cauliflower 290 g (of the ~1.4 kg batch), white sauce 115 g (all of Sunday's jar)."
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "mealId": "b-d5b",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "egg": 175,
+      "spinach": 60,
+      "tomato": 60,
+      "seeded_bread": 55,
+      "spring_onion": 15,
+      "rapeseed_oil": 5
+    },
+    "m": {
+      "egg": 225,
+      "spinach": 80,
+      "tomato": 80,
+      "seeded_bread": 70,
+      "spring_onion": 20,
+      "rapeseed_oil": 6
+    }
+  },
+  "freebies": [
+    "salt",
+    "chilli_flakes",
+    "lemon"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Bread (55/70 g) toasting — this is a thicker cut than usual, it is carrying the plate.",
+      "minutes": 3,
+      "tempC": null,
+      "track": "toast",
+      "station": "toaster",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 2,
+      "text": "Spinach (60/80 g) into a dry pan on medium, 60 seconds to wilt. Out, squeezed, and seasoned.",
+      "minutes": 1,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Tomatoes (60/80 g) halved, cut side down into the same pan with the oil (3 g flat, rapeseed), high heat, 3 minutes until they blister and start to collapse. Salt.",
+      "minutes": 3,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 1,
+      "untimed": false
+    },
+    {
+      "n": 4,
+      "text": "Eggs (175/225 g — 3½ / 4½) beaten with salt. Heat right down, the rest of the oil in (2/3 g, rapeseed), and stirred slowly and constantly. Off the heat while still visibly loose.",
+      "minutes": 3,
+      "tempC": null,
+      "track": "pan",
+      "station": "hob",
+      "clockStart": 4,
+      "untimed": false
+    },
+    {
+      "n": 5,
+      "text": "Toast, spinach, egg heaped over, blistered tomatoes on top, spring onion (15/20 g), chilli flakes and lemon.",
+      "minutes": null,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": 7,
+      "untimed": true
+    }
+  ],
+  "why": "Low and slow, off early. This is a lot of egg — nearly four each on the larger cover — and the only thing standing between that and a plate of rubber is a gentle heat and the nerve to stop cooking while it still looks underdone.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": [
+    "D0-003: both oil uses (blistering the tomatoes, then the eggs) are cooking uses — whole row renames olive_oil -> rapeseed_oil (5/6 g, unchanged grams), restated as 3 g flat at the tomato step plus 2/3 g remainder at the egg step (3+2=5 her, 3+3=6 him).",
+    "Two tracks: toast (toaster, done early) and pan (spinach -> tomato -> eggs, same pan sequential). Toast finishes well ahead and waits; total critical path ~7 min against the card's 9-minute chip."
+  ]
+}

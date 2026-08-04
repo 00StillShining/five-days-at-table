@@ -1,0 +1,107 @@
+{
+  "mealId": "b-d5l",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "chicken": 110,
+      "tomato": 70,
+      "seeded_bread": 55,
+      "avocado": 45,
+      "lettuce": 50,
+      "greek_yog": 40,
+      "cheddar_rf": 12,
+      "olive_oil": 4
+    },
+    "m": {
+      "chicken": 145,
+      "tomato": 90,
+      "seeded_bread": 70,
+      "avocado": 60,
+      "lettuce": 60,
+      "greek_yog": 50,
+      "cheddar_rf": 16,
+      "olive_oil": 5
+    }
+  },
+  "freebies": [
+    "lemon",
+    "mustard",
+    "black_pepper",
+    "salt"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Bread (55/70 g) toasted properly — dark, not pale. It has to hold.",
+      "minutes": 3,
+      "tempC": null,
+      "track": null,
+      "station": "toaster",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 2,
+      "text": "Dressing: yoghurt (40/50 g), oil (4/5 g, olive — dressing), lemon, ½ tsp mustard, black pepper, salt.",
+      "minutes": null,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": 0,
+      "untimed": true
+    },
+    {
+      "n": 3,
+      "text": "Avocado (45/60 g) mashed onto one slice with lemon and salt.",
+      "minutes": null,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": 3,
+      "untimed": true
+    },
+    {
+      "n": 4,
+      "text": "Sunday's chicken (110/145 g — 255 g total, of the ~760 g roast batch) sliced thin and tossed in the dressing.",
+      "minutes": null,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": 3,
+      "untimed": true
+    },
+    {
+      "n": 5,
+      "text": "Build: avocado, chicken, cheddar (12/16 g), tomato (70/90 g) salted, and lettuce (50/60 g) LAST, against the top slice.",
+      "minutes": null,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": 4,
+      "untimed": true
+    },
+    {
+      "n": 6,
+      "text": "Press under a plate for 2 minutes. Cut on the diagonal.",
+      "minutes": 2,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": 4,
+      "untimed": false
+    }
+  ],
+  "why": "Lettuce against the top slice, tomato salted and buried in the middle. Tomato against bread makes it wet within minutes; a leaf of lettuce is a waterproof layer, and it is the only reason a sandwich made in the morning survives to lunchtime.",
+  "batchSource": "prep-b",
+  "batchTakeG": {
+    "w": 110,
+    "m": 145,
+    "total": 255
+  },
+  "notes": [
+    "D0-003: oil is entirely a raw dressing (mixed into the cold yoghurt dressing, never heated) — stays olive_oil, unchanged.",
+    "Lettuce substitution NOT applied: the why-text explicitly says 'a leaf of lettuce is a waterproof layer' — definitively whole-leaf, not shredded. Stays lettuce.",
+    "batchTakeG covers the roast-chicken take (110/145 g of the 760 g Sunday batch, last of three consumers — see prep-b.json for the full 755/760 g reconciliation).",
+    "Sequential, single-flow card — no meaningful second station running in parallel, so left untracked (track: null throughout) per rule 2."
+  ]
+}

@@ -70,6 +70,11 @@
     "detail": "legacy rows=54, matched=54/54, mismatched=[]. legacy estimateMark=true count=40, fd5.prices ver:0 count=41 (differ by 1: \"whey\" has an fd5.prices entry marked ver:0 but no legacy shopping-list row at all)."
   },
   {
+    "name": "owner-rulings-confirmed-defaults-count",
+    "pass": true,
+    "detail": "owner-rulings.json declares confirmedCount=31; actual un-ruled resolved-by-default entries=31"
+  },
+  {
     "name": "decisions-queue-target-30",
     "pass": true,
     "detail": "decisions-queue has 34 entries (target ~30)"

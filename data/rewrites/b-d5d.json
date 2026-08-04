@@ -1,0 +1,125 @@
+{
+  "mealId": "b-d5d",
+  "rev": "B",
+  "covers": {
+    "w": {
+      "broccoli": 150,
+      "salmon": 110,
+      "cauliflower": 100,
+      "carrot": 60,
+      "brown_rice": 45,
+      "spring_onion": 20,
+      "rapeseed_oil": 5,
+      "soy_sauce": 23,
+      "mirin": 8,
+      "honey": 3
+    },
+    "m": {
+      "broccoli": 180,
+      "salmon": 145,
+      "cauliflower": 130,
+      "carrot": 70,
+      "brown_rice": 60,
+      "spring_onion": 25,
+      "rapeseed_oil": 6,
+      "soy_sauce": 31,
+      "mirin": 10,
+      "honey": 4
+    }
+  },
+  "freebies": [
+    "ginger",
+    "garlic"
+  ],
+  "steps": [
+    {
+      "n": 1,
+      "text": "Rice (45/60 g dry) on, 25 minutes covered. This one is cooked fresh — it is the end of the week and Sunday's is long gone.",
+      "minutes": 25,
+      "tempC": null,
+      "track": "rice",
+      "station": "hob 1",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 2,
+      "text": "Teriyaki: soy (23/31 g), mirin (8/10 g), honey (3/4 g), grated ginger and garlic. Into a small pan, simmered 3–4 minutes until it just coats a spoon.",
+      "minutes": 3.5,
+      "tempC": null,
+      "track": "glaze",
+      "station": "hob 2",
+      "clockStart": 0,
+      "untimed": false
+    },
+    {
+      "n": 3,
+      "text": "Salmon (110/145 g) dried.",
+      "minutes": null,
+      "tempC": null,
+      "track": "salmon",
+      "station": "board",
+      "clockStart": 19,
+      "untimed": true
+    },
+    {
+      "n": 4,
+      "text": "Into a hot pan with the oil (5/6 g, rapeseed). 3 minutes presentation-side down, 2 minutes over.",
+      "minutes": 5,
+      "tempC": null,
+      "track": "salmon",
+      "station": "hob 3",
+      "clockStart": 19,
+      "untimed": false
+    },
+    {
+      "n": 5,
+      "text": "Broccoli (150/180 g) and carrot (60/70 g) steamed 4 minutes.",
+      "minutes": 4,
+      "tempC": null,
+      "track": "veg",
+      "station": "steamer",
+      "clockStart": 20,
+      "untimed": false
+    },
+    {
+      "n": 6,
+      "text": "Half the glaze spooned over IN the pan on a low heat, tilting and basting for 60 seconds until it goes lacquered.",
+      "minutes": 1,
+      "tempC": null,
+      "track": "salmon",
+      "station": "hob 3",
+      "clockStart": 24,
+      "untimed": false
+    },
+    {
+      "n": 7,
+      "text": "Cauliflower (100/130 g) stirred through the rice for its last 2 minutes, lid on.",
+      "minutes": 2,
+      "tempC": null,
+      "track": "rice",
+      "station": "hob 1",
+      "clockStart": 23,
+      "untimed": false
+    },
+    {
+      "n": 8,
+      "text": "The rest of the glaze over the vegetables. Spring onion (20/25 g) raw over everything.",
+      "minutes": null,
+      "tempC": null,
+      "track": null,
+      "station": null,
+      "clockStart": 25,
+      "untimed": true
+    }
+  ],
+  "why": "Glaze at the end, on a low heat. There is sugar in teriyaki and it burns fast — put it in at the start and you get a black pan and a bitter fish long before the middle is warm.",
+  "batchSource": null,
+  "batchTakeG": null,
+  "notes": [
+    "D0-003: oil fries the salmon directly in a hot pan — whole row renames olive_oil -> rapeseed_oil (5/6 g, unchanged grams).",
+    "Seasoning addition (rule 5): the teriyaki glaze ('3 tbsp soy, 1 tbsp mirin or rice vinegar, 1 tsp honey') carried no tracked gram row anywhere in meals.json despite being explicitly quantified. Added as soy_sauce, mirin and honey (new ids, see _ingredients.B.json), each split proportionally to the salmon weight ratio (110:145): soy 54 g total -> 23/31 g, mirin 18 g total -> 8/10 g, honey 7 g total -> 3/4 g. The recipe's own 'or rice vinegar' alternative for mirin was not used for the reference calc — mirin was chosen as the more calorically realistic option, flagged here rather than silently assumed.",
+    "Macro drift from the teriyaki addition is real: roughly +41/+53 kcal and +1.4/+1.9 g protein per cover (her/him) — above the 30 kcal note threshold. Genuine, not an error: this glaze was previously entirely unweighed despite being a substantial, explicitly-quantified sauce.",
+    "Four tracks (rice, glaze, salmon, veg) sequenced so everything lands together at the rice's 25-minute finish rather than the fish sitting around after an early cook — glaze and rice start immediately, salmon is timed to start late (clockStart 19) so it finishes fresh alongside the rice. This is the week's most complex dinner and needed the fullest track treatment."
+  ]
+}
