@@ -1,6 +1,12 @@
 # FD-5 Dashboard — Sol §8 Builder Brief (required outputs 1–4)
 *Build session · 2026-08-04 · for owner review before Phase 0. Source: PLAN.md §6 + atlas 5.6 Sol. Nothing here re-opens a D1–D14 ruling.*
 
+> **Owner rulings, question round 2026-08-04 (binding):**
+> **R1 Visual base = Candidate B, Sol verbatim** — atlas §4.2 tokens exactly (Space Grotesk UI face, `#D9D8D4` field, `#FF5A1F`/`#8A2E00` accent pair, dark precision block for COOK); the heritage macro channel colors survive only as the four `--fd-ch-*` tokens on ladders/gauges. Candidate A is dead.
+> **R2 Logging = shared household ticks** — one tick per slot for both covers; ladders always per-cover from gram tables.
+> **R3 Hosting = decided at Phase 2** — build hosting-agnostic static output.
+> **R4 Phone = iPhone** — Safari is the mobile target: no `navigator.vibrate`, strict safe-area insets, timer persistence across tab reload/lock is a first-class requirement.
+
 ---
 
 ## 1 · User & task assumptions

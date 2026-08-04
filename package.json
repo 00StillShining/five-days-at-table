@@ -1,0 +1,25 @@
+{
+  "name": "fd5-dashboard",
+  "version": "1.0.0",
+  "description": "A two-week rotating meal plan for two people training four days a week, built for fat loss with muscle retention, and costed against real UK supermarket prices.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "extract": "node tools/extract/run.js",
+    "validate": "vitest run tools/extract"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "cheerio": "^1.2.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.10"
+  }
+}
