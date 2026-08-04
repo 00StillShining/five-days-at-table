@@ -6,7 +6,11 @@
 - Chassis design review: PASS after 7 fixes. Wave-1 screens (TODAY/PLAN/MEAL/STORES) built, design-reviewed (FIX), and ALL fix rounds complete — swaps threaded everywhere, eaten-so-far console, thawedAt/frozen-bucket life model, shared useNow/formatters, AA channel-text tokens, always-render ArbiterSlot convention.
 - Wave-2 screens (COOK/SHOP/LIST) built and complete: reel+alarm with reload-safe timers; SHOP with from-scratch verified QR + pinned tripCodec (wire-format compact); LIST on the real codec with offline restore. Survived a mid-session spend-limit kill (all agents resumed from transcripts; salvage commit ae2b538).
 - RULINGS this session: tripCodec pinned contract ratified over LIST's stub (decision-request.shop.json resolved); COOK is the sanctioned exception to always-render-ArbiterSlot (the stopped-reel alarm IS its act-now slot); Friday-evening stores cursor stands (day-6 with Sat=day-0).
-- Remaining before owner walkthrough: (1) F1 masthead "cooking · MM:SS" (in flight) then F1 router query-string fix + --fd5-rail-footprint token (LIST's requests); (2) wave-2 design review (COOK/SHOP/LIST rendered) + FINAL integration review; (3) §8 P2 verification suite incl. keyboard full loop, timers drift, export/import round-trip, reduced-motion/forced-colors, 200% zoom, Lighthouse ≥90; (4) service worker + manifest for offline (two-file deploy per SOL-BRIEF assumption); (5) AskUserQuestion: Netlify vs GitHub Pages (ruling R3 deferred to now) → deploy → owner walkthrough (desktop + iPhone). Also queue-record the session-2 rulings at the next checkpoint. Phase 3 polish after walkthrough.
+- ALL review gates CLOSED: chassis PASS, wave-1 four screens PASS after fix rounds, wave-2 + FINAL integration review → fix rounds → re-verification **PASS, rubric 91/100, hard gate clear** (was 86 with the INT-1 cascade hard-gate failure; fixed in main.tsx — tokens.css must import before App, load-bearing comment there). Offline PWA layer done (cache-first SW + manifest + iOS PNGs; genuine offline test passed; dist = 5 files).
+- Additional rulings: done ▸ targets the alarm's earliest-deadline overdue step; estimate mark renders figure-then-≈ app-wide; LIST arbiter guards verify-nominees against the loaded envelope and never navigates to #/shop mid-trip.
+- Owner chose **Netlify CLI** hosting (installed isolated at ~/.local/fd5-netlify — NOT a project dep, conflicts with vitest; use $HOME/.local/fd5-netlify/node_modules/.bin/netlify). Login initiated, awaiting owner browser auth.
+- IN FLIGHT: §8 P2 verification-residue agent (Lighthouse, forced-colors rendered pass, 200% zoom, keyboard loop, contrast sweep, multi-tab localStorage check).
+- Remaining: P2 report → deploy via netlify (site create + deploy dist/) → owner walkthrough (desktop + iPhone, PLAN §9.5) with design-review verdicts + screenshots available → queue-record session-2 rulings → then Phase 3 polish (heroes only, before/after per hero, §8 re-run, rubric ≥85 to ship).
 
 ## Where the build stands
 
@@ -32,3 +36,8 @@
 - Execution model (§7): Sonnet builders / Fable reviewers / PASS-FIX(≤2)-TAKEOVER-ESCALATE; rendered design review per screen; no 50/50 style blends (§6.0 lean table); owner checkpoints run by the orchestrator personally.
 - **No polish in Phase 2** — flat functional only; metals/gradients are Phase 3, heroes only.
 - Source HTML files are archival — never edit. `tools/extract` stays re-runnable; commit per phase minimum.
+
+## Deploy (Phase 2)
+
+- Live URL: https://cool-sfogliatella-404a77.netlify.app (Netlify, team JustMereMortals, site id 9c35af8e-1863-4b59-a694-51495c407e05; SSO protection disabled 2026-08-04)
+- Redeploy: `npm run build && $HOME/.local/fd5-netlify/node_modules/.bin/netlify deploy --prod --dir dist` (folder is linked)
