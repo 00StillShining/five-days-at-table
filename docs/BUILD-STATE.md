@@ -1,5 +1,12 @@
 # BUILD-STATE — resume point
-*Updated 2026-08-04, end of session 1. Read this + `git log --oneline` to resume cold.*
+*Updated 2026-08-04 (mid session 2). Read this + `git log --oneline` to resume cold.*
+
+## Session-2 progress (supersedes the "Next actions" list below where they conflict)
+
+- Chassis design review: PASS after 7 fixes. Wave-1 screens (TODAY/PLAN/MEAL/STORES) built, design-reviewed (FIX), and ALL fix rounds complete — swaps threaded everywhere, eaten-so-far console, thawedAt/frozen-bucket life model, shared useNow/formatters, AA channel-text tokens, always-render ArbiterSlot convention.
+- Wave-2 screens (COOK/SHOP/LIST) built and complete: reel+alarm with reload-safe timers; SHOP with from-scratch verified QR + pinned tripCodec (wire-format compact); LIST on the real codec with offline restore. Survived a mid-session spend-limit kill (all agents resumed from transcripts; salvage commit ae2b538).
+- RULINGS this session: tripCodec pinned contract ratified over LIST's stub (decision-request.shop.json resolved); COOK is the sanctioned exception to always-render-ArbiterSlot (the stopped-reel alarm IS its act-now slot); Friday-evening stores cursor stands (day-6 with Sat=day-0).
+- Remaining before owner walkthrough: (1) F1 masthead "cooking · MM:SS" (in flight) then F1 router query-string fix + --fd5-rail-footprint token (LIST's requests); (2) wave-2 design review (COOK/SHOP/LIST rendered) + FINAL integration review; (3) §8 P2 verification suite incl. keyboard full loop, timers drift, export/import round-trip, reduced-motion/forced-colors, 200% zoom, Lighthouse ≥90; (4) service worker + manifest for offline (two-file deploy per SOL-BRIEF assumption); (5) AskUserQuestion: Netlify vs GitHub Pages (ruling R3 deferred to now) → deploy → owner walkthrough (desktop + iPhone). Also queue-record the session-2 rulings at the next checkpoint. Phase 3 polish after walkthrough.
 
 ## Where the build stands
 
