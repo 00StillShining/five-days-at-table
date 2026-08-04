@@ -10,6 +10,7 @@
 // `data-motion` so tokens.css's global `[data-motion]` reduced-motion rule
 // (prefers-reduced-motion -> transition-duration: 0.01ms) makes it jump
 // instantly, with no gauge-specific CSS needed for that behavior.
+import type { CSSProperties } from "react";
 import type { Band, Cover, Week } from "../../data/types";
 import type { Swaps } from "../../state/types";
 import { MACRO_GROUPS, MACRO_LABEL, MACRO_UNIT, describeArc, fmtMacro, gaugeAngle, gaugeDisplayRange, weekBand, weekTotals, type MacroGroup } from "./helpers";
@@ -58,7 +59,16 @@ function Dial({ group, value, band }: DialProps) {
     <div className="scr-plan-dial" data-status={word}>
       <svg viewBox="0 0 120 68" aria-hidden="true" className="scr-plan-dial-svg" focusable="false">
         <path d={describeArc(cx, cy, trackR, -90, 90)} className="scr-plan-dial-track" />
-        <path d={describeArc(cx, cy, bandR, bandStartAngle, bandEndAngle)} className="scr-plan-dial-band" style={{ stroke: colorVar }} />
+        {/* Wave-1 review fix: the macro channel color is set via a CSS custom
+            property, not an inline `stroke`, so plan.css's
+            `@media (forced-colors: active)` rule (stroke: CanvasText) can
+            still win — an inline `style.stroke` would have out-specificity'd
+            that stylesheet rule regardless of media-query matching. */}
+        <path
+          d={describeArc(cx, cy, bandR, bandStartAngle, bandEndAngle)}
+          className="scr-plan-dial-band"
+          style={{ "--scr-plan-dial-color": colorVar } as CSSProperties}
+        />
         <line
           x1={cx}
           y1={cy}

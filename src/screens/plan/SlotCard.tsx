@@ -10,6 +10,11 @@ import { mealMacros } from "../../state/selectors";
 export interface SlotCardProps {
   week: Week;
   day: number;
+  /** 3-letter lowercase day abbreviation ("mon".."fri") — index.tsx already
+   * computes this for the day heading; passed through so this card's
+   * controls can disambiguate themselves (wave-1 review fix: 20 identical
+   * "swap" buttons on one page all had the same bare accessible name). */
+  dayLabel: string;
   slot: Slot;
   meal: Meal;
   cover: Cover;
@@ -20,7 +25,7 @@ export interface SlotCardProps {
 
 const dateFormatter = new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", timeZone: "Europe/London" });
 
-export function SlotCard({ week, day, slot, meal, cover, eaten, swaps, onOpenSwap }: SlotCardProps) {
+export function SlotCard({ week, day, dayLabel, slot, meal, cover, eaten, swaps, onOpenSwap }: SlotCardProps) {
   const { dispatch } = useStore();
   const shown = effectiveMeal(week, day, slot, meal, swaps);
   const isSwapped = shown.id !== meal.id;
@@ -51,6 +56,10 @@ export function SlotCard({ week, day, slot, meal, cover, eaten, swaps, onOpenSwa
       <div className="scr-plan-card-actions">
         <button type="button" className="fd5-control scr-plan-swap-btn" onClick={onOpenSwap}>
           swap <span aria-hidden="true">▸</span>
+          {/* sr-only disambiguation: 20 of these render on one page, all with
+              visible text "swap ▸" — the accessible name needs the slot's
+              own coordinates (wave-1 review fix). */}
+          <span className="fd5-visually-hidden"> · {dayLabel} {slot}</span>
         </button>
         {isSwapped && (
           // Sol guarded-action rule: reversible -> prefer undo over a confirm
@@ -63,6 +72,7 @@ export function SlotCard({ week, day, slot, meal, cover, eaten, swaps, onOpenSwa
             onClick={() => dispatch({ type: "swaps/clear", slotMealId: meal.id })}
           >
             undo swap
+            <span className="fd5-visually-hidden"> · {dayLabel} {slot}</span>
           </button>
         )}
       </div>

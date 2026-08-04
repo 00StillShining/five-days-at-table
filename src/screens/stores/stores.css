@@ -176,6 +176,7 @@
   color: var(--sol-warning);
 }
 .scr-stores-row--low-confidence .scr-stores-row-countdown,
+.scr-stores-row--frozen .scr-stores-row-countdown,
 .scr-stores-row--empty .scr-stores-row-countdown {
   color: var(--sol-text-muted);
 }

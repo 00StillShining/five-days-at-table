@@ -1,8 +1,9 @@
 import type { Cover, Inventory } from "../../state/store";
+import { mealMacros } from "../../state/selectors";
 import type { Macros, Meal } from "../../data";
 import { ingredientsById } from "../../data";
 import { EstimateMark } from "../../components/EstimateMark";
-import { formatHouseholdHint, scaledMealMacros } from "./mealMath";
+import { formatHouseholdHint } from "./mealMath";
 import { StockMark } from "./StockMark";
 
 export interface CoverColumnProps {
@@ -30,7 +31,7 @@ const MACRO_COLUMNS: { key: keyof Macros; label: string; unit: string; channel?:
 /** One cover's full card: macro strip (recomputed live at the current
  * scale) + per-ingredient grams, household hints, and in-stock marks. */
 export function CoverColumn({ meal, cover, scale, inventory, primary }: CoverColumnProps) {
-  const macros = scaledMealMacros(meal, cover, scale);
+  const macros = mealMacros(meal.id, cover, scale);
   const entries = Object.entries(meal.covers[cover]);
 
   return (

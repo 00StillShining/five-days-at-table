@@ -4,7 +4,7 @@
 // "a 'read back' screen on the phone summarizing verify entries to type in"
 // at the desk (item, entered price, old price) — deliberately manual-first,
 // no sync infrastructure.
-import type { TripEnvelope } from "./codecStub";
+import type { TripEnvelope } from "../../engine/tripCodec";
 import type { PriceChecks, ShopTicks } from "../../state/types";
 import { allRows, formatPrice, gotCounts, kindLabel, spentSoFarPence } from "./model";
 

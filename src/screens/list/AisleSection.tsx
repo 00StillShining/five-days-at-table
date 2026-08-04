@@ -1,7 +1,7 @@
 // One aisle's header (name + progress) + its rows (PLAN §6.9: "Aisle headers
 // with progress (●●○○○ 3/9 + text)").
 import { useRef } from "react";
-import type { TripRow } from "./codecStub";
+import type { TripRow } from "../../engine/tripCodec";
 import type { PriceChecks, ShopTicks } from "../../state/types";
 import { countTicked, orderRowsForDisplay, progressDots } from "./model";
 import { Row } from "./Row";

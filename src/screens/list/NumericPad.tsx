@@ -8,7 +8,7 @@
 // ARIA slider needs one (a button pad is already keyboard-complete).
 import { useEffect, useState } from "react";
 import { Sheet } from "../../components/Sheet";
-import type { TripRow } from "./codecStub";
+import type { TripRow } from "../../engine/tripCodec";
 import { formatPrice } from "./model";
 
 export interface NumericPadProps {

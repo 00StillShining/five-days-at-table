@@ -5,8 +5,8 @@
 // screen-reader button semantics) — both real, independently focusable,
 // keyboard-operable buttons.
 import { EstimateMark } from "../../components/EstimateMark";
-import type { TripRow } from "./codecStub";
-import { effectivePrice, formatPrice, isStillEstimate } from "./model";
+import type { TripRow } from "../../engine/tripCodec";
+import { effectivePrice, formatPrice, formatQty, isStillEstimate } from "./model";
 import type { PriceChecks } from "../../state/types";
 
 export interface RowProps {
@@ -23,8 +23,9 @@ export function Row({ row, ticked, isActiveVerifyNominee, priceChecks, onToggleT
   const price = effectivePrice(row, priceChecks);
   const stillEstimate = isStillEstimate(row, priceChecks);
   const verified = row.estimate && Boolean(priceChecks[row.ingId]);
+  const qtyDisplay = formatQty(row.qty, row.packG);
 
-  const accessibleName = `${row.label}, ${row.qty}, ${formatPrice(price)}${stillEstimate ? " (estimate)" : ""}${
+  const accessibleName = `${row.label}, ${qtyDisplay}, ${formatPrice(price)}${stillEstimate ? " (estimate)" : ""}${
     ticked ? ", ticked" : ""
   }`;
 
@@ -44,7 +45,7 @@ export function Row({ row, ticked, isActiveVerifyNominee, priceChecks, onToggleT
         </span>
         <span className="scr-list-row-main" aria-hidden="true">
           <span className="scr-list-row-label">{row.label}</span>
-          <span className="scr-list-row-qty">{row.qty}</span>
+          <span className="scr-list-row-qty">{qtyDisplay}</span>
         </span>
         <span className="scr-list-row-price" aria-hidden="true">
           {formatPrice(price)}

@@ -11,19 +11,20 @@
 import type { SceneProps } from "../../app/router";
 import { useStore } from "../../state/store";
 import type { DefrostDuty, ExpiringDuty, StartByDuty } from "../../state/selectors";
-import { bands, dayMacros, dutyStack, ticksFor, todayInfo } from "../../state/selectors";
-import { addCalendarDays, londonDateIso, londonParts } from "../../state/london";
+import { bands, dayMacros, dutyStack, eatenSoFar, effectiveMealForSlot, formatRemainingDays, ticksFor, todayInfo } from "../../state/selectors";
+import { addCalendarDays, formatShortDate, londonDateIso, londonParts } from "../../state/london";
+import { useNow } from "../../state/useNow";
 import { arbiterFor, type ScreenId } from "../../engine/arbiter";
-import { ArbiterSlot } from "../../components/ArbiterSlot";
+import { ArbiterSlot, type ArbiterDuty } from "../../components/ArbiterSlot";
+import { useOpenSettings } from "../../components/OpenSettings";
 import { getMeal, mealsByWeekDay } from "../../data";
-import type { InventoryLevel } from "../../state/types";
 import type { Slot } from "../../data/types";
-import { useNow } from "./useNow";
 import { DayPads, type DayPadInfo } from "./DayPads";
 import { MacroLadders } from "./MacroLadders";
 import "./today.css";
 
 const SLOT_LABEL: Record<Slot, string> = { breakfast: "bfast", lunch: "lunch", dinner: "dinner", snack: "snack" };
+const SLOT_ORDER: Slot[] = ["breakfast", "lunch", "dinner", "snack"];
 
 /** ISO-weekday offset (Mon=0..Sun=6) used only to find "this calendar week's
  * Monday" for the day-pad row — independent of prefs.cycleStartSaturday, since
@@ -41,7 +42,13 @@ function DutyRow({ duty, onDefrostDone }: { duty: DefrostDuty | ExpiringDuty; on
     return (
       <li className={`scr-today-row${duty.overdue ? " scr-today-row--danger" : ""}`}>
         <span className="scr-today-row-text">{duty.text}</span>
-        <span className="scr-today-row-meta">{duty.overdue ? "overdue" : `by ${formatLondonTime(duty.dueAt)}`}</span>
+        {/* wave-1 fix (item 6): formatShortDate (state/london) — an "overdue"
+            row that's been sitting since a previous fortnight day said only
+            "overdue" with no way to tell since when; now names the day it
+            became due. */}
+        <span className="scr-today-row-meta">
+          {duty.overdue ? `overdue · ${formatShortDate(new Date(duty.dueAt))}` : `by ${formatLondonTime(duty.dueAt)}`}
+        </span>
         <button type="button" className="fd5-control scr-today-row-action" onClick={() => onDefrostDone(duty.ingId)}>
           done
         </button>
@@ -51,7 +58,11 @@ function DutyRow({ duty, onDefrostDone }: { duty: DefrostDuty | ExpiringDuty; on
   return (
     <li className={`scr-today-row${duty.expired ? " scr-today-row--danger" : " scr-today-row--warning"}`}>
       <span className="scr-today-row-text">{duty.text}</span>
-      <span className="scr-today-row-meta">{duty.expired ? "" : `${Math.max(0, Math.floor(duty.remainingDays))}d`}</span>
+      {/* wave-1 fix (item 6): shared formatRemainingDays (state/selectors) —
+          TODAY was flooring this and STORES was ceiling it, so the same item
+          could read "0d" here and "1d" there; also fills what used to be an
+          empty meta cell on expired rows ("expired"/"today"/"Nd", never blank). */}
+      <span className="scr-today-row-meta">{formatRemainingDays(duty.remainingDays)}</span>
       <a className="fd5-control scr-today-row-action" href="#/stores">
         {"→ stores"}
       </a>
@@ -63,6 +74,7 @@ export default function TodayScene(_props: SceneProps) {
   const { state, dispatch } = useStore();
   const { prefs } = state;
   const now = useNow();
+  const openSettings = useOpenSettings();
 
   const info = todayInfo(now, prefs.cycleStartSaturday);
   const todayIso = londonDateIso(now);
@@ -70,20 +82,23 @@ export default function TodayScene(_props: SceneProps) {
   const stackDuties = duties.filter((d): d is DefrostDuty | ExpiringDuty => d.kind !== "start-by");
   const tonightDuty = duties.find((d): d is StartByDuty => d.kind === "start-by") ?? null;
   const arbiter = arbiterFor("today", state, now);
-  const rank1 = arbiter.rank1;
+  const engineRank1 = arbiter.rank1;
 
   const mondayIso = addCalendarDays(todayIso, -(MON_OFFSET[info.weekday] ?? 0));
   const dayPads: DayPadInfo[] = [1, 2, 3, 4, 5].map((dayNo) => {
     const dateIso = addCalendarDays(mondayIso, dayNo - 1);
-    const slots = mealsByWeekDay("A", dayNo);
+    const slots = mealsByWeekDay("A", dayNo); // slot enumeration only (fixed per Week A day) — not meal identity, so swap-independent
     const tick = ticksFor(state, dateIso);
     const done = slots.length > 0 && slots.every((m) => Boolean(tick[m.slot]));
     return { dayNo, done, isToday: info.dayNo === dayNo };
   });
 
+  // wave-1 fix (item 7): the defrost-duty "done" tap now dispatches the
+  // dedicated inventory/markThawed action (sets thawedAt, not just updatedAt)
+  // so the post-thaw shelf-life countdown anchors to the actual thaw moment
+  // instead of any later stocktake touch — see state/types.ts's thawedAt doc.
   function handleDefrostDone(ingId: string) {
-    const level: InventoryLevel = state.inventory[ingId]?.level ?? 4;
-    dispatch({ type: "inventory/set", ingId, level });
+    dispatch({ type: "inventory/markThawed", ingId });
   }
 
   function handleTickToggle(slot: Slot, mealId: string, isOn: boolean) {
@@ -91,20 +106,25 @@ export default function TodayScene(_props: SceneProps) {
     else dispatch({ type: "eaten/tick", date: todayIso, slot, mealId });
   }
 
-  const arbiterTargetScreen: ScreenId | null = rank1?.target && rank1.target.screen !== "today" ? rank1.target.screen : null;
+  // wave-1 fix (item 10): ArbiterSlot's preferred API — pass `rank1` straight
+  // through (mapped to the component's flatter ArbiterDuty shape) and render
+  // the slot unconditionally; the component itself renders the quiet idle
+  // variant when rank1 is null, rather than TODAY deciding to hide the slot.
+  const arbiterTargetScreen: ScreenId | null =
+    engineRank1?.target && engineRank1.target.screen !== "today" ? engineRank1.target.screen : null;
+  const arbiterSlotDuty: ArbiterDuty | null = engineRank1
+    ? {
+        text: engineRank1.text,
+        actionLabel: arbiterTargetScreen ? `${arbiterTargetScreen} →` : undefined,
+        onActivate: arbiterTargetScreen ? () => { window.location.hash = `#/${arbiterTargetScreen}`; } : undefined,
+      }
+    : null;
 
   const weekday3 = info.weekday.toLowerCase();
 
   return (
     <section className="scr-today">
-      {rank1 && (
-        <ArbiterSlot
-          text={rank1.text}
-          count={arbiter.queued}
-          actionLabel={arbiterTargetScreen ? `${arbiterTargetScreen} →` : undefined}
-          onActivate={arbiterTargetScreen ? () => { window.location.hash = `#/${arbiterTargetScreen}`; } : undefined}
-        />
-      )}
+      <ArbiterSlot rank1={arbiterSlotDuty} count={arbiter.queued} />
 
       <header className="scr-today-header">
         <p className="scr-today-dateline">
@@ -125,9 +145,15 @@ export default function TodayScene(_props: SceneProps) {
         <div className="scr-today-onboard" role="note">
           <p className="scr-today-onboard-title">set your fortnight start</p>
           <p className="scr-today-onboard-body">
-            today needs your cycle's start saturday to line up defrost moves and tonight's start-by time. open{" "}
-            <span aria-hidden="true">⚙</span> settings, top right, and set "cycle start · saturday" once.
+            today needs your cycle's start saturday to line up defrost moves and tonight's start-by time.
           </p>
+          {/* wave-1 fix (item 9): a real "open settings" button (useOpenSettings,
+              src/components/OpenSettings) instead of static prose pointing at the
+              gear icon — Sol §5.1's empty-state rule: present the next valid
+              action, don't just describe where it lives. */}
+          <button type="button" className="fd5-control scr-today-onboard-action" onClick={openSettings}>
+            open settings
+          </button>
         </div>
       )}
 
@@ -152,6 +178,9 @@ export default function TodayScene(_props: SceneProps) {
             tonight
           </h2>
           <div className="scr-today-tonight">
+            {/* tonightDuty.mealId already resolves through effectiveMealForSlot
+                inside dutyStack (state/selectors.ts) — a committed dinner swap
+                changes this transitively, no extra resolution needed here. */}
             <span className="scr-today-tonight-name">{getMeal(tonightDuty.mealId)?.name ?? tonightDuty.mealId}</span>
             <span className="scr-today-tonight-time">start by {tonightDuty.startBy}</span>
             <a className="fd5-control scr-today-tonight-cook" href="#/cook">
@@ -173,20 +202,26 @@ export default function TodayScene(_props: SceneProps) {
             ticks
           </h2>
           <ul className="scr-today-ticks">
-            {mealsByWeekDay("A", info.dayNo).map((meal) => {
-              const isOn = Boolean(ticksFor(state, todayIso)[meal.slot]);
+            {/* wave-1 fix (item 1): resolve each slot through
+                effectiveMealForSlot (swaps-aware) rather than the raw planned
+                meal — after a swap, ticking dinner must record and read back
+                the COOKED meal's id, so PLAN's swapped card shows logged. */}
+            {SLOT_ORDER.map((slot) => {
+              const meal = effectiveMealForSlot("A", info.dayNo as number, slot, state);
+              if (!meal) return null;
+              const isOn = Boolean(ticksFor(state, todayIso)[slot]);
               return (
-                <li key={meal.slot}>
+                <li key={slot}>
                   <button
                     type="button"
                     className={`fd5-control scr-today-tick${isOn ? " scr-today-tick--on" : ""}`}
                     aria-pressed={isOn}
-                    onClick={() => handleTickToggle(meal.slot, meal.id, isOn)}
+                    onClick={() => handleTickToggle(slot, meal.id, isOn)}
                   >
                     <span className="scr-today-tick-glyph" aria-hidden="true">
                       {isOn ? "✓" : ""}
                     </span>
-                    <span className="scr-today-tick-label">{SLOT_LABEL[meal.slot]}</span>
+                    <span className="scr-today-tick-label">{SLOT_LABEL[slot]}</span>
                   </button>
                 </li>
               );
@@ -200,7 +235,15 @@ export default function TodayScene(_props: SceneProps) {
           <h2 id="scr-today-console-h" className="scr-today-h">
             console
           </h2>
-          <MacroLadders macros={dayMacros("A", info.dayNo, prefs.cover)} bands={bands("A", prefs.cover)} />
+          {/* wave-1 fix (item 2): ladder value = eaten-so-far (ticked slots
+              only), target = today's planned total — swaps-aware dayMacros, so
+              a committed swap changes what "planned" means for today. Bands
+              stay the week's macro bands (unaffected by swaps or by the hour). */}
+          <MacroLadders
+            eaten={eatenSoFar("A", info.dayNo, prefs.cover, state, now)}
+            planned={dayMacros("A", info.dayNo, prefs.cover, 1, state.swaps)}
+            bands={bands("A", prefs.cover)}
+          />
         </section>
       )}
     </section>

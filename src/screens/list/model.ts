@@ -1,9 +1,10 @@
 // Pure domain/presentation helpers for LIST (PLAN §6.9). No food facts of
-// its own — everything here operates on the trip envelope (codecStub.ts) and
-// the contract-pinned shopTicks/priceChecks slices, never data/*.json
-// directly (this screen is deliberately decoupled from src/data: every field
-// a row needs — ingId, label, qty, aisle, price — already lives on the row).
-import type { TripEnvelope, TripRow, TripShop } from "./codecStub";
+// its own — everything here operates on the trip envelope
+// (src/engine/tripCodec.ts, the real orchestrator-pinned contract) and the
+// contract-pinned shopTicks/priceChecks slices, never data/*.json directly
+// (this screen is deliberately decoupled from src/data: every field a row
+// needs — ingId, label, qty, packG, aisle, price — already lives on the row).
+import type { TripEnvelope, TripKind, TripRow, TripShop } from "../../engine/tripCodec";
 import type { PriceChecks, ShopTicks } from "../../state/types";
 
 export const MARKET_SHOP_CODE = "X";
@@ -153,20 +154,43 @@ export function allTicked(trip: TripEnvelope, ticks: ShopTicks[string] | undefin
   return rows.length > 0 && rows.every((r) => isTicked(ticks, r.ingId));
 }
 
-/** Best-effort day-0/day-7 inference from the envelope's opaque `kind`
- * string, for arbiter.ts's ArbiterContext.tripDay (verify-nominee scoping).
- * Returns undefined (not null) for "arbiterFor's own inference wins"
- * semantics when kind doesn't match either known value. */
-export function inferTripDayFromKind(kind: string): 0 | 7 | undefined {
-  if (kind === "day0") return 0;
-  if (kind === "day7") return 7;
-  return undefined;
+/** Maps the envelope's `kind` to arbiter.ts's ArbiterContext.tripDay
+ * (verify-nominee scoping) — TripKind is "full" | "day7" (src/engine/
+ * tripCodec.ts); state/selectors.ts's own TripDay is 0 | 7, where 0 is the
+ * "full" shop (tripBuild's day-0 case buys buy-once/freeze-day0/buy-frozen
+ * for BOTH passes of the a-twice fortnight) and 7 is the day-7 top-up —
+ * "day0" was this screen's own pre-integration guess and is wrong. */
+export function inferTripDayFromKind(kind: TripKind): 0 | 7 {
+  return kind === "full" ? 0 : 7;
 }
 
-export function kindLabel(kind: string): string {
-  if (kind === "day0") return "full shop";
-  if (kind === "day7") return "day-7 top-up";
-  return kind;
+export function kindLabel(kind: TripKind): string {
+  return kind === "full" ? "full shop" : "day-7 top-up";
+}
+
+/**
+ * "× 4" vs "1kg" style row quantity (PLAN §6.9 mock), derived from the wire
+ * fields alone — `qty` is packs-to-buy, `packG` is grams per pack (src/engine/
+ * tripCodec.ts's pinned shape; SHOP deliberately doesn't bake a pre-formatted
+ * string into the envelope so it isn't inventing LIST's row copy on LIST's
+ * behalf, per SHOP's own build report). Buying exactly one pack is more
+ * useful shown as that pack's size ("1kg", "400g" — what you're looking for
+ * on the shelf); buying more than one is more useful shown as a count
+ * ("× 4" — how many times you pick one up), matching the mock's own two
+ * examples exactly (frozen spinach: qty 1, packG 1000 -> "1kg"; avocado:
+ * qty 5 -> "× 5").
+ */
+export function formatQty(qty: number, packG: number): string {
+  if (qty > 1) return `× ${qty}`;
+  return formatGrams(packG);
+}
+
+function formatGrams(g: number): string {
+  if (g >= 1000) {
+    const kg = g / 1000;
+    return `${Number.isInteger(kg) ? kg : kg.toFixed(1)}kg`;
+  }
+  return `${g}g`;
 }
 
 /** "£042.35" style split for the odometer's rolling digit drums — 3

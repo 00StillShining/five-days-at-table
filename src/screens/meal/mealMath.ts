@@ -1,8 +1,7 @@
 // Pure helpers for the MEAL screen (PLAN §6.5). No food facts of its own —
 // everything here operates on the typed accessors from src/data (screens must
 // stay food-fact-free; this file is arithmetic + formatting only).
-import type { Cover, Ingredient, Macros, Meal } from "../../data";
-import { ingredientsById } from "../../data";
+import type { Ingredient } from "../../data";
 
 // ---------------------------------------------------------------------------
 // The portion knob's contract range (PLAN §6.5 / PHASE2-CONTRACT): 0.70–1.30,
@@ -27,38 +26,14 @@ export function clampSnapScale(v: number): number {
 }
 
 // ---------------------------------------------------------------------------
-// Per-meal, per-cover macro recomputation at the current scale — the same
-// grams x per100g formula selectors.ts's dayMacros uses (a whole-day
-// aggregate), narrowed to one meal + an explicit scale factor. dayMacros
-// itself already threads a `scale` parameter for exactly this reason but
-// operates over a whole day; there's no single-meal variant exported, and
-// this screen can't add one to state/selectors.ts (ownership: src/screens/
-// meal/** only) — so the same well-known nutrition arithmetic is repeated
-// here rather than duplicating a *food fact*. Worth hoisting into
-// selectors.ts as `mealMacros(meal, cover, scale)` if COOK or another screen
-// later needs the identical computation (flagged in the build report).
-export function scaledMealMacros(meal: Meal, cover: Cover, scale: number): Macros {
-  const totals = { kcal: 0, protein: 0, netCarb: 0, fat: 0, fibre: 0 };
-  for (const [ingId, g] of Object.entries(meal.covers[cover])) {
-    const ing = ingredientsById[ingId];
-    if (!ing) continue; // defensive; join verified complete (data/validation.json)
-    const factor = (g * scale) / 100;
-    const carb = ing.per100g.carb * factor;
-    const fibre = ing.per100g.fibre * factor;
-    totals.kcal += ing.per100g.kcal * factor;
-    totals.protein += ing.per100g.protein * factor;
-    totals.fat += ing.per100g.fat * factor;
-    totals.fibre += fibre;
-    totals.netCarb += carb - fibre;
-  }
-  return {
-    kcal: Math.round(totals.kcal),
-    protein: Math.round(totals.protein * 10) / 10,
-    netCarb: Math.round(totals.netCarb * 10) / 10,
-    fat: Math.round(totals.fat * 10) / 10,
-    fibre: Math.round(totals.fibre * 10) / 10,
-  };
-}
+// Per-meal, per-cover macro recomputation at the current scale used to live
+// here as a local `scaledMealMacros` (this screen couldn't add to
+// state/selectors.ts under its original ownership). Wave-1 integration
+// review hoisted the identical formula into `mealMacros(mealId, cover,
+// scale)` in src/state/selectors.ts (verified equivalent) so COOK/PLAN can
+// share it too — CoverColumn.tsx now calls that directly; nothing local
+// left to duplicate it here.
+// ---------------------------------------------------------------------------
 
 // ---------------------------------------------------------------------------
 // Household-unit hints ("½ avocado", "2 eggs") — PLAN §6.5.

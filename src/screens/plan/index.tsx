@@ -15,13 +15,14 @@
 // other slice. No screen-local swap store anymore.
 import { useState } from "react";
 import type { SceneProps } from "../../app/router";
-import { ArbiterSlot } from "../../components/ArbiterSlot";
+import { ArbiterSlot, type ArbiterDuty as ArbiterSlotDuty } from "../../components/ArbiterSlot";
 import { mealsByWeekDay, planDays, planThemes } from "../../data";
 import type { Slot } from "../../data/types";
 import type { ArbiterDuty } from "../../engine/arbiter";
 import { arbiterFor } from "../../engine/arbiter";
 import { dayMacros } from "../../state/selectors";
 import { useStore } from "../../state/store";
+import { useNow } from "../../state/useNow";
 import { AdherenceGauge } from "./AdherenceGauge";
 import { dayOverBand, MACRO_LABEL } from "./helpers";
 import "./plan.css";
@@ -29,6 +30,7 @@ import { EmptySlotCard, SlotCard } from "./SlotCard";
 import { SwapDeck } from "./SwapDeck";
 
 const SLOTS: Slot[] = ["breakfast", "lunch", "dinner", "snack"];
+const IDLE_TEXT = "board's clear · nothing needs attention";
 
 function navigateTo(target: ArbiterDuty["target"]): void {
   if (!target) return;
@@ -53,10 +55,21 @@ export default function PlanScreen(_props: SceneProps) {
 
   // arbiterFor's screen-agnostic candidates (expired/defrost-overdue/timer-
   // due/over-band/verify-nominee) are still live on PLAN even though its own
-  // primary-action is null per engine/arbiter.ts's contract; computed fresh
-  // each render off `new Date()` since SceneProps carries no live clock from
-  // App.tsx (chassis-owned, out of this screen's ownership — see final report).
-  const arbiter = arbiterFor("plan", state, new Date());
+  // primary-action is null per engine/arbiter.ts's contract. useNow() (wave-1
+  // review fix, promoted to src/state/** during integration) ticks every 30s
+  // so an item that becomes due while this tab sits open on PLAN — a timer
+  // firing, a defrost going overdue — actually appears without the user
+  // having to navigate away and back to force a re-render.
+  const now = useNow();
+  const arbiterResult = arbiterFor("plan", state, now);
+  const arbiterDuty = arbiterResult.rank1;
+  // Bridge engine/arbiter.ts's ArbiterDuty ({kind,id,text,target}) to
+  // components/ArbiterSlot's own same-named ArbiterDuty ({text,actionLabel,
+  // onActivate,busy}) — the two are deliberately different shapes owned by
+  // different modules, not the same type.
+  const rank1: ArbiterSlotDuty | null = arbiterDuty
+    ? { text: arbiterDuty.text, actionLabel: "go", onActivate: () => navigateTo(arbiterDuty.target) }
+    : null;
 
   function openSwap(day: number, slot: Slot): void {
     setSwapTarget({ day, slot });
@@ -65,12 +78,7 @@ export default function PlanScreen(_props: SceneProps) {
 
   return (
     <div className="scr-plan">
-      <ArbiterSlot
-        text={arbiter.rank1?.text ?? "board's clear · nothing needs attention"}
-        count={arbiter.queued}
-        actionLabel={arbiter.rank1 ? "go" : undefined}
-        onActivate={arbiter.rank1 ? () => navigateTo(arbiter.rank1?.target) : undefined}
-      />
+      <ArbiterSlot rank1={rank1} count={arbiterResult.queued} idleText={IDLE_TEXT} />
 
       <header className="scr-plan-head">
         <h1 className="scr-plan-title">plan</h1>
@@ -84,6 +92,7 @@ export default function PlanScreen(_props: SceneProps) {
       <section className="scr-plan-grid" aria-label={`week ${week} fortnight board`}>
         {planDays.map((dayName, i) => {
           const day = i + 1;
+          const dayAbbr = dayName.slice(0, 3).toLowerCase();
           const theme = planThemes[i];
           const mealBySlot = new Map(mealsByWeekDay(week, day).map((m) => [m.slot, m]));
           const dayTotals = dayMacros(week, day, cover, 1, swaps);
@@ -92,7 +101,7 @@ export default function PlanScreen(_props: SceneProps) {
           return (
             <article className="scr-plan-day" key={day}>
               <h2 className="scr-plan-day-heading">
-                {dayName.slice(0, 3).toLowerCase()}
+                {dayAbbr}
                 <span className="scr-plan-day-theme">{theme}</span>
               </h2>
               <ul className="scr-plan-day-slots">
@@ -104,6 +113,7 @@ export default function PlanScreen(_props: SceneProps) {
                         <SlotCard
                           week={week}
                           day={day}
+                          dayLabel={dayAbbr}
                           slot={slot}
                           meal={meal}
                           cover={cover}

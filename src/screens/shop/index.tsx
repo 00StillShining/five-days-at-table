@@ -27,12 +27,12 @@ import { ShopColumn } from "./ShopColumn";
 import { SendToPhoneKey } from "./SendToPhoneKey";
 import { buildEnvelope, buyLinesForShop, effectiveLines, monthlyWasteTotal, overallTotal, shopSubtotal, SHOP_ORDER } from "./tripHelpers";
 import { planShops } from "../../data";
-import { useNow } from "./useNow";
+import { useNow } from "../../state/useNow";
 import "./shop.css";
 
 export default function ShopScreen(_props: SceneProps) {
   const { state, dispatch } = useStore();
-  const now = useNow();
+  const now = useNow(60_000); // SHOP's existing cadence (state/useNow.ts default is 30s)
 
   const [tripDay, setTripDay] = useState<TripDay>(0);
   const [forcedIncludeIds, setForcedIncludeIds] = useState<Set<string>>(new Set());
@@ -108,10 +108,9 @@ export default function ShopScreen(_props: SceneProps) {
   return (
     <section className="scr-shop">
       <ArbiterSlot
-        text={rank1?.text ?? "trip built · nothing else needs attention"}
+        rank1={rank1 ? { text: rank1.text, actionLabel: "go", onActivate: handleArbiterActivate } : null}
         count={arbiter.queued}
-        actionLabel={rank1 ? "go" : undefined}
-        onActivate={rank1 ? handleArbiterActivate : undefined}
+        idleText="trip built · nothing else needs attention"
       />
 
       <header className="scr-shop-header">

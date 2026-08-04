@@ -149,7 +149,11 @@
 
 .mk-arc-label {
   font-family: var(--sol-font-data);
-  font-size: 6px;
+  /* SVG viewBox is -14 -14 128 128 rendered into a 120px (7.5rem) box at
+     default size, i.e. 1 user-unit ~= 0.9375px there — 10 is a >=9px
+     equivalent at that scale (9.375px), and scales proportionally with the
+     knob at any other rendered size. */
+  font-size: 10px;
   fill: var(--sol-text-muted);
 }
 
@@ -260,17 +264,21 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* AA-safe darkened text variants (--fd-ch-*-text), not the raw --fd-ch-*
+   hues — those fail 4.5:1 against panel/bg as plain text (wave-1 design
+   review: protein fill alone measured 2.33:1). The vivid --fd-ch-* fills
+   stay reserved for non-text uses (segment/gauge chips). */
 .scr-meal-macro[data-channel="protein"] .scr-meal-macro-value {
-  color: var(--fd-ch-protein);
+  color: var(--fd-ch-protein-text);
 }
 .scr-meal-macro[data-channel="fat"] .scr-meal-macro-value {
-  color: var(--fd-ch-fat);
+  color: var(--fd-ch-fat-text);
 }
 .scr-meal-macro[data-channel="carb"] .scr-meal-macro-value {
-  color: var(--fd-ch-carb);
+  color: var(--fd-ch-carb-text);
 }
 .scr-meal-macro[data-channel="fibre"] .scr-meal-macro-value {
-  color: var(--fd-ch-fibre);
+  color: var(--fd-ch-fibre-text);
 }
 
 .scr-meal-ing-list {
@@ -520,6 +528,14 @@
   border: 1px solid var(--sol-border);
   max-width: 28rem;
   margin: 2rem auto;
+}
+
+/* The ArbiterSlot convention (always rendered, idle-capable) means this
+   branch carries one too — `align-items: center` above would otherwise
+   shrink it to its content width like a stray pill; stretch it back to the
+   card's full width so it reads as the same banner as everywhere else. */
+.scr-meal--error .fd5-arbiter {
+  align-self: stretch;
 }
 
 .scr-meal-error-kicker {

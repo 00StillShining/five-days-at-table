@@ -26,7 +26,12 @@
 // subscription, for the same reason) repeats the same normalization for the
 // rarer case of the hash changing to a "?t=" form while the app is already
 // running in the same tab.
-import { decodeTrip, isTripEnvelope, type TripEnvelope } from "./codecStub";
+//
+// CODEC: src/engine/tripCodec.ts (real, orchestrator-pinned contract — this
+// screen shipped against a local src/screens/list/codecStub.ts guess before
+// tripCodec.ts existed; codecStub.ts is deleted now that it does, see the
+// build report's "codec integration status").
+import { decodeTrip, encodeTrip, type TripEnvelope } from "../../engine/tripCodec";
 
 const FRAGMENT_RE = /^#\/list\?t=(.+)$/;
 
@@ -84,12 +89,19 @@ function getStorage(): Storage | null {
   }
 }
 
-/** Cache a decoded trip + mark it "last opened" (offline reopen source of truth). */
+/**
+ * Cache a decoded trip + mark it "last opened" (offline reopen source of
+ * truth). Stored as the SAME compressed wire string `encodeTrip` produces
+ * for the URL fragment (not `JSON.stringify(trip)`) — re-running it through
+ * `decodeTrip` on read reuses the codec's own zod validation instead of
+ * this screen maintaining a second, hand-rolled TripEnvelope type guard that
+ * could drift from the real one.
+ */
 export function saveTrip(trip: TripEnvelope): void {
   const backend = getStorage();
   if (!backend) return;
   try {
-    backend.setItem(tripStorageKey(trip.tripId), JSON.stringify(trip));
+    backend.setItem(tripStorageKey(trip.tripId), encodeTrip(trip));
     backend.setItem(LAST_TRIP_KEY, trip.tripId);
   } catch {
     // quota exceeded / storage disabled — never crash the shopping trip over this
@@ -102,8 +114,7 @@ export function loadTrip(tripId: string): TripEnvelope | null {
   try {
     const raw = backend.getItem(tripStorageKey(tripId));
     if (!raw) return null;
-    const parsed: unknown = JSON.parse(raw);
-    return isTripEnvelope(parsed) ? parsed : null;
+    return decodeTrip(raw); // null on any corruption/schema mismatch — never throws
   } catch {
     return null;
   }

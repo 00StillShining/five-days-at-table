@@ -91,6 +91,11 @@
   fill: none;
   stroke-width: 5;
   stroke-linecap: round;
+  /* Color comes from a custom property set inline per-dial (AdherenceGauge.tsx),
+     not an inline `stroke` — so the forced-colors override below (a normal
+     stylesheet rule) can still beat it. An inline `style.stroke` would have
+     out-specificity'd any stylesheet rule regardless of media query. */
+  stroke: var(--scr-plan-dial-color, var(--sol-text));
 }
 
 .scr-plan-dial-needle {

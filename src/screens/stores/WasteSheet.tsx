@@ -8,7 +8,16 @@ import { Sheet } from "../../components/Sheet";
 import { EstimateMark } from "../../components/EstimateMark";
 import { getMeal } from "../../data";
 import type { WasteEntry } from "../../state/store";
-import { londonDateIso } from "../../state/london";
+import { formatShortDate, londonDateIso } from "../../state/london";
+
+/** `w.date`/`w.g` etc. are plain calendar-date ISO strings (no time-of-day) —
+ * read as UTC midnight before formatting, consistent with how state/london.ts
+ * itself treats calendar dates elsewhere (pure UTC integer-day math; London
+ * is never behind UTC, so UTC midnight always falls on the correct London
+ * calendar day). Wave-1-fix item 5: kills the raw-ISO-string leak. */
+function isoDateToDisplayDate(iso: string): Date {
+  return new Date(`${iso}T00:00:00Z`);
+}
 
 export interface WasteSheetProps {
   open: boolean;
@@ -49,7 +58,7 @@ export function WasteSheet({ open, onClose, waste, now }: WasteSheetProps) {
                 ) : (
                   "no value"
                 )}{" "}
-                · {w.date}
+                · {formatShortDate(isoDateToDisplayDate(w.date))}
               </span>
               {w.note && <span className="scr-stores-waste-note">{w.note}</span>}
             </li>

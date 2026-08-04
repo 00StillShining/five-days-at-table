@@ -28,3 +28,27 @@ export function registerNameSuffix(ing: Ingredient): string {
   }
   return ` ${g}g`;
 }
+
+/**
+ * Register disambiguation (wave-1-fix item 7): two `sharedSkuWith` pairs
+ * reduce to byte-identical `name.short` + pack-suffix text — greek_yog/skyr
+ * (both "Fat-free Greek yoghurt 1kg", one SKU, two register rows since
+ * they're distinct ingredients with distinct macros) and raspberries/
+ * blueberries (both "Frozen mixed berries ×25", same reason). Verified
+ * against the full 65-item register: these are the only two collisions
+ * (checked by grouping every non-freebie ingredient by `name.short`).
+ * Explicit id -> word map rather than derived from `name.display` (which
+ * would work here but reads long — "Skyr, plain natural" — where a single
+ * word is enough to tell the two rows apart at a glance).
+ */
+const DISAMBIGUATOR: Record<string, string> = {
+  greek_yog: "yoghurt",
+  skyr: "skyr",
+  raspberries: "raspberries",
+  blueberries: "blueberries",
+};
+
+export function registerDisambiguator(ing: Ingredient): string {
+  const word = DISAMBIGUATOR[ing.id];
+  return word ? ` (${word})` : "";
+}

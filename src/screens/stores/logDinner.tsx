@@ -25,7 +25,7 @@ import type { Meal } from "../../data/types";
 import { ingredientsById } from "../../data";
 import { EstimateMark } from "../../components/EstimateMark";
 import type { Action } from "../../state/store";
-import { londonDateIso, addCalendarDays } from "../../state/london";
+import { londonDateIso, addCalendarDays, formatShortDate } from "../../state/london";
 
 /** Standard food-safety guidance for a cooked dinner leftover kept in the
  * fridge (no per-dish shelf-life field exists in the data model for cooked
@@ -172,7 +172,8 @@ export function LogDinnerCard({ dinner, now, alreadyEaten, dispatch }: LogDinner
         {result?.kind === "eaten" && "logged · eaten"}
         {result?.kind === "leftover" && (
           <>
-            saved · {result.label} · {result.g}g · <EstimateMark />£{result.value.toFixed(2)} · use by {result.useBy}
+            saved · {result.label} · {result.g}g · <EstimateMark />£{result.value.toFixed(2)} · use by{" "}
+            {formatShortDate(new Date(`${result.useBy}T00:00:00Z`))}
           </>
         )}
         {result?.kind === "binned" && (

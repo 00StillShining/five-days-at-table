@@ -74,21 +74,30 @@
   padding-inline: 1.5rem;
   font-weight: 700;
   text-transform: lowercase;
-  background: var(--sol-accent-fill);
-  color: var(--sol-on-accent-fill);
-  border-color: var(--sol-accent);
 }
 
 /* Specificity bump (0,2,0 vs .fd5-control's 0,1,0): tokens.css's shared
-   .fd5-control rule also sets min-block-size (to the 44px house default),
-   and depending on CSS module load order that rule can land later in the
-   cascade than this screen's own file — equal specificity would then let it
-   win and silently shrink the hero back to 44px. Qualifying with the screen
-   root guarantees this screen's intent (the one hero exception at 72px,
-   well above the 56px house-large target) always wins regardless of load
-   order. */
+   .fd5-control rule also sets min-block-size/color/border (to the 44px
+   house default, --sol-text, --sol-border), and depending on CSS module
+   load order that rule can land later in the cascade than this screen's own
+   file — equal specificity would then let it silently win and erase every
+   property below. Qualifying with the screen root guarantees this screen's
+   intent always wins regardless of load order (verified against the actual
+   dev-server injection order, which does place tokens.css after this file).
+
+   NOT --sol-accent-fill for the fill: that token is reserved for the
+   arbiter's single act-now slot only (tokens.css §3 role reference —
+   ".fd5-arbiter only"). The hero's visual weight instead comes from size
+   (4.5rem, well above every other control here) and a bold ink-orange
+   outline — the Braun ET66/Beogram §0.4 rule ("exceptions, not size
+   inflation, create hierarchy") read literally: size already does the
+   work, so the border/ink is the second, smaller cue, not a second
+   attention-grabber. */
 .scr-shop .scr-shop-key {
   min-block-size: 4.5rem;
+  background: var(--sol-panel);
+  color: var(--sol-accent);
+  border: 2px solid var(--sol-accent);
 }
 
 .scr-shop-key-glyph {

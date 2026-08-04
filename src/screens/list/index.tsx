@@ -7,9 +7,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { SceneProps } from "../../app/router";
 import { useStore } from "../../state/store";
+import { useNow } from "../../state/useNow";
 import { arbiterFor } from "../../engine/arbiter";
 import { ArbiterSlot } from "../../components/ArbiterSlot";
-import type { TripEnvelope, TripRow } from "./codecStub";
+import type { TripEnvelope, TripRow } from "../../engine/tripCodec";
 import { resolveInitialTrip } from "./tripIntake";
 import {
   activeVerifyIngId,
@@ -43,14 +44,10 @@ export default function ListScene(_props: SceneProps) {
   // ticks/priceChecks (global store) change afterward.
   const [trip] = useState<TripEnvelope | null>(() => resolveInitialTrip());
 
-  // Same 60s freshness pattern as every other screen's own clock (SceneProps
-  // carries only `{ route }` — no shared "now" — PHASE2-CONTRACT: "a screen
-  // folder may not import from another screen folder").
-  const [now, setNow] = useState(() => new Date());
-  useEffect(() => {
-    const id = window.setInterval(() => setNow(new Date()), 60_000);
-    return () => window.clearInterval(id);
-  }, []);
+  // Shared clock (src/state/useNow.ts, wave-1 integration review promotion
+  // of what used to be four byte-identical per-screen copies) — 60s cadence
+  // matches SHOP's own usage of it, the closest sibling screen.
+  const now = useNow(60_000);
 
   const shopsForPaddle = useMemo(() => (trip ? paddleShops(trip) : []), [trip]);
   const marketShopObj = useMemo(() => (trip ? pickMarketShop(trip) : null), [trip]);
@@ -174,12 +171,21 @@ export default function ListScene(_props: SceneProps) {
     if (rank1.target) window.location.hash = `#/${rank1.target.screen}`;
   }
 
+  // Migrated to the preferred `rank1` API (wave-1 integration review: every
+  // screen renders exactly ONE <ArbiterSlot>, ALWAYS — idle state shows a
+  // quiet "nothing else needs attention" panel instead of disappearing).
+  // Built once and spread into all three of this screen's return branches
+  // below so the idle/queue/activate wiring can't drift between them.
+  const arbiterSlotProps = {
+    rank1: rank1 ? { text: rank1.text, actionLabel: "act →", onActivate: handleArbiterActivate } : null,
+    count: arbiter.queued,
+    idleText: "nothing else needs attention",
+  };
+
   if (!trip) {
     return (
       <section className="scr-list">
-        {rank1 && (
-          <ArbiterSlot text={rank1.text} count={arbiter.queued} actionLabel="act →" onActivate={handleArbiterActivate} />
-        )}
+        <ArbiterSlot {...arbiterSlotProps} />
         <div className="scr-list-empty" role="note">
           <p className="scr-list-empty-title">no trip loaded</p>
           <p className="scr-list-empty-body">build one at the desk on SHOP</p>
@@ -191,9 +197,7 @@ export default function ListScene(_props: SceneProps) {
   if (viewMode === "summary") {
     return (
       <section className="scr-list">
-        {rank1 && (
-          <ArbiterSlot text={rank1.text} count={arbiter.queued} actionLabel="act →" onActivate={handleArbiterActivate} />
-        )}
+        <ArbiterSlot {...arbiterSlotProps} />
         <TripSummary trip={trip} ticks={ticks} priceChecks={state.priceChecks} onBack={() => setViewMode("list")} />
       </section>
     );
@@ -207,7 +211,7 @@ export default function ListScene(_props: SceneProps) {
 
   return (
     <section className="scr-list">
-      {rank1 && <ArbiterSlot text={rank1.text} count={arbiter.queued} actionLabel="act →" onActivate={handleArbiterActivate} />}
+      <ArbiterSlot {...arbiterSlotProps} />
 
       <header className="scr-list-header">
         <p className="scr-list-header-kicker">{kindLabel(trip.kind)}</p>

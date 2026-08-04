@@ -15,7 +15,7 @@
 // the duplication.
 import { Paddle } from "../../components/Paddle";
 import { Odometer } from "./Odometer";
-import type { TripShop } from "./codecStub";
+import type { TripShop } from "../../engine/tripCodec";
 import { paddleLabel } from "./model";
 
 export interface ThumbBarProps {

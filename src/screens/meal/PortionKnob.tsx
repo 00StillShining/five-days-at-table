@@ -158,7 +158,14 @@ export function PortionKnob({ scale, onChange }: PortionKnobProps) {
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
         >
-          <svg viewBox="0 0 100 100" className="mk-face" aria-hidden="true" focusable="false">
+          {/* viewBox has 14-unit padding on every side beyond the 0..100 drawing
+              area (body/ticks/dot) so the "0.70"/"1.30" arc labels — which sit
+              outside the tick ring and would otherwise be clipped by the SVG's
+              own bounds, worse at small rendered sizes on mobile — have room to
+              render in full, with a couple of units of measured margin to spare
+              (checked via getBBox, not just eyeballed) rather than sitting
+              pixel-exact on the edge. */}
+          <svg viewBox="-14 -14 128 128" className="mk-face" aria-hidden="true" focusable="false">
             <circle cx={50} cy={50} r={44} className="mk-body" />
             {SCALE_DETENTS.map((d) => {
               const deg = angleForValue(d);

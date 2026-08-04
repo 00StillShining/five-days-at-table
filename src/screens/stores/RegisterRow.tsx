@@ -6,11 +6,20 @@
 // ArrowDown adjust ITS level directly (no need to tab into the thumbwheel at
 // all); the wheel (wheel.tsx) is the same control's redundant fine-pointer
 // path, for mouse/touch users who want to jump straight to a detent.
+//
+// Wave-1-fix item 3: `onAdjust` (renamed from `onSetLevel`) is deliberately
+// the RELATIVE-only path — ArrowUp/Down nudge this row's level by ±1 and
+// stay on this row, never auto-advancing. Auto-advance is reserved for the
+// wheel's ABSOLUTE detent picks (index.tsx's `handleWheelSet`); before this
+// fix, every set (relative or absolute) auto-advanced, which meant a
+// keyboard user pressing ArrowUp on an "empty" row got bounced to the NEXT
+// row after the very first press — there was no way to arrow-key a row past
+// level 1. Multiple ArrowUp/Down presses here now walk 0..4 on the SAME row.
 import type { KeyboardEvent } from "react";
 import type { Ingredient } from "../../data/types";
 import type { InventoryEntry, InventoryLevel } from "../../state/store";
 import { countdownForIngredient, type CountdownStatus } from "./countdown";
-import { registerNameSuffix } from "./registerName";
+import { registerDisambiguator, registerNameSuffix } from "./registerName";
 import { DETENT_LABELS } from "./wheel";
 
 const PIP_COUNT = 4; // level 0..4 -> 0..4 filled of 4 (a standard 4-bar "signal strength" gauge)
@@ -29,6 +38,7 @@ const STATUS_GLYPH: Record<CountdownStatus, string> = {
   expired: "✕",
   expiring: "△",
   "low-confidence": "",
+  frozen: "",
   ok: "",
   empty: "",
 };
@@ -39,27 +49,28 @@ export interface RegisterRowProps {
   armed: boolean;
   now: Date;
   onArm: (id: string) => void;
-  onSetLevel: (id: string, level: InventoryLevel) => void;
+  /** Relative-only: ArrowUp/Down nudge by ±1, no auto-advance. See file doc. */
+  onAdjust: (id: string, level: InventoryLevel) => void;
   registerEl: (id: string, el: HTMLButtonElement | null) => void;
 }
 
-export function RegisterRow({ ing, entry, armed, now, onArm, onSetLevel, registerEl }: RegisterRowProps) {
+export function RegisterRow({ ing, entry, armed, now, onArm, onAdjust, registerEl }: RegisterRowProps) {
   const level: InventoryLevel = entry?.level ?? 0;
   const countdown = countdownForIngredient(ing, entry, now);
-  const suffix = registerNameSuffix(ing);
+  const nameSuffix = `${registerNameSuffix(ing)}${registerDisambiguator(ing)}`;
 
   function handleKeyDown(e: KeyboardEvent<HTMLButtonElement>) {
     if (e.key === "ArrowUp") {
       e.preventDefault();
-      onSetLevel(ing.id, Math.min(4, level + 1) as InventoryLevel);
+      onAdjust(ing.id, Math.min(4, level + 1) as InventoryLevel);
     } else if (e.key === "ArrowDown") {
       e.preventDefault();
-      onSetLevel(ing.id, Math.max(0, level - 1) as InventoryLevel);
+      onAdjust(ing.id, Math.max(0, level - 1) as InventoryLevel);
     }
   }
 
-  const accessibleName = `${ing.name.short}${suffix}, level ${DETENT_LABELS[level]}, ${
-    countdown.status === "empty" ? "not stocked" : `use-by ${countdown.text}`
+  const accessibleName = `${ing.name.short}${nameSuffix}, level ${DETENT_LABELS[level]}, ${
+    countdown.status === "empty" ? "not stocked" : countdown.status === "frozen" ? "still frozen" : `use-by ${countdown.text}`
   }`;
 
   return (
@@ -75,7 +86,7 @@ export function RegisterRow({ ing, entry, armed, now, onArm, onSetLevel, registe
       >
         <span className="scr-stores-row-name" aria-hidden="true">
           {ing.name.short}
-          {suffix}
+          {nameSuffix}
         </span>
         <Pips level={level} />
         <span className="scr-stores-row-countdown" aria-hidden="true">

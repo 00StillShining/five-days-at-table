@@ -22,7 +22,7 @@ import { useProgram } from "../../engine/timers";
 import { mealMacros } from "../../state/selectors";
 import { getMeal, prepSessionForWeek } from "../../data";
 import type { Week } from "../../data/types";
-import { useNow } from "./useNow";
+import { useNow } from "../../state/useNow";
 import { useChime } from "./useChime";
 import { ProgramPicker } from "./ProgramPicker";
 import { Reel } from "./Reel";
@@ -43,6 +43,17 @@ export default function CookScene(_props: SceneProps) {
   const [scrubOffset, setScrubOffset] = useState(0);
   const [leftoverBaseline, setLeftoverBaseline] = useState<Set<string> | null>(null);
 
+  // Mirrors `scrubOffset` synchronously (unlike the state variable, which
+  // only updates on the next render). Needed because a real keyboard's OS
+  // key-repeat (holding ◂/▸, or the ArrowLeft/Right handler firing several
+  // times before React commits) calls stepScrub() repeatedly inside the
+  // SAME tick — reading the `scrubOffset` closure variable in that window
+  // would see the same stale pre-update value on every call and each step
+  // would overwrite the last instead of accumulating (verified: 3 rapid
+  // ArrowRight presses only reached +01:00 with the closure-only version,
+  // not +03:00). The ref is always current regardless of render timing.
+  const scrubOffsetRef = useRef(0);
+
   const wasDueRef = useRef(false);
   useEffect(() => {
     const isDue = prog.state?.dueNow ?? false;
@@ -52,11 +63,13 @@ export default function CookScene(_props: SceneProps) {
   }, [prog.state?.dueNow, chime.play]);
 
   function stepScrub(delta: number) {
-    const next = Math.max(-SCRUB_BOUND_MIN, Math.min(SCRUB_BOUND_MIN, scrubOffset + delta));
+    const next = Math.max(-SCRUB_BOUND_MIN, Math.min(SCRUB_BOUND_MIN, scrubOffsetRef.current + delta));
+    scrubOffsetRef.current = next;
     setScrubOffset(next);
     prog.scrubPreview(next);
   }
   function resetScrub() {
+    scrubOffsetRef.current = 0;
     setScrubOffset(0);
     prog.clearScrubPreview();
   }
