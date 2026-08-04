@@ -6,10 +6,12 @@ import { Paddles } from "./Paddles";
 import { LoopRail } from "./LoopRail";
 import { SettingsDrawer } from "./SettingsDrawer";
 import { CookRunningProvider, useCookRunning } from "./cookRunningStub";
+import { OpenSettingsProvider } from "../components/OpenSettings";
 
 function AppShell() {
   const route = useHashRoute();
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const openSettings = useCallback(() => setSettingsOpen(true), []);
   const [now, setNow] = useState(() => new Date());
   const cookRunning = useCookRunning();
 
@@ -53,34 +55,36 @@ function AppShell() {
 
   return (
     <div className="fd5" data-language="playful">
-      <div className="fd5-frame" data-lidclosed={lidClosed || undefined}>
-        <div className="fd5-topbar">
-          <Masthead now={now} cookRunning={cookRunning} />
-          <div className="fd5-topbar-controls">
-            <Paddles />
-            <button
-              type="button"
-              className="fd5-control fd5-gear"
-              onClick={() => setSettingsOpen(true)}
-              aria-label="settings"
-            >
-              <span aria-hidden="true">{"⚙"}</span>
-            </button>
+      <OpenSettingsProvider value={openSettings}>
+        <div className="fd5-frame" data-lidclosed={lidClosed || undefined}>
+          <div className="fd5-topbar">
+            <Masthead now={now} cookRunning={cookRunning} />
+            <div className="fd5-topbar-controls">
+              <Paddles />
+              <button
+                type="button"
+                className="fd5-control fd5-gear"
+                onClick={openSettings}
+                aria-label="settings"
+              >
+                <span aria-hidden="true">{"⚙"}</span>
+              </button>
+            </div>
           </div>
+          <LoopRail
+            activeScreen={route.screen}
+            onNavigate={navigate}
+            suggestedStation={suggestedStation}
+            cookRunning={cookRunning}
+            lidClosed={lidClosed}
+            onExitCook={() => navigate("today")}
+          />
+          <main id="fd5-scene" className="fd5-scene">
+            <Scene route={route} />
+          </main>
         </div>
-        <LoopRail
-          activeScreen={route.screen}
-          onNavigate={navigate}
-          suggestedStation={suggestedStation}
-          cookRunning={cookRunning}
-          lidClosed={lidClosed}
-          onExitCook={() => navigate("today")}
-        />
-        <main id="fd5-scene" className="fd5-scene">
-          <Scene route={route} />
-        </main>
-      </div>
-      <SettingsDrawer open={settingsOpen} onClose={() => setSettingsOpen(false)} />
+        <SettingsDrawer open={settingsOpen} onClose={() => setSettingsOpen(false)} />
+      </OpenSettingsProvider>
     </div>
   );
 }

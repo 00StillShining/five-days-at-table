@@ -1,0 +1,525 @@
+/*
+  LIST — till odometer (PLAN §6.9). Scoped entirely under .scr-list per
+  PHASE2-CONTRACT ("colocate your own screen CSS scoped by screen-root
+  class"). Uses only the real Sol/PHASE2-CONTRACT custom properties defined
+  in src/tokens.css (--sol-*, --fd-*, --fd5-target-list) — no new global
+  tokens invented here.
+
+  Mobile-first (390x844 / 360x780 — PLAN: "design at 390x844 and 360x780;
+  desktop just centers the phone column"): .scr-list is an intrinsically
+  phone-shaped column at every viewport; desktop just gets more empty space
+  either side of it, never a distinct desktop layout.
+
+  Playful-technical lean with ONE borrowed precision object (PLAN §6.0: "the
+  till odometer's drum digits are the one precision object") — everything
+  else here (rows, dots, chips) stays flat silkscreen, no metal/gradients
+  (Phase 3 polish only).
+*/
+
+.scr-list {
+  --list-odo-h: 1.4rem;
+  max-width: 27rem; /* ~430px phone column */
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  /* Clearance for this screen's OWN always-fixed thumb bar (below) — on top
+     of whatever tokens.css's .fd5-scene already reserves for the chassis's
+     fixed loop rail on mobile (see ThumbBar.tsx's header doc). */
+  padding-bottom: 5.5rem;
+}
+
+/* ---- header ------------------------------------------------------------- */
+
+.scr-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.scr-list-header-kicker {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: lowercase;
+}
+
+.scr-list-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.scr-list-market-toggle,
+.scr-list-close-trip {
+  padding-inline: 0.875rem;
+  font-size: var(--sol-text-label);
+  text-transform: lowercase;
+}
+
+/* ---- empty (no trip loaded) state ---------------------------------------- */
+
+.scr-list-empty {
+  background: var(--sol-panel);
+  border: 1px solid var(--sol-border);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.scr-list-empty-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: lowercase;
+}
+
+.scr-list-empty-body {
+  margin: 0;
+  color: var(--sol-text-muted);
+}
+
+.scr-list-empty-body--inline {
+  padding: 1rem 0;
+  text-align: center;
+}
+
+/* ---- aisle sections ------------------------------------------------------- */
+
+.scr-list-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.scr-list-aisle-h {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 0.5rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--sol-border);
+  font-size: 1rem;
+}
+
+.scr-list-aisle[data-done] .scr-list-aisle-h {
+  opacity: 0.65;
+}
+
+.scr-list-aisle-shop {
+  color: var(--sol-text-muted);
+  text-transform: lowercase;
+  font-size: var(--sol-text-label);
+}
+
+.scr-list-aisle-name {
+  font-weight: 700;
+  text-transform: lowercase;
+}
+
+.scr-list-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.scr-list-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--sol-bg);
+  border: 1px solid var(--sol-border);
+}
+
+.scr-list-dot--on {
+  background: var(--sol-success);
+  border-color: var(--sol-success);
+}
+
+.scr-list-aisle-frac {
+  margin-left: auto;
+  font-family: var(--sol-font-data);
+  font-size: var(--sol-text-label);
+  color: var(--sol-text-muted);
+}
+
+/* ---- rows: the >=56px full-row tick target -------------------------------- */
+
+.scr-list-row-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.scr-list-row-item {
+  display: flex;
+  align-items: stretch;
+  gap: 0.375rem;
+}
+
+.scr-list-row {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-block-size: var(--fd-target-list); /* 56px house target for LIST rows */
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding-inline: 0.75rem;
+  text-align: left;
+  transition: transform var(--sol-motion-state) ease;
+}
+
+.scr-list-row-glyph {
+  flex: 0 0 auto;
+  font-size: 1.15rem;
+  line-height: 1;
+  width: 1.3em;
+  text-align: center;
+}
+
+.scr-list-row-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  overflow: hidden;
+}
+
+.scr-list-row-label {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.scr-list-row-qty {
+  flex: 0 0 auto;
+  font-family: var(--sol-font-data);
+  font-size: var(--sol-text-label);
+  color: var(--sol-text-muted);
+  white-space: nowrap;
+}
+
+.scr-list-row-price {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-family: var(--sol-font-data);
+  font-variant-numeric: tabular-nums;
+}
+
+.scr-list-row-check {
+  color: var(--sol-success);
+  font-weight: 700;
+}
+
+/* Ticked state: dim text + check glyph (already rendered) + a success-toned
+   edge — three independent cues, never color alone (Sol §5.1). Deliberately
+   NO strikethrough (PLAN §6.9: "no heavy strikethrough"). */
+.scr-list-row[aria-pressed="true"] {
+  border-left: 3px solid var(--sol-success);
+  padding-left: calc(0.75rem - 3px);
+}
+
+.scr-list-row[aria-pressed="true"] .scr-list-row-label,
+.scr-list-row[aria-pressed="true"] .scr-list-row-qty {
+  color: var(--sol-text-muted);
+}
+
+/* The single active verify nominee's chip (PLAN §6.9: "One [verify] nominee
+   active at a time"). Deliberately NOT --sol-accent-fill (PHASE2-CONTRACT:
+   that token is reserved for the shared ArbiterSlot only). */
+.scr-list-verify-chip {
+  flex: 0 0 auto;
+  width: 4.5rem;
+  min-block-size: var(--fd-target-list);
+  border: 2px solid var(--sol-accent);
+  color: var(--sol-accent);
+  background: var(--sol-panel);
+  font-weight: 700;
+  font-size: var(--sol-text-label);
+  text-transform: lowercase;
+}
+
+/* ---- the till odometer (hero) --------------------------------------------- */
+
+.scr-list-odo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.scr-list-odo-drums {
+  display: flex;
+  align-items: center;
+  background: var(--sol-bg);
+  border: 1px solid var(--sol-border);
+  padding: 0.25rem 0.4rem;
+  font-family: var(--sol-font-data);
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.scr-list-odo-currency,
+.scr-list-odo-dot {
+  height: var(--list-odo-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scr-list-odo-digit {
+  height: var(--list-odo-h);
+  width: 0.65em;
+  overflow: hidden;
+  position: relative;
+}
+
+.scr-list-odo-strip {
+  display: flex;
+  flex-direction: column;
+}
+
+.scr-list-odo-face {
+  height: var(--list-odo-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scr-list-odo-text {
+  margin: 0;
+  font-family: var(--sol-font-data);
+  font-size: 0.6875rem; /* 11px, nonessential-engraving band */
+  color: var(--sol-text-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ---- thumb bar (fixed bottom, above safe-area) ---------------------------- */
+
+.scr-list-thumbbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 21; /* above the chassis's own fixed rail (z-index: 20) on mobile */
+  max-width: 27rem;
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
+  background: var(--sol-panel);
+  border: 1px solid var(--sol-border);
+  border-bottom: none;
+}
+
+.scr-list-next {
+  flex: 0 0 auto;
+  padding-inline: 1rem;
+  font-weight: 600;
+  text-transform: lowercase;
+}
+
+@media (max-width: 700px) {
+  .scr-list-thumbbar {
+    /* Stack ABOVE the chassis's own fixed loop rail footprint — tokens.css
+       documents that footprint on `.fd5-scene` as "6rem + safe-area"
+       (LoopRail is fixed-bottom for every screen, LIST included, even
+       though "list" isn't a rail station — same as MEAL). Duplicated
+       constant, flagged as a shared-change request in the build report. */
+    bottom: calc(6rem + env(safe-area-inset-bottom, 0px));
+    border-bottom: 1px solid var(--sol-border);
+    padding-bottom: 0.5rem;
+  }
+}
+
+/* ---- numeric pad (verify price entry) ------------------------------------- */
+
+.scr-list-pad {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.scr-list-pad-item {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.scr-list-pad-was {
+  margin: 0;
+  color: var(--sol-text-muted);
+  font-size: var(--sol-text-label);
+}
+
+.scr-list-pad-readout {
+  margin: 0;
+  padding: 0.75rem;
+  text-align: center;
+  font-family: var(--sol-font-data);
+  font-size: 1.75rem;
+  font-weight: 700;
+  background: var(--sol-bg);
+  border: 1px solid var(--sol-border);
+  font-variant-numeric: tabular-nums;
+}
+
+.scr-list-pad-keys {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.scr-list-pad-key {
+  min-block-size: var(--fd-target-list);
+  font-size: 1.25rem;
+  font-family: var(--sol-font-data);
+}
+
+.scr-list-pad-done {
+  min-block-size: var(--fd-target-list);
+  font-weight: 700;
+  text-transform: lowercase;
+  background: var(--sol-text);
+  color: var(--sol-bg);
+}
+
+.scr-list-pad-done:disabled {
+  background: var(--sol-panel);
+  color: var(--sol-text);
+}
+
+/* ---- trip summary / verify read-back -------------------------------------- */
+
+.scr-list-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-bottom: 1rem;
+}
+
+.scr-list-summary-kicker {
+  margin: 0;
+  color: var(--sol-text-muted);
+  text-transform: lowercase;
+  font-size: var(--sol-text-label);
+}
+
+.scr-list-summary-title {
+  margin: 0 0 0.25rem;
+  font-size: 1.4rem;
+  text-transform: lowercase;
+}
+
+.scr-list-summary-total {
+  margin: 0 0 1rem;
+  font-family: var(--sol-font-data);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.scr-list-summary-h {
+  margin: 1rem 0 0.25rem;
+  font-size: var(--sol-text-label);
+  text-transform: lowercase;
+  color: var(--sol-text-muted);
+}
+
+.scr-list-summary-muted {
+  margin: 0 0 0.5rem;
+  color: var(--sol-text-muted);
+}
+
+.scr-list-summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1.05rem;
+}
+
+.scr-list-summary-table th,
+.scr-list-summary-table td {
+  padding: 0.6rem 0.4rem;
+  border-bottom: 1px solid var(--sol-border);
+  text-align: left;
+  font-weight: 400;
+}
+
+.scr-list-summary-table thead th {
+  color: var(--sol-text-muted);
+  font-size: var(--sol-text-label);
+  text-transform: lowercase;
+  font-weight: 400;
+}
+
+.scr-list-summary-table td {
+  font-family: var(--sol-font-data);
+  font-variant-numeric: tabular-nums;
+}
+
+.scr-list-summary-back {
+  align-self: flex-start;
+  margin-top: 1rem;
+  padding-inline: 1rem;
+}
+
+/* ---- reduced-motion -------------------------------------------------------- */
+/* The odometer's rolling digits and row-settle FLIP transform both carry
+   data-motion, so tokens.css's global `.fd5 [data-motion]` rule already
+   collapses their transition-duration to ~0 under prefers-reduced-motion —
+   no screen-specific rule needed for that. useFlip.ts and Odometer.tsx also
+   gate their JS-side motion on the same media query independently
+   (belt-and-suspenders, not merely CSS-hidden motion). */
+
+/* ---- forced-colors --------------------------------------------------------- */
+
+@media (forced-colors: active) {
+  .scr-list-row[aria-pressed="true"] {
+    border-left-color: Highlight;
+    forced-color-adjust: none;
+  }
+  .scr-list-dot--on {
+    background: Highlight;
+    border-color: ButtonText;
+    forced-color-adjust: none;
+  }
+  .scr-list-verify-chip {
+    border-color: Highlight;
+    color: Highlight;
+    forced-color-adjust: none;
+  }
+  .scr-list-pad-done:not(:disabled) {
+    background: Highlight;
+    color: HighlightText;
+    forced-color-adjust: none;
+  }
+}
+
+/* ---- zero horizontal scroll, all viewports -------------------------------- */
+/* Deliberately NOT `.scr-list` itself here — it has its own intentional
+   27rem phone-column cap up top (desktop centers the column, PLAN §6.9);
+   a same-specificity `max-width: 100%` this far down the cascade would
+   silently win by source order and erase that cap on wide viewports. */
+
+.scr-list * {
+  max-width: 100%;
+}
+
+.scr-list-row-list,
+.scr-list-summary-table {
+  overflow-wrap: anywhere;
+}

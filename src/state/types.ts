@@ -15,11 +15,33 @@ export type InventoryLevel = 0 | 1 | 2 | 3 | 4;
 
 export interface InventoryEntry {
   level: InventoryLevel;
-  /** ISO datetime. Doubles as the freshness anchor for shelf-life countdowns
-   * (src/data/lifeEstimate.ts) AND as the "defrost done" signal (a defrost
-   * duty is considered actioned once this is bumped on/after the duty's
-   * calendar date) — see selectors.ts dutyStack for the documented reasoning. */
+  /** ISO datetime. The general "this row was touched" marker — bumped by
+   * every write (stocktake, prep-yield stamping, restock) and used as the
+   * freshness anchor for shelf-life countdowns on non-freezer stock, AND as
+   * the "defrost done" signal (a defrost duty is considered actioned once
+   * this is bumped on/after the duty's calendar date) — see selectors.ts
+   * dutyStack for the documented reasoning. */
   updatedAt: string;
+  /**
+   * ISO datetime, optional. Freeze-day0/buy-frozen ingredients ONLY
+   * (src/data/lifeEstimate.ts's `isFreezerStock`): the moment this specific
+   * item was actually moved from freezer to fridge, set by the
+   * `inventory/markThawed` action (the defrost-duty "done" tap). Deliberately
+   * a SEPARATE field from `updatedAt` — P1 wave-1-review bug ("false-expired
+   * flood"): a Saturday stocktake bumps `updatedAt` on an item that's still
+   * sitting in the freezer, and if the short post-thaw `freshDays` countdown
+   * anchored to THAT timestamp, an item correctly still frozen on Tuesday
+   * would read as "expired" days before it was ever actually thawed. With
+   * `thawedAt` separate: no `thawedAt` -> still frozen -> no countdown shown
+   * at all (selectors.ts `remainingLifeDays` returns null); `thawedAt` set ->
+   * the post-thaw countdown anchors to THAT instant, not to whenever the row
+   * last happened to be touched.
+   * Migration-safe: absent/undefined on every inventory entry persisted
+   * before this field existed (optional in InventoryEntrySchema) — treated
+   * identically to "not yet thawed," which is the correct conservative
+   * default for pre-existing data.
+   */
+  thawedAt?: string | null;
 }
 
 export type Inventory = Record<string, InventoryEntry>;
@@ -126,6 +148,13 @@ export type Action =
   | { type: "prefs/set"; patch: Partial<Prefs> }
   | { type: "inventory/set"; ingId: string; level: InventoryLevel; at?: string }
   | { type: "inventory/setMany"; entries: { ingId: string; level: InventoryLevel; at?: string }[] }
+  /** The defrost-duty "done" action (P1 wave-1-review fix) — marks this
+   * specific freezer item as thawed as of `at` (default now), starting its
+   * post-thaw shelf-life countdown. Preserves the entry's existing `level`
+   * (a defrost move doesn't change how much you have) if one exists, else
+   * defaults to full (4) — the calendar listing a defrost move for this
+   * ingredient already implies it's in stock. */
+  | { type: "inventory/markThawed"; ingId: string; at?: string }
   | { type: "eaten/tick"; date: string; slot: Slot; mealId: string; at?: string }
   | { type: "eaten/untick"; date: string; slot: Slot }
   | { type: "shopTicks/tick"; tripId: string; ingId: string; at?: string }

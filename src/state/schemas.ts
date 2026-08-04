@@ -18,6 +18,9 @@ export const PrefsSchema = z.object({
 export const InventoryEntrySchema = z.object({
   level: InventoryLevelSchema,
   updatedAt: z.string(),
+  // Optional + nullable: migration-safe for every entry persisted before
+  // this field existed (absent -> "not yet thawed", the correct default).
+  thawedAt: z.string().nullable().optional(),
 });
 export const InventorySchema = z.record(z.string(), InventoryEntrySchema);
 

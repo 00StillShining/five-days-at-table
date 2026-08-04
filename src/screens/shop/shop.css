@@ -1,0 +1,578 @@
+/*
+  SHOP — the Saturday console (PLAN §6.8). Scoped entirely under .scr-shop
+  per PHASE2-CONTRACT ("colocate your own screen CSS scoped by screen-root
+  class") — no new global tokens invented here, only src/tokens.css's
+  --sol-*/--fd-* custom properties.
+
+  Lean (PLAN §6.0): playful-technical, borrowed precision ~20% — "calm
+  console horizon (Beogram reading); the convex send-to-phone key and
+  costed-column discipline are the precision notes." Composition: one quiet
+  low control row (paddle + key), then three quiet, tabular-aligned costed
+  columns — the key is the one exception that earns visual weight, per the
+  Braun ET66/Beogram §0.4 rule ("exceptions, not size inflation, create
+  hierarchy"). No metals/gradients anywhere (Phase 3 polish only).
+*/
+
+.scr-shop {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-width: 68rem;
+  margin: 0 auto;
+}
+
+/* ---- header ---- */
+
+.scr-shop-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.scr-shop-title {
+  margin: 0;
+  font-size: 1.25rem;
+  text-transform: lowercase;
+}
+
+.scr-shop-status {
+  margin: 0;
+  font-family: var(--sol-font-data);
+  font-size: var(--sol-text-label);
+  color: var(--sol-text-muted);
+}
+
+/* ---- console row: trip-strategy paddle + the send-to-phone hero key ---- */
+
+.scr-shop-console {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--sol-panel);
+  border: 1px solid var(--sol-border);
+}
+
+/* ---- send-to-phone hero ---- */
+
+.scr-shop-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-end;
+  min-width: 0;
+}
+
+.scr-shop-key {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding-inline: 1.5rem;
+  font-weight: 700;
+  text-transform: lowercase;
+  background: var(--sol-accent-fill);
+  color: var(--sol-on-accent-fill);
+  border-color: var(--sol-accent);
+}
+
+/* Specificity bump (0,2,0 vs .fd5-control's 0,1,0): tokens.css's shared
+   .fd5-control rule also sets min-block-size (to the 44px house default),
+   and depending on CSS module load order that rule can land later in the
+   cascade than this screen's own file — equal specificity would then let it
+   win and silently shrink the hero back to 44px. Qualifying with the screen
+   root guarantees this screen's intent (the one hero exception at 72px,
+   well above the 56px house-large target) always wins regardless of load
+   order. */
+.scr-shop .scr-shop-key {
+  min-block-size: 4.5rem;
+}
+
+.scr-shop-key-glyph {
+  display: inline-flex;
+}
+
+.scr-shop-key--open {
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.35),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.scr-shop-flipcard {
+  width: min(26rem, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--sol-panel);
+  border: 1px solid var(--sol-border);
+  align-items: stretch;
+  transform-origin: top right;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .scr-shop-flipcard {
+    animation: scr-shop-flip-open var(--sol-motion-state) ease;
+  }
+}
+@keyframes scr-shop-flip-open {
+  from {
+    transform: scaleY(0.85);
+    opacity: 0;
+  }
+  to {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+.scr-shop-flipcard-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.scr-shop-flipcard-title {
+  margin: 0;
+  font-weight: 700;
+  text-transform: lowercase;
+}
+
+.scr-shop-flipcard-close {
+  padding-inline: 0.875rem;
+}
+
+.scr-shop-flipcard-empty {
+  margin: 0;
+  color: var(--sol-text-muted);
+}
+
+.scr-shop-qr {
+  align-self: center;
+  border: 1px solid var(--sol-border);
+}
+
+.scr-shop-qr-fallback {
+  margin: 0;
+  color: var(--sol-text-muted);
+  font-size: var(--sol-text-label);
+}
+
+.scr-shop-url-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.scr-shop-url-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: var(--sol-font-data);
+  font-size: var(--sol-text-label);
+  padding-inline: 0.625rem;
+}
+
+.scr-shop-copy-btn,
+.scr-shop-copy-list-btn {
+  padding-inline: 1rem;
+  white-space: nowrap;
+}
+
+.scr-shop-textarea-label {
+  font-size: var(--sol-text-label);
+  color: var(--sol-text-muted);
+  text-transform: lowercase;
+}
+
+.scr-shop-textarea {
+  width: 100%;
+  font-family: var(--sol-font-data);
+  font-size: 0.75rem;
+  padding: 0.5rem;
+  resize: vertical;
+}
+
+.scr-shop-copy-status {
+  margin: 0;
+  min-height: 1.4em; /* reserve space so its appearance doesn't jump layout */
+  font-size: var(--sol-text-label);
+  color: var(--sol-success);
+}
+
+/* ---- empty (stocked-up) state ---- */
+
+.scr-shop-empty {
+  background: var(--sol-panel);
+  border: 1px solid var(--sol-border);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.scr-shop-empty-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: lowercase;
+}
+
+.scr-shop-empty-body {
+  margin: 0;
+  color: var(--sol-text-muted);
+}
+
+/* ---- three costed columns (quiet, tabular-aligned) ---- */
+
+.scr-shop-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.scr-shop-col {
+  background: var(--sol-panel);
+  border: 1px solid var(--sol-border);
+  padding: 0.875rem 1rem 1rem;
+  min-width: 0;
+}
+
+.scr-shop-col-h {
+  margin: 0 0 0.625rem;
+  font-size: var(--sol-text-label);
+  text-transform: lowercase;
+  color: var(--sol-text-muted);
+  border-bottom: 1px solid var(--sol-border);
+  padding-bottom: 0.375rem;
+}
+
+.scr-shop-col-empty {
+  margin: 0;
+  color: var(--sol-text-muted);
+  font-size: var(--sol-text-label);
+}
+
+.scr-shop-col-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.scr-shop-row td {
+  padding: 0.375rem 0;
+  vertical-align: top;
+  border-bottom: 1px dotted var(--sol-border);
+}
+
+.scr-shop-row-name {
+  text-align: left;
+  padding-right: 0.5rem;
+}
+
+.scr-shop-row-alt {
+  display: block;
+  margin-top: 0.125rem;
+  font-size: 0.6875rem;
+  font-style: italic;
+  color: var(--sol-text-muted);
+}
+
+.scr-shop-row-qty {
+  text-align: right;
+  white-space: nowrap;
+  font-family: var(--sol-font-data);
+  font-size: var(--sol-text-label);
+  color: var(--sol-text-muted);
+  padding-right: 0.5rem;
+}
+
+.scr-shop-row-price {
+  text-align: right;
+  white-space: nowrap;
+  font-family: var(--sol-font-data);
+}
+
+.scr-shop-chip {
+  display: inline-block;
+  margin-left: 0.375rem;
+  padding: 0.0625rem 0.375rem;
+  font-size: 0.6875rem;
+  border: 1px solid var(--sol-warning);
+  color: var(--sol-warning);
+  vertical-align: middle;
+}
+
+.scr-shop-verified {
+  display: inline-block;
+  margin-left: 0.375rem;
+  font-size: 0.6875rem;
+  color: var(--sol-success);
+  vertical-align: middle;
+}
+
+.scr-shop-subtotal-row td {
+  border-bottom: none;
+  border-top: 1px solid var(--sol-border);
+  padding-top: 0.5rem;
+  font-weight: 700;
+}
+
+.scr-shop-subtotal {
+  text-align: right;
+  font-family: var(--sol-font-data);
+}
+
+/* ---- market ticket: chrome-free, 1-bit, large type (PLAN §6.8) ---- */
+
+.scr-shop-col--market {
+  background: #ffffff;
+  color: #000000;
+  border: none;
+  border-top: 2px dashed var(--sol-border);
+  border-bottom: 2px dashed var(--sol-border);
+  font-size: 1.05em;
+}
+
+.scr-shop-col--market .scr-shop-col-h {
+  color: #000000;
+  border-bottom-color: #000000;
+}
+
+.scr-shop-col--market .scr-shop-row-qty {
+  color: #000000;
+}
+
+/* ---- overall total (till-style, mono tabular) ---- */
+
+.scr-shop-total {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin: 0;
+  padding-top: 0.75rem;
+  border-top: 2px solid var(--sol-border);
+  font-family: var(--sol-font-data);
+}
+
+.scr-shop-total-label {
+  text-transform: lowercase;
+  color: var(--sol-text-muted);
+  font-size: var(--sol-text-label);
+}
+
+.scr-shop-total-figure {
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- have-list (dedupe rows) ---- */
+
+.scr-shop-havelist {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.scr-shop-h {
+  margin: 0;
+  font-size: var(--sol-text-label);
+  text-transform: lowercase;
+  color: var(--sol-text-muted);
+}
+
+.scr-shop-muted {
+  margin: 0;
+  color: var(--sol-text-muted);
+  font-size: var(--sol-text-label);
+}
+
+.scr-shop-have-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.scr-shop-have-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px dashed var(--sol-border);
+  color: var(--sol-text-muted);
+}
+
+.scr-shop-have-text {
+  min-width: 0;
+}
+
+.scr-shop-have-toggle {
+  padding-inline: 0.75rem;
+  font-size: var(--sol-text-label);
+  white-space: nowrap;
+}
+
+/* ---- waste-cost readout ---- */
+
+.scr-shop-waste {
+  margin: 0;
+  font-family: var(--sol-font-data);
+  font-size: var(--sol-text-label);
+  color: var(--sol-text-muted);
+}
+
+/* ---- reconcile ---- */
+
+.scr-shop-reconcile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.scr-shop-reconcile-note {
+  margin: 0;
+  font-size: var(--sol-text-label);
+  color: var(--sol-text-muted);
+}
+
+.scr-shop-verify-list,
+.scr-shop-verify-done-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.scr-shop-verify-row {
+  padding: 0.25rem 0;
+}
+
+.scr-shop-verify-form {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex-wrap: wrap;
+}
+
+.scr-shop-verify-label {
+  flex: 1 1 auto;
+  min-width: 8rem;
+}
+
+.scr-shop-verify-prefix {
+  color: var(--sol-text-muted);
+}
+
+.scr-shop-verify-input {
+  width: 6rem;
+  padding-inline: 0.5rem;
+  font-family: var(--sol-font-data);
+}
+
+.scr-shop-verify-save {
+  padding-inline: 0.875rem;
+}
+
+.scr-shop-verify-done-row {
+  color: var(--sol-success);
+  font-size: var(--sol-text-label);
+}
+
+/* ---- responsive: mobile 390×844 — columns stack, key stays reachable ---- */
+
+@media (max-width: 900px) {
+  .scr-shop-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .scr-shop-console {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .scr-shop-hero {
+    align-items: stretch;
+  }
+
+  .scr-shop-key {
+    justify-content: center;
+  }
+
+  .scr-shop-flipcard {
+    width: 100%;
+  }
+
+  .scr-shop-total {
+    justify-content: space-between;
+  }
+}
+
+/* ---- print: only the market ticket, chrome-free ---- */
+
+@media print {
+  .scr-shop-console,
+  .scr-shop-havelist,
+  .scr-shop-waste,
+  .scr-shop-reconcile,
+  .scr-shop-header,
+  .scr-shop-total {
+    display: none;
+  }
+
+  .scr-shop-columns {
+    display: block;
+  }
+
+  .scr-shop-col:not(.scr-shop-col--market) {
+    display: none;
+  }
+
+  .scr-shop-col--market {
+    font-size: 1.3rem;
+    border: none;
+  }
+}
+
+/* ---- reduced motion ---- */
+
+@media (prefers-reduced-motion: reduce) {
+  .scr-shop-flipcard {
+    animation: none;
+  }
+}
+
+/* ---- forced-colors ---- */
+
+@media (forced-colors: active) {
+  .scr-shop-key {
+    forced-color-adjust: none;
+    background: Highlight;
+    color: HighlightText;
+    border-color: ButtonText;
+  }
+  .scr-shop-chip {
+    forced-color-adjust: none;
+    border-color: ButtonText;
+    color: ButtonText;
+  }
+  .scr-shop-col--market {
+    forced-color-adjust: none;
+    background: Canvas;
+    color: CanvasText;
+    border-color: ButtonText;
+  }
+}

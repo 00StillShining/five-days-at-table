@@ -33,19 +33,39 @@ export function reducer(state: AppState, action: Action): AppState {
     case "prefs/set":
       return { ...state, prefs: { ...state.prefs, ...action.patch } };
 
-    case "inventory/set":
+    case "inventory/set": {
+      // Preserve any existing thawedAt — a plain stocktake/level touch must
+      // never itself start (or silently drop) the post-thaw clock; only
+      // inventory/markThawed does that (P1 wave-1-review fix).
+      const existing = state.inventory[action.ingId];
       return {
         ...state,
         inventory: {
           ...state.inventory,
-          [action.ingId]: { level: action.level, updatedAt: action.at ?? nowIso() },
+          [action.ingId]: { level: action.level, updatedAt: action.at ?? nowIso(), thawedAt: existing?.thawedAt ?? null },
         },
       };
+    }
 
     case "inventory/setMany": {
       const next = { ...state.inventory };
-      for (const e of action.entries) next[e.ingId] = { level: e.level, updatedAt: e.at ?? nowIso() };
+      for (const e of action.entries) {
+        const existing = state.inventory[e.ingId];
+        next[e.ingId] = { level: e.level, updatedAt: e.at ?? nowIso(), thawedAt: existing?.thawedAt ?? null };
+      }
       return { ...state, inventory: next };
+    }
+
+    case "inventory/markThawed": {
+      const existing = state.inventory[action.ingId];
+      const at = action.at ?? nowIso();
+      return {
+        ...state,
+        inventory: {
+          ...state.inventory,
+          [action.ingId]: { level: existing?.level ?? 4, updatedAt: at, thawedAt: at },
+        },
+      };
     }
 
     case "eaten/tick": {

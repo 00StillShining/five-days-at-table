@@ -4,11 +4,11 @@
 //
 // See src/data/yieldMap.ts for the full documented reasoning: yields that
 // reduce to exactly one raw ingredient (Roast chicken -> chicken, Boiled eggs
-// -> egg, …) are stamped straight into `inventory` (level: full, updatedAt:
-// completion time — the freshness anchor lifeEstimate.ts then counts down
-// from). Composite yields (Turkey bolognese, Efo riro base, …) have no
-// single ingId to stamp, so they become `leftovers[]` entries instead, with
-// a use-by computed from the yield's own free-text `storage` field via the
+// -> egg, …) are stamped straight into `inventory` (level: full, updatedAt +
+// thawedAt: completion time — see the `thawedAt` note below for why both are
+// set). Composite yields (Turkey bolognese, Efo riro base, …) have no single
+// ingId to stamp, so they become `leftovers[]` entries instead, with a
+// use-by computed from the yield's own free-text `storage` field via the
 // same prose-fallback parser used for ingredients.
 import { estimateFreeTextLifeDays } from "../data/lifeEstimate";
 import { prepSessionForWeek, prepSessionId } from "../data/prep";
@@ -48,7 +48,16 @@ export function computePrepCompletion(week: Week, inventory: Inventory, atIso: s
   for (const y of session.yields) {
     const ingId = ingIdForYield(week, y.component);
     if (ingId) {
-      nextInventory[ingId] = { level: FULL_LEVEL, updatedAt: atIso };
+      // thawedAt is set unconditionally (not gated on isFreezerStock): for
+      // the two mapped ingredients that ARE freezer-class (chicken,
+      // cauliflower — "Roast chicken"/"Riced cauliflower"), the raw stock
+      // has, by definition, just been cooked/prepped and is now a fridge
+      // item, not frozen stock — its post-thaw countdown must start at this
+      // exact completion instant (P1 wave-1-review fix), not be blocked by
+      // the "no thawedAt -> still frozen, no countdown" guard in
+      // selectors.ts's remainingLifeDays. For every other (non-freezer-
+      // class) mapped ingredient thawedAt is simply unused/ignored.
+      nextInventory[ingId] = { level: FULL_LEVEL, updatedAt: atIso, thawedAt: atIso };
       continue;
     }
     const { days, confidence } = estimateFreeTextLifeDays(y.storage);

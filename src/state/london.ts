@@ -43,6 +43,23 @@ export function londonDateIso(date: Date): string {
   return `${String(y).padStart(4, "0")}-${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
 }
 
+const SHORT_MONTH_NAMES = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+
+/**
+ * Shared short-date display convention ("04 aug") — wave-1 integration
+ * review flagged screens formatting dates ad hoc; this is the ONE place it
+ * happens now. 2-digit day, space, lowercase 3-letter month, no year (every
+ * on-screen date in this app falls within the current/adjacent fortnight, so
+ * the year is never disambiguating and would just be visual noise) —
+ * Europe/London calendar date, built from `londonParts` rather than a fresh
+ * Intl call so it can't disagree with the rest of this module on which
+ * calendar day an instant falls on.
+ */
+export function formatShortDate(date: Date): string {
+  const { d, m } = londonParts(date);
+  return `${String(d).padStart(2, "0")} ${SHORT_MONTH_NAMES[m - 1]}`;
+}
+
 /** "YYYY-MM-DD" -> integer day number (pure calendar-date arithmetic, UTC-anchored). */
 export function isoDateToDayNumber(iso: string): number {
   const [y, m, d] = iso.split("-").map(Number);

@@ -7,10 +7,10 @@ import type { ScreenId, SceneProps } from "./router";
 import TodayScene from "../screens/today";
 import PlanScene from "../screens/plan";
 import MealScene from "../screens/meal";
-import CookScene from "./scenes/CookPlaceholder";
+import CookScene from "../screens/cook";
 import StoresScene from "../screens/stores";
-import ShopScene from "./scenes/ShopPlaceholder";
-import ListScene from "./scenes/ListPlaceholder";
+import ShopScene from "../screens/shop";
+import ListScene from "../screens/list";
 
 export const sceneRegistry: Record<ScreenId, ComponentType<SceneProps>> = {
   today: TodayScene,

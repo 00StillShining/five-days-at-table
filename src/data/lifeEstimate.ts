@@ -157,15 +157,32 @@ function mergedLife(life: IngredientLife): ParsedLife {
 
 /** Which bucket order to prefer per storage class — see module doc.
  * freeze-day0/buy-frozen: the item lives in the freezer until a defrost duty
- * moves it to the fridge (inventory.updatedAt is the freshness anchor for
- * that move, per selectors.ts); freshDays is the short post-thaw countdown
- * that then applies. buy-once/topup/stagger: prefer the "opened and in use"
- * figure, falling back to the bare/fresh produce figure, then sealed. */
+ * moves it to the fridge; freshDays is the short post-thaw countdown that
+ * then applies (the ANCHOR for that countdown is `inventory[ingId].thawedAt`,
+ * NOT `updatedAt` — see selectors.ts's `remainingLifeDays` and
+ * `isFreezerStock` below; a plain stocktake touch on a still-frozen item must
+ * not start this clock, which was P1 wave-1-review bug "false-expired
+ * flood"). buy-once/topup/stagger: prefer the "opened and in use" figure,
+ * falling back to the bare/fresh produce figure, then sealed. */
 function bucketOrder(storageClass: StorageClass): LifeBucket[] {
   if (storageClass === "freeze-day0" || storageClass === "buy-frozen") {
     return ["fresh", "frozen", "sealed", "open"];
   }
   return ["open", "fresh", "sealed", "frozen"];
+}
+
+/**
+ * True for ingredients that live in the freezer at rest (storage.class
+ * freeze-day0/buy-frozen) AND are actually located there (storage.location
+ * mentions "Freezer" — true for all 18 such ingredients in the current
+ * dataset, checked defensively rather than assumed, in case a future data
+ * regen adds a freeze-day0/buy-frozen item stored elsewhere). Selectors use
+ * this to gate the post-thaw (freshDays) countdown behind an explicit
+ * "thawed" marker instead of the generic `updatedAt` stocktake timestamp —
+ * see selectors.ts's `remainingLifeDays`.
+ */
+export function isFreezerStock(ing: Ingredient): boolean {
+  return (ing.storage.class === "freeze-day0" || ing.storage.class === "buy-frozen") && ing.storage.location.includes("Freezer");
 }
 
 const FIELD_FOR_BUCKET: Record<LifeBucket, keyof ParsedLife> = {

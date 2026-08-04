@@ -9,7 +9,11 @@ describe("computePrepCompletion — Week A (prep-a, 12 yields)", () => {
 
   it("stamps single-ingredient yields straight into inventory at full level", () => {
     for (const ingId of ["chicken", "chickpeas", "egg", "brown_rice", "cauliflower", "greek_yog", "suya_spice"]) {
-      expect(result.inventory[ingId], ingId).toEqual({ level: 4, updatedAt: AT });
+      // chicken/cauliflower are freezer-class (isFreezerStock): thawedAt is
+      // also stamped at completion time, since the raw stock has just been
+      // cooked/prepped and is now a fridge item, not frozen (P1 fix) — see
+      // prepCompletion.ts. Harmless/unused for the non-freezer-class ones.
+      expect(result.inventory[ingId], ingId).toEqual({ level: 4, updatedAt: AT, thawedAt: AT });
     }
   });
 
@@ -22,7 +26,7 @@ describe("computePrepCompletion — Week A (prep-a, 12 yields)", () => {
     const jollof = result.newLeftovers.find((l) => l.ref === "Jollof");
     expect(jollof).toBeDefined();
     // brown_rice itself was claimed by "Plain brown rice" (earlier in yields[] order).
-    expect(result.inventory.brown_rice).toEqual({ level: 4, updatedAt: AT });
+    expect(result.inventory.brown_rice).toEqual({ level: 4, updatedAt: AT, thawedAt: AT });
   });
 
   it("computes a useBy date from the yield's free-text storage life", () => {

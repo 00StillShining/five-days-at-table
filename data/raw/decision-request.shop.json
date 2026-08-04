@@ -1,0 +1,25 @@
+{
+  "from": "SHOP builder (Phase 2 wave 2)",
+  "date": "2026-08-04",
+  "severity": "integration-conflict, not a build blocker — SHOP was completed against the pinned brief; flagging for the orchestrator / integration reviewer to reconcile with LIST",
+  "summary": "LIST (built in parallel) shipped src/screens/list/codecStub.ts as a stand-in for src/engine/tripCodec.ts, which did not exist yet when LIST was built. Its TripEnvelope shape diverges from the trip-codec contract pinned in this builder's own task brief ('pinned by the orchestrator — LIST depends on this exactly') in three fields. Two of the three have real call sites in LIST's shipped code, so swapping codecStub -> the real engine/tripCodec.ts is NOT the 'one-line change' LIST's own stub comment assumes.",
+  "myBriefsPinnedShape": {
+    "kind": "\"full\" | \"day7\"",
+    "rows[].qty": "number — packs to buy (this builder's brief: 'qty (packs)')",
+    "totals": "{ overall: number, byShop: Record<string, number> }"
+  },
+  "listCodecStubShape": {
+    "file": "src/screens/list/codecStub.ts",
+    "kind": "string, used as \"day0\" | \"day7\" elsewhere in LIST (see model.ts inferTripDayFromKind/kindLabel)",
+    "rows[].qty": "string — LIST's own comment: 'Pre-formatted display quantity, e.g. \"× 4\" or \"1kg\" — the mock (PLAN §6.9) shows both counted and weighed forms and LIST has no ingredient-spec data of its own to reformat a number.'",
+    "totals": "{ subtotal: number, byShop: Record<string, number> }"
+  },
+  "resolutionTakenBySHOP": "Implemented src/engine/tripCodec.ts to this builder's own pinned brief exactly (kind: \"full\"|\"day7\"; rows[].qty: number; totals.overall) — the brief states this shape IS what LIST depends on, and LIST's own stub self-documents its fields as unconfirmed guesses ('assumptions this stub had to make that the real tripCodec.ts must confirm'), not a competing pin. Did not change anything under src/screens/list/** (out of this builder's ownership).",
+  "whyThisIsNotJustANumberFormattingDetail": "packG (household pack size, already in the pinned row shape) plus qty (packs) is sufficient for LIST to derive its own '× 4' vs '1kg' display without SHOP needing to guess LIST's presentation rules on its behalf — baking a pre-formatted string into the wire envelope would mean SHOP inventing LIST's UI copy, which SHOP's own brief explicitly forbids elsewhere ('render only if data exists; do not invent').",
+  "concreteTouchPointsInListThatWillBreakOnSwapover": [
+    "src/screens/list/Row.tsx:27,47 — renders `row.qty` directly as text (accessible name + visible span); will render a raw number ('4') instead of '× 4' / '1kg' once fed a real TripEnvelope. Needs a small qty-formatting helper added to LIST's model.ts using row.qty (number) + row.packG.",
+    "src/screens/list/model.ts:160-169 (`inferTripDayFromKind`, `kindLabel`) — compare `kind` to literal \"day0\"/\"day7\"; the real envelope's kind values are \"full\"/\"day7\". Needs updating to match \"full\"/\"day7\" (arbiter.ts's own TripDay is 0|7, and 0 maps to a \"full\" shop per state/selectors.ts tripBuild's own tripDay:0 case, not \"day0\").",
+    "codecStub.ts's `totals.subtotal` vs the real `totals.overall` — no current call site reads trip.totals in LIST's shipped code (grepped, zero hits outside the stub's own type), so this one is latent/cosmetic today but will be a compile error the moment codecStub.ts is deleted and something starts reading totals.overall as totals.subtotal."
+  ],
+  "recommendation": "Integration reviewer: point LIST's builder/reviewer at src/engine/tripCodec.ts (now landed) for the swapover pass; the three items above are the exact, bounded set of changes needed in src/screens/list/model.ts + Row.tsx — nothing else in LIST should need to move."
+}

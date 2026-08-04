@@ -1,0 +1,832 @@
+/*
+  COOK — tape timeline + reel (PLAN §6.6). Scoped under .scr-cook per
+  docs/PHASE2-CONTRACT.md conventions; nothing here touches tokens.css or any
+  other screen's classes. This is the app's ONE precision-industrial screen
+  (PLAN §6.0): engraved CAPS labels (uppercase, tracked letter-spacing) on
+  every label/engraving, honest depth via flat recess/edge borders — never a
+  metal/brushed gradient anywhere (Phase 2 flat law; Phase 3 machines the
+  reel). Instructional/content text (the NOW line's step text, meal names,
+  the alarm/tally prose) stays natural sentence case — "engraved caps" means
+  labels, not body copy, and forcing a whole sentence to caps would fight the
+  "legible at 2m" requirement on the NOW line specifically.
+
+  Colour discipline: this screen deliberately never paints --sol-danger on
+  the reel itself. "Exactly ONE red element" for the step-due alarm (PLAN
+  §6.6 / Sol §5.1) is the single .scr-cook-alarm banner (its dot + text count
+  as one composite unit, same idea as the shared .fd5-arbiter's chevron+text+
+  badge being one unit) — the reel communicates due/paused/running purely
+  through motion (spin/stopped) + shape (dashed vs solid rim) + its own
+  neutral-coloured glyph swap, never colour.
+*/
+
+.scr-cook {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  position: relative;
+  background: var(--sol-bg);
+  color: var(--sol-text);
+}
+
+.scr-cook-eyebrow {
+  margin: 0;
+  font-size: var(--sol-text-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sol-text-muted);
+}
+
+.scr-cook-h {
+  margin: 0 0 0.5rem;
+  font-size: var(--sol-text-label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sol-text-muted);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Standby picker                                                         */
+/* ---------------------------------------------------------------------- */
+
+.scr-cook-picker {
+  flex: 1;
+  width: 100%;
+  max-width: 36rem;
+  margin: 0 auto;
+  padding: 1.25rem 1rem calc(2rem + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  overflow-y: auto;
+}
+
+.scr-cook-picker-title {
+  margin: 0.25rem 0 0;
+  font-size: 1.4rem;
+}
+
+.scr-cook-picker-sub {
+  margin: 0.25rem 0 0;
+  color: var(--sol-text-muted);
+}
+
+.scr-cook-picker-tonight {
+  width: 100%;
+  min-height: var(--fd-target-list);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  padding: 0.625rem 1rem;
+  text-align: left;
+  background: var(--sol-panel);
+  border: 1px solid var(--sol-border);
+}
+
+.scr-cook-picker-tonight-name {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.scr-cook-picker-tonight-meta {
+  font-family: var(--sol-font-data);
+  font-size: var(--sol-text-label);
+  color: var(--sol-text-muted);
+}
+
+.scr-cook-picker-session-list,
+.scr-cook-picker-meal-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.scr-cook-picker-session {
+  width: 100%;
+  min-height: var(--fd-target-list);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-inline: 1rem;
+  text-align: left;
+  background: var(--sol-panel);
+  border: 1px solid var(--sol-border);
+}
+
+.scr-cook-picker-session-week {
+  font-family: var(--sol-font-data);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--sol-text-muted);
+  border: 1px solid var(--sol-border);
+  padding: 0.125rem 0.375rem;
+  flex: 0 0 auto;
+}
+
+.scr-cook-picker-session-name {
+  flex: 1;
+  min-width: 0;
+}
+
+.scr-cook-picker-session-meta {
+  font-family: var(--sol-font-data);
+  font-size: var(--sol-text-label);
+  color: var(--sol-text-muted);
+  white-space: nowrap;
+}
+
+.scr-cook-picker-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.scr-cook-picker-week {
+  border: 1px solid var(--sol-border);
+  background: var(--sol-panel);
+}
+
+.scr-cook-picker-week-summary {
+  list-style: none;
+  cursor: pointer;
+  min-height: var(--fd-target-list);
+  display: flex;
+  align-items: center;
+  padding-inline: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+}
+
+.scr-cook-picker-week-summary::-webkit-details-marker {
+  display: none;
+}
+
+.scr-cook-picker-week-body {
+  padding: 0 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-top: 1px solid var(--sol-border);
+}
+
+.scr-cook-picker-day-label {
+  margin: 0.75rem 0 0.375rem;
+  font-family: var(--sol-font-data);
+  font-size: var(--sol-text-label);
+  text-transform: uppercase;
+  color: var(--sol-text-muted);
+}
+
+.scr-cook-picker-meal {
+  width: 100%;
+  min-height: var(--fd-target-list);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-inline: 0.75rem;
+  text-align: left;
+  background: var(--sol-bg);
+  border: 1px solid var(--sol-border);
+}
+
+.scr-cook-picker-meal-slot {
+  font-family: var(--sol-font-data);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--sol-text-muted);
+  flex: 0 0 4.25rem;
+}
+
+.scr-cook-picker-meal-name {
+  flex: 1;
+  min-width: 0;
+}
+
+.scr-cook-picker-meal-meta {
+  font-family: var(--sol-font-data);
+  font-size: var(--sol-text-label);
+  color: var(--sol-text-muted);
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Loaded scene body (standby / running / paused)                         */
+/* ---------------------------------------------------------------------- */
+
+.scr-cook-body {
+  flex: 1;
+  width: 100%;
+  max-width: 30rem;
+  margin: 0 auto;
+  padding: 1rem 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: auto;
+}
+
+.scr-cook-preview-banner {
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  border: 1px dashed var(--sol-focus);
+  color: var(--sol-text);
+  font-size: var(--sol-text-label);
+}
+
+/* --- Hero: the reel --- */
+
+.scr-cook-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.625rem;
+  padding-top: 0.25rem;
+}
+
+.scr-cook-reel {
+  position: relative;
+  width: 8.5rem;
+  height: 8.5rem;
+}
+
+.scr-cook-reel-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.scr-cook-reel-rim {
+  fill: var(--sol-panel);
+  stroke: var(--sol-border);
+  stroke-width: 1.5;
+}
+
+.scr-cook-reel-spoke {
+  stroke: var(--sol-border);
+  stroke-width: 1.25;
+}
+
+.scr-cook-reel-hub {
+  fill: var(--sol-bg);
+  stroke: var(--sol-border);
+  stroke-width: 1.5;
+}
+
+.scr-cook-reel-index {
+  fill: var(--sol-accent);
+}
+
+.scr-cook-reel-index--due {
+  stroke: var(--sol-text);
+  stroke-width: 1.5;
+}
+
+.scr-cook-reel-glyph {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: var(--sol-text-muted);
+  pointer-events: none;
+}
+
+.scr-cook-reel-spin {
+  animation: scr-cook-spin 3s linear infinite;
+  transform-origin: 50px 50px;
+}
+
+@keyframes scr-cook-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Shape-only cues (never colour) for due/paused — the reel's rim goes from
+   a plain solid ring to dashed (paused) or double-weight (due). */
+.scr-cook-reel--paused .scr-cook-reel-rim {
+  stroke-dasharray: 4 3;
+}
+
+.scr-cook-reel--due .scr-cook-reel-rim {
+  stroke-width: 3;
+}
+
+.scr-cook-hero-readout {
+  text-align: center;
+}
+
+.scr-cook-hero-title {
+  margin: 0;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.scr-cook-hero-clock {
+  margin: 0.125rem 0 0;
+  font-family: var(--sol-font-data);
+  font-variant-numeric: tabular-nums;
+  color: var(--sol-text-muted);
+}
+
+/* --- Scrub control (role="slider") --- */
+
+.scr-cook-scrub {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.scr-cook-scrub:focus-visible {
+  outline: var(--sol-focus-width) solid var(--sol-focus);
+  outline-offset: 3px;
+}
+
+.scr-cook-scrub-step {
+  width: var(--fd-target-list);
+  height: var(--fd-target-list);
+  padding: 0;
+  border-radius: 50%;
+  background: var(--sol-panel);
+}
+
+.scr-cook-scrub-readout {
+  min-width: 4.5rem;
+  text-align: center;
+  font-family: var(--sol-font-data);
+  font-variant-numeric: tabular-nums;
+  color: var(--sol-text-muted);
+}
+
+.scr-cook-scrub-reset {
+  min-height: var(--fd-target-list);
+  padding-inline: 0.75rem;
+  text-transform: uppercase;
+  font-size: var(--sol-text-label);
+  letter-spacing: 0.04em;
+}
+
+/* --- Step-due alarm banner: the ONE red element --- */
+
+.scr-cook-alarm {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: var(--fd-target-list);
+  padding: 0.625rem 0.875rem;
+  background: var(--sol-panel);
+  border: 2px solid var(--sol-danger);
+  color: var(--sol-text);
+  font-weight: 600;
+}
+
+.scr-cook-alarm-dot {
+  flex: 0 0 auto;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--sol-danger);
+}
+
+.scr-cook-wakelock-note {
+  margin: 0;
+  font-size: var(--sol-text-label);
+  color: var(--sol-text-muted);
+}
+
+/* --- NOW / next --- */
+
+.scr-cook-nownext {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.scr-cook-now-label {
+  margin: 0;
+  font-size: var(--sol-text-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sol-text-muted);
+}
+
+.scr-cook-now-text {
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.15;
+  /* PLAN §6.6: "verb-first, legible at 2m (clamp ~44-56px, high contrast)". */
+  font-size: clamp(2.75rem, 7vw, 3.5rem);
+}
+
+.scr-cook-next-text {
+  margin: 0;
+  font-family: var(--sol-font-data);
+  font-variant-numeric: tabular-nums;
+  color: var(--sol-text-muted);
+  font-size: var(--sol-text-label);
+}
+
+/* --- Track lanes --- */
+
+.scr-cook-lanes-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 0.125rem;
+}
+
+.scr-cook-lane {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr auto;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.scr-cook-lane-label {
+  font-family: var(--sol-font-data);
+  font-size: var(--sol-text-label);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--sol-text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scr-cook-lane-track {
+  position: relative;
+  height: 0.9rem;
+  display: flex;
+  background: var(--sol-bg);
+  border: 1px solid var(--sol-border);
+  overflow: hidden;
+  min-width: 0;
+}
+
+.scr-cook-lane-before {
+  display: block;
+  height: 100%;
+}
+
+.scr-cook-lane-active {
+  position: relative;
+  display: block;
+  height: 100%;
+  background: var(--sol-panel);
+}
+
+.scr-cook-lane-fill {
+  display: block;
+  height: 100%;
+  background: var(--sol-accent);
+}
+
+.scr-cook-lane-playhead {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--sol-focus);
+  pointer-events: none;
+}
+
+.scr-cook-lane-time {
+  font-family: var(--sol-font-data);
+  font-size: var(--sol-text-label);
+  font-variant-numeric: tabular-nums;
+  color: var(--sol-text-muted);
+  white-space: nowrap;
+}
+
+/* --- Utility row: change program / chime toggle --- */
+
+.scr-cook-utility-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--sol-border);
+}
+
+.scr-cook-changeprog {
+  min-height: var(--fd-target-list);
+  padding-inline: 1rem;
+  background: transparent;
+  text-transform: uppercase;
+  font-size: var(--sol-text-label);
+  letter-spacing: 0.04em;
+}
+
+.scr-cook-chime-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: var(--fd-target-list);
+  padding-inline: 1rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-size: var(--sol-text-label);
+  letter-spacing: 0.04em;
+}
+
+.scr-cook-chime-toggle input {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Hold-to-pause corner control (opposite the done-edge)                  */
+/* ---------------------------------------------------------------------- */
+
+.scr-cook-holdwrap {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 5;
+}
+
+.scr-cook-hold {
+  position: relative;
+  width: var(--fd-target-list);
+  height: var(--fd-target-list);
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--sol-panel);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.scr-cook-hold-progress {
+  position: absolute;
+  inset: 0;
+  background: var(--sol-focus);
+  opacity: 0.35;
+  transform-origin: bottom;
+  transform: scaleY(0);
+}
+
+.scr-cook-hold-glyph {
+  position: relative;
+  z-index: 1;
+  font-size: 1.1rem;
+}
+
+.scr-cook-hold-popover {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  background: var(--sol-panel);
+  border: 1px solid var(--sol-border);
+  padding: 0.5rem;
+  min-width: 9rem;
+}
+
+.scr-cook-hold-popover-btn {
+  min-height: var(--fd-target-list);
+  width: 100%;
+  text-transform: uppercase;
+  font-size: var(--sol-text-label);
+  letter-spacing: 0.04em;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Bottom control edge: +1 min / done (>=72px, above the safe-area)       */
+/* ---------------------------------------------------------------------- */
+
+.scr-cook-bottombar {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  gap: 0;
+  border-top: 1px solid var(--sol-border);
+  background: var(--sol-panel);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.scr-cook-plusone {
+  flex: 0 0 auto;
+  min-width: 6.5rem;
+  min-height: 4.5rem; /* 72px — matches .scr-cook-done via flex stretch, still clears the 56px floor on its own */
+  background: var(--sol-panel);
+  border: none;
+  border-right: 1px solid var(--sol-border);
+  font-family: var(--sol-font-data);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.scr-cook-done {
+  flex: 1;
+  min-height: 4.5rem; /* 72px, PLAN §6.6 */
+  border: none;
+  background: var(--sol-accent-fill);
+  color: var(--sol-on-accent-fill);
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.scr-cook-done:disabled {
+  opacity: 0.5;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Completion tally — the ONE playful touch (PLAN §6.0)                   */
+/* ---------------------------------------------------------------------- */
+
+.scr-cook-tally {
+  flex: 1;
+  width: 100%;
+  max-width: 30rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem calc(2rem + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+  overflow-y: auto;
+}
+
+.scr-cook-tally-scene {
+  width: 4rem;
+  height: 4rem;
+}
+
+.scr-cook-tally-ring {
+  fill: none;
+  stroke: var(--sol-success);
+  stroke-width: 3;
+  transform-origin: 32px 32px;
+  animation: scr-cook-tally-in 420ms ease-out;
+}
+
+.scr-cook-tally-check {
+  fill: none;
+  stroke: var(--sol-success);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: scr-cook-tally-in 420ms ease-out 120ms backwards;
+}
+
+@keyframes scr-cook-tally-in {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.scr-cook-tally-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.scr-cook-tally-title {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.scr-cook-tally-line {
+  margin: 0;
+  color: var(--sol-text-muted);
+}
+
+.scr-cook-tally-macros {
+  margin: 0;
+  font-family: var(--sol-font-data);
+  font-variant-numeric: tabular-nums;
+  color: var(--sol-text-muted);
+  font-size: var(--sol-text-label);
+}
+
+.scr-cook-tally-list {
+  margin: 0.25rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: var(--sol-text-label);
+  color: var(--sol-text);
+  text-align: left;
+  align-self: stretch;
+  border-top: 1px solid var(--sol-border);
+  padding-top: 0.5rem;
+}
+
+.scr-cook-tally-link {
+  min-height: var(--fd-target-list);
+  display: inline-flex;
+  align-items: center;
+  padding-inline: 1rem;
+  text-decoration: none;
+}
+
+.scr-cook-tally-done {
+  min-height: 4.5rem;
+  width: 100%;
+  background: var(--sol-accent-fill);
+  color: var(--sol-on-accent-fill);
+  border: none;
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.5rem;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Reduced motion: collapse mechanical motion to instant state swaps.     */
+/* The reel's <g data-motion> spin is caught by tokens.css's global rule  */
+/* automatically; the tally's entrance keyframes are separately silenced  */
+/* here since they're not tagged data-motion (a one-shot decorative       */
+/* flourish, not a stateful control — still honoured, per PLAN §6.1).     */
+/* ---------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .scr-cook-tally-ring,
+  .scr-cook-tally-check {
+    animation: none;
+  }
+}
+
+/* ---------------------------------------------------------------------- */
+/* Forced-colors                                                          */
+/* ---------------------------------------------------------------------- */
+
+@media (forced-colors: active) {
+  .scr-cook-reel-rim,
+  .scr-cook-reel-spoke,
+  .scr-cook-reel-hub {
+    forced-color-adjust: none;
+    stroke: ButtonText;
+  }
+  .scr-cook-reel-index {
+    forced-color-adjust: none;
+    fill: ButtonText;
+  }
+  .scr-cook-alarm {
+    forced-color-adjust: none;
+    border-color: Highlight;
+  }
+  .scr-cook-alarm-dot {
+    forced-color-adjust: none;
+    background: Highlight;
+  }
+  .scr-cook-lane-fill {
+    forced-color-adjust: none;
+    background: Highlight;
+  }
+  .scr-cook-lane-playhead {
+    forced-color-adjust: none;
+    background: Highlight;
+  }
+}
+
+/* ---------------------------------------------------------------------- */
+/* Mobile 390x844: one-hand layout, no horizontal scroll                  */
+/* ---------------------------------------------------------------------- */
+
+@media (max-width: 480px) {
+  .scr-cook-reel {
+    width: 7rem;
+    height: 7rem;
+  }
+  .scr-cook-now-text {
+    font-size: clamp(2.75rem, 11vw, 3.25rem);
+  }
+  .scr-cook-lane {
+    grid-template-columns: 3.75rem 1fr auto;
+  }
+}
+
+/* Desktop: same instrument, scaled — sane max-width instead of stretching
+   the reel/lanes across a wide viewport (both .scr-cook-picker and
+   .scr-cook-body already cap at 36rem/30rem above). */
+@media (min-width: 900px) {
+  .scr-cook-body,
+  .scr-cook-picker {
+    padding-top: 2rem;
+  }
+}

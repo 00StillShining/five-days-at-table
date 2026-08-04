@@ -11,12 +11,12 @@
 // tripBuild() therefore always read Week A's meals/calendar, independent of
 // `prefs.week`. dayMacros/bands take `week` explicitly because PLAN needs to
 // show both weeks' figures side by side.
-import type { Band, Cover, Macros, Meal, Slot, Week } from "../data/types";
+import type { Band, Cover, Ingredient, Macros, Meal, Slot, Week } from "../data/types";
 import { bandsFor, canonicalCalendar, getMeal, ingredientsById, ingredientsList, mealForSlot, mealsByWeek, mealsByWeekDay, referenceUnitG, requireMeal } from "../data";
-import { operativeLifeDays } from "../data/lifeEstimate";
+import { isFreezerStock, operativeLifeDays, type LifeConfidence } from "../data/lifeEstimate";
 import { criticalPathMinutes } from "../engine/programs";
 import { addCalendarDays, londonCalendarDaysBetween, londonDateIso, londonParts, londonWallTimeToEpochMs } from "./london";
-import type { AppState, Inventory, Swaps } from "./types";
+import type { AppState, Inventory, InventoryEntry, Swaps } from "./types";
 
 const FORTNIGHT_DAYS = 14;
 const DEFROST_DUE_HOUR = 18; // "by 18:00" — PLAN §6.3's own worked example; see dutyStack doc below.
@@ -154,6 +154,49 @@ export function dayMacros(week: Week, dayNo: number, cover: Cover, scale = 1, sw
   return roundMacros(totals);
 }
 
+/**
+ * Sum of `mealMacros` for whichever of the day's slots have actually been
+ * ticked (`state.eaten`) — as opposed to `dayMacros`, which is the full
+ * PLANNED day regardless of what's actually been eaten yet. Wave-1
+ * integration review: the arbiter's over-band candidate was comparing the
+ * full planned day against the band, which — since the plan is authored to
+ * sit right at the band edge — fired on nearly every day regardless of the
+ * time of day or what had actually been eaten. TODAY's console needs the
+ * identical number for its own "so far" reading, hence this being a shared
+ * selector rather than living inside arbiter.ts.
+ *
+ * `now` is required (not just week/dayNo) because `state.eaten` is keyed by
+ * calendar date, not by fortnight position — the a-twice cycle cooks the
+ * same (week, dayNo) slot twice, on two different real dates, so only `now`
+ * (via `londonDateIso`) disambiguates which pass's ticks to sum.
+ *
+ * Swaps-aware by construction, not by re-deriving `effectiveMealForSlot`
+ * here: an `eaten` tick's own `mealId` is written at the moment of cooking
+ * (engine/timers.ts `completeMeal()`, using whichever program was actually
+ * loaded — the swap replacement if one was committed) and is therefore
+ * already the authoritative record of what was actually eaten. Re-resolving
+ * it through the CURRENT swap state would be wrong: eating dinner doesn't
+ * retroactively change if the swap is cleared later.
+ */
+export function eatenSoFar(week: Week, dayNo: number, cover: Cover, state: Pick<AppState, "eaten">, now: Date): Macros {
+  const dayTicks = state.eaten[londonDateIso(now)] ?? {};
+  const plannedSlots = mealsByWeekDay(week, dayNo).map((m) => m.slot);
+  const totals: Macros = { kcal: 0, protein: 0, netCarb: 0, fat: 0, fibre: 0 };
+  for (const slot of plannedSlots) {
+    const tick = dayTicks[slot];
+    if (!tick) continue;
+    const meal = getMeal(tick.mealId);
+    if (!meal) continue; // defensive: stale/unknown mealId in the log
+    const m = macrosFromCovers(meal.covers[cover], 1);
+    totals.kcal += m.kcal;
+    totals.protein += m.protein;
+    totals.fat += m.fat;
+    totals.fibre += m.fibre;
+    totals.netCarb += m.netCarb;
+  }
+  return roundMacros(totals);
+}
+
 export function bands(week: Week, cover: Cover): { kcal: Band; protein: Band; netCarb: Band; fat: Band; fibre: Band } {
   return bandsFor(week, cover);
 }
@@ -203,7 +246,7 @@ export interface ExpiringDuty {
   text: string;
   remainingDays: number; // may be negative (already expired)
   expired: boolean;
-  confidence: "numeric" | "parsed" | "low";
+  confidence: LifeConfidence;
 }
 
 export interface StartByDuty {
@@ -226,6 +269,55 @@ function minutesToTime(mins: number): string {
   const h = Math.floor(wrapped / 60);
   const m = wrapped % 60;
   return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+}
+
+/**
+ * Days of shelf life remaining for one inventory row, or null when there's
+ * genuinely no countdown to show (out of stock, or a freezer-class
+ * ingredient that hasn't been thawed yet — see below). The single place this
+ * computation happens, shared by dutyStack's "expiring" duties and STORES'
+ * own per-row countdown display (STORES calls this directly rather than
+ * re-deriving the same arithmetic).
+ *
+ * P1 wave-1-review fix ("false-expired flood"): freeze-day0/buy-frozen
+ * ingredients (`isFreezerStock`) anchor their post-thaw `freshDays`
+ * countdown to `entry.thawedAt`, NOT `entry.updatedAt`. `updatedAt` is
+ * bumped by every inventory touch, including a routine stocktake on an item
+ * that's still sitting in the freezer — anchoring the short 2-4 day
+ * post-thaw figure to that would make a still-frozen item read as "expired"
+ * days before it was ever actually moved to the fridge. Without a
+ * `thawedAt` (nothing has explicitly marked this item as defrosted — see
+ * `inventory/markThawed`), there is no meaningful countdown to show at all:
+ * frozen stock doesn't degrade on this app's visible 2-week horizon, so this
+ * returns null rather than guessing.
+ */
+export function remainingLifeDays(ing: Ingredient, entry: InventoryEntry | undefined, now: Date): number | null {
+  if (!entry || entry.level <= 0) return null;
+  if (isFreezerStock(ing) && !entry.thawedAt) return null; // still frozen — no countdown applies yet
+  const anchor = isFreezerStock(ing) ? entry.thawedAt! : entry.updatedAt;
+  const life = operativeLifeDays(ing);
+  return life.days - (now.getTime() - new Date(anchor).getTime()) / 86_400_000;
+}
+
+/**
+ * Text for a remaining-days figure, with the ONE rounding rule every screen
+ * must share (wave-1 integration review: TODAY was flooring — 0.97 days
+ * left read as "0d" — while STORES was ceiling the same number to "1d" for
+ * the identical underlying item; two screens disagreeing about the same
+ * fact is worse than either rule alone).
+ *
+ * Rule: `Math.ceil(remainingDays) - 1`, floored at 0, "today" at 0, "expired"
+ * below 0. This is "ceil, with today counted as 0" collapsed to one formula:
+ * any remainingDays in (0, 1] — expires sometime before tomorrow — reads as
+ * "today" (act now), not "1d" (which would wrongly suggest a full spare
+ * day); (1, 2] reads "1d" (today plus one more full day in hand); and so on.
+ * A single formula, not a special-cased boundary, so it can't drift out of
+ * sync with itself at the edges.
+ */
+export function formatRemainingDays(remainingDays: number): string {
+  if (remainingDays < 0) return "expired";
+  const days = Math.max(0, Math.ceil(remainingDays) - 1);
+  return days === 0 ? "today" : `${days}d`;
 }
 
 /**
@@ -275,12 +367,10 @@ export function dutyStack(state: AppState, now: Date): Duty[] {
   }
 
   for (const [ingId, entry] of Object.entries(state.inventory)) {
-    if (entry.level <= 0) continue;
     const ing = ingredientsById[ingId];
     if (!ing) continue;
-    const life = operativeLifeDays(ing);
-    const updatedMs = new Date(entry.updatedAt).getTime();
-    const remainingDays = life.days - (now.getTime() - updatedMs) / 86_400_000;
+    const remainingDays = remainingLifeDays(ing, entry, now);
+    if (remainingDays == null) continue; // out of stock, or still-frozen with no thawedAt — no countdown (P1 fix)
     if (remainingDays > 1) continue; // not yet within the "use today / expiring" window
     duties.push({
       kind: "expiring",
@@ -289,7 +379,7 @@ export function dutyStack(state: AppState, now: Date): Duty[] {
       text: remainingDays < 0 ? `expired · ${ing.name.short}` : `use today · ${ing.name.short}`,
       remainingDays,
       expired: remainingDays < 0,
-      confidence: life.confidence,
+      confidence: operativeLifeDays(ing).confidence,
     });
   }
 

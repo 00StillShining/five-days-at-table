@@ -9,7 +9,7 @@
 // regardless of which screen you're looking at ("runners-up render quiet
 // with a queue count and inherit the slot when rank 1 clears," PLAN §6.0).
 // Only `primary-action` is screen-specific.
-import { bands, coverageForAllMeals, dayMacros, dutyStack, overBandMacros, todayInfo, tripBuild, type StartByDuty, type TripDay } from "../state/selectors";
+import { bands, coverageForAllMeals, eatenSoFar, dutyStack, overBandMacros, todayInfo, tripBuild, type StartByDuty, type TripDay } from "../state/selectors";
 import type { AppState } from "../state/types";
 import { deriveProgramState } from "./timers";
 import { getProgram } from "./programs";
@@ -137,14 +137,17 @@ export function arbiterFor(screen: ScreenId, state: AppState, now: Date, ctx: Ar
     }
   }
 
-  // over-band: today's macros vs band, for the cover actually in use. Only
-  // meaningful on a plated weekday (Mon-Fri) — weekends carry duties, not a
-  // banded plate (PLAN §1: "Sat/Sun carry duties, not plated meals").
+  // over-band: EATEN-SO-FAR macros vs band (wave-1 review fix — was the full
+  // planned day, which sits by design right at the band edge and so fired
+  // on nearly every day regardless of what had actually been eaten or the
+  // time of day; eatenSoFar is swaps-aware by construction, see its doc).
+  // Only meaningful on a plated weekday (Mon-Fri) — weekends carry duties,
+  // not a banded plate (PLAN §1: "Sat/Sun carry duties, not plated meals").
   const info = todayInfo(now, state.prefs.cycleStartSaturday);
   if (info.dayNo !== "weekend") {
     const dayNo = info.anchored ? (info.dayNo as number) : null;
     if (dayNo != null) {
-      const macros = dayMacros("A", dayNo, state.prefs.cover, 1, state.swaps); // always Week A; swaps-aware (P2-PLAN-001)
+      const macros = eatenSoFar("A", dayNo, state.prefs.cover, state, now); // always Week A
       const macroBands = bands("A", state.prefs.cover);
       const over = overBandMacros(macros, macroBands);
       if (over.length > 0) {
