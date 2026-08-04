@@ -1,0 +1,1223 @@
+{
+  "shops": [
+    {
+      "code": "S",
+      "heading": "Sainsbury's",
+      "blurb": "Meat, fish, cheese and the low-carb bread and wraps",
+      "subtotalShown": "£72.70"
+    },
+    {
+      "code": "M",
+      "heading": "Morrisons",
+      "blurb": "Everything else — and the whole freezer aisle",
+      "subtotalShown": "£98.31"
+    },
+    {
+      "code": "X",
+      "heading": "Lewisham market / Caribbean grocer",
+      "blurb": "Two things the supermarkets don't stock",
+      "subtotalShown": "£8.30"
+    }
+  ],
+  "rows": [
+    {
+      "domIndex": 0,
+      "shop": "S",
+      "name": "Chicken breast",
+      "productString": "Frozen chicken breast fillets, 1 kg (Hank & Joes or similar)",
+      "pack": 1000,
+      "qty": 2,
+      "priceShown": "£10.00",
+      "tags": [
+        "Freeze on arrival"
+      ],
+      "note": "Not the £4.25 Savers bag — that one is pumped with water.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 1,
+      "shop": "S",
+      "name": "Eggs",
+      "productString": "Large free-range eggs, box of 12",
+      "pack": 600,
+      "qty": 5,
+      "priceShown": "£16.75",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "52 eggs. Five boxes. Check you have the shelf space.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 2,
+      "shop": "S",
+      "name": "Beef mince, 5%",
+      "productString": "British beef mince 5% fat, 1 kg",
+      "pack": 1000,
+      "qty": 1,
+      "priceShown": "£8.50",
+      "tags": [
+        "Freeze on arrival"
+      ],
+      "note": "5%, not 10% — the leaner mince is genuinely the cheaper one. Split into three bags.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 3,
+      "shop": "S",
+      "name": "Basa fillets",
+      "productString": "Basa fillets, frozen, 500 g",
+      "pack": 500,
+      "qty": 1,
+      "priceShown": "£3.50",
+      "tags": [
+        "Freeze on arrival"
+      ],
+      "note": null,
+      "estimateMark": false
+    },
+    {
+      "domIndex": 4,
+      "shop": "S",
+      "name": "Rump or sirloin steak",
+      "productString": "British beef rump steak, ~400 g",
+      "pack": 400,
+      "qty": 1,
+      "priceShown": "£5.50",
+      "tags": [
+        "Freeze on arrival"
+      ],
+      "note": "Thursday's dish, both weeks.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 5,
+      "shop": "S",
+      "name": "Turkey breast mince",
+      "productString": "British turkey breast mince 5%, 500 g",
+      "pack": 500,
+      "qty": 1,
+      "priceShown": "£4.50",
+      "tags": [
+        "Freeze on arrival"
+      ],
+      "note": null,
+      "estimateMark": false
+    },
+    {
+      "domIndex": 6,
+      "shop": "S",
+      "name": "Chicken breast mince",
+      "productString": "British chicken breast mince, 500 g",
+      "pack": 500,
+      "qty": 1,
+      "priceShown": "£4.25",
+      "tags": [
+        "Freeze on arrival"
+      ],
+      "note": "Monday's dish, both weeks.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 7,
+      "shop": "S",
+      "name": "King prawns",
+      "productString": "Raw king prawns, frozen, 250 g",
+      "pack": 250,
+      "qty": 1,
+      "priceShown": "£3.50",
+      "tags": [
+        "Freezer aisle"
+      ],
+      "note": null,
+      "estimateMark": false
+    },
+    {
+      "domIndex": 8,
+      "shop": "S",
+      "name": "Reduced-fat cheddar",
+      "productString": "Lighter mature cheddar block, 400 g",
+      "pack": 400,
+      "qty": 1,
+      "priceShown": "£3.25",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "Block, not slices.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 9,
+      "shop": "S",
+      "name": "Mozzarella",
+      "productString": "Reduced-fat mozzarella block, 250 g",
+      "pack": 250,
+      "qty": 1,
+      "priceShown": "£2.25",
+      "tags": [
+        "Freeze on arrival"
+      ],
+      "note": "Cut in half on day 0, freeze one half.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 10,
+      "shop": "S",
+      "name": "Parmesan",
+      "productString": "Italian hard cheese, grated, 100 g",
+      "pack": 100,
+      "qty": 2,
+      "priceShown": "£2.60",
+      "tags": [
+        "Store normally"
+      ],
+      "note": null,
+      "estimateMark": false
+    },
+    {
+      "domIndex": 11,
+      "shop": "S",
+      "name": "Low-carb wraps",
+      "productString": "Mission Carb Balance Original Wraps ×4, 200 g",
+      "pack": 200,
+      "qty": 2,
+      "priceShown": "£3.20",
+      "tags": [
+        "Freeze on arrival"
+      ],
+      "note": "Freeze two packs on day 0.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 12,
+      "shop": "S",
+      "name": "Seeded low-carb loaf",
+      "productString": "Allinson's Soya & Linseed Seeded Bread, 750 g",
+      "pack": 750,
+      "qty": 1,
+      "priceShown": "£1.50",
+      "tags": [
+        "Freeze on arrival"
+      ],
+      "note": "Toast from frozen — it works better than fresh.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 13,
+      "shop": "S",
+      "name": "Red lentil penne",
+      "productString": "Red lentil penne, 250 g",
+      "pack": 250,
+      "qty": 1,
+      "priceShown": "£1.90",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "Thursday's dish, both weeks.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 14,
+      "shop": "S",
+      "name": "Panko breadcrumbs",
+      "productString": "Panko breadcrumbs, 150 g",
+      "pack": 150,
+      "qty": 1,
+      "priceShown": "£1.50",
+      "tags": [
+        "Store normally"
+      ],
+      "note": null,
+      "estimateMark": false
+    },
+    {
+      "domIndex": 15,
+      "shop": "M",
+      "name": "Salmon fillets",
+      "productString": "Salmon fillets, frozen, 2 × 220 g",
+      "pack": 220,
+      "qty": 2,
+      "priceShown": "£8.70",
+      "tags": [
+        "Freeze on arrival"
+      ],
+      "note": null,
+      "estimateMark": false
+    },
+    {
+      "domIndex": 16,
+      "shop": "M",
+      "name": "Fat-free Greek yoghurt",
+      "productString": "Fat free Greek style yoghurt, 1 kg",
+      "pack": 1000,
+      "qty": 3,
+      "priceShown": "£6.30",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "ONE product covers both the yoghurt and the skyr lines. Open one tub per week — reject anything dated under 16 days.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 17,
+      "shop": "M",
+      "name": "Cottage cheese",
+      "productString": "British natural cottage cheese, 300 g",
+      "pack": 300,
+      "qty": 1,
+      "priceShown": "£1.65",
+      "tags": [
+        "More on day 7"
+      ],
+      "note": "One tub now, one on day 7.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 18,
+      "shop": "M",
+      "name": "Red peppers",
+      "productString": "Savers mixed peppers, 3 pack",
+      "pack": 450,
+      "qty": 2,
+      "priceShown": "£3.58",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "The raw ones — Wednesday's suya salad and Tuesday's escovitch.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 19,
+      "shop": "M",
+      "name": "Avocados",
+      "productString": "Ripen At Home avocados, 4 pack",
+      "pack": 560,
+      "qty": 2,
+      "priceShown": "£3.00",
+      "tags": [
+        "Mixed ripeness"
+      ],
+      "note": "Buy them hard. Fridge each one the day it softens.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 20,
+      "shop": "M",
+      "name": "Salad tomatoes",
+      "productString": "Salad tomatoes, 400 g",
+      "pack": 400,
+      "qty": 4,
+      "priceShown": "£1.88",
+      "tags": [
+        "More on day 7"
+      ],
+      "note": "Counter, not fridge. More on day 7.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 21,
+      "shop": "M",
+      "name": "Little gem lettuce",
+      "productString": "British little gem lettuce, 2 pack",
+      "pack": 250,
+      "qty": 1,
+      "priceShown": "£0.77",
+      "tags": [
+        "More on day 7"
+      ],
+      "note": "Whole heads, never bagged leaves.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 22,
+      "shop": "M",
+      "name": "Sweetheart cabbage",
+      "productString": "British sweetheart cabbage, each ~500 g",
+      "pack": 500,
+      "qty": 2,
+      "priceShown": "£1.50",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "For every shredded use — the wraps, the bowls. Keeps three weeks.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 23,
+      "shop": "M",
+      "name": "Red onions",
+      "productString": "British red onions, 1 kg",
+      "pack": 1000,
+      "qty": 2,
+      "priceShown": "£1.90",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "Loose bag, not the 3-pack.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 24,
+      "shop": "M",
+      "name": "Carrots",
+      "productString": "British carrots, 1 kg",
+      "pack": 1000,
+      "qty": 2,
+      "priceShown": "£1.38",
+      "tags": [
+        "Store normally"
+      ],
+      "note": null,
+      "estimateMark": false
+    },
+    {
+      "domIndex": 25,
+      "shop": "M",
+      "name": "Courgettes",
+      "productString": "Naturally wonky courgettes, 1 kg",
+      "pack": 1000,
+      "qty": 1,
+      "priceShown": "£2.80",
+      "tags": [
+        "Store normally"
+      ],
+      "note": null,
+      "estimateMark": false
+    },
+    {
+      "domIndex": 26,
+      "shop": "M",
+      "name": "Apples",
+      "productString": "Royal Gala apples, 6 pack",
+      "pack": 900,
+      "qty": 2,
+      "priceShown": "£3.60",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "In the fridge, not the fruit bowl.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 27,
+      "shop": "M",
+      "name": "Bananas",
+      "productString": "Bananas, loose",
+      "pack": 1000,
+      "qty": 1,
+      "priceShown": "£0.90",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "Buy them green.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 28,
+      "shop": "M",
+      "name": "Chestnut mushrooms",
+      "productString": "Closed cup mushrooms, 400 g",
+      "pack": 400,
+      "qty": 1,
+      "priceShown": "£1.35",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "Out of the plastic, into a paper bag.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 29,
+      "shop": "M",
+      "name": "Red cabbage",
+      "productString": "Red cabbage, each",
+      "pack": 700,
+      "qty": 2,
+      "priceShown": "£1.70",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "Whole, not shredded. Best keeper in the fridge.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 30,
+      "shop": "M",
+      "name": "Cucumber",
+      "productString": "Whole cucumber",
+      "pack": 300,
+      "qty": 1,
+      "priceShown": "£0.99",
+      "tags": [
+        "More on day 7"
+      ],
+      "note": null,
+      "estimateMark": false
+    },
+    {
+      "domIndex": 31,
+      "shop": "M",
+      "name": "Spring onions",
+      "productString": "Salad onions, min 100 g",
+      "pack": 100,
+      "qty": 1,
+      "priceShown": "£0.69",
+      "tags": [
+        "More on day 7"
+      ],
+      "note": "Stand them in a glass of water and they'll keep.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 32,
+      "shop": "M",
+      "name": "Pineapple chunks",
+      "productString": "Pineapple chunks in juice, 425 g tin (260 g drained)",
+      "pack": 260,
+      "qty": 1,
+      "priceShown": "£1.10",
+      "tags": [
+        "More on day 7"
+      ],
+      "note": null,
+      "estimateMark": false
+    },
+    {
+      "domIndex": 33,
+      "shop": "M",
+      "name": "Frozen leaf spinach",
+      "productString": "Whole leaf spinach, 950 g",
+      "pack": 950,
+      "qty": 4,
+      "priceShown": "£6.00",
+      "tags": [
+        "Freezer aisle"
+      ],
+      "note": "THE BIG ONE — 3.3 kg. Every use across both weeks is cooked, so frozen changes nothing.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 34,
+      "shop": "M",
+      "name": "Frozen cauliflower florets",
+      "productString": "Cauliflower florets, 1 kg",
+      "pack": 1000,
+      "qty": 3,
+      "priceShown": "£4.50",
+      "tags": [
+        "Freezer aisle"
+      ],
+      "note": "Cheaper than whole heads. Blitz from frozen — do NOT buy ready-riced at £4.83/kg.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 35,
+      "shop": "M",
+      "name": "Frozen sliced peppers",
+      "productString": "Sliced mixed peppers, 500 g",
+      "pack": 500,
+      "qty": 2,
+      "priceShown": "£2.50",
+      "tags": [
+        "Freezer aisle"
+      ],
+      "note": "For everything cooked down — jollof, efo riro, the stews, the hash.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 36,
+      "shop": "M",
+      "name": "Frozen mixed berries",
+      "productString": "Wonky berries mix, 1 kg",
+      "pack": 1000,
+      "qty": 1,
+      "priceShown": "£2.99",
+      "tags": [
+        "Freezer aisle"
+      ],
+      "note": "One bag replaces both the raspberries and the blueberries.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 37,
+      "shop": "M",
+      "name": "Frozen okra",
+      "productString": "Whole baby okra, 900 g",
+      "pack": 900,
+      "qty": 1,
+      "priceShown": "£3.50",
+      "tags": [
+        "Freezer aisle"
+      ],
+      "note": null,
+      "estimateMark": false
+    },
+    {
+      "domIndex": 38,
+      "shop": "M",
+      "name": "Frozen broccoli florets",
+      "productString": "Broccoli florets, 900 g",
+      "pack": 900,
+      "qty": 1,
+      "priceShown": "£1.50",
+      "tags": [
+        "Freezer aisle"
+      ],
+      "note": null,
+      "estimateMark": false
+    },
+    {
+      "domIndex": 39,
+      "shop": "M",
+      "name": "Frozen sweetcorn",
+      "productString": "Sweetcorn, 1 kg",
+      "pack": 1000,
+      "qty": 1,
+      "priceShown": "£1.25",
+      "tags": [
+        "Store normally"
+      ],
+      "note": null,
+      "estimateMark": false
+    },
+    {
+      "domIndex": 40,
+      "shop": "M",
+      "name": "Brown rice",
+      "productString": "Brown basmati rice, 1 kg",
+      "pack": 1000,
+      "qty": 2,
+      "priceShown": "£3.70",
+      "tags": [
+        "Store normally"
+      ],
+      "note": null,
+      "estimateMark": false
+    },
+    {
+      "domIndex": 41,
+      "shop": "M",
+      "name": "Passata",
+      "productString": "Passata, 500 g",
+      "pack": 500,
+      "qty": 4,
+      "priceShown": "£1.80",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "Four small cartons, not two big ones — an opened carton is five days.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 42,
+      "shop": "M",
+      "name": "Black beans",
+      "productString": "Black beans in water, 400 g tin (240 g drained)",
+      "pack": 240,
+      "qty": 3,
+      "priceShown": "£1.50",
+      "tags": [
+        "Store normally"
+      ],
+      "note": null,
+      "estimateMark": false
+    },
+    {
+      "domIndex": 43,
+      "shop": "M",
+      "name": "Red kidney beans",
+      "productString": "Red kidney beans, 400 g tin (240 g drained)",
+      "pack": 240,
+      "qty": 2,
+      "priceShown": "£1.00",
+      "tags": [
+        "Store normally"
+      ],
+      "note": null,
+      "estimateMark": false
+    },
+    {
+      "domIndex": 44,
+      "shop": "M",
+      "name": "Chickpeas",
+      "productString": "Chickpeas, 400 g tin (240 g drained)",
+      "pack": 240,
+      "qty": 4,
+      "priceShown": "£1.80",
+      "tags": [
+        "Store normally"
+      ],
+      "note": null,
+      "estimateMark": false
+    },
+    {
+      "domIndex": 45,
+      "shop": "M",
+      "name": "Porridge oats",
+      "productString": "Porridge oats, 1 kg",
+      "pack": 1000,
+      "qty": 1,
+      "priceShown": "£1.29",
+      "tags": [
+        "Store normally"
+      ],
+      "note": null,
+      "estimateMark": false
+    },
+    {
+      "domIndex": 46,
+      "shop": "M",
+      "name": "Peanut butter",
+      "productString": "Smooth peanut butter, 1 kg",
+      "pack": 1000,
+      "qty": 1,
+      "priceShown": "£3.99",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "The 1 kg jar is half the price per gram of the 340 g. Check the label if you want 100% nuts.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 47,
+      "shop": "M",
+      "name": "Tomato salsa",
+      "productString": "Mild salsa dip, 300 g",
+      "pack": 300,
+      "qty": 1,
+      "priceShown": "£1.50",
+      "tags": [
+        "Store normally"
+      ],
+      "note": null,
+      "estimateMark": false
+    },
+    {
+      "domIndex": 48,
+      "shop": "M",
+      "name": "Extra virgin olive oil",
+      "productString": "Extra virgin olive oil, 1 L",
+      "pack": 910,
+      "qty": 1,
+      "priceShown": "£6.50",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "Dressings and finishing only.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 49,
+      "shop": "M",
+      "name": "Rapeseed oil",
+      "productString": "Rapeseed oil, 1 L",
+      "pack": 910,
+      "qty": 1,
+      "priceShown": "£3.50",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "Everything that hits a hot pan. Extra-virgin in a smoking pan is money burnt.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 50,
+      "shop": "M",
+      "name": "Chia seeds",
+      "productString": "Chia seeds, 300 g",
+      "pack": 300,
+      "qty": 1,
+      "priceShown": "£2.75",
+      "tags": [
+        "Store normally"
+      ],
+      "note": null,
+      "estimateMark": false
+    },
+    {
+      "domIndex": 51,
+      "shop": "M",
+      "name": "Pumpkin seeds",
+      "productString": "Pumpkin seeds, 200 g",
+      "pack": 200,
+      "qty": 1,
+      "priceShown": "£1.80",
+      "tags": [
+        "Store normally"
+      ],
+      "note": null,
+      "estimateMark": false
+    },
+    {
+      "domIndex": 52,
+      "shop": "M",
+      "name": "Desiccated coconut",
+      "productString": "Desiccated coconut, unsweetened, 200 g",
+      "pack": 200,
+      "qty": 1,
+      "priceShown": "£1.15",
+      "tags": [
+        "Store normally"
+      ],
+      "note": null,
+      "estimateMark": false
+    },
+    {
+      "domIndex": 53,
+      "shop": "X",
+      "name": "Plantain",
+      "productString": "Ripe plantain, loose",
+      "pack": 500,
+      "qty": 4,
+      "priceShown": "£4.80",
+      "tags": [
+        "Mixed ripeness"
+      ],
+      "note": "Buy half yellow-black, half green — so week two's isn't turning at the same time as week one's. Never refrigerate a green one.",
+      "estimateMark": false
+    },
+    {
+      "domIndex": 54,
+      "shop": "X",
+      "name": "Egusi",
+      "productString": "Ground melon seed (egusi), 250 g",
+      "pack": 250,
+      "qty": 1,
+      "priceShown": "£3.50",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "Keep the bag in the FREEZER once opened — it's high in oil and goes rancid at room temperature.",
+      "estimateMark": false
+    }
+  ],
+  "day7Card": {
+    "rows": [
+      {
+        "name": "Salad tomatoes",
+        "shelfLife": "7–10 days",
+        "qty": 4,
+        "pack": 400,
+        "priceShown": "£1.88"
+      },
+      {
+        "name": "Little gem lettuce",
+        "shelfLife": "7–10 days",
+        "qty": 1,
+        "pack": 250,
+        "priceShown": "£0.77"
+      },
+      {
+        "name": "Cucumber",
+        "shelfLife": "7–10 days",
+        "qty": 1,
+        "pack": 300,
+        "priceShown": "£0.99"
+      },
+      {
+        "name": "Spring onions",
+        "shelfLife": "1 week",
+        "qty": 1,
+        "pack": 100,
+        "priceShown": "£0.69"
+      },
+      {
+        "name": "Pineapple chunks",
+        "shelfLife": "4 days once opened",
+        "qty": 1,
+        "pack": 260,
+        "priceShown": "£1.10"
+      },
+      {
+        "name": "Cottage cheese",
+        "shelfLife": "Shortest date in the chiller",
+        "qty": 1,
+        "pack": 300,
+        "priceShown": "£1.65"
+      },
+      {
+        "name": "Avocados",
+        "shelfLife": "Top up if yours have gone",
+        "qty": 1,
+        "pack": 280,
+        "priceShown": "£1.50"
+      }
+    ],
+    "totalShown": "£8.58"
+  },
+  "putAwayCard": {
+    "entries": [
+      {
+        "title": "Bag and label the meat",
+        "detail": "By the day it's wanted, not by type",
+        "location": "Freezer"
+      },
+      {
+        "title": "Keep out: Week A's chicken",
+        "detail": "770 g for tomorrow's roast, plus the chicken mince",
+        "location": "Fridge"
+      },
+      {
+        "title": "Halve the mozzarella",
+        "detail": "One half frozen — it gets opened twice, eight days apart",
+        "location": "Freezer"
+      },
+      {
+        "title": "Second loaf and two wrap packs in",
+        "detail": "Toast the bread straight from frozen",
+        "location": "Freezer"
+      },
+      {
+        "title": "Tomatoes on the counter",
+        "detail": "Cold kills the flavour and barely extends the life",
+        "location": "Counter"
+      },
+      {
+        "title": "Avocados out, plantain out",
+        "detail": "Fridge each one the day it softens",
+        "location": "Counter"
+      },
+      {
+        "title": "Mushrooms into paper",
+        "detail": "Straight out of the plastic",
+        "location": "Fridge"
+      }
+    ]
+  },
+  "costsChecksum": {
+    "length": 55,
+    "sum": 179.31,
+    "matchesRowOrder": true,
+    "mismatchCount": 0
+  },
+  "legacy": {
+    "rows": [
+      {
+        "name": "Chicken breast, skinless",
+        "priceShown": "£24.58",
+        "estimateMark": false,
+        "shop": "S"
+      },
+      {
+        "name": "Eggs, medium, shell off",
+        "priceShown": "£23.45",
+        "estimateMark": false,
+        "shop": "S"
+      },
+      {
+        "name": "Beef mince, 5% fat",
+        "priceShown": "£8.50",
+        "estimateMark": true,
+        "shop": "S"
+      },
+      {
+        "name": "King prawns, peeled",
+        "priceShown": "£7.00",
+        "estimateMark": true,
+        "shop": "S"
+      },
+      {
+        "name": "Catfish or tilapia fillet",
+        "priceShown": "£7.00",
+        "estimateMark": true,
+        "shop": "S"
+      },
+      {
+        "name": "Sirloin steak, lean, trimmed",
+        "priceShown": "£5.50",
+        "estimateMark": true,
+        "shop": "S"
+      },
+      {
+        "name": "Tortilla, high-protein low-carb",
+        "priceShown": "£4.80",
+        "estimateMark": false,
+        "shop": "S"
+      },
+      {
+        "name": "Turkey breast mince, 5% fat",
+        "priceShown": "£4.50",
+        "estimateMark": true,
+        "shop": "S"
+      },
+      {
+        "name": "Chicken breast mince, 2-3% fat",
+        "priceShown": "£4.25",
+        "estimateMark": true,
+        "shop": "S"
+      },
+      {
+        "name": "Cheddar, reduced fat (~14%)",
+        "priceShown": "£3.25",
+        "estimateMark": true,
+        "shop": "S"
+      },
+      {
+        "name": "Parmesan, finely grated",
+        "priceShown": "£2.60",
+        "estimateMark": true,
+        "shop": "S"
+      },
+      {
+        "name": "Mozzarella, reduced fat, block",
+        "priceShown": "£2.25",
+        "estimateMark": true,
+        "shop": "S"
+      },
+      {
+        "name": "Edamame spaghetti",
+        "priceShown": "£1.90",
+        "estimateMark": false,
+        "shop": "S"
+      },
+      {
+        "name": "Seeded low-carb loaf",
+        "priceShown": "£1.50",
+        "estimateMark": false,
+        "shop": "S"
+      },
+      {
+        "name": "Panko breadcrumbs",
+        "priceShown": "£1.50",
+        "estimateMark": true,
+        "shop": "S"
+      },
+      {
+        "name": "Salmon fillet, skinless",
+        "priceShown": "£13.05",
+        "estimateMark": false,
+        "shop": "M"
+      },
+      {
+        "name": "Red pepper, deseeded",
+        "priceShown": "£10.74",
+        "estimateMark": false,
+        "shop": "M"
+      },
+      {
+        "name": "Spinach, ugu or callaloo",
+        "priceShown": "£9.60",
+        "estimateMark": true,
+        "shop": "M"
+      },
+      {
+        "name": "Avocado",
+        "priceShown": "£9.60",
+        "estimateMark": true,
+        "shop": "M"
+      },
+      {
+        "name": "Cauliflower, riced",
+        "priceShown": "£7.63",
+        "estimateMark": true,
+        "shop": "M"
+      },
+      {
+        "name": "Raspberries",
+        "priceShown": "£6.60",
+        "estimateMark": false,
+        "shop": "M"
+      },
+      {
+        "name": "Extra virgin olive oil",
+        "priceShown": "£6.50",
+        "estimateMark": true,
+        "shop": "M"
+      },
+      {
+        "name": "Greek yoghurt, 0% fat",
+        "priceShown": "£6.30",
+        "estimateMark": false,
+        "shop": "M"
+      },
+      {
+        "name": "Red onion, peeled",
+        "priceShown": "£5.95",
+        "estimateMark": true,
+        "shop": "M"
+      },
+      {
+        "name": "Little gem or romaine",
+        "priceShown": "£5.39",
+        "estimateMark": false,
+        "shop": "M"
+      },
+      {
+        "name": "Tomatoes, ripe",
+        "priceShown": "£4.70",
+        "estimateMark": false,
+        "shop": "M"
+      },
+      {
+        "name": "Skyr, plain natural",
+        "priceShown": "£4.20",
+        "estimateMark": false,
+        "shop": "M"
+      },
+      {
+        "name": "Okra",
+        "priceShown": "£3.45",
+        "estimateMark": true,
+        "shop": "M"
+      },
+      {
+        "name": "Apples",
+        "priceShown": "£3.40",
+        "estimateMark": true,
+        "shop": "M"
+      },
+      {
+        "name": "Passata, plain",
+        "priceShown": "£3.30",
+        "estimateMark": true,
+        "shop": "M"
+      },
+      {
+        "name": "Brown rice, long grain",
+        "priceShown": "£3.30",
+        "estimateMark": true,
+        "shop": "M"
+      },
+      {
+        "name": "Chia seeds",
+        "priceShown": "£2.75",
+        "estimateMark": true,
+        "shop": "M"
+      },
+      {
+        "name": "Chickpeas, tinned",
+        "priceShown": "£2.70",
+        "estimateMark": true,
+        "shop": "M"
+      },
+      {
+        "name": "Chestnut mushrooms",
+        "priceShown": "£2.70",
+        "estimateMark": true,
+        "shop": "M"
+      },
+      {
+        "name": "Black beans, tinned",
+        "priceShown": "£2.60",
+        "estimateMark": true,
+        "shop": "M"
+      },
+      {
+        "name": "Red cabbage, shredded",
+        "priceShown": "£2.55",
+        "estimateMark": true,
+        "shop": "M"
+      },
+      {
+        "name": "Peanut butter, 100% nuts",
+        "priceShown": "£2.50",
+        "estimateMark": true,
+        "shop": "M"
+      },
+      {
+        "name": "Courgette",
+        "priceShown": "£2.50",
+        "estimateMark": true,
+        "shop": "M"
+      },
+      {
+        "name": "Tomato salsa, no added sugar",
+        "priceShown": "£2.40",
+        "estimateMark": true,
+        "shop": "M"
+      },
+      {
+        "name": "Blueberries",
+        "priceShown": "£2.34",
+        "estimateMark": false,
+        "shop": "M"
+      },
+      {
+        "name": "Broccoli florets",
+        "priceShown": "£2.25",
+        "estimateMark": true,
+        "shop": "M"
+      },
+      {
+        "name": "Cottage cheese, natural",
+        "priceShown": "£2.20",
+        "estimateMark": true,
+        "shop": "M"
+      },
+      {
+        "name": "Carrots, peeled",
+        "priceShown": "£2.07",
+        "estimateMark": false,
+        "shop": "M"
+      },
+      {
+        "name": "Pumpkin seeds",
+        "priceShown": "£1.80",
+        "estimateMark": true,
+        "shop": "M"
+      },
+      {
+        "name": "Cucumber",
+        "priceShown": "£1.78",
+        "estimateMark": true,
+        "shop": "M"
+      },
+      {
+        "name": "Spring onions, trimmed",
+        "priceShown": "£1.50",
+        "estimateMark": true,
+        "shop": "M"
+      },
+      {
+        "name": "Pineapple",
+        "priceShown": "£1.30",
+        "estimateMark": true,
+        "shop": "M"
+      },
+      {
+        "name": "Porridge oats",
+        "priceShown": "£1.29",
+        "estimateMark": true,
+        "shop": "M"
+      },
+      {
+        "name": "Sweetcorn",
+        "priceShown": "£1.25",
+        "estimateMark": true,
+        "shop": "M"
+      },
+      {
+        "name": "Coconut, desiccated unsweetened",
+        "priceShown": "£1.15",
+        "estimateMark": true,
+        "shop": "M"
+      },
+      {
+        "name": "Red kidney beans, tinned",
+        "priceShown": "£1.00",
+        "estimateMark": true,
+        "shop": "M"
+      },
+      {
+        "name": "Bananas",
+        "priceShown": "£0.90",
+        "estimateMark": true,
+        "shop": "M"
+      },
+      {
+        "name": "Plantain, ripe",
+        "priceShown": "£6.00",
+        "estimateMark": true,
+        "shop": "X"
+      },
+      {
+        "name": "Egusi, ground melon seed",
+        "priceShown": "£3.50",
+        "estimateMark": true,
+        "shop": "X"
+      }
+    ],
+    "totalShown": "£257.32"
+  },
+  "anomalies": []
+}

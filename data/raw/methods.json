@@ -1,0 +1,3754 @@
+{
+  "weeks": {
+    "A": {
+      "sunday": {
+        "theme": "one session, ninety-five minutes, mostly waiting",
+        "tag": "Run order",
+        "ops": [
+          {
+            "clock": "0:00",
+            "title": "Oven on, three trays out",
+            "body": "220 °C fan while you load, dropping to 200 °C once the trays go in. Line all three with paper. Drain and dry the chickpeas on a tea towel now — they will not crisp wet.",
+            "kit": "Oven · 3 trays"
+          },
+          {
+            "clock": "0:10",
+            "title": "Trays in — chicken, chickpeas, peppers",
+            "body": "TRAY A: 600 g chicken breast, salt, garlic powder, onion powder. Nothing else. 25 min. TRAY B: 250 g drained chickpeas, 1 tbsp oil, 2 tsp jerk seasoning. 35 min, shaken twice. TRAY C: 160 g red pepper and 70 g red onion in wedges, 1 tsp oil. 25 min.",
+            "kit": "Oven"
+          },
+          {
+            "clock": "0:12",
+            "title": "Pan 1 — the bolognese (longest job, start it early)",
+            "body": "90 g onion, 135 g carrot and 330 g courgette, all grated, into oil on medium for 6 min. 120 g turkey mince in, broken up and browned properly — 5 min, don't rush it. 400 g passata, oregano, a bay leaf, salt. Lid ajar, lowest heat, 30 min.",
+            "kit": "Hob 1"
+          },
+          {
+            "clock": "0:20",
+            "title": "Pan 2 — chipotle beef",
+            "body": "165 g 5% beef mince browned hard in a dry pan. 2 chopped chipotles in adobo, 1 tsp cumin, 1 tsp smoked paprika, 100 ml water. 10 min until it's thick and glossy.",
+            "kit": "Hob 2"
+          },
+          {
+            "clock": "0:28",
+            "title": "Pan 3 — efo riro base (no spinach)",
+            "body": "Blend 160 g red pepper with 90 g red onion. Into 1 tbsp oil on medium-high and cook down 8 min until it darkens and thickens. 220 g passata, 10 min. Then 27 g egusi slaked with a little water, stirred in, 5 min until it thickens and goes grainy. Stop there — the spinach belongs at the plate on Wednesday, not here.",
+            "kit": "Hob 3"
+          },
+          {
+            "clock": "0:32",
+            "title": "Eggs on",
+            "body": "4 medium eggs into boiling water for 8 minutes, then straight into cold. Peel them now while they're easy. Two are for Tuesday's snack; the spares will get eaten.",
+            "kit": "Hob 4"
+          },
+          {
+            "clock": "0:37",
+            "title": "Chicken and peppers out",
+            "body": "Chicken rested 5 min, then sliced or left whole — whole keeps better. Peppers and onion into their own box. Chickpeas stay in until 0:45.",
+            "kit": "Oven"
+          },
+          {
+            "clock": "0:40",
+            "title": "Pan 2 free — plain rice on",
+            "body": "320 g brown rice, dry, cooked plain. 25 min. This covers Monday's lunch, Tuesday's lunch and Tuesday's dinner.",
+            "kit": "Hob 2"
+          },
+          {
+            "clock": "0:45",
+            "title": "Chickpeas out — jar, lid OFF",
+            "body": "They should rattle on the tray. Into a jar, uncovered, on the counter. Sealed in a box they go soft by Tuesday.",
+            "kit": "Oven off"
+          },
+          {
+            "clock": "0:46",
+            "title": "Pan 3 free — the jollof",
+            "body": "95 g brown rice, dry, cooked in a blended base of pepper, tomato, onion and a little stock until the liquid is gone. 25 min. Keep it slightly under — it gets a second heating on Wednesday.",
+            "kit": "Hob 3"
+          },
+          {
+            "clock": "0:50",
+            "title": "Rice the cauliflower — the big job",
+            "body": "Two heads, about 1.4 kg once florets are riced in a food processor (pulse, don't run it — you want couscous, not paste). Store it RAW. It cooks in three minutes at the plate and holds far better uncooked.",
+            "kit": "Processor"
+          },
+          {
+            "clock": "1:05",
+            "title": "Shred for two slaws",
+            "body": "335 g red cabbage and 230 g carrot, shredded fine, into one box with a piece of kitchen paper on top to take the moisture. Thursday's burger slaw and Friday's wrap both come out of this.",
+            "kit": "Mandoline / processor"
+          },
+          {
+            "clock": "1:12",
+            "title": "The two jars",
+            "body": "WHITE SAUCE: 115 g Greek yoghurt, 1 grated garlic clove, lemon juice, salt, and far more black pepper than feels reasonable. Shake. SUYA: mix your own if you like — 3 parts ground roasted peanut, 1 part chilli, then ginger, garlic powder and stock powder to taste.",
+            "kit": "2 jars"
+          },
+          {
+            "clock": "1:20",
+            "title": "Bolognese and rice off — cool them FAST",
+            "body": "Spread the rice out on a cold tray in a thin layer. Both into the fridge within the hour. This is the one genuine food-safety point of the day: rice left to cool slowly at room temperature is the classic way to make yourself ill.",
+            "kit": "Trays"
+          },
+          {
+            "clock": "1:35",
+            "title": "Portion and label",
+            "body": "Everything into boxes marked with the day it's for. Five minutes now saves the Wednesday evening argument about what the orange one is.",
+            "kit": "Boxes"
+          }
+        ],
+        "yields": [
+          {
+            "component": "Roast chicken",
+            "qty": "600 g raw",
+            "consumers": "Mon lunch · Wed lunch · Fri lunch",
+            "storage": "Fridge, whole, 4 days"
+          },
+          {
+            "component": "Chipotle beef",
+            "qty": "165 g raw",
+            "consumers": "Tue lunch",
+            "storage": "Fridge, 3 days"
+          },
+          {
+            "component": "Turkey bolognese",
+            "qty": "makes ~1 kg",
+            "consumers": "Thu lunch",
+            "storage": "Fridge 4 days, or freeze half"
+          },
+          {
+            "component": "Efo riro base",
+            "qty": "~450 g",
+            "consumers": "Wed lunch",
+            "storage": "Fridge, 4 days"
+          },
+          {
+            "component": "Jerk chickpeas",
+            "qty": "250 g drained",
+            "consumers": "Wed snack",
+            "storage": "Jar, lid off, counter"
+          },
+          {
+            "component": "Boiled eggs",
+            "qty": "4",
+            "consumers": "Tue snack",
+            "storage": "Fridge, peeled, 4 days"
+          },
+          {
+            "component": "Plain brown rice",
+            "qty": "320 g dry",
+            "consumers": "Mon + Tue lunch, Tue dinner",
+            "storage": "Fridge ≤3 days, cooled fast"
+          },
+          {
+            "component": "Jollof",
+            "qty": "95 g dry",
+            "consumers": "Wed lunch",
+            "storage": "Fridge ≤3 days, cooled fast"
+          },
+          {
+            "component": "Riced cauliflower",
+            "qty": "~1.4 kg raw",
+            "consumers": "Mon, Tue ×2, Wed, Fri",
+            "storage": "Fridge raw, 4 days"
+          },
+          {
+            "component": "Slaw shred",
+            "qty": "335 g cabbage + 230 g carrot",
+            "consumers": "Thu dinner · Fri lunch",
+            "storage": "Fridge, paper on top"
+          },
+          {
+            "component": "White sauce",
+            "qty": "115 g",
+            "consumers": "Mon lunch",
+            "storage": "Jar, 4 days"
+          }
+        ],
+        "midweek": [
+          {
+            "heading": "Tuesday night",
+            "body": "Move Wednesday's fish and prawns from the freezer to the fridge. If you're buying them fresh instead, buy them Wednesday — not before."
+          },
+          {
+            "heading": "Wednesday",
+            "body": "Ten minutes. Salad and any fruit topped up. Thursday's steak out of the freezer if it's in there. Check the chickpeas still rattle; if not, 4 minutes in a hot dry pan on Wednesday evening."
+          },
+          {
+            "heading": "Thursday night",
+            "body": "Friday's salmon from the freezer to the fridge."
+          }
+        ]
+      },
+      "cards": [
+        {
+          "week": "A",
+          "dayNo": 1,
+          "dayName": "Monday",
+          "slot": "Breakfast",
+          "name": "Bodega egg & cheese",
+          "tag": "fresh",
+          "timeChip": "7 min",
+          "originChip": "New York",
+          "ingredients": [
+            {
+              "name": "Spinach, ugu or callaloo",
+              "weightState": "Raw",
+              "herG": 100,
+              "himG": 120,
+              "unitHint": null
+            },
+            {
+              "name": "Eggs, medium, shell off",
+              "weightState": "Shelled",
+              "herG": 100,
+              "himG": 100,
+              "unitHint": "2 eggs"
+            },
+            {
+              "name": "Tomatoes, ripe",
+              "weightState": "Raw",
+              "herG": 80,
+              "himG": 100,
+              "unitHint": null
+            },
+            {
+              "name": "Tortilla, high-protein low-carb",
+              "weightState": "As it comes",
+              "herG": 45,
+              "himG": 50,
+              "unitHint": "1 tortilla"
+            },
+            {
+              "name": "Avocado",
+              "weightState": "Flesh only",
+              "herG": 35,
+              "himG": 45,
+              "unitHint": null
+            },
+            {
+              "name": "Cheddar, reduced fat (~14%)",
+              "weightState": "As it comes",
+              "herG": 15,
+              "himG": 20,
+              "unitHint": null
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 5,
+              "himG": 8,
+              "unitHint": "2 tsp"
+            }
+          ],
+          "steps": [
+            "Non-stick pan, dry, medium-high. Spinach in (100/120 g) with a pinch of salt. 60 seconds, until it collapses. Tip onto a plate and press the water out with the back of a spoon.",
+            "Oil into the pan (5/8 g). Beat the eggs (100 g — 2 eggs) with black pepper. Pour in and tilt to coat the base.",
+            "Leave 45 seconds untouched. As the edge sets, draw it to the middle with a spatula and tilt again. Twice more — you want three or four soft folds, not scramble.",
+            "Spinach over one half, cheddar on top (15/20 g). Fold, lid on, heat OFF. 60 seconds to melt.",
+            "Warm the tortilla (45/50 g) 20 seconds a side in the dry pan while that happens.",
+            "Tomato (80/100 g) sliced thin and salted. Avocado (35/45 g) mashed onto the tortilla. Egg in, tomato on, hot sauce, fold and press."
+          ],
+          "why": "Wilt and squeeze. Spinach is mostly water and it will steam the eggs into a wet mess otherwise. And take the pan off the heat before the cheese goes on — residual heat melts it and the egg stays tender.",
+          "macros": {
+            "her": {
+              "kcal": 426,
+              "protein": 27,
+              "netCarb": 14,
+              "fat": 26,
+              "fibre": 15.4
+            },
+            "him": {
+              "kcal": 502,
+              "protein": 31,
+              "netCarb": 16,
+              "fat": 32,
+              "fibre": 17.9
+            }
+          }
+        },
+        {
+          "week": "A",
+          "dayNo": 1,
+          "dayName": "Monday",
+          "slot": "Lunch",
+          "name": "Halal cart chicken over rice",
+          "tag": "batch",
+          "timeChip": "6 min",
+          "originChip": "New York",
+          "ingredients": [
+            {
+              "name": "Cauliflower, riced",
+              "weightState": "Prepared",
+              "herG": 130,
+              "himG": 160,
+              "unitHint": null
+            },
+            {
+              "name": "Chicken breast, skinless",
+              "weightState": "Raw",
+              "herG": 75,
+              "himG": 100,
+              "unitHint": null
+            },
+            {
+              "name": "Tomatoes, ripe",
+              "weightState": "Raw",
+              "herG": 80,
+              "himG": 100,
+              "unitHint": null
+            },
+            {
+              "name": "Chickpeas, tinned",
+              "weightState": "Drained",
+              "herG": 70,
+              "himG": 90,
+              "unitHint": null
+            },
+            {
+              "name": "Brown rice, long grain",
+              "weightState": "Dry",
+              "herG": 55,
+              "himG": 80,
+              "unitHint": null
+            },
+            {
+              "name": "Little gem or romaine",
+              "weightState": "Raw",
+              "herG": 70,
+              "himG": 80,
+              "unitHint": null
+            },
+            {
+              "name": "Greek yoghurt, 0% fat",
+              "weightState": "As it comes",
+              "herG": 50,
+              "himG": 65,
+              "unitHint": null
+            },
+            {
+              "name": "Red onion, peeled",
+              "weightState": "Prepared",
+              "herG": 30,
+              "himG": 40,
+              "unitHint": null
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 6,
+              "himG": 8,
+              "unitHint": "2 tsp"
+            }
+          ],
+          "steps": [
+            "Out of the fridge: Sunday's roast chicken and Sunday's rice-and-cauliflower.",
+            "Chicken (75/100 g) chopped into rough 2 cm pieces.",
+            "Pan, medium-high, oil (6/8 g). Chicken in with ½ tsp oregano, ½ tsp cumin, ¼ tsp turmeric and salt. 3 minutes, moving it, until the edges catch.",
+            "Rice and cauliflower (55/80 g dry cooked + 130/160 g riced) warmed through — 90 seconds in the microwave, or into the pan for the last minute with a splash of water.",
+            "Build: rice base, chicken over, then chickpeas (70/90 g), shredded lettuce (70/80 g) and diced tomato (80/100 g) around the edge. Raw red onion (30/40 g) over.",
+            "White sauce from Sunday's jar (50/65 g yoghurt, grated garlic, lemon, a great deal of black pepper). Hot sauce to taste."
+          ],
+          "why": "The spices go on in the pan, not on Sunday. One tray of deliberately plain roast chicken becomes three completely different lunches this week precisely because it was left neutral.",
+          "macros": {
+            "her": {
+              "kcal": 528,
+              "protein": 37,
+              "netCarb": 62,
+              "fat": 11,
+              "fibre": 12.7
+            },
+            "him": {
+              "kcal": 716,
+              "protein": 49,
+              "netCarb": 86,
+              "fat": 15,
+              "fibre": 16.3
+            }
+          }
+        },
+        {
+          "week": "A",
+          "dayNo": 1,
+          "dayName": "Monday",
+          "slot": "Dinner",
+          "name": "Chicken-crust pizza",
+          "tag": "fresh",
+          "timeChip": "25 min",
+          "originChip": "Naples, reconsidered",
+          "ingredients": [
+            {
+              "name": "Passata, plain",
+              "weightState": "As it comes",
+              "herG": 100,
+              "himG": 120,
+              "unitHint": null
+            },
+            {
+              "name": "Red pepper, deseeded",
+              "weightState": "Prepared",
+              "herG": 90,
+              "himG": 110,
+              "unitHint": null
+            },
+            {
+              "name": "Chestnut mushrooms",
+              "weightState": "Raw",
+              "herG": 90,
+              "himG": 110,
+              "unitHint": null
+            },
+            {
+              "name": "Spinach, ugu or callaloo",
+              "weightState": "Raw",
+              "herG": 60,
+              "himG": 80,
+              "unitHint": null
+            },
+            {
+              "name": "Chicken breast mince, 2-3% fat",
+              "weightState": "Raw",
+              "herG": 65,
+              "himG": 75,
+              "unitHint": null
+            },
+            {
+              "name": "Little gem or romaine",
+              "weightState": "Raw",
+              "herG": 40,
+              "himG": 50,
+              "unitHint": null
+            },
+            {
+              "name": "Mozzarella, reduced fat, block",
+              "weightState": "As it comes",
+              "herG": 30,
+              "himG": 40,
+              "unitHint": null
+            },
+            {
+              "name": "Red onion, peeled",
+              "weightState": "Prepared",
+              "herG": 30,
+              "himG": 40,
+              "unitHint": null
+            },
+            {
+              "name": "Eggs, medium, shell off",
+              "weightState": "Shelled",
+              "herG": 25,
+              "himG": 25,
+              "unitHint": null
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 14,
+              "himG": 17,
+              "unitHint": "4 tsp"
+            },
+            {
+              "name": "Parmesan, finely grated",
+              "weightState": "As it comes",
+              "herG": 12,
+              "himG": 15,
+              "unitHint": "2 tbsp"
+            }
+          ],
+          "steps": [
+            "Oven to 220 °C fan. Tray lined with baking paper.",
+            "Base: chicken mince (65/75 g), parmesan (12/15 g), half a beaten egg (25 g), salt, oregano, garlic powder. Mix hard with your hands for a full minute — it should turn tacky and hold together in one mass.",
+            "Press onto the paper into a 20 cm round, 5–6 mm thick and even. Wet fingers stop it sticking. Bake 15 minutes.",
+            "Meanwhile: pepper (90/110 g), mushrooms (90/110 g) and onion (30/40 g) sliced. Pan, 5 g of the oil, high heat, 5 minutes — until the mushrooms have given up their water and taken colour. Spinach (60/80 g) in at the end to wilt. Season.",
+            "Base out. It should be firm, browned at the rim and lift cleanly off the paper. Blot the surface with kitchen paper.",
+            "Passata (100/120 g) spread thin, mozzarella (30/40 g) torn over, vegetables on. Back in for 8 minutes.",
+            "Salad alongside: lettuce (40/50 g), dressed properly with the remaining oil (14/17 g total across the dish), lemon, salt and plenty of black pepper."
+          ],
+          "why": "Blot the base. Chicken mince releases water as it bakes, and a wet base steams instead of crisping. Press it thin and even too — a thick middle stays raw while the rim burns.",
+          "macros": {
+            "her": {
+              "kcal": 466,
+              "protein": 38,
+              "netCarb": 15,
+              "fat": 27,
+              "fibre": 6.9
+            },
+            "him": {
+              "kcal": 568,
+              "protein": 45,
+              "netCarb": 18,
+              "fat": 33,
+              "fibre": 8.6
+            }
+          }
+        },
+        {
+          "week": "A",
+          "dayNo": 1,
+          "dayName": "Monday",
+          "slot": "Snack",
+          "name": "Lime & chilli yoghurt with banana",
+          "tag": "fresh",
+          "timeChip": "2 min",
+          "originChip": "New York",
+          "ingredients": [
+            {
+              "name": "Bananas",
+              "weightState": "Peeled",
+              "herG": 130,
+              "himG": 175,
+              "unitHint": "1½ bananas"
+            },
+            {
+              "name": "Greek yoghurt, 0% fat",
+              "weightState": "As it comes",
+              "herG": 110,
+              "himG": 140,
+              "unitHint": null
+            },
+            {
+              "name": "Chia seeds",
+              "weightState": "Dry",
+              "herG": 8,
+              "himG": 10,
+              "unitHint": "2½ tsp"
+            },
+            {
+              "name": "Pumpkin seeds",
+              "weightState": "Dry",
+              "herG": 6,
+              "himG": 8,
+              "unitHint": "1 tbsp"
+            }
+          ],
+          "steps": [
+            "Yoghurt (110/140 g) into a bowl or jar.",
+            "Banana (130/175 g — about 1 medium / 1 large) sliced thick, straight on top.",
+            "Lime squeezed hard over the banana. Chilli flakes and a real pinch of flaky salt.",
+            "Chia (8/10 g) and pumpkin seeds (6/8 g) scattered over."
+          ],
+          "why": "The lime is structural, not decoration. It stops the banana browning and cuts the sweetness so this eats as a snack rather than a dessert — the salt does the same job.",
+          "macros": {
+            "her": {
+              "kcal": 251,
+              "protein": 16,
+              "netCarb": 32,
+              "fat": 6,
+              "fibre": 6.5
+            },
+            "him": {
+              "kcal": 329,
+              "protein": 20,
+              "netCarb": 42,
+              "fat": 8,
+              "fibre": 8.5
+            }
+          }
+        },
+        {
+          "week": "A",
+          "dayNo": 2,
+          "dayName": "Tuesday",
+          "slot": "Breakfast",
+          "name": "Protein pancakes with berries",
+          "tag": "fresh",
+          "timeChip": "10 min",
+          "originChip": "The gym canteen",
+          "ingredients": [
+            {
+              "name": "Skyr, plain natural",
+              "weightState": "As it comes",
+              "herG": 95,
+              "himG": 140,
+              "unitHint": null
+            },
+            {
+              "name": "Eggs, medium, shell off",
+              "weightState": "Shelled",
+              "herG": 50,
+              "himG": 75,
+              "unitHint": "1½ eggs"
+            },
+            {
+              "name": "Blueberries",
+              "weightState": "Fresh or frozen",
+              "herG": 60,
+              "himG": 75,
+              "unitHint": null
+            },
+            {
+              "name": "Raspberries",
+              "weightState": "Fresh or frozen",
+              "herG": 60,
+              "himG": 60,
+              "unitHint": null
+            },
+            {
+              "name": "Porridge oats",
+              "weightState": "Dry",
+              "herG": 40,
+              "himG": 58,
+              "unitHint": null
+            },
+            {
+              "name": "Peanut butter, 100% nuts",
+              "weightState": "As it comes",
+              "herG": 8,
+              "himG": 11,
+              "unitHint": "1 tbsp"
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 3,
+              "himG": 4,
+              "unitHint": "1 tsp"
+            }
+          ],
+          "steps": [
+            "Blitz the oats (40/58 g) to a rough flour, 20 seconds in a blender or bullet.",
+            "Add the egg (50/75 g — 1 / 1½), half the skyr (48/70 g), ½ tsp baking powder and a pinch of salt. Blitz 15 seconds to a thick, just-pourable batter. Rest 2 minutes.",
+            "Non-stick pan, medium-LOW. Oil (3/4 g) wiped round with kitchen paper.",
+            "Drop 3–4 small rounds, 7–8 cm across. Do not make them large. 2 minutes, until bubbles hold their shape on the surface, then flip. 1 minute more.",
+            "Stack. Remaining skyr (47/70 g) on top, berries heaped over (60 g raspberries, 60/75 g blueberries), peanut butter (8/11 g) warmed 10 seconds and drizzled."
+          ],
+          "why": "Medium-low, and small. High heat browns the outside before the middle sets, and a large pancake made of oats and skyr has nothing structural holding it together when you try to turn it.",
+          "macros": {
+            "her": {
+              "kcal": 422,
+              "protein": 25,
+              "netCarb": 39,
+              "fat": 15,
+              "fibre": 9.9
+            },
+            "him": {
+              "kcal": 589,
+              "protein": 37,
+              "netCarb": 53,
+              "fat": 22,
+              "fibre": 12.2
+            }
+          }
+        },
+        {
+          "week": "A",
+          "dayNo": 2,
+          "dayName": "Tuesday",
+          "slot": "Lunch",
+          "name": "Chipotle burrito bowl",
+          "tag": "batch",
+          "timeChip": "5 min",
+          "originChip": "Tex-Mex",
+          "ingredients": [
+            {
+              "name": "Cauliflower, riced",
+              "weightState": "Prepared",
+              "herG": 120,
+              "himG": 155,
+              "unitHint": null
+            },
+            {
+              "name": "Black beans, tinned",
+              "weightState": "Drained",
+              "herG": 95,
+              "himG": 105,
+              "unitHint": null
+            },
+            {
+              "name": "Beef mince, 5% fat",
+              "weightState": "Raw",
+              "herG": 70,
+              "himG": 95,
+              "unitHint": null
+            },
+            {
+              "name": "Red pepper, deseeded",
+              "weightState": "Prepared",
+              "herG": 70,
+              "himG": 90,
+              "unitHint": null
+            },
+            {
+              "name": "Brown rice, long grain",
+              "weightState": "Dry",
+              "herG": 40,
+              "himG": 70,
+              "unitHint": null
+            },
+            {
+              "name": "Tomato salsa, no added sugar",
+              "weightState": "As it comes",
+              "herG": 60,
+              "himG": 70,
+              "unitHint": null
+            },
+            {
+              "name": "Little gem or romaine",
+              "weightState": "Raw",
+              "herG": 50,
+              "himG": 60,
+              "unitHint": null
+            },
+            {
+              "name": "Red onion, peeled",
+              "weightState": "Prepared",
+              "herG": 30,
+              "himG": 40,
+              "unitHint": null
+            },
+            {
+              "name": "Sweetcorn",
+              "weightState": "Frozen or tinned",
+              "herG": 25,
+              "himG": 30,
+              "unitHint": null
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 5,
+              "himG": 6,
+              "unitHint": "1½ tsp"
+            }
+          ],
+          "steps": [
+            "Out of the fridge: Sunday's chipotle beef, Sunday's rice-and-cauliflower, Sunday's roast peppers and onion.",
+            "Beef (70/95 g) and the peppers and onion (70/90 g + 30/40 g) into a pan on high for 3 minutes, until the edges catch again. The microwave works; the pan is better.",
+            "Rice and cauliflower (40/70 g dry cooked + 120/155 g) warmed through alongside.",
+            "Build: rice base, beef over one side, black beans (95/105 g) and sweetcorn (25/30 g) the other, salsa (60/70 g) into the middle.",
+            "Shredded lettuce (50/60 g) on LAST, off the heat, with the oil (5/6 g) and lime hard over everything. The salsa is doing the job the guacamole used to."
+          ],
+          "why": "Cold things after hot things, never before. Lettuce that has sat under hot beef for two minutes is soup, and it takes the rest of the bowl with it.",
+          "macros": {
+            "her": {
+              "kcal": 522,
+              "protein": 32,
+              "netCarb": 60,
+              "fat": 11,
+              "fibre": 16.6
+            },
+            "him": {
+              "kcal": 715,
+              "protein": 42,
+              "netCarb": 87,
+              "fat": 15,
+              "fibre": 20.3
+            }
+          }
+        },
+        {
+          "week": "A",
+          "dayNo": 2,
+          "dayName": "Tuesday",
+          "slot": "Dinner",
+          "name": "Chicken katsu curry",
+          "tag": "fresh",
+          "timeChip": "22 min",
+          "originChip": "Japan",
+          "ingredients": [
+            {
+              "name": "Broccoli florets",
+              "weightState": "Raw",
+              "herG": 140,
+              "himG": 165,
+              "unitHint": null
+            },
+            {
+              "name": "Cauliflower, riced",
+              "weightState": "Prepared",
+              "herG": 130,
+              "himG": 160,
+              "unitHint": null
+            },
+            {
+              "name": "Chicken breast, skinless",
+              "weightState": "Raw",
+              "herG": 85,
+              "himG": 110,
+              "unitHint": null
+            },
+            {
+              "name": "Carrots, peeled",
+              "weightState": "Prepared",
+              "herG": 60,
+              "himG": 70,
+              "unitHint": null
+            },
+            {
+              "name": "Red onion, peeled",
+              "weightState": "Prepared",
+              "herG": 40,
+              "himG": 50,
+              "unitHint": null
+            },
+            {
+              "name": "Brown rice, long grain",
+              "weightState": "Dry",
+              "herG": 30,
+              "himG": 42,
+              "unitHint": null
+            },
+            {
+              "name": "Panko breadcrumbs",
+              "weightState": "Dry",
+              "herG": 20,
+              "himG": 25,
+              "unitHint": null
+            },
+            {
+              "name": "Eggs, medium, shell off",
+              "weightState": "Shelled",
+              "herG": 25,
+              "himG": 25,
+              "unitHint": null
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 6,
+              "himG": 8,
+              "unitHint": "2 tsp"
+            }
+          ],
+          "steps": [
+            "Oven to 220 °C fan with a baking tray inside to heat.",
+            "Sauce first. Onion (40/50 g) and carrot (60/70 g) diced small, into a pan with 3 g of the oil, medium, 6 minutes until soft. 1½ tsp curry powder, ½ tsp garam masala and a pinch of sugar — 60 seconds more. 150 ml stock, simmer 6 minutes.",
+            "Chicken (85/110 g) between two sheets of paper, bashed to an even 1 cm. Salt both sides.",
+            "Beaten egg (25 g) in one bowl, seasoned panko (20/25 g) in another. Egg, then panko, pressed on firmly.",
+            "Onto the HOT tray, the rest of the oil brushed over the crumb. 18 minutes, turned once at 10.",
+            "Blitz the sauce smooth with a stick blender. It should coat the back of a spoon — loosen with a splash of water if it's gone too far.",
+            "Rice and cauliflower (30/42 g dry + 130/160 g) warmed. Broccoli (140/165 g) steamed 4 minutes, still squeaky.",
+            "Slice the chicken across. Sauce poured BESIDE it, not over."
+          ],
+          "why": "The preheated tray is what replaces the deep fryer — the underside starts cooking on contact instead of sitting in its own steam. And blitzing the carrot and onion is what thickens the sauce; there is no flour anywhere in this.",
+          "macros": {
+            "her": {
+              "kcal": 484,
+              "protein": 36,
+              "netCarb": 53,
+              "fat": 12,
+              "fibre": 10.4
+            },
+            "him": {
+              "kcal": 615,
+              "protein": 45,
+              "netCarb": 68,
+              "fat": 15,
+              "fibre": 12.7
+            }
+          }
+        },
+        {
+          "week": "A",
+          "dayNo": 2,
+          "dayName": "Tuesday",
+          "slot": "Snack",
+          "name": "Suya-spiced eggs & carrots",
+          "tag": "batch",
+          "timeChip": "2 min",
+          "originChip": "Nigeria",
+          "ingredients": [
+            {
+              "name": "Carrots, peeled",
+              "weightState": "Prepared",
+              "herG": 100,
+              "himG": 100,
+              "unitHint": null
+            },
+            {
+              "name": "Eggs, medium, shell off",
+              "weightState": "Shelled",
+              "herG": 50,
+              "himG": 75,
+              "unitHint": "1½ eggs"
+            },
+            {
+              "name": "Avocado",
+              "weightState": "Flesh only",
+              "herG": 25,
+              "himG": 35,
+              "unitHint": null
+            },
+            {
+              "name": "Peanut butter, 100% nuts",
+              "weightState": "As it comes",
+              "herG": 16,
+              "himG": 20,
+              "unitHint": "1 tbsp"
+            }
+          ],
+          "steps": [
+            "Sunday's boiled eggs (50/75 g — 1 / 1½), peeled and halved.",
+            "Dust the cut faces heavily with suya — ground roasted peanut, chilli, ginger, garlic, stock powder. More than looks sensible.",
+            "Dip: peanut butter (16/20 g) loosened with warm water and lemon, mashed together with the avocado (25/35 g) and salt.",
+            "Carrot (100 g) cut into batons to scoop with."
+          ],
+          "why": "Suya is mostly ground peanut, so it needs fat and salt around it to open up. Dry on a cold egg it tastes dusty; against the avocado dip it tastes like the thing you get at a roadside stand.",
+          "macros": {
+            "her": {
+              "kcal": 247,
+              "protein": 12,
+              "netCarb": 10,
+              "fat": 17,
+              "fibre": 5.4
+            },
+            "him": {
+              "kcal": 322,
+              "protein": 16,
+              "netCarb": 11,
+              "fat": 23,
+              "fibre": 6.3
+            }
+          }
+        },
+        {
+          "week": "A",
+          "dayNo": 3,
+          "dayName": "Wednesday",
+          "slot": "Breakfast",
+          "name": "Nigerian egg sauce with plantain",
+          "tag": "fresh",
+          "timeChip": "12 min",
+          "originChip": "Nigeria",
+          "ingredients": [
+            {
+              "name": "Eggs, medium, shell off",
+              "weightState": "Shelled",
+              "herG": 150,
+              "himG": 175,
+              "unitHint": "3½ eggs"
+            },
+            {
+              "name": "Tomatoes, ripe",
+              "weightState": "Raw",
+              "herG": 100,
+              "himG": 120,
+              "unitHint": null
+            },
+            {
+              "name": "Plantain, ripe",
+              "weightState": "Peeled",
+              "herG": 80,
+              "himG": 120,
+              "unitHint": "1 plantain"
+            },
+            {
+              "name": "Red pepper, deseeded",
+              "weightState": "Prepared",
+              "herG": 80,
+              "himG": 100,
+              "unitHint": null
+            },
+            {
+              "name": "Spinach, ugu or callaloo",
+              "weightState": "Raw",
+              "herG": 60,
+              "himG": 80,
+              "unitHint": null
+            },
+            {
+              "name": "Red onion, peeled",
+              "weightState": "Prepared",
+              "herG": 40,
+              "himG": 50,
+              "unitHint": null
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 5,
+              "himG": 6,
+              "unitHint": "1½ tsp"
+            }
+          ],
+          "steps": [
+            "Plantain (80/120 g) peeled and sliced 1.5 cm thick on the diagonal. Griddle or heavy pan, DRY, high. 3 minutes a side until blackened in patches. Set aside and salt.",
+            "Same pan, oil (5/6 g), medium-high. Onion (40/50 g) and pepper (80/100 g), diced, 4 minutes.",
+            "Tomato (100/120 g) chopped, plus scotch bonnet to taste and a pinch of stock powder. Cook 4–5 minutes, pressing it down, until it darkens and the oil separates at the edges.",
+            "Beat the eggs (150/175 g — 3 / 3½) loosely. Pour in, leave 20 seconds, then draw through in slow ribbons. Off the heat while still glossy.",
+            "Spinach (60/80 g) folded through on the residual heat."
+          ],
+          "why": "Wait for the oil to separate before the eggs go in. That's the moment the tomato stops being raw and the sauce gets its depth — go early and the whole thing tastes thin and slightly metallic.",
+          "macros": {
+            "her": {
+              "kcal": 429,
+              "protein": 24,
+              "netCarb": 35,
+              "fat": 21,
+              "fibre": 6.7
+            },
+            "him": {
+              "kcal": 541,
+              "protein": 29,
+              "netCarb": 49,
+              "fat": 25,
+              "fibre": 8.9
+            }
+          }
+        },
+        {
+          "week": "A",
+          "dayNo": 3,
+          "dayName": "Wednesday",
+          "slot": "Lunch",
+          "name": "Efo riro with chicken & jollof",
+          "tag": "batch",
+          "timeChip": "6 min",
+          "originChip": "Nigeria",
+          "ingredients": [
+            {
+              "name": "Spinach, ugu or callaloo",
+              "weightState": "Raw",
+              "herG": 200,
+              "himG": 240,
+              "unitHint": null
+            },
+            {
+              "name": "Cauliflower, riced",
+              "weightState": "Prepared",
+              "herG": 110,
+              "himG": 140,
+              "unitHint": null
+            },
+            {
+              "name": "Passata, plain",
+              "weightState": "As it comes",
+              "herG": 100,
+              "himG": 120,
+              "unitHint": null
+            },
+            {
+              "name": "Chicken breast, skinless",
+              "weightState": "Raw",
+              "herG": 85,
+              "himG": 110,
+              "unitHint": null
+            },
+            {
+              "name": "Red pepper, deseeded",
+              "weightState": "Prepared",
+              "herG": 70,
+              "himG": 90,
+              "unitHint": null
+            },
+            {
+              "name": "Brown rice, long grain",
+              "weightState": "Dry",
+              "herG": 40,
+              "himG": 55,
+              "unitHint": null
+            },
+            {
+              "name": "Red onion, peeled",
+              "weightState": "Prepared",
+              "herG": 40,
+              "himG": 50,
+              "unitHint": null
+            },
+            {
+              "name": "Egusi, ground melon seed",
+              "weightState": "Dry",
+              "herG": 12,
+              "himG": 15,
+              "unitHint": "2 tbsp"
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 6,
+              "himG": 8,
+              "unitHint": "2 tsp"
+            }
+          ],
+          "steps": [
+            "Out of the fridge: Sunday's efo riro base and Sunday's jollof.",
+            "Base into a pan on medium with a splash of water — it sets hard when cold. 3 minutes.",
+            "Chicken (85/110 g) sliced in and warmed through, 2 minutes.",
+            "Spinach (200/240 g) is a mountain. Add it in three goes, letting each wilt before the next. It comes down to about a quarter of its volume.",
+            "Jollof (40/55 g dry rice + 110/140 g cauliflower) warmed alongside, covered, 2 minutes."
+          ],
+          "why": "The spinach goes in at the plate, not on Sunday. Reheated wilted greens turn grey and bitter; folded fresh into a hot base they stay green and the dish tastes like it was made today.",
+          "macros": {
+            "her": {
+              "kcal": 500,
+              "protein": 37,
+              "netCarb": 47,
+              "fat": 15,
+              "fibre": 12
+            },
+            "him": {
+              "kcal": 649,
+              "protein": 47,
+              "netCarb": 62,
+              "fat": 20,
+              "fibre": 15
+            }
+          }
+        },
+        {
+          "week": "A",
+          "dayNo": 3,
+          "dayName": "Wednesday",
+          "slot": "Dinner",
+          "name": "Catfish pepper soup with okra",
+          "tag": "fresh",
+          "timeChip": "20 min",
+          "originChip": "Nigeria",
+          "ingredients": [
+            {
+              "name": "Plantain, ripe",
+              "weightState": "Peeled",
+              "herG": 140,
+              "himG": 185,
+              "unitHint": "1½ plantains"
+            },
+            {
+              "name": "Spinach, ugu or callaloo",
+              "weightState": "Raw",
+              "herG": 120,
+              "himG": 150,
+              "unitHint": null
+            },
+            {
+              "name": "Catfish or tilapia fillet",
+              "weightState": "Raw",
+              "herG": 100,
+              "himG": 130,
+              "unitHint": "1 fillet"
+            },
+            {
+              "name": "Okra",
+              "weightState": "Fresh or frozen",
+              "herG": 100,
+              "himG": 120,
+              "unitHint": null
+            },
+            {
+              "name": "Tomatoes, ripe",
+              "weightState": "Raw",
+              "herG": 80,
+              "himG": 100,
+              "unitHint": null
+            },
+            {
+              "name": "Red pepper, deseeded",
+              "weightState": "Prepared",
+              "herG": 60,
+              "himG": 80,
+              "unitHint": null
+            },
+            {
+              "name": "King prawns, peeled",
+              "weightState": "Raw",
+              "herG": 40,
+              "himG": 55,
+              "unitHint": null
+            },
+            {
+              "name": "Red onion, peeled",
+              "weightState": "Prepared",
+              "herG": 40,
+              "himG": 50,
+              "unitHint": null
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 6,
+              "himG": 8,
+              "unitHint": "2 tsp"
+            }
+          ],
+          "steps": [
+            "Plantain (140/185 g) sliced thick, dry-griddled 3 minutes a side. Set aside.",
+            "Onion (40/50 g) and pepper (60/80 g) into a wide pan with the oil (6/8 g), 4 minutes. Tomato (80/100 g) and scotch bonnet, 3 minutes.",
+            "500 ml stock, 2 tsp pepper soup spice, a bay leaf. Bring to a BARE simmer — never a boil.",
+            "Okra (100/120 g) topped and halved, in for 5 minutes.",
+            "Fish (100/130 g) in whole pieces, laid on top. Lid on, 8 minutes. Do not stir it.",
+            "Prawns (40/55 g) in for the last 3 minutes. Spinach (120/150 g) folded through for the last 1.",
+            "Lime at the table. Plantain on the side."
+          ],
+          "why": "A bare simmer and no stirring. Catfish and tilapia are soft, and a rolling boil shreds them into the broth — you want whole pieces you can lift out with a spoon.",
+          "macros": {
+            "her": {
+              "kcal": 463,
+              "protein": 37,
+              "netCarb": 55,
+              "fat": 10,
+              "fibre": 12
+            },
+            "him": {
+              "kcal": 605,
+              "protein": 48,
+              "netCarb": 72,
+              "fat": 13,
+              "fibre": 15.1
+            }
+          }
+        },
+        {
+          "week": "A",
+          "dayNo": 3,
+          "dayName": "Wednesday",
+          "slot": "Snack",
+          "name": "Jerk-roasted chickpeas with skyr",
+          "tag": "batch",
+          "timeChip": "1 min",
+          "originChip": "Jamaica",
+          "ingredients": [
+            {
+              "name": "Chickpeas, tinned",
+              "weightState": "Drained",
+              "herG": 110,
+              "himG": 135,
+              "unitHint": null
+            },
+            {
+              "name": "Skyr, plain natural",
+              "weightState": "As it comes",
+              "herG": 50,
+              "himG": 70,
+              "unitHint": null
+            },
+            {
+              "name": "Avocado",
+              "weightState": "Flesh only",
+              "herG": 20,
+              "himG": 28,
+              "unitHint": null
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 7,
+              "himG": 9,
+              "unitHint": "2 tsp"
+            }
+          ],
+          "steps": [
+            "Sunday's jerk chickpeas (110/135 g), straight from the jar. If they've softened, 4 minutes in a hot dry pan brings the crunch back.",
+            "Skyr (50/70 g) in a small bowl, mashed with the avocado (20/28 g), lime and salt.",
+            "Chickpeas by the handful, dipped."
+          ],
+          "why": "Store them in a jar with the lid OFF, not a sealed box. Sealed, the residual steam softens them overnight and you lose the rattle, which is the entire point of them.",
+          "macros": {
+            "her": {
+              "kcal": 278,
+              "protein": 14,
+              "netCarb": 19,
+              "fat": 13,
+              "fibre": 9.7
+            },
+            "him": {
+              "kcal": 356,
+              "protein": 18,
+              "netCarb": 23,
+              "fat": 17,
+              "fibre": 12.1
+            }
+          }
+        },
+        {
+          "week": "A",
+          "dayNo": 4,
+          "dayName": "Thursday",
+          "slot": "Breakfast",
+          "name": "Steak & egg breakfast sandwich",
+          "tag": "fresh",
+          "timeChip": "10 min",
+          "originChip": "New York",
+          "ingredients": [
+            {
+              "name": "Spinach, ugu or callaloo",
+              "weightState": "Raw",
+              "herG": 60,
+              "himG": 80,
+              "unitHint": null
+            },
+            {
+              "name": "Tomatoes, ripe",
+              "weightState": "Raw",
+              "herG": 60,
+              "himG": 80,
+              "unitHint": null
+            },
+            {
+              "name": "Eggs, medium, shell off",
+              "weightState": "Shelled",
+              "herG": 50,
+              "himG": 75,
+              "unitHint": "1½ eggs"
+            },
+            {
+              "name": "Sirloin steak, lean, trimmed",
+              "weightState": "Raw",
+              "herG": 55,
+              "himG": 58,
+              "unitHint": null
+            },
+            {
+              "name": "Seeded low-carb loaf",
+              "weightState": "As it comes",
+              "herG": 45,
+              "himG": 50,
+              "unitHint": "1 slice"
+            },
+            {
+              "name": "Red onion, peeled",
+              "weightState": "Prepared",
+              "herG": 20,
+              "himG": 25,
+              "unitHint": null
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 14,
+              "himG": 17,
+              "unitHint": "4 tsp"
+            }
+          ],
+          "steps": [
+            "Steak (55/58 g) out of the fridge 10 minutes ahead. Dry it hard with kitchen paper. Salt heavily.",
+            "Pan on high until it faintly smokes. 3 g oil. Steak in — 90 seconds, flip, 90 seconds. Onto a board to rest. This is not optional.",
+            "Bread (45/50 g) toasting while it rests.",
+            "Same pan, heat down to medium, 3 g oil. Onion (20/25 g) 1 minute, spinach (60/80 g) in to wilt, out.",
+            "Remaining oil. Eggs (50/75 g — 1 / 1½) cracked in, lid on, 2 minutes for a set white and a soft yolk.",
+            "Spinach onto the toast, sliced tomato (60/80 g) salted, steak sliced AGAINST the grain, egg on top. The pan juices spooned over — that is what the avocado was covering for."
+          ],
+          "why": "Dry meat, smoking pan. Steak this thin has about three minutes before it goes grey all the way through — the crust has to form fast, and it cannot form on a wet surface.",
+          "macros": {
+            "her": {
+              "kcal": 425,
+              "protein": 29,
+              "netCarb": 9,
+              "fat": 28,
+              "fibre": 8.9
+            },
+            "him": {
+              "kcal": 515,
+              "protein": 35,
+              "netCarb": 11,
+              "fat": 35,
+              "fibre": 10.4
+            }
+          }
+        },
+        {
+          "week": "A",
+          "dayNo": 4,
+          "dayName": "Thursday",
+          "slot": "Lunch",
+          "name": "Turkey bolognese with edamame spaghetti",
+          "tag": "batch",
+          "timeChip": "8 min",
+          "originChip": "Bologna, reconsidered",
+          "ingredients": [
+            {
+              "name": "Passata, plain",
+              "weightState": "As it comes",
+              "herG": 190,
+              "himG": 210,
+              "unitHint": null
+            },
+            {
+              "name": "Courgette",
+              "weightState": "Raw",
+              "herG": 150,
+              "himG": 180,
+              "unitHint": null
+            },
+            {
+              "name": "Turkey breast mince, 5% fat",
+              "weightState": "Raw",
+              "herG": 50,
+              "himG": 70,
+              "unitHint": null
+            },
+            {
+              "name": "Carrots, peeled",
+              "weightState": "Prepared",
+              "herG": 65,
+              "himG": 70,
+              "unitHint": null
+            },
+            {
+              "name": "Red onion, peeled",
+              "weightState": "Prepared",
+              "herG": 40,
+              "himG": 50,
+              "unitHint": null
+            },
+            {
+              "name": "Edamame spaghetti",
+              "weightState": "Dry",
+              "herG": 34,
+              "himG": 38,
+              "unitHint": null
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 13,
+              "himG": 21,
+              "unitHint": "4½ tsp"
+            },
+            {
+              "name": "Parmesan, finely grated",
+              "weightState": "As it comes",
+              "herG": 10,
+              "himG": 14,
+              "unitHint": "2 tbsp"
+            }
+          ],
+          "steps": [
+            "Big pan of water on, salted hard.",
+            "Sunday's bolognese into a pan on medium with a splash of water, 5 minutes.",
+            "Edamame spaghetti (34/38 g) into the boiling water. 6–7 minutes, no more — it goes from firm to mush quickly and there is no rescuing it.",
+            "Drain, keeping a mug of the cooking water. Pasta INTO the sauce, not sauce onto pasta.",
+            "Toss hard for 30 seconds with a splash of that water and the oil (13/21 g), until it turns glossy and clings.",
+            "Parmesan (10/14 g) off the heat."
+          ],
+          "why": "Edamame pasta has no gluten and almost no starch, so it will not emulsify a sauce the way wheat does — the oil and the splash of cooking water are doing that job by force. Skip them and the sauce just sits in a puddle underneath.",
+          "macros": {
+            "her": {
+              "kcal": 467,
+              "protein": 35,
+              "netCarb": 26,
+              "fat": 22,
+              "fibre": 14.4
+            },
+            "him": {
+              "kcal": 612,
+              "protein": 43,
+              "netCarb": 30,
+              "fat": 32,
+              "fibre": 16.2
+            }
+          }
+        },
+        {
+          "week": "A",
+          "dayNo": 4,
+          "dayName": "Thursday",
+          "slot": "Dinner",
+          "name": "Smash burger with slaw",
+          "tag": "fresh",
+          "timeChip": "14 min",
+          "originChip": "New York",
+          "ingredients": [
+            {
+              "name": "Red cabbage, shredded",
+              "weightState": "Prepared",
+              "herG": 90,
+              "himG": 95,
+              "unitHint": null
+            },
+            {
+              "name": "Beef mince, 5% fat",
+              "weightState": "Raw",
+              "herG": 72,
+              "himG": 85,
+              "unitHint": null
+            },
+            {
+              "name": "Tomatoes, ripe",
+              "weightState": "Raw",
+              "herG": 60,
+              "himG": 80,
+              "unitHint": null
+            },
+            {
+              "name": "Carrots, peeled",
+              "weightState": "Prepared",
+              "herG": 55,
+              "himG": 65,
+              "unitHint": null
+            },
+            {
+              "name": "Seeded low-carb loaf",
+              "weightState": "As it comes",
+              "herG": 45,
+              "himG": 50,
+              "unitHint": "1 slice"
+            },
+            {
+              "name": "Little gem or romaine",
+              "weightState": "Raw",
+              "herG": 40,
+              "himG": 50,
+              "unitHint": null
+            },
+            {
+              "name": "Greek yoghurt, 0% fat",
+              "weightState": "As it comes",
+              "herG": 35,
+              "himG": 45,
+              "unitHint": null
+            },
+            {
+              "name": "Red onion, peeled",
+              "weightState": "Prepared",
+              "herG": 30,
+              "himG": 40,
+              "unitHint": null
+            },
+            {
+              "name": "Avocado",
+              "weightState": "Flesh only",
+              "herG": 30,
+              "himG": 40,
+              "unitHint": null
+            },
+            {
+              "name": "Cheddar, reduced fat (~14%)",
+              "weightState": "As it comes",
+              "herG": 16,
+              "himG": 25,
+              "unitHint": null
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 9,
+              "himG": 13,
+              "unitHint": "3 tsp"
+            }
+          ],
+          "steps": [
+            "Slaw first: red cabbage (90/95 g) and carrot (55/65 g) from Sunday, with yoghurt (35/45 g), lemon, mustard, salt and pepper. Leave it to sit.",
+            "Beef (72/85 g) into two loose balls. Do not season them. Do not compact them.",
+            "Heavy pan, dry, on high for a full 3 minutes. It has to be too hot.",
+            "Balls in, and immediately press flat and hard with a spatula for 10 seconds each. Salt the top. 90 seconds — no touching, no moving, no pressing again.",
+            "Scrape underneath with a firm edge to keep the crust attached, flip, cheddar on (16/25 g). 45 seconds.",
+            "Bread (45/50 g) toasted, avocado (30/40 g) mashed on the base. Patties, lettuce (40/50 g), tomato (60/80 g), raw onion (30/40 g)."
+          ],
+          "why": "The crust is the whole dish, and it only forms in the first ninety seconds against a dry, screaming pan. Oil in the pan, salt on the raw side, or one early poke and you have lost it.",
+          "macros": {
+            "her": {
+              "kcal": 492,
+              "protein": 36,
+              "netCarb": 20,
+              "fat": 26,
+              "fibre": 14
+            },
+            "him": {
+              "kcal": 618,
+              "protein": 44,
+              "netCarb": 23,
+              "fat": 35,
+              "fibre": 16.4
+            }
+          }
+        },
+        {
+          "week": "A",
+          "dayNo": 4,
+          "dayName": "Thursday",
+          "slot": "Snack",
+          "name": "Grated apple, cinnamon & coconut yoghurt",
+          "tag": "fresh",
+          "timeChip": "3 min",
+          "originChip": "Caribbean",
+          "ingredients": [
+            {
+              "name": "Apples",
+              "weightState": "Whole, skin on",
+              "herG": 230,
+              "himG": 300,
+              "unitHint": "2 apples"
+            },
+            {
+              "name": "Greek yoghurt, 0% fat",
+              "weightState": "As it comes",
+              "herG": 120,
+              "himG": 170,
+              "unitHint": null
+            },
+            {
+              "name": "Pumpkin seeds",
+              "weightState": "Dry",
+              "herG": 8,
+              "himG": 11,
+              "unitHint": "1 tbsp"
+            },
+            {
+              "name": "Coconut, desiccated unsweetened",
+              "weightState": "Dry",
+              "herG": 5,
+              "himG": 6,
+              "unitHint": "1½ tsp"
+            }
+          ],
+          "steps": [
+            "Coconut (5/6 g) into a dry pan, medium, 90 seconds, shaken constantly, until it just turns gold. Out of the pan immediately.",
+            "Apple (230/300 g — about 1½ / 2 medium) grated coarsely, SKIN ON. Lemon over it straight away.",
+            "Fold into the yoghurt (120/170 g) with a full teaspoon of cinnamon and a pinch of salt.",
+            "Toasted coconut and pumpkin seeds (8/11 g) over the top."
+          ],
+          "why": "Skin on. That is most of the fibre in the apple and all of the texture — peeled and grated, this collapses into apple sauce with yoghurt in it.",
+          "macros": {
+            "her": {
+              "kcal": 266,
+              "protein": 16,
+              "netCarb": 32,
+              "fat": 8,
+              "fibre": 6.8
+            },
+            "him": {
+              "kcal": 354,
+              "protein": 22,
+              "netCarb": 43,
+              "fat": 10,
+              "fibre": 8.8
+            }
+          }
+        },
+        {
+          "week": "A",
+          "dayNo": 5,
+          "dayName": "Friday",
+          "slot": "Breakfast",
+          "name": "Callaloo & egg skillet",
+          "tag": "fresh",
+          "timeChip": "14 min",
+          "originChip": "Jamaica",
+          "ingredients": [
+            {
+              "name": "Spinach, ugu or callaloo",
+              "weightState": "Raw",
+              "herG": 130,
+              "himG": 160,
+              "unitHint": null
+            },
+            {
+              "name": "Eggs, medium, shell off",
+              "weightState": "Shelled",
+              "herG": 125,
+              "himG": 150,
+              "unitHint": "3 eggs"
+            },
+            {
+              "name": "Plantain, ripe",
+              "weightState": "Peeled",
+              "herG": 95,
+              "himG": 140,
+              "unitHint": "1 plantain"
+            },
+            {
+              "name": "Tomatoes, ripe",
+              "weightState": "Raw",
+              "herG": 80,
+              "himG": 100,
+              "unitHint": null
+            },
+            {
+              "name": "Black beans, tinned",
+              "weightState": "Drained",
+              "herG": 45,
+              "himG": 55,
+              "unitHint": null
+            },
+            {
+              "name": "Red onion, peeled",
+              "weightState": "Prepared",
+              "herG": 30,
+              "himG": 40,
+              "unitHint": null
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 5,
+              "himG": 6,
+              "unitHint": "1½ tsp"
+            }
+          ],
+          "steps": [
+            "Plantain (95/140 g) sliced thick on the diagonal, dry-griddled 3 minutes a side until black at the edges. Set aside.",
+            "Oil (5/6 g) into a lidded pan, medium. Onion (30/40 g), 3 minutes. Tomato (80/100 g), thyme and scotch bonnet, 4 minutes until it thickens.",
+            "Black beans (45/55 g) in. Spinach (130/160 g) in handfuls, each wilting before the next.",
+            "Make 2–3 wells with the back of a spoon. Crack the eggs (125/150 g — 2½ / 3) into them. Salt.",
+            "Lid on, heat low, 5 minutes. Whites set, yolks still moving.",
+            "Plantain alongside. Hot sauce."
+          ],
+          "why": "Wells, not on top. Sitting the eggs down into the greens cooks them in trapped steam and they set evenly — dropped on the surface they slide, spread thin and overcook at the edge long before the middle goes.",
+          "macros": {
+            "her": {
+              "kcal": 455,
+              "protein": 26,
+              "netCarb": 42,
+              "fat": 19,
+              "fibre": 10.4
+            },
+            "him": {
+              "kcal": 582,
+              "protein": 32,
+              "netCarb": 59,
+              "fat": 23,
+              "fibre": 13.4
+            }
+          }
+        },
+        {
+          "week": "A",
+          "dayNo": 5,
+          "dayName": "Friday",
+          "slot": "Lunch",
+          "name": "Chicken shawarma wrap",
+          "tag": "batch",
+          "timeChip": "8 min",
+          "originChip": "Levant, by way of everywhere",
+          "ingredients": [
+            {
+              "name": "Chicken breast, skinless",
+              "weightState": "Raw",
+              "herG": 95,
+              "himG": 110,
+              "unitHint": null
+            },
+            {
+              "name": "Red cabbage, shredded",
+              "weightState": "Prepared",
+              "herG": 70,
+              "himG": 80,
+              "unitHint": null
+            },
+            {
+              "name": "Greek yoghurt, 0% fat",
+              "weightState": "As it comes",
+              "herG": 60,
+              "himG": 80,
+              "unitHint": null
+            },
+            {
+              "name": "Cucumber",
+              "weightState": "Raw",
+              "herG": 60,
+              "himG": 70,
+              "unitHint": null
+            },
+            {
+              "name": "Carrots, peeled",
+              "weightState": "Prepared",
+              "herG": 50,
+              "himG": 60,
+              "unitHint": null
+            },
+            {
+              "name": "Tortilla, high-protein low-carb",
+              "weightState": "As it comes",
+              "herG": 45,
+              "himG": 55,
+              "unitHint": "1 tortilla"
+            },
+            {
+              "name": "Little gem or romaine",
+              "weightState": "Raw",
+              "herG": 40,
+              "himG": 50,
+              "unitHint": null
+            },
+            {
+              "name": "Avocado",
+              "weightState": "Flesh only",
+              "herG": 25,
+              "himG": 35,
+              "unitHint": null
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 11,
+              "himG": 15,
+              "unitHint": "3½ tsp"
+            }
+          ],
+          "steps": [
+            "Slaw: cabbage (70/80 g), carrot (50/60 g) and cucumber (60/70 g) — cucumber deseeded and cut into BATONS, not rounds — with lemon, salt and the oil (11/15 g). Leave 5 minutes.",
+            "Chicken (95/110 g) sliced thin. DRY pan, high. 2 minutes, then 1½ tsp shawarma spice and 30 seconds more. No oil — you want char, not fry.",
+            "Garlic yoghurt: yoghurt (60/80 g), grated garlic, lemon, salt.",
+            "Tortilla (45/55 g), 20 seconds a side in the same dry pan until pliable.",
+            "Build a LINE down the middle, not across the whole surface: yoghurt, chicken, slaw, lettuce (40/50 g), avocado (25/35 g). Fold the bottom up, then roll tight."
+          ],
+          "why": "Batons, and dress the slaw early. Cucumber rounds go limp and slide out of the far end; batons hold their shape. And five minutes of sitting draws the water out onto the board now rather than into the wrap later.",
+          "macros": {
+            "her": {
+              "kcal": 438,
+              "protein": 38,
+              "netCarb": 22,
+              "fat": 20,
+              "fibre": 15.6
+            },
+            "him": {
+              "kcal": 551,
+              "protein": 46,
+              "netCarb": 26,
+              "fat": 26,
+              "fibre": 19.2
+            }
+          }
+        },
+        {
+          "week": "A",
+          "dayNo": 5,
+          "dayName": "Friday",
+          "slot": "Dinner",
+          "name": "Jerk salmon, rice & red beans",
+          "tag": "fresh",
+          "timeChip": "18 min",
+          "originChip": "Jamaica",
+          "ingredients": [
+            {
+              "name": "Cauliflower, riced",
+              "weightState": "Prepared",
+              "herG": 120,
+              "himG": 150,
+              "unitHint": null
+            },
+            {
+              "name": "Salmon fillet, skinless",
+              "weightState": "Raw",
+              "herG": 80,
+              "himG": 105,
+              "unitHint": "1 fillet"
+            },
+            {
+              "name": "Red cabbage, shredded",
+              "weightState": "Prepared",
+              "herG": 80,
+              "himG": 100,
+              "unitHint": null
+            },
+            {
+              "name": "Red kidney beans, tinned",
+              "weightState": "Drained",
+              "herG": 70,
+              "himG": 90,
+              "unitHint": null
+            },
+            {
+              "name": "Pineapple",
+              "weightState": "Flesh only",
+              "herG": 70,
+              "himG": 90,
+              "unitHint": null
+            },
+            {
+              "name": "Brown rice, long grain",
+              "weightState": "Dry",
+              "herG": 45,
+              "himG": 70,
+              "unitHint": null
+            },
+            {
+              "name": "Spring onions, trimmed",
+              "weightState": "Prepared",
+              "herG": 20,
+              "himG": 25,
+              "unitHint": null
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 4,
+              "himG": 5,
+              "unitHint": "1 tsp"
+            }
+          ],
+          "steps": [
+            "Rice (45/70 g dry) on with the kidney beans (70/90 g), a sprig of thyme, the spring onion (20/25 g) and a spoonful of coconut in the water. 20 minutes, covered.",
+            "Salmon (80/105 g) rubbed with jerk paste and left while the rice cooks.",
+            "Pineapple (70/90 g) in thick slices onto a dry griddle, high, 2 minutes a side until it caramelises and marks. Chop.",
+            "Slaw: red cabbage (80/100 g), the charred pineapple, lime, salt and the oil (4/5 g).",
+            "Grill the salmon 10–12 minutes at medium-high, not turned. It's done when it flakes at a light press and is still coral in the middle.",
+            "Cauliflower (120/150 g) stirred through the rice for the last 2 minutes, lid on, to steam."
+          ],
+          "why": "Char the pineapple. Raw, it is just sweet against an already sweet-hot fish; caramelised, it picks up a bitter edge and that is the thing stopping the whole plate from cloying.",
+          "macros": {
+            "her": {
+              "kcal": 550,
+              "protein": 30,
+              "netCarb": 61,
+              "fat": 17,
+              "fibre": 11.6
+            },
+            "him": {
+              "kcal": 752,
+              "protein": 40,
+              "netCarb": 87,
+              "fat": 23,
+              "fibre": 15.2
+            }
+          }
+        },
+        {
+          "week": "A",
+          "dayNo": 5,
+          "dayName": "Friday",
+          "slot": "Snack",
+          "name": "Elote-style corn cup",
+          "tag": "fresh",
+          "timeChip": "4 min",
+          "originChip": "Street corner",
+          "ingredients": [
+            {
+              "name": "Sweetcorn",
+              "weightState": "Frozen or tinned",
+              "herG": 100,
+              "himG": 120,
+              "unitHint": null
+            },
+            {
+              "name": "Cottage cheese, natural",
+              "weightState": "As it comes",
+              "herG": 80,
+              "himG": 110,
+              "unitHint": null
+            },
+            {
+              "name": "Greek yoghurt, 0% fat",
+              "weightState": "As it comes",
+              "herG": 30,
+              "himG": 40,
+              "unitHint": null
+            },
+            {
+              "name": "Avocado",
+              "weightState": "Flesh only",
+              "herG": 20,
+              "himG": 25,
+              "unitHint": null
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 6,
+              "himG": 8,
+              "unitHint": "2 tsp"
+            }
+          ],
+          "steps": [
+            "Sweetcorn (100/120 g) into a dry pan on high, spread thin. Leave it alone for 2 minutes until it blisters and pops. Shake, 1 minute more.",
+            "Cottage cheese (80/110 g) loosened with the yoghurt (30/40 g) and the oil (6/8 g), mashed together with the avocado (20/25 g).",
+            "Hot corn stirred through.",
+            "Chilli powder, lime hard, coriander, flaky salt."
+          ],
+          "why": "It has to blister. Warm corn is just corn; charred corn is elote — the blackened kernels are where the entire flavour of the thing lives.",
+          "macros": {
+            "her": {
+              "kcal": 251,
+              "protein": 17,
+              "netCarb": 21,
+              "fat": 12,
+              "fibre": 4
+            },
+            "him": {
+              "kcal": 324,
+              "protein": 22,
+              "netCarb": 26,
+              "fat": 15,
+              "fibre": 4.9
+            }
+          }
+        }
+      ]
+    },
+    "B": {
+      "sunday": {
+        "theme": "one session, eighty minutes — lighter than Week A",
+        "tag": "Run order",
+        "ops": [
+          {
+            "clock": "0:00",
+            "title": "Oven on, two trays",
+            "body": "200 °C fan. Two trays lined. Week B is a lighter prep than Week A — one roast, one stew, one batch of koftas, and rice.",
+            "kit": "Oven · 2 trays"
+          },
+          {
+            "clock": "0:08",
+            "title": "Tray A — the week's chicken",
+            "body": "760 g chicken breast, salt, garlic powder, onion powder. Nothing else, again. 28 min for a tray this size. It carries Monday's fried rice, Tuesday's salad and Friday's club sandwich.",
+            "kit": "Oven"
+          },
+          {
+            "clock": "0:10",
+            "title": "Pan 1 — turkey and okra stew",
+            "body": "90 g red onion and 160 g red pepper into oil, 5 min. 280 g turkey mince broken up and browned, 5 min. 260 g passata, 200 ml stock, thyme, a pinch of stock powder, scotch bonnet. 12 min. Then 270 g okra in for the LAST 5 MINUTES ONLY.",
+            "kit": "Hob 1"
+          },
+          {
+            "clock": "0:14",
+            "title": "Tray B — the koftas",
+            "body": "255 g 5% beef mince with 40 g grated onion squeezed dry, 1 tsp cumin, 1 tsp ground coriander, dried mint, salt, pepper. Worked hard for a minute, then shaped into 6 fingers. 18 min.",
+            "kit": "Oven"
+          },
+          {
+            "clock": "0:24",
+            "title": "Eggs on",
+            "body": "6 medium eggs, 8 minutes in boiling water, straight into cold. Peel now. Five are Tuesday's snack across the two of you; the spare gets eaten.",
+            "kit": "Hob 2"
+          },
+          {
+            "clock": "0:32",
+            "title": "Koftas out",
+            "body": "Cooled on a rack, then straight into the FREEZER in one bag. Sunday to Thursday is too long in the fridge for cooked mince — move them down to the fridge on Wednesday night.",
+            "kit": "Oven"
+          },
+          {
+            "clock": "0:34",
+            "title": "Pan 3 — the rice",
+            "body": "380 g brown rice, dry, plain. 25 min. This covers Monday's fried rice, Tuesday's dinner and Wednesday's lunch — and stops there. Friday's rice is cooked fresh inside the dish.",
+            "kit": "Hob 3"
+          },
+          {
+            "clock": "0:38",
+            "title": "Chicken out",
+            "body": "Rested 5 minutes. Left whole rather than sliced — it dries out far more slowly that way, and Friday is a long way off.",
+            "kit": "Oven off"
+          },
+          {
+            "clock": "0:45",
+            "title": "Rice the cauliflower",
+            "body": "One large head, about 810 g riced. Pulse it, don't run the processor — couscous, not paste. Stored RAW; it cooks in three minutes at the plate.",
+            "kit": "Processor"
+          },
+          {
+            "clock": "0:55",
+            "title": "Two jars",
+            "body": "SUYA: 3 parts ground roasted peanut to 1 part chilli, plus ginger, garlic powder and stock powder. It appears on Tuesday, twice on Wednesday and again on Friday. CHILLI SALT: 2 parts flaky salt to 1 part chilli flakes, briefly ground together.",
+            "kit": "2 jars"
+          },
+          {
+            "clock": "1:02",
+            "title": "Rice off — cool it fast",
+            "body": "Spread thin on a cold tray, into the fridge within the hour. Same rule as Week A and the same reason: slowly-cooled rice is the classic way to make yourself ill.",
+            "kit": "Tray"
+          },
+          {
+            "clock": "1:15",
+            "title": "Portion, label, and check the freezer",
+            "body": "Boxes marked with the day. Then look ahead: Tuesday needs 370 g basa or tilapia and Friday needs 255 g salmon. If they're frozen, they need moving down in good time.",
+            "kit": "Boxes"
+          }
+        ],
+        "yields": [
+          {
+            "component": "Roast chicken",
+            "qty": "760 g raw",
+            "consumers": "Mon lunch · Tue lunch · Fri lunch",
+            "storage": "Fridge, whole, 5 days"
+          },
+          {
+            "component": "Turkey & okra stew",
+            "qty": "~1.05 kg",
+            "consumers": "Wed lunch",
+            "storage": "Fridge, 4 days"
+          },
+          {
+            "component": "Beef koftas",
+            "qty": "255 g raw · 6 fingers",
+            "consumers": "Thu lunch",
+            "storage": "FREEZER — down Wed night"
+          },
+          {
+            "component": "Boiled eggs",
+            "qty": "6",
+            "consumers": "Tue snack",
+            "storage": "Fridge, peeled, 4 days"
+          },
+          {
+            "component": "Brown rice",
+            "qty": "380 g dry",
+            "consumers": "Mon + Wed lunch, Tue dinner",
+            "storage": "Fridge ≤3 days, cooled fast"
+          },
+          {
+            "component": "Riced cauliflower",
+            "qty": "~810 g raw",
+            "consumers": "Mon lunch, Tue + Fri dinner",
+            "storage": "Fridge raw, 4 days"
+          },
+          {
+            "component": "Suya jar",
+            "qty": "makes plenty",
+            "consumers": "Tue, Wed ×2, Fri",
+            "storage": "Cupboard, months"
+          },
+          {
+            "component": "Chilli salt jar",
+            "qty": "makes plenty",
+            "consumers": "Tue snack, and everywhere else",
+            "storage": "Cupboard, months"
+          }
+        ],
+        "midweek": [
+          {
+            "heading": "Monday night",
+            "body": "Make the overnight oats — 4 minutes. Oats, skyr, chia, cinnamon, water and half the grated apple into a jar. It is the only dish this week that has to be started the day before."
+          },
+          {
+            "heading": "Kept raw on purpose",
+            "body": "Wednesday's suya skewers use raw chicken, not Sunday's roast — 305 g of it, cubed on the night. Roast chicken on a skewer is a sad thing."
+          },
+          {
+            "heading": "Tuesday",
+            "body": "Basa or tilapia bought fresh, or moved down from the freezer on Monday night. Escovitch wants fish that has never been near a reheat."
+          },
+          {
+            "heading": "Wednesday night",
+            "body": "Koftas from the freezer to the fridge. Friday's salmon down too if it's frozen — 255 g, for the teriyaki."
+          }
+        ]
+      },
+      "cards": [
+        {
+          "week": "B",
+          "dayNo": 1,
+          "dayName": "Monday",
+          "slot": "Breakfast",
+          "name": "Breakfast burrito",
+          "tag": "fresh",
+          "timeChip": "9 min",
+          "originChip": "Tex-Mex",
+          "ingredients": [
+            {
+              "name": "Eggs, medium, shell off",
+              "weightState": "Shelled",
+              "herG": 100,
+              "himG": 150,
+              "unitHint": "3 eggs"
+            },
+            {
+              "name": "Black beans, tinned",
+              "weightState": "Drained",
+              "herG": 60,
+              "himG": 80,
+              "unitHint": null
+            },
+            {
+              "name": "Spinach, ugu or callaloo",
+              "weightState": "Raw",
+              "herG": 60,
+              "himG": 80,
+              "unitHint": null
+            },
+            {
+              "name": "Tortilla, high-protein low-carb",
+              "weightState": "As it comes",
+              "herG": 45,
+              "himG": 68,
+              "unitHint": "1½ tortillas"
+            },
+            {
+              "name": "Tomato salsa, no added sugar",
+              "weightState": "As it comes",
+              "herG": 40,
+              "himG": 50,
+              "unitHint": null
+            },
+            {
+              "name": "Avocado",
+              "weightState": "Flesh only",
+              "herG": 30,
+              "himG": 45,
+              "unitHint": null
+            },
+            {
+              "name": "Cheddar, reduced fat (~14%)",
+              "weightState": "As it comes",
+              "herG": 12,
+              "himG": 18,
+              "unitHint": null
+            }
+          ],
+          "steps": [
+            "Black beans (60/80 g) into a small pan with a splash of water, a pinch of cumin and salt. Low heat, 3 minutes, mashing about a third of them against the side.",
+            "Non-stick pan, dry, medium. Spinach (60/80 g) for 60 seconds to wilt. Out, and squeezed.",
+            "Eggs (100/150 g — 2 / 3) beaten with salt. Into the pan on medium-LOW, stirred slowly and constantly. Off the heat while they still look visibly wet.",
+            "Tortilla (45/68 g) warmed 20 seconds a side. His portion is a tortilla and a half — warm both.",
+            "A line down the middle: beans, egg, cheddar (12/18 g), salsa (40/50 g), spinach, avocado (30/45 g).",
+            "Fold the sides in, roll tight, then 60 seconds seam-side down in the dry pan to seal it shut."
+          ],
+          "why": "Take the eggs off wet. They keep cooking inside a rolled burrito for a good minute afterwards, and eggs that looked perfect in the pan will be rubber by the time you unwrap it.",
+          "macros": {
+            "her": {
+              "kcal": 434,
+              "protein": 31,
+              "netCarb": 22,
+              "fat": 20,
+              "fibre": 19.1
+            },
+            "him": {
+              "kcal": 634,
+              "protein": 45,
+              "netCarb": 31,
+              "fat": 30,
+              "fibre": 27.4
+            }
+          }
+        },
+        {
+          "week": "B",
+          "dayNo": 1,
+          "dayName": "Monday",
+          "slot": "Lunch",
+          "name": "Jollof fried rice with chicken",
+          "tag": "batch",
+          "timeChip": "7 min",
+          "originChip": "Nigeria",
+          "ingredients": [
+            {
+              "name": "Cauliflower, riced",
+              "weightState": "Prepared",
+              "herG": 130,
+              "himG": 160,
+              "unitHint": null
+            },
+            {
+              "name": "Chicken breast, skinless",
+              "weightState": "Raw",
+              "herG": 105,
+              "himG": 140,
+              "unitHint": "1 breast"
+            },
+            {
+              "name": "Passata, plain",
+              "weightState": "As it comes",
+              "herG": 80,
+              "himG": 100,
+              "unitHint": null
+            },
+            {
+              "name": "Red pepper, deseeded",
+              "weightState": "Prepared",
+              "herG": 70,
+              "himG": 90,
+              "unitHint": null
+            },
+            {
+              "name": "Brown rice, long grain",
+              "weightState": "Dry",
+              "herG": 55,
+              "himG": 72,
+              "unitHint": null
+            },
+            {
+              "name": "Red onion, peeled",
+              "weightState": "Prepared",
+              "herG": 30,
+              "himG": 40,
+              "unitHint": null
+            },
+            {
+              "name": "Eggs, medium, shell off",
+              "weightState": "Shelled",
+              "herG": 25,
+              "himG": 25,
+              "unitHint": null
+            },
+            {
+              "name": "Spring onions, trimmed",
+              "weightState": "Prepared",
+              "herG": 15,
+              "himG": 20,
+              "unitHint": null
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 7,
+              "himG": 9,
+              "unitHint": "2 tsp"
+            }
+          ],
+          "steps": [
+            "Out of the fridge: Sunday's chicken and Sunday's rice.",
+            "The widest pan you own — or a wok — on high with the oil (7/9 g). Onion (30/40 g) and pepper (70/90 g) diced, 3 minutes. You want colour on them, not softness.",
+            "Passata (80/100 g) with 1 tsp curry powder, ½ tsp thyme and a pinch of stock powder. Cook it down hard for 3 minutes, until it stops being loose.",
+            "Rice (55/72 g dry, cooked) and raw cauliflower (130/160 g) in. Press it flat and LEAVE it 60 seconds to catch before stirring. Then twice more.",
+            "Push everything to one side. Beaten egg (25 g) into the gap, scrambled fast, then folded through.",
+            "Chicken (105/140 g) in for the last minute. Spring onion (15/20 g) off the heat."
+          ],
+          "why": "Leave the rice alone. Fried rice is made by contact with hot metal, not by stirring — every time you move it you drop the pan temperature and end up steaming it into porridge.",
+          "macros": {
+            "her": {
+              "kcal": 503,
+              "protein": 37,
+              "netCarb": 53,
+              "fat": 13,
+              "fibre": 8
+            },
+            "him": {
+              "kcal": 645,
+              "protein": 48,
+              "netCarb": 69,
+              "fat": 16,
+              "fibre": 10.1
+            }
+          }
+        },
+        {
+          "week": "B",
+          "dayNo": 1,
+          "dayName": "Monday",
+          "slot": "Dinner",
+          "name": "Chicken parmigiana with courgette",
+          "tag": "fresh",
+          "timeChip": "28 min",
+          "originChip": "Italian-American",
+          "ingredients": [
+            {
+              "name": "Courgette",
+              "weightState": "Raw",
+              "herG": 180,
+              "himG": 200,
+              "unitHint": null
+            },
+            {
+              "name": "Chicken breast, skinless",
+              "weightState": "Raw",
+              "herG": 90,
+              "himG": 120,
+              "unitHint": null
+            },
+            {
+              "name": "Passata, plain",
+              "weightState": "As it comes",
+              "herG": 100,
+              "himG": 120,
+              "unitHint": null
+            },
+            {
+              "name": "Mozzarella, reduced fat, block",
+              "weightState": "As it comes",
+              "herG": 35,
+              "himG": 45,
+              "unitHint": null
+            },
+            {
+              "name": "Red onion, peeled",
+              "weightState": "Prepared",
+              "herG": 30,
+              "himG": 40,
+              "unitHint": null
+            },
+            {
+              "name": "Panko breadcrumbs",
+              "weightState": "Dry",
+              "herG": 18,
+              "himG": 22,
+              "unitHint": null
+            },
+            {
+              "name": "Parmesan, finely grated",
+              "weightState": "As it comes",
+              "herG": 12,
+              "himG": 15,
+              "unitHint": "2 tbsp"
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 9,
+              "himG": 11,
+              "unitHint": "2½ tsp"
+            }
+          ],
+          "steps": [
+            "Oven to 200 °C fan.",
+            "Sauce: onion (30/40 g) diced into 3 g of the oil, 4 minutes. Passata (100/120 g), garlic, oregano and a pinch of sugar. Simmer 10 minutes while you do everything else.",
+            "Chicken (90/120 g) butterflied, opened out flat, then bashed to 1 cm. Salt both sides.",
+            "Panko (18/22 g) mixed with the parmesan (12/15 g) and the rest of the oil, rubbed through with your fingers until it looks like damp sand. No egg wash — press it onto the damp chicken dry and firm.",
+            "Courgette (180/200 g) in 1 cm coins, tossed with salt, spread on the tray around the chicken.",
+            "18 minutes at 200 °C. Then mozzarella (35/45 g) torn over the chicken only, 5 minutes more until it blisters.",
+            "Sauce spooned around the base, never over the crumb."
+          ],
+          "why": "Parmesan in the crumb instead of egg beneath it. An egg wash makes a thick soft layer that steams under the cheese; a dry parmesan-and-oil crumb pressed onto damp chicken sticks well enough and stays crisp.",
+          "macros": {
+            "her": {
+              "kcal": 453,
+              "protein": 40,
+              "netCarb": 24,
+              "fat": 21,
+              "fibre": 4.4
+            },
+            "him": {
+              "kcal": 569,
+              "protein": 52,
+              "netCarb": 29,
+              "fat": 26,
+              "fibre": 5.2
+            }
+          }
+        },
+        {
+          "week": "B",
+          "dayNo": 1,
+          "dayName": "Monday",
+          "slot": "Snack",
+          "name": "Cottage cheese, pineapple & chilli",
+          "tag": "fresh",
+          "timeChip": "3 min",
+          "originChip": "Street corner",
+          "ingredients": [
+            {
+              "name": "Pineapple",
+              "weightState": "Flesh only",
+              "herG": 200,
+              "himG": 260,
+              "unitHint": null
+            },
+            {
+              "name": "Cottage cheese, natural",
+              "weightState": "As it comes",
+              "herG": 100,
+              "himG": 135,
+              "unitHint": null
+            },
+            {
+              "name": "Pumpkin seeds",
+              "weightState": "Dry",
+              "herG": 8,
+              "himG": 11,
+              "unitHint": "1 tbsp"
+            },
+            {
+              "name": "Chia seeds",
+              "weightState": "Dry",
+              "herG": 6,
+              "himG": 8,
+              "unitHint": "2 tsp"
+            }
+          ],
+          "steps": [
+            "Pineapple (200/260 g) in thick chunks. Optional but much better: 2 minutes a side on a dry griddle until it marks.",
+            "Cottage cheese (100/135 g) into a bowl, chunks over.",
+            "Chilli flakes, lime, flaky salt.",
+            "Pumpkin seeds (8/11 g) and chia (6/8 g) scattered over."
+          ],
+          "why": "Salt on pineapple. It does the same job it does on melon — pulls the sweetness back so the fruit reads as sharp, and the cottage cheese stops tasting bland beside it.",
+          "macros": {
+            "her": {
+              "kcal": 253,
+              "protein": 17,
+              "netCarb": 28,
+              "fat": 8,
+              "fibre": 5.3
+            },
+            "him": {
+              "kcal": 337,
+              "protein": 23,
+              "netCarb": 36,
+              "fat": 11,
+              "fibre": 7.1
+            }
+          }
+        },
+        {
+          "week": "B",
+          "dayNo": 2,
+          "dayName": "Tuesday",
+          "slot": "Breakfast",
+          "name": "Apple & cinnamon overnight oats",
+          "tag": "batch",
+          "timeChip": "4 min",
+          "originChip": "The night before",
+          "ingredients": [
+            {
+              "name": "Apples",
+              "weightState": "Whole, skin on",
+              "herG": 150,
+              "himG": 190,
+              "unitHint": "1 apple"
+            },
+            {
+              "name": "Skyr, plain natural",
+              "weightState": "As it comes",
+              "herG": 130,
+              "himG": 175,
+              "unitHint": null
+            },
+            {
+              "name": "Porridge oats",
+              "weightState": "Dry",
+              "herG": 50,
+              "himG": 70,
+              "unitHint": null
+            },
+            {
+              "name": "Peanut butter, 100% nuts",
+              "weightState": "As it comes",
+              "herG": 10,
+              "himG": 13,
+              "unitHint": "1 tbsp"
+            },
+            {
+              "name": "Chia seeds",
+              "weightState": "Dry",
+              "herG": 8,
+              "himG": 10,
+              "unitHint": "2½ tsp"
+            }
+          ],
+          "steps": [
+            "THE NIGHT BEFORE. Oats (50/70 g), skyr (130/175 g), chia (8/10 g), a full teaspoon of cinnamon, a pinch of salt and 60–80 ml water into a jar. Stir properly — chia clumps if you don't.",
+            "Grate HALF the apple (75/95 g) in now, skin on, with lemon over it first.",
+            "Lid on, into the fridge.",
+            "In the morning: the other half (75/95 g) grated or sliced on top. Peanut butter (10/13 g) warmed 10 seconds and spooned over."
+          ],
+          "why": "Half the apple in, half on. The half that soaks overnight disappears into the oats and sweetens the whole jar; the half added in the morning is the only part that still has any bite left in it.",
+          "macros": {
+            "her": {
+              "kcal": 447,
+              "protein": 25,
+              "netCarb": 53,
+              "fat": 11,
+              "fibre": 12
+            },
+            "him": {
+              "kcal": 599,
+              "protein": 34,
+              "netCarb": 72,
+              "fat": 15,
+              "fibre": 15.8
+            }
+          }
+        },
+        {
+          "week": "B",
+          "dayNo": 2,
+          "dayName": "Tuesday",
+          "slot": "Lunch",
+          "name": "Chilli-lime chicken & black bean salad",
+          "tag": "batch",
+          "timeChip": "6 min",
+          "originChip": "Tex-Mex",
+          "ingredients": [
+            {
+              "name": "Chicken breast, skinless",
+              "weightState": "Raw",
+              "herG": 110,
+              "himG": 145,
+              "unitHint": "1 breast"
+            },
+            {
+              "name": "Black beans, tinned",
+              "weightState": "Drained",
+              "herG": 110,
+              "himG": 145,
+              "unitHint": null
+            },
+            {
+              "name": "Tomatoes, ripe",
+              "weightState": "Raw",
+              "herG": 90,
+              "himG": 110,
+              "unitHint": null
+            },
+            {
+              "name": "Little gem or romaine",
+              "weightState": "Raw",
+              "herG": 70,
+              "himG": 80,
+              "unitHint": null
+            },
+            {
+              "name": "Tomato salsa, no added sugar",
+              "weightState": "As it comes",
+              "herG": 50,
+              "himG": 60,
+              "unitHint": null
+            },
+            {
+              "name": "Avocado",
+              "weightState": "Flesh only",
+              "herG": 40,
+              "himG": 55,
+              "unitHint": null
+            },
+            {
+              "name": "Sweetcorn",
+              "weightState": "Frozen or tinned",
+              "herG": 40,
+              "himG": 55,
+              "unitHint": null
+            },
+            {
+              "name": "Red onion, peeled",
+              "weightState": "Prepared",
+              "herG": 30,
+              "himG": 40,
+              "unitHint": null
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 6,
+              "himG": 8,
+              "unitHint": "2 tsp"
+            }
+          ],
+          "steps": [
+            "Dressing first: oil (6/8 g), the juice of a whole lime, 1 tsp chilli flakes, ½ tsp cumin, salt. Shake it.",
+            "Sweetcorn (40/55 g) into a dry pan on high, 2 minutes, until it blisters. Out.",
+            "Sunday's chicken (110/145 g) sliced and tossed in HALF the dressing in the warm pan — 30 seconds off the heat is enough to wake the spice up.",
+            "Black beans (110/145 g), tomato (90/110 g), red onion (30/40 g), the corn and lettuce (70/80 g) into a bowl with the rest of the dressing.",
+            "Chicken over. Salsa (50/60 g) and avocado (40/55 g) last."
+          ],
+          "why": "Dress the chicken separately, and warm. Cold roast chicken tossed straight into a cold salad tastes like leftovers; thirty seconds in a warm pan with lime and chilli on it tastes like it was cooked for this.",
+          "macros": {
+            "her": {
+              "kcal": 468,
+              "protein": 41,
+              "netCarb": 32,
+              "fat": 15,
+              "fibre": 17.1
+            },
+            "him": {
+              "kcal": 619,
+              "protein": 54,
+              "netCarb": 42,
+              "fat": 20,
+              "fibre": 22.4
+            }
+          }
+        },
+        {
+          "week": "B",
+          "dayNo": 2,
+          "dayName": "Tuesday",
+          "slot": "Dinner",
+          "name": "Basa escovitch with cauliflower rice",
+          "tag": "fresh",
+          "timeChip": "20 min",
+          "originChip": "Jamaica",
+          "ingredients": [
+            {
+              "name": "Catfish or tilapia fillet",
+              "weightState": "Raw",
+              "herG": 160,
+              "himG": 210,
+              "unitHint": "1 fillet"
+            },
+            {
+              "name": "Cauliflower, riced",
+              "weightState": "Prepared",
+              "herG": 130,
+              "himG": 160,
+              "unitHint": null
+            },
+            {
+              "name": "Red pepper, deseeded",
+              "weightState": "Prepared",
+              "herG": 90,
+              "himG": 110,
+              "unitHint": null
+            },
+            {
+              "name": "Carrots, peeled",
+              "weightState": "Prepared",
+              "herG": 70,
+              "himG": 85,
+              "unitHint": null
+            },
+            {
+              "name": "Brown rice, long grain",
+              "weightState": "Dry",
+              "herG": 48,
+              "himG": 60,
+              "unitHint": null
+            },
+            {
+              "name": "Red onion, peeled",
+              "weightState": "Prepared",
+              "herG": 45,
+              "himG": 55,
+              "unitHint": null
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 12,
+              "himG": 10,
+              "unitHint": "2 tsp"
+            }
+          ],
+          "steps": [
+            "Fish (160/210 g) dried hard, salted, dusted with a little all-purpose seasoning.",
+            "Pan on high with 8 g of the oil. Fish in, 3–4 minutes a side until the edges are properly crisp. Out onto a plate and left there — it's meant to sit.",
+            "Same pan, heat down. Onion (45/55 g), pepper (90/110 g) and carrot (70/85 g) all cut into thin strips. 2 minutes ONLY — they have to stay crunchy.",
+            "4 tbsp vinegar, 1 tsp sugar, a few allspice berries, a scotch bonnet pierced but left whole, a bay leaf. Bring it up hard for 60 seconds.",
+            "Pour the whole hot pickle over the fish. Leave 5 minutes at least, longer if you can stand it.",
+            "Sunday's rice (48/60 g dry) warmed with the cauliflower (130/160 g) stirred through, lid on, 3 minutes."
+          ],
+          "why": "Two minutes on the vegetables, not ten. Escovitch is a hot pickle poured over fried fish, and the whole dish is the contrast between crunchy vegetables in sharp vinegar and soft fish underneath. Cook them soft and it's just fish in sauce.",
+          "macros": {
+            "her": {
+              "kcal": 541,
+              "protein": 40,
+              "netCarb": 50,
+              "fat": 17,
+              "fibre": 8.8
+            },
+            "him": {
+              "kcal": 638,
+              "protein": 52,
+              "netCarb": 63,
+              "fat": 16,
+              "fibre": 10.9
+            }
+          }
+        },
+        {
+          "week": "B",
+          "dayNo": 2,
+          "dayName": "Tuesday",
+          "slot": "Snack",
+          "name": "Boiled eggs, avocado & chilli salt",
+          "tag": "batch",
+          "timeChip": "2 min",
+          "originChip": "Nigeria",
+          "ingredients": [
+            {
+              "name": "Eggs, medium, shell off",
+              "weightState": "Shelled",
+              "herG": 100,
+              "himG": 150,
+              "unitHint": "3 eggs"
+            },
+            {
+              "name": "Avocado",
+              "weightState": "Flesh only",
+              "herG": 55,
+              "himG": 70,
+              "unitHint": null
+            },
+            {
+              "name": "Cucumber",
+              "weightState": "Raw",
+              "herG": 60,
+              "himG": 70,
+              "unitHint": null
+            }
+          ],
+          "steps": [
+            "Sunday's boiled eggs (100/150 g — 2 / 3), peeled and halved.",
+            "Avocado (55/70 g) sliced, or roughly mashed straight onto the plate.",
+            "Chilli salt over both — 2 parts flaky salt to 1 part chilli flakes, briefly ground together.",
+            "Cucumber (60/70 g) in thick batons alongside."
+          ],
+          "why": "Make the chilli salt in a jar, once. This is three ingredients and no cooking, so it lives or dies on seasoning — and reaching for a jar is the difference between doing that properly and not bothering.",
+          "macros": {
+            "her": {
+              "kcal": 240,
+              "protein": 14,
+              "netCarb": 4,
+              "fat": 18,
+              "fibre": 4
+            },
+            "him": {
+              "kcal": 337,
+              "protein": 21,
+              "netCarb": 4,
+              "fat": 25,
+              "fibre": 5
+            }
+          }
+        },
+        {
+          "week": "B",
+          "dayNo": 3,
+          "dayName": "Wednesday",
+          "slot": "Breakfast",
+          "name": "Plantain & pepper hash with fried eggs",
+          "tag": "fresh",
+          "timeChip": "14 min",
+          "originChip": "Nigeria",
+          "ingredients": [
+            {
+              "name": "Eggs, medium, shell off",
+              "weightState": "Shelled",
+              "herG": 125,
+              "himG": 150,
+              "unitHint": "3 eggs"
+            },
+            {
+              "name": "Plantain, ripe",
+              "weightState": "Peeled",
+              "herG": 100,
+              "himG": 130,
+              "unitHint": "1 plantain"
+            },
+            {
+              "name": "Red pepper, deseeded",
+              "weightState": "Prepared",
+              "herG": 80,
+              "himG": 100,
+              "unitHint": null
+            },
+            {
+              "name": "Tomatoes, ripe",
+              "weightState": "Raw",
+              "herG": 80,
+              "himG": 100,
+              "unitHint": null
+            },
+            {
+              "name": "Spinach, ugu or callaloo",
+              "weightState": "Raw",
+              "herG": 60,
+              "himG": 80,
+              "unitHint": null
+            },
+            {
+              "name": "Red onion, peeled",
+              "weightState": "Prepared",
+              "herG": 40,
+              "himG": 50,
+              "unitHint": null
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 6,
+              "himG": 7,
+              "unitHint": "1½ tsp"
+            }
+          ],
+          "steps": [
+            "Plantain (100/130 g) in 1.5 cm DICE, not slices. This is a hash.",
+            "Wide pan, oil (6/7 g), medium-high. Plantain in a single layer, 4 minutes without touching it, then turned and 3 minutes more until the faces are dark.",
+            "Onion (40/50 g) and pepper (80/100 g) in, 4 minutes.",
+            "Tomato (80/100 g), thyme, scotch bonnet and a pinch of stock powder. 3 minutes, until it clings to everything rather than sitting in the pan.",
+            "Spinach (60/80 g) folded through.",
+            "Push the hash into two heaps, clear a space, and fry the eggs (125/150 g — 2½ / 3) alongside on a hard heat so the whites frill and brown at the edge."
+          ],
+          "why": "Single layer, and don't touch it. Plantain browns by contact, and a crowded pan steams it into something sweet and wet instead of caramelising it at the corners.",
+          "macros": {
+            "her": {
+              "kcal": 423,
+              "protein": 21,
+              "netCarb": 40,
+              "fat": 19,
+              "fibre": 6.9
+            },
+            "him": {
+              "kcal": 522,
+              "protein": 25,
+              "netCarb": 51,
+              "fat": 23,
+              "fibre": 8.9
+            }
+          }
+        },
+        {
+          "week": "B",
+          "dayNo": 3,
+          "dayName": "Wednesday",
+          "slot": "Lunch",
+          "name": "Turkey & okra stew with rice",
+          "tag": "batch",
+          "timeChip": "6 min",
+          "originChip": "Nigeria",
+          "ingredients": [
+            {
+              "name": "Turkey breast mince, 5% fat",
+              "weightState": "Raw",
+              "herG": 120,
+              "himG": 160,
+              "unitHint": null
+            },
+            {
+              "name": "Okra",
+              "weightState": "Fresh or frozen",
+              "herG": 120,
+              "himG": 150,
+              "unitHint": null
+            },
+            {
+              "name": "Passata, plain",
+              "weightState": "As it comes",
+              "herG": 120,
+              "himG": 140,
+              "unitHint": null
+            },
+            {
+              "name": "Spinach, ugu or callaloo",
+              "weightState": "Raw",
+              "herG": 100,
+              "himG": 130,
+              "unitHint": null
+            },
+            {
+              "name": "Red pepper, deseeded",
+              "weightState": "Prepared",
+              "herG": 70,
+              "himG": 90,
+              "unitHint": null
+            },
+            {
+              "name": "Brown rice, long grain",
+              "weightState": "Dry",
+              "herG": 62,
+              "himG": 85,
+              "unitHint": null
+            },
+            {
+              "name": "Red onion, peeled",
+              "weightState": "Prepared",
+              "herG": 40,
+              "himG": 50,
+              "unitHint": null
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 7,
+              "himG": 9,
+              "unitHint": "2 tsp"
+            }
+          ],
+          "steps": [
+            "Sunday's stew into a pan on medium with a splash of water. 4 minutes — no more.",
+            "Spinach (100/130 g) in two handfuls, wilted through.",
+            "Sunday's rice (62/85 g dry) warmed alongside, covered, 2 minutes.",
+            "Lime or lemon at the table. Okra wants acid."
+          ],
+          "why": "The okra was cooked briefly on Sunday and will not survive a second long heating. Four minutes to warm through — go longer and you get the slime everyone complains about instead of the body it is supposed to give the stew.",
+          "macros": {
+            "her": {
+              "kcal": 581,
+              "protein": 38,
+              "netCarb": 63,
+              "fat": 16,
+              "fibre": 12
+            },
+            "him": {
+              "kcal": 768,
+              "protein": 51,
+              "netCarb": 84,
+              "fat": 21,
+              "fibre": 15.2
+            }
+          }
+        },
+        {
+          "week": "B",
+          "dayNo": 3,
+          "dayName": "Wednesday",
+          "slot": "Dinner",
+          "name": "Suya chicken skewers with pepper salad",
+          "tag": "fresh",
+          "timeChip": "18 min",
+          "originChip": "Nigeria",
+          "ingredients": [
+            {
+              "name": "Chicken breast, skinless",
+              "weightState": "Raw",
+              "herG": 130,
+              "himG": 175,
+              "unitHint": "1 breast"
+            },
+            {
+              "name": "Plantain, ripe",
+              "weightState": "Peeled",
+              "herG": 85,
+              "himG": 130,
+              "unitHint": "1 plantain"
+            },
+            {
+              "name": "Red pepper, deseeded",
+              "weightState": "Prepared",
+              "herG": 100,
+              "himG": 120,
+              "unitHint": null
+            },
+            {
+              "name": "Tomatoes, ripe",
+              "weightState": "Raw",
+              "herG": 100,
+              "himG": 120,
+              "unitHint": null
+            },
+            {
+              "name": "Little gem or romaine",
+              "weightState": "Raw",
+              "herG": 60,
+              "himG": 70,
+              "unitHint": null
+            },
+            {
+              "name": "Cucumber",
+              "weightState": "Raw",
+              "herG": 60,
+              "himG": 70,
+              "unitHint": null
+            },
+            {
+              "name": "Red onion, peeled",
+              "weightState": "Prepared",
+              "herG": 40,
+              "himG": 50,
+              "unitHint": null
+            },
+            {
+              "name": "Peanut butter, 100% nuts",
+              "weightState": "As it comes",
+              "herG": 12,
+              "himG": 15,
+              "unitHint": "1 tbsp"
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 6,
+              "himG": 8,
+              "unitHint": "2 tsp"
+            }
+          ],
+          "steps": [
+            "Chicken (130/175 g) in 3 cm cubes. Rubbed with 3 g of the oil, then 2 tsp suya worked in with your hands. Leave it 10 minutes while everything else happens — longer if you have it.",
+            "Onto skewers, packed loosely, not crammed.",
+            "Grill, griddle or a very hot dry pan: 3–4 minutes a side, about 12 minutes total, until charred at the corners and just firm.",
+            "Plantain (85/130 g) sliced thick, dry-griddled 3 minutes a side.",
+            "Salad: pepper (100/120 g), tomato (100/120 g), cucumber (60/70 g) and red onion (40/50 g) diced small and rough, lettuce (60/70 g) torn in. Lime, salt, the rest of the oil.",
+            "Dip: peanut butter (12/15 g) loosened with warm water, lemon, 1 tsp suya, salt.",
+            "More suya dusted over the skewers OFF the heat."
+          ],
+          "why": "Suya twice — on before, dusted on after. It is a spice blend with ground peanut in it, and peanut burns. What goes on before the grill gives you the char; what goes on after gives you the flavour.",
+          "macros": {
+            "her": {
+              "kcal": 449,
+              "protein": 39,
+              "netCarb": 39,
+              "fat": 14,
+              "fibre": 8.2
+            },
+            "him": {
+              "kcal": 604,
+              "protein": 52,
+              "netCarb": 55,
+              "fat": 19,
+              "fibre": 10.5
+            }
+          }
+        },
+        {
+          "week": "B",
+          "dayNo": 3,
+          "dayName": "Wednesday",
+          "slot": "Snack",
+          "name": "Greek yoghurt, raspberries & seeds",
+          "tag": "fresh",
+          "timeChip": "2 min",
+          "originChip": "The gym canteen",
+          "ingredients": [
+            {
+              "name": "Greek yoghurt, 0% fat",
+              "weightState": "As it comes",
+              "herG": 150,
+              "himG": 195,
+              "unitHint": null
+            },
+            {
+              "name": "Raspberries",
+              "weightState": "Fresh or frozen",
+              "herG": 90,
+              "himG": 110,
+              "unitHint": null
+            },
+            {
+              "name": "Pumpkin seeds",
+              "weightState": "Dry",
+              "herG": 10,
+              "himG": 13,
+              "unitHint": "1 tbsp"
+            },
+            {
+              "name": "Chia seeds",
+              "weightState": "Dry",
+              "herG": 6,
+              "himG": 8,
+              "unitHint": "2 tsp"
+            }
+          ],
+          "steps": [
+            "Half the raspberries (45/55 g) crushed with a fork and a squeeze of lemon, into the bottom of the bowl.",
+            "Yoghurt (150/195 g) over.",
+            "The rest of the raspberries (45/55 g) whole on top, then pumpkin seeds (10/13 g) and chia (6/8 g)."
+          ],
+          "why": "Crush half. A broken raspberry releases its acid into the yoghurt and does the job a spoonful of honey would otherwise be doing — the whole ones on top are there for the texture.",
+          "macros": {
+            "her": {
+              "kcal": 217,
+              "protein": 21,
+              "netCarb": 12,
+              "fat": 8,
+              "fibre": 8.5
+            },
+            "him": {
+              "kcal": 280,
+              "protein": 27,
+              "netCarb": 15,
+              "fat": 10,
+              "fibre": 10.7
+            }
+          }
+        },
+        {
+          "week": "B",
+          "dayNo": 4,
+          "dayName": "Thursday",
+          "slot": "Breakfast",
+          "name": "Beans & eggs on seeded toast",
+          "tag": "fresh",
+          "timeChip": "10 min",
+          "originChip": "London caff",
+          "ingredients": [
+            {
+              "name": "Eggs, medium, shell off",
+              "weightState": "Shelled",
+              "herG": 100,
+              "himG": 150,
+              "unitHint": "3 eggs"
+            },
+            {
+              "name": "Passata, plain",
+              "weightState": "As it comes",
+              "herG": 80,
+              "himG": 100,
+              "unitHint": null
+            },
+            {
+              "name": "Red kidney beans, tinned",
+              "weightState": "Drained",
+              "herG": 75,
+              "himG": 85,
+              "unitHint": null
+            },
+            {
+              "name": "Spinach, ugu or callaloo",
+              "weightState": "Raw",
+              "herG": 60,
+              "himG": 80,
+              "unitHint": null
+            },
+            {
+              "name": "Seeded low-carb loaf",
+              "weightState": "As it comes",
+              "herG": 45,
+              "himG": 55,
+              "unitHint": "1 slice"
+            },
+            {
+              "name": "Red onion, peeled",
+              "weightState": "Prepared",
+              "herG": 25,
+              "himG": 30,
+              "unitHint": null
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 9,
+              "himG": 11,
+              "unitHint": "2½ tsp"
+            }
+          ],
+          "steps": [
+            "Onion (25/30 g) finely diced into 4 g of the oil, medium, 4 minutes.",
+            "Passata (80/100 g), 1 tsp smoked paprika, ½ tsp mustard, a dash of Worcestershire, a pinch of sugar. 3 minutes.",
+            "Kidney beans (75/85 g) in. 3 minutes more, mashing six or seven of them against the side to thicken it. This is baked beans, made properly and without the sugar.",
+            "Bread (45/55 g) toasting.",
+            "Spinach (60/80 g) wilted in a second pan, then the eggs (100/150 g — 2 / 3) fried in the rest of the oil.",
+            "Beans onto the toast, spinach, eggs over."
+          ],
+          "why": "Mash a few of the beans. There is no starch and no sugar syrup in this doing the thickening, so the sauce has to get its body from the beans themselves — half a dozen crushed against the pan is the difference between a sauce and a puddle.",
+          "macros": {
+            "her": {
+              "kcal": 491,
+              "protein": 31,
+              "netCarb": 24,
+              "fat": 26,
+              "fibre": 14.2
+            },
+            "him": {
+              "kcal": 634,
+              "protein": 41,
+              "netCarb": 29,
+              "fat": 35,
+              "fibre": 17.1
+            }
+          }
+        },
+        {
+          "week": "B",
+          "dayNo": 4,
+          "dayName": "Thursday",
+          "slot": "Lunch",
+          "name": "Beef kofta wrap with cucumber yoghurt",
+          "tag": "batch",
+          "timeChip": "8 min",
+          "originChip": "Levant",
+          "ingredients": [
+            {
+              "name": "Beef mince, 5% fat",
+              "weightState": "Raw",
+              "herG": 110,
+              "himG": 145,
+              "unitHint": null
+            },
+            {
+              "name": "Greek yoghurt, 0% fat",
+              "weightState": "As it comes",
+              "herG": 70,
+              "himG": 90,
+              "unitHint": null
+            },
+            {
+              "name": "Tomatoes, ripe",
+              "weightState": "Raw",
+              "herG": 70,
+              "himG": 90,
+              "unitHint": null
+            },
+            {
+              "name": "Cucumber",
+              "weightState": "Raw",
+              "herG": 70,
+              "himG": 80,
+              "unitHint": null
+            },
+            {
+              "name": "Little gem or romaine",
+              "weightState": "Raw",
+              "herG": 50,
+              "himG": 60,
+              "unitHint": null
+            },
+            {
+              "name": "Tortilla, high-protein low-carb",
+              "weightState": "As it comes",
+              "herG": 40,
+              "himG": 55,
+              "unitHint": "1 tortilla"
+            },
+            {
+              "name": "Red onion, peeled",
+              "weightState": "Prepared",
+              "herG": 35,
+              "himG": 45,
+              "unitHint": null
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 10,
+              "himG": 8,
+              "unitHint": "2 tsp"
+            }
+          ],
+          "steps": [
+            "Sunday's koftas out — from the fridge, or from the freezer if you moved them down on Wednesday night.",
+            "Pan, medium-high, 5 g of the oil. Koftas in, 6–7 minutes, turned to colour all sides. They are already cooked; this is purely about the crust.",
+            "Cucumber yoghurt: cucumber (70/80 g) coarsely grated and then SQUEEZED dry in your hands, into the yoghurt (70/90 g) with grated garlic, lemon, salt and dried mint.",
+            "Tortilla (40/55 g), 20 seconds a side.",
+            "Yoghurt down the middle, koftas, lettuce (50/60 g), tomato (70/90 g), raw onion (35/45 g), the rest of the oil. Roll tight."
+          ],
+          "why": "Squeeze the cucumber. Grated cucumber holds an astonishing amount of water and will turn the yoghurt to soup inside a minute — wring it out over the sink until it stops dripping, then use it.",
+          "macros": {
+            "her": {
+              "kcal": 421,
+              "protein": 38,
+              "netCarb": 18,
+              "fat": 19,
+              "fibre": 11.6
+            },
+            "him": {
+              "kcal": 509,
+              "protein": 50,
+              "netCarb": 24,
+              "fat": 20,
+              "fibre": 15.6
+            }
+          }
+        },
+        {
+          "week": "B",
+          "dayNo": 4,
+          "dayName": "Thursday",
+          "slot": "Dinner",
+          "name": "Beef smash tacos",
+          "tag": "fresh",
+          "timeChip": "12 min",
+          "originChip": "Mexico",
+          "ingredients": [
+            {
+              "name": "Beef mince, 5% fat",
+              "weightState": "Raw",
+              "herG": 110,
+              "himG": 145,
+              "unitHint": null
+            },
+            {
+              "name": "Tomatoes, ripe",
+              "weightState": "Raw",
+              "herG": 70,
+              "himG": 90,
+              "unitHint": null
+            },
+            {
+              "name": "Little gem or romaine",
+              "weightState": "Raw",
+              "herG": 50,
+              "himG": 60,
+              "unitHint": null
+            },
+            {
+              "name": "Tomato salsa, no added sugar",
+              "weightState": "As it comes",
+              "herG": 50,
+              "himG": 60,
+              "unitHint": null
+            },
+            {
+              "name": "Tortilla, high-protein low-carb",
+              "weightState": "As it comes",
+              "herG": 42,
+              "himG": 55,
+              "unitHint": "1 tortilla"
+            },
+            {
+              "name": "Avocado",
+              "weightState": "Flesh only",
+              "herG": 35,
+              "himG": 50,
+              "unitHint": null
+            },
+            {
+              "name": "Red onion, peeled",
+              "weightState": "Prepared",
+              "herG": 30,
+              "himG": 40,
+              "unitHint": null
+            },
+            {
+              "name": "Cheddar, reduced fat (~14%)",
+              "weightState": "As it comes",
+              "herG": 15,
+              "himG": 20,
+              "unitHint": null
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 9,
+              "himG": 11,
+              "unitHint": "2½ tsp"
+            }
+          ],
+          "steps": [
+            "Beef (110/145 g) into THREE loose balls per person. Don't season them, don't compact them.",
+            "Tortillas (42/55 g) — cut down into smaller rounds if yours are large.",
+            "Heavy pan, dry, high, a full 3 minutes. Balls in, pressed flat and hard with a spatula for 10 seconds each. Salt the tops. 90 seconds untouched.",
+            "Flip, cheddar (15/20 g) on, 45 seconds. Out.",
+            "Tortillas 20 seconds a side in the beef fat left behind.",
+            "Build: avocado (35/50 g), patty, salsa (50/60 g), lettuce (50/60 g), tomato (70/90 g), raw onion (30/40 g). Lime hard."
+          ],
+          "why": "Three small patties, not one big one. Crust-to-meat ratio is the entire reason a smashed patty tastes the way it does, and splitting the same mince three ways gives you half again as much of it.",
+          "macros": {
+            "her": {
+              "kcal": 473,
+              "protein": 36,
+              "netCarb": 16,
+              "fat": 25,
+              "fibre": 14.7
+            },
+            "him": {
+              "kcal": 618,
+              "protein": 48,
+              "netCarb": 21,
+              "fat": 33,
+              "fibre": 19.4
+            }
+          }
+        },
+        {
+          "week": "B",
+          "dayNo": 4,
+          "dayName": "Thursday",
+          "slot": "Snack",
+          "name": "Skyr, blueberries & coconut",
+          "tag": "fresh",
+          "timeChip": "3 min",
+          "originChip": "Nordic",
+          "ingredients": [
+            {
+              "name": "Skyr, plain natural",
+              "weightState": "As it comes",
+              "herG": 170,
+              "himG": 220,
+              "unitHint": null
+            },
+            {
+              "name": "Blueberries",
+              "weightState": "Fresh or frozen",
+              "herG": 90,
+              "himG": 110,
+              "unitHint": null
+            },
+            {
+              "name": "Pumpkin seeds",
+              "weightState": "Dry",
+              "herG": 8,
+              "himG": 11,
+              "unitHint": "1 tbsp"
+            },
+            {
+              "name": "Coconut, desiccated unsweetened",
+              "weightState": "Dry",
+              "herG": 6,
+              "himG": 8,
+              "unitHint": "2 tsp"
+            }
+          ],
+          "steps": [
+            "Coconut (6/8 g) toasted in a dry pan, 90 seconds, shaken constantly, out the moment it turns gold.",
+            "Blueberries (90/110 g) — if frozen, straight from the freezer into the skyr and left 5 minutes. They bleed, and it turns purple, which is better.",
+            "Skyr (170/220 g), berries, then coconut and pumpkin seeds (8/11 g) over."
+          ],
+          "why": "Frozen berries beat fresh here, and cost a third as much. As they thaw against the skyr they release juice that sweetens the whole pot — fresh ones just sit on top of it.",
+          "macros": {
+            "her": {
+              "kcal": 243,
+              "protein": 22,
+              "netCarb": 19,
+              "fat": 8,
+              "fibre": 3.6
+            },
+            "him": {
+              "kcal": 316,
+              "protein": 29,
+              "netCarb": 23,
+              "fat": 11,
+              "fibre": 4.6
+            }
+          }
+        },
+        {
+          "week": "B",
+          "dayNo": 5,
+          "dayName": "Friday",
+          "slot": "Breakfast",
+          "name": "Scrambled eggs & tomato on seeded toast",
+          "tag": "fresh",
+          "timeChip": "9 min",
+          "originChip": "London caff",
+          "ingredients": [
+            {
+              "name": "Eggs, medium, shell off",
+              "weightState": "Shelled",
+              "herG": 175,
+              "himG": 225,
+              "unitHint": "4½ eggs"
+            },
+            {
+              "name": "Spinach, ugu or callaloo",
+              "weightState": "Raw",
+              "herG": 60,
+              "himG": 80,
+              "unitHint": null
+            },
+            {
+              "name": "Tomatoes, ripe",
+              "weightState": "Raw",
+              "herG": 60,
+              "himG": 80,
+              "unitHint": null
+            },
+            {
+              "name": "Seeded low-carb loaf",
+              "weightState": "As it comes",
+              "herG": 55,
+              "himG": 70,
+              "unitHint": "1½ slices"
+            },
+            {
+              "name": "Spring onions, trimmed",
+              "weightState": "Prepared",
+              "herG": 15,
+              "himG": 20,
+              "unitHint": null
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 5,
+              "himG": 6,
+              "unitHint": "1½ tsp"
+            }
+          ],
+          "steps": [
+            "Bread (55/70 g) toasting — this is a thicker cut than usual, it is carrying the plate.",
+            "Spinach (60/80 g) into a dry pan on medium, 60 seconds to wilt. Out, squeezed, and seasoned.",
+            "Tomatoes (60/80 g) halved, cut side down into the same pan with 3 g of the oil, high heat, 3 minutes until they blister and start to collapse. Salt.",
+            "Eggs (175/225 g — 3½ / 4½) beaten with salt. Heat right down, the rest of the oil in, and stirred slowly and constantly. Off the heat while still visibly loose.",
+            "Toast, spinach, egg heaped over, blistered tomatoes on top, spring onion (15/20 g), chilli flakes and lemon."
+          ],
+          "why": "Low and slow, off early. This is a lot of egg — nearly four each on the larger cover — and the only thing standing between that and a plate of rubber is a gentle heat and the nerve to stop cooking while it still looks underdone.",
+          "macros": {
+            "her": {
+              "kcal": 477,
+              "protein": 35,
+              "netCarb": 10,
+              "fat": 31,
+              "fibre": 10.4
+            },
+            "him": {
+              "kcal": 609,
+              "protein": 45,
+              "netCarb": 13,
+              "fat": 39,
+              "fibre": 13.4
+            }
+          }
+        },
+        {
+          "week": "B",
+          "dayNo": 5,
+          "dayName": "Friday",
+          "slot": "Lunch",
+          "name": "Chicken & avocado club sandwich",
+          "tag": "batch",
+          "timeChip": "6 min",
+          "originChip": "New York",
+          "ingredients": [
+            {
+              "name": "Chicken breast, skinless",
+              "weightState": "Raw",
+              "herG": 110,
+              "himG": 145,
+              "unitHint": "1 breast"
+            },
+            {
+              "name": "Tomatoes, ripe",
+              "weightState": "Raw",
+              "herG": 70,
+              "himG": 90,
+              "unitHint": null
+            },
+            {
+              "name": "Seeded low-carb loaf",
+              "weightState": "As it comes",
+              "herG": 55,
+              "himG": 70,
+              "unitHint": "1½ slices"
+            },
+            {
+              "name": "Avocado",
+              "weightState": "Flesh only",
+              "herG": 45,
+              "himG": 60,
+              "unitHint": null
+            },
+            {
+              "name": "Little gem or romaine",
+              "weightState": "Raw",
+              "herG": 50,
+              "himG": 60,
+              "unitHint": null
+            },
+            {
+              "name": "Greek yoghurt, 0% fat",
+              "weightState": "As it comes",
+              "herG": 40,
+              "himG": 50,
+              "unitHint": null
+            },
+            {
+              "name": "Cheddar, reduced fat (~14%)",
+              "weightState": "As it comes",
+              "herG": 12,
+              "himG": 16,
+              "unitHint": null
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 4,
+              "himG": 5,
+              "unitHint": "1 tsp"
+            }
+          ],
+          "steps": [
+            "Bread (55/70 g) toasted properly — dark, not pale. It has to hold.",
+            "Dressing: yoghurt (40/50 g), oil (4/5 g), lemon, ½ tsp mustard, black pepper, salt.",
+            "Avocado (45/60 g) mashed onto one slice with lemon and salt.",
+            "Sunday's chicken (110/145 g) sliced thin and tossed in the dressing.",
+            "Build: avocado, chicken, cheddar (12/16 g), tomato (70/90 g) salted, and lettuce (50/60 g) LAST, against the top slice.",
+            "Press under a plate for 2 minutes. Cut on the diagonal."
+          ],
+          "why": "Lettuce against the top slice, tomato salted and buried in the middle. Tomato against bread makes it wet within minutes; a leaf of lettuce is a waterproof layer, and it is the only reason a sandwich made in the morning survives to lunchtime.",
+          "macros": {
+            "her": {
+              "kcal": 451,
+              "protein": 47,
+              "netCarb": 11,
+              "fat": 22,
+              "fibre": 12.9
+            },
+            "him": {
+              "kcal": 584,
+              "protein": 61,
+              "netCarb": 14,
+              "fat": 28,
+              "fibre": 16.5
+            }
+          }
+        },
+        {
+          "week": "B",
+          "dayNo": 5,
+          "dayName": "Friday",
+          "slot": "Dinner",
+          "name": "Salmon teriyaki with broccoli & rice",
+          "tag": "fresh",
+          "timeChip": "25 min",
+          "originChip": "Japan",
+          "ingredients": [
+            {
+              "name": "Broccoli florets",
+              "weightState": "Raw",
+              "herG": 150,
+              "himG": 180,
+              "unitHint": null
+            },
+            {
+              "name": "Salmon fillet, skinless",
+              "weightState": "Raw",
+              "herG": 110,
+              "himG": 145,
+              "unitHint": "1 fillet"
+            },
+            {
+              "name": "Cauliflower, riced",
+              "weightState": "Prepared",
+              "herG": 100,
+              "himG": 130,
+              "unitHint": null
+            },
+            {
+              "name": "Carrots, peeled",
+              "weightState": "Prepared",
+              "herG": 60,
+              "himG": 70,
+              "unitHint": null
+            },
+            {
+              "name": "Brown rice, long grain",
+              "weightState": "Dry",
+              "herG": 45,
+              "himG": 60,
+              "unitHint": null
+            },
+            {
+              "name": "Spring onions, trimmed",
+              "weightState": "Prepared",
+              "herG": 20,
+              "himG": 25,
+              "unitHint": null
+            },
+            {
+              "name": "Extra virgin olive oil",
+              "weightState": "As it comes",
+              "herG": 5,
+              "himG": 6,
+              "unitHint": "1½ tsp"
+            }
+          ],
+          "steps": [
+            "Rice (45/60 g dry) on, 25 minutes covered. This one is cooked fresh — it is the end of the week and Sunday's is long gone.",
+            "Teriyaki: 3 tbsp soy, 1 tbsp mirin or rice vinegar, 1 tsp honey, grated ginger and garlic. Into a small pan, simmered 3–4 minutes until it just coats a spoon.",
+            "Salmon (110/145 g) dried, into a hot pan with the oil (5/6 g). 3 minutes presentation-side down, 2 minutes over.",
+            "Half the glaze spooned over IN the pan on a low heat, tilting and basting for 60 seconds until it goes lacquered.",
+            "Broccoli (150/180 g) and carrot (60/70 g) steamed 4 minutes. Cauliflower (100/130 g) stirred through the rice for its last 2 minutes, lid on.",
+            "The rest of the glaze over the vegetables. Spring onion (20/25 g) raw over everything."
+          ],
+          "why": "Glaze at the end, on a low heat. There is sugar in teriyaki and it burns fast — put it in at the start and you get a black pan and a bitter fish long before the middle is warm.",
+          "macros": {
+            "her": {
+              "kcal": 543,
+              "protein": 33,
+              "netCarb": 47,
+              "fat": 22,
+              "fibre": 9.6
+            },
+            "him": {
+              "kcal": 702,
+              "protein": 43,
+              "netCarb": 61,
+              "fat": 29,
+              "fibre": 11.9
+            }
+          }
+        },
+        {
+          "week": "B",
+          "dayNo": 5,
+          "dayName": "Friday",
+          "slot": "Snack",
+          "name": "Carrot sticks with suya peanut dip",
+          "tag": "fresh",
+          "timeChip": "3 min",
+          "originChip": "Nigeria",
+          "ingredients": [
+            {
+              "name": "Carrots, peeled",
+              "weightState": "Prepared",
+              "herG": 120,
+              "himG": 140,
+              "unitHint": null
+            },
+            {
+              "name": "Greek yoghurt, 0% fat",
+              "weightState": "As it comes",
+              "herG": 80,
+              "himG": 100,
+              "unitHint": null
+            },
+            {
+              "name": "Peanut butter, 100% nuts",
+              "weightState": "As it comes",
+              "herG": 20,
+              "himG": 25,
+              "unitHint": "2 tbsp"
+            }
+          ],
+          "steps": [
+            "Peanut butter (20/25 g) and yoghurt (80/100 g) beaten together. It will look split for a moment — keep going, it comes back.",
+            "1 tsp suya, lime, salt, then warm water a teaspoon at a time until it's just scoopable.",
+            "Carrots (120/140 g) in long batons."
+          ],
+          "why": "It splits, then it doesn't. Peanut butter and yoghurt seize when they first meet and it looks wrong — thirty seconds of hard beating brings it smooth, and adding the water too early stops that ever happening.",
+          "macros": {
+            "her": {
+              "kcal": 212,
+              "protein": 14,
+              "netCarb": 14,
+              "fat": 10,
+              "fibre": 4.6
+            },
+            "him": {
+              "kcal": 261,
+              "protein": 18,
+              "netCarb": 17,
+              "fat": 13,
+              "fibre": 5.4
+            }
+          }
+        }
+      ]
+    }
+  },
+  "anomalies": []
+}

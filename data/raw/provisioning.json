@@ -1,0 +1,1493 @@
+{
+  "storageRegister": [
+    {
+      "item": "Cottage cheese, natural",
+      "life": {
+        "prose": "2 weeks sealed · 5 days open",
+        "sealedDays": 14,
+        "openDays": 5,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Fridge",
+      "note": "The shortest-dated thing in the chiller. One 300 g tub on day 0, one on day 7 — buying both up front is the single most likely thing to go off on you."
+    },
+    {
+      "item": "Tomatoes, ripe",
+      "life": {
+        "prose": "7–10 days",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Counter, not fridge",
+      "note": "2.4 kg, and the largest single top-up line. Keep them out of the fridge — cold kills the flavour and doesn't extend the life much."
+    },
+    {
+      "item": "Little gem or romaine",
+      "life": {
+        "prose": "7–10 days",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Fridge",
+      "note": "Whole heads, not bagged leaves. Bagged salad is four days; a whole gem is ten."
+    },
+    {
+      "item": "Pineapple",
+      "life": {
+        "prose": "4 days cut",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 4
+      },
+      "location": "Fridge",
+      "note": "Frozen would work but costs more here, and Week B's big 460 g use falls on day 9 anyway. One pack on day 0, the rest on day 7."
+    },
+    {
+      "item": "Cucumber",
+      "life": {
+        "prose": "7–10 days",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Fridge",
+      "note": "Week B uses three times what Week A does, so most of this is a day-7 buy anyway."
+    },
+    {
+      "item": "Spring onions, trimmed",
+      "life": {
+        "prose": "1 week",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 7
+      },
+      "location": "Fridge, in water",
+      "note": "Stand them in a glass of water like flowers and they'll go a fortnight. Otherwise, day 7."
+    },
+    {
+      "item": "Chicken breast, skinless",
+      "life": {
+        "prose": "2 days fresh · 6 months frozen",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 2
+      },
+      "location": "Freezer → fridge",
+      "note": "Split at the till: 770 g stays out for Week A's Sunday roast, 1,270 g goes straight to the freezer in one bag. Down to the fridge on the Friday night before Week B."
+    },
+    {
+      "item": "Beef mince, 5% fat",
+      "life": {
+        "prose": "2 days fresh · 3 months frozen",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 2
+      },
+      "location": "Freezer → fridge",
+      "note": "Three bags: 322 g for Week A, then 255 g koftas and 255 g smash for Week B's Thursday. Freeze all three; move each down the night before."
+    },
+    {
+      "item": "Catfish or tilapia fillet",
+      "life": {
+        "prose": "2 days fresh · 3 months frozen",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 2
+      },
+      "location": "Freezer",
+      "note": "Frozen basa fillets are the cheap, correct choice. Defrost overnight, dry very well — frozen white fish holds water and will not crisp otherwise."
+    },
+    {
+      "item": "Salmon fillet, skinless",
+      "life": {
+        "prose": "2 days fresh · 3 months frozen",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 2
+      },
+      "location": "Freezer",
+      "note": "Buy frozen fillets, not fresh. 440 g across the fortnight and all of it is cooked from defrosted — there is no advantage to fresh here and a real cost."
+    },
+    {
+      "item": "Turkey breast mince, 5% fat",
+      "life": {
+        "prose": "2 days fresh · 3 months frozen",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 2
+      },
+      "location": "Freezer → fridge",
+      "note": "120 g for Week A's bolognese, 280 g for Week B's stew. Both go in Sunday prep, so each only needs to be down by the Saturday night."
+    },
+    {
+      "item": "Chicken breast mince, 2-3% fat",
+      "life": {
+        "prose": "2 days fresh · 3 months frozen",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 2
+      },
+      "location": "Freezer → fridge",
+      "note": "Week A only, 140 g, and it's Monday's dinner — so this one comes down on day 0 and gets used before it needs freezing at all."
+    },
+    {
+      "item": "Sirloin steak, lean, trimmed",
+      "life": {
+        "prose": "3 days fresh · 6 months frozen",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 3
+      },
+      "location": "Freezer → fridge",
+      "note": "Week A Thursday only. Freeze on day 0, down on Wednesday night."
+    },
+    {
+      "item": "Mozzarella, reduced fat, block",
+      "life": {
+        "prose": "3 weeks sealed · 4 days open",
+        "sealedDays": 21,
+        "openDays": 4,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Freezer → fridge",
+      "note": "One 250 g block, opened twice eight days apart — it will not survive that. Cut it in half on day 0 and freeze one half. Mozzarella freezes badly for salad and perfectly for melting, which is all we do with it."
+    },
+    {
+      "item": "Seeded low-carb loaf",
+      "life": {
+        "prose": "7 days · 3 months frozen",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 7
+      },
+      "location": "Freezer → toaster",
+      "note": "Freeze the second loaf whole on day 0 and toast slices straight from frozen — no defrosting, and it toasts better than fresh does."
+    },
+    {
+      "item": "Tortilla, high-protein low-carb",
+      "life": {
+        "prose": "3 weeks sealed · 1 week open",
+        "sealedDays": 21,
+        "openDays": 7,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Freezer",
+      "note": "Three packs, and only one gets opened at a time. Freeze two on day 0; they thaw in fifteen minutes on the counter."
+    },
+    {
+      "item": "King prawns, peeled",
+      "life": {
+        "prose": "3 months frozen",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Freezer",
+      "note": "Buy frozen. 95 g in the whole fortnight — a bag lasts months and defrosts in 10 minutes under cold water."
+    },
+    {
+      "item": "Spinach, ugu or callaloo",
+      "life": {
+        "prose": "4 days fresh · 12 months frozen",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 4
+      },
+      "location": "Freezer",
+      "note": "THE BIG ONE. 2.4 kg across the fortnight and bagged spinach is dead in four days. Every single use in both weeks is wilted or cooked — not one is raw. Buy it all frozen. It is cheaper, it is already blanched, and nothing about the plan changes."
+    },
+    {
+      "item": "Cauliflower, riced",
+      "life": {
+        "prose": "12 months frozen · 4 days once riced",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 4
+      },
+      "location": "Freezer",
+      "note": "Changed after the price check: frozen FLORETS are £1.50/kg, cheaper than whole heads at £1.19 each, and they skip the worst twenty minutes of Sunday. Blitz them from frozen, in two batches on the two Sundays. Do NOT buy ready-riced — that is £4.83/kg."
+    },
+    {
+      "item": "Broccoli florets",
+      "life": {
+        "prose": "7 days fresh · 12 months frozen",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 7
+      },
+      "location": "Freezer",
+      "note": "Borderline — fresh would just about last Week A. But both uses are steamed, so frozen costs nothing and removes a top-up line."
+    },
+    {
+      "item": "Okra",
+      "life": {
+        "prose": "4 days fresh · 12 months frozen",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 4
+      },
+      "location": "Freezer",
+      "note": "Frozen sliced okra is standard and often better — it's picked and frozen young. Straight from the bag into the pot, no defrosting."
+    },
+    {
+      "item": "Blueberries",
+      "life": {
+        "prose": "10 days fresh · 12 months frozen",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 10
+      },
+      "location": "Freezer",
+      "note": "Same argument, slightly less urgent. Frozen still wins on price."
+    },
+    {
+      "item": "Raspberries",
+      "life": {
+        "prose": "2 days fresh · 12 months frozen",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 2
+      },
+      "location": "Freezer",
+      "note": "Fresh raspberries are £14/kg and last two days. Frozen are a third of that and better in yoghurt — they bleed as they thaw and sweeten the whole pot."
+    },
+    {
+      "item": "Plantain, ripe",
+      "life": {
+        "prose": "Ripens over 1–2 weeks",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Counter",
+      "note": "Same trick. Buy half yellow-black for Week A and half green for Week B. Never refrigerate a green plantain — it stops ripening and never restarts."
+    },
+    {
+      "item": "Avocado",
+      "life": {
+        "prose": "Ripens over 1–2 weeks",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Counter, then fridge",
+      "note": "Down to five after the garnish cut, and now bought as Ripen At Home 4-packs at 37.5p each — which is both the cheapest option and exactly the staggered ripeness this needs. Move each one to the fridge the day it softens; that stops the clock for about four days."
+    },
+    {
+      "item": "Eggs, medium, shell off",
+      "life": {
+        "prose": "3–4 weeks",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Fridge",
+      "note": "52 eggs. Five boxes. They outlast the plan comfortably — the only issue is shelf space."
+    },
+    {
+      "item": "Greek yoghurt, 0% fat",
+      "life": {
+        "prose": "2–3 weeks sealed · 5–7 days open",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Fridge",
+      "note": "Two 1 kg tubs. Open one per week and it works — open both and the second is off by day 12. Check the date at the shelf; reject anything under 16 days."
+    },
+    {
+      "item": "Skyr, plain natural",
+      "life": {
+        "prose": "2–3 weeks sealed · 5–7 days open",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Fridge",
+      "note": "Two tubs, same rule. Week B uses nearly twice what Week A does."
+    },
+    {
+      "item": "Cheddar, reduced fat (~14%)",
+      "life": {
+        "prose": "3–4 weeks",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Fridge",
+      "note": "Block, not slices. Blocks keep three times as long and cost less per gram."
+    },
+    {
+      "item": "Parmesan, finely grated",
+      "life": {
+        "prose": "Months",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Fridge",
+      "note": "Hard cheese. Genuinely not a problem."
+    },
+    {
+      "item": "Red pepper, deseeded",
+      "life": {
+        "prose": "2 weeks",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": 14
+      },
+      "location": "Fridge",
+      "note": "1.76 kg. They genuinely do last a fortnight in the crisper drawer — check them on day 10 and use the softest first."
+    },
+    {
+      "item": "Red onion, peeled",
+      "life": {
+        "prose": "4–6 weeks",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Cool, dark, not the fridge",
+      "note": ""
+    },
+    {
+      "item": "Carrots, peeled",
+      "life": {
+        "prose": "3–4 weeks",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Fridge",
+      "note": "Buy them with the tops off."
+    },
+    {
+      "item": "Apples",
+      "life": {
+        "prose": "3–4 weeks",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Fridge",
+      "note": "In the fridge, not the bowl. Room temperature costs you two of the four weeks."
+    },
+    {
+      "item": "Courgette",
+      "life": {
+        "prose": "1–2 weeks",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Fridge",
+      "note": "Week B uses slightly more; use the firmest last."
+    },
+    {
+      "item": "Red cabbage, shredded",
+      "life": {
+        "prose": "3–4 weeks whole",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Fridge",
+      "note": "Buy a whole cabbage, not a shredded bag. It is the best keeper in the fridge and half the price."
+    },
+    {
+      "item": "Bananas",
+      "life": {
+        "prose": "5–7 days",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Counter",
+      "note": "Week A only, and only one dish. Buy them green."
+    },
+    {
+      "item": "Chestnut mushrooms",
+      "life": {
+        "prose": "5–7 days",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Fridge, paper bag",
+      "note": "Week A only, Monday's dinner. Out of the plastic and into paper the moment you're home."
+    },
+    {
+      "item": "Sweetcorn",
+      "life": {
+        "prose": "12 months",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Freezer",
+      "note": ""
+    },
+    {
+      "item": "Passata, plain",
+      "life": {
+        "prose": "Years sealed · 5 days open",
+        "sealedDays": null,
+        "openDays": 5,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Cupboard, then fridge",
+      "note": "1.68 kg. Buy four 500 g cartons rather than two big ones — an opened carton is five days, and this is spread across eight different dishes."
+    },
+    {
+      "item": "Brown rice, long grain",
+      "life": {
+        "prose": "Years",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Cupboard",
+      "note": "Dry weight. COOKED rice is the exception — never more than three days in the fridge, and cooled fast. That's why each week cooks its own."
+    },
+    {
+      "item": "Black beans, tinned",
+      "life": {
+        "prose": "Years",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Cupboard",
+      "note": ""
+    },
+    {
+      "item": "Extra virgin olive oil",
+      "life": {
+        "prose": "Years",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Cupboard, dark",
+      "note": ""
+    },
+    {
+      "item": "Tomato salsa, no added sugar",
+      "life": {
+        "prose": "Months sealed · 2 weeks open",
+        "sealedDays": null,
+        "openDays": 14,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Cupboard, then fridge",
+      "note": "Two jars. Opened, it comfortably covers a week."
+    },
+    {
+      "item": "Chickpeas, tinned",
+      "life": {
+        "prose": "Years",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Cupboard",
+      "note": "Week A only."
+    },
+    {
+      "item": "Red kidney beans, tinned",
+      "life": {
+        "prose": "Years",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Cupboard",
+      "note": ""
+    },
+    {
+      "item": "Porridge oats",
+      "life": {
+        "prose": "Months",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Cupboard",
+      "note": ""
+    },
+    {
+      "item": "Peanut butter, 100% nuts",
+      "life": {
+        "prose": "Months",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Cupboard",
+      "note": "Stir it; 100% nut butters separate."
+    },
+    {
+      "item": "Pumpkin seeds",
+      "life": {
+        "prose": "Months",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Cupboard",
+      "note": ""
+    },
+    {
+      "item": "Panko breadcrumbs",
+      "life": {
+        "prose": "Months",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Cupboard",
+      "note": ""
+    },
+    {
+      "item": "Edamame spaghetti",
+      "life": {
+        "prose": "Months",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Cupboard",
+      "note": "Week A only."
+    },
+    {
+      "item": "Chia seeds",
+      "life": {
+        "prose": "Months",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Cupboard",
+      "note": ""
+    },
+    {
+      "item": "Egusi, ground melon seed",
+      "life": {
+        "prose": "Months",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Freezer, once opened",
+      "note": "Ground melon seed is high in oil and goes rancid at room temperature. Keep the bag in the freezer and use it from frozen."
+    },
+    {
+      "item": "Coconut, desiccated unsweetened",
+      "life": {
+        "prose": "Months",
+        "sealedDays": null,
+        "openDays": null,
+        "frozenDays": null,
+        "freshDays": null
+      },
+      "location": "Cupboard",
+      "note": ""
+    }
+  ],
+  "defrostCalendar": [
+    {
+      "week": "A",
+      "dayNo": 0,
+      "weekday": "Sat",
+      "title": "THE BIG SHOP",
+      "body": "Week A's chicken (770 g) and the chicken breast mince (140 g) go into the fridge. Every other piece of meat and fish goes into the freezer, bagged and labelled by the day it's wanted. Second loaf and two packs of tortillas in too. Half the mozzarella block.",
+      "kit": "Shop",
+      "items": [
+        {
+          "name": "chicken",
+          "grams": 770
+        },
+        {
+          "name": "chicken breast mince",
+          "grams": 140
+        }
+      ]
+    },
+    {
+      "week": "A",
+      "dayNo": 1,
+      "weekday": "Sun",
+      "title": "Week A prep",
+      "body": "The 95-minute session. Nothing needs defrosting for it.",
+      "kit": "Week A",
+      "items": []
+    },
+    {
+      "week": "A",
+      "dayNo": 3,
+      "weekday": "Tue",
+      "title": "Down for Wednesday",
+      "body": "Basa (230 g) and the prawns, for Wednesday's pepper soup.",
+      "kit": "Week A",
+      "items": [
+        {
+          "name": "Basa",
+          "grams": 230
+        }
+      ]
+    },
+    {
+      "week": "A",
+      "dayNo": 4,
+      "weekday": "Wed",
+      "title": "Down for Thursday",
+      "body": "Sirloin steak (113 g).",
+      "kit": "Week A",
+      "items": [
+        {
+          "name": "Sirloin steak",
+          "grams": 113
+        }
+      ]
+    },
+    {
+      "week": "A",
+      "dayNo": 5,
+      "weekday": "Thu",
+      "title": "Down for Friday",
+      "body": "Salmon (185 g).",
+      "kit": "Week A",
+      "items": [
+        {
+          "name": "Salmon",
+          "grams": 185
+        }
+      ]
+    },
+    {
+      "week": "B",
+      "dayNo": 7,
+      "weekday": "Sat",
+      "title": "THE TOP-UP",
+      "body": "Five lines, ten minutes, under nine pounds. Then bring down Week B's chicken (1,270 g — it needs a full night), the turkey mince (280 g) and the kofta mince (255 g), all for tomorrow.",
+      "kit": "Shop",
+      "items": [
+        {
+          "name": "chicken",
+          "grams": 1270
+        },
+        {
+          "name": "turkey mince",
+          "grams": 280
+        },
+        {
+          "name": "kofta mince",
+          "grams": 255
+        }
+      ]
+    },
+    {
+      "week": "B",
+      "dayNo": 8,
+      "weekday": "Sun",
+      "title": "Week B prep",
+      "body": "The 80-minute session. The koftas get cooked today and go BACK into the freezer — freeze, cook, freeze again is safe; it's only refreezing something raw that isn't.",
+      "kit": "Week B",
+      "items": []
+    },
+    {
+      "week": "B",
+      "dayNo": 9,
+      "weekday": "Mon",
+      "title": "Down for Tuesday",
+      "body": "Basa (370 g) for the escovitch. Dry it very well — frozen white fish holds water.",
+      "kit": "Week B",
+      "items": [
+        {
+          "name": "Basa",
+          "grams": 370
+        }
+      ]
+    },
+    {
+      "week": "B",
+      "dayNo": 11,
+      "weekday": "Wed",
+      "title": "Down for Thursday",
+      "body": "The smash-taco mince (255 g), the cooked koftas, and the frozen half of the mozzarella.",
+      "kit": "Week B",
+      "items": [
+        {
+          "name": "smash-taco mince",
+          "grams": 255
+        }
+      ]
+    },
+    {
+      "week": "B",
+      "dayNo": 12,
+      "weekday": "Thu",
+      "title": "Down for Friday",
+      "body": "Salmon (255 g) for the teriyaki.",
+      "kit": "Week B",
+      "items": [
+        {
+          "name": "Salmon",
+          "grams": 255
+        }
+      ]
+    }
+  ],
+  "day0": [
+    {
+      "item": "Chicken breast, skinless",
+      "need": 2040,
+      "buy": "2 × 2,000 g",
+      "cost": 20,
+      "estimate": false,
+      "pill": "Freeze on day 0",
+      "shop": "S"
+    },
+    {
+      "item": "Eggs, medium, shell off",
+      "need": 2750,
+      "buy": "5 × 600 g",
+      "cost": 16.75,
+      "estimate": false,
+      "pill": "Buy once",
+      "shop": "S"
+    },
+    {
+      "item": "Beef mince, 5% fat",
+      "need": 832,
+      "buy": "1 × 1,000 g",
+      "cost": 8.5,
+      "estimate": true,
+      "pill": "Freeze on day 0",
+      "shop": "S"
+    },
+    {
+      "item": "Catfish or tilapia fillet",
+      "need": 600,
+      "buy": "2 × 500 g",
+      "cost": 7,
+      "estimate": true,
+      "pill": "Freeze on day 0",
+      "shop": "S"
+    },
+    {
+      "item": "Sirloin steak, lean, trimmed",
+      "need": 113,
+      "buy": "1 × 400 g",
+      "cost": 5.5,
+      "estimate": true,
+      "pill": "Freeze on day 0",
+      "shop": "S"
+    },
+    {
+      "item": "Turkey breast mince, 5% fat",
+      "need": 400,
+      "buy": "1 × 500 g",
+      "cost": 4.5,
+      "estimate": true,
+      "pill": "Freeze on day 0",
+      "shop": "S"
+    },
+    {
+      "item": "Chicken breast mince, 2-3% fat",
+      "need": 140,
+      "buy": "1 × 500 g",
+      "cost": 4.25,
+      "estimate": true,
+      "pill": "Freeze on day 0",
+      "shop": "S"
+    },
+    {
+      "item": "King prawns, peeled",
+      "need": 95,
+      "buy": "1 × 250 g",
+      "cost": 3.5,
+      "estimate": true,
+      "pill": "Buy frozen",
+      "shop": "S"
+    },
+    {
+      "item": "Cheddar, reduced fat (~14%)",
+      "need": 169,
+      "buy": "1 × 400 g",
+      "cost": 3.25,
+      "estimate": true,
+      "pill": "Buy once",
+      "shop": "S"
+    },
+    {
+      "item": "Mozzarella, reduced fat, block",
+      "need": 150,
+      "buy": "1 × 250 g",
+      "cost": 2.25,
+      "estimate": true,
+      "pill": "Freeze on day 0",
+      "shop": "S"
+    },
+    {
+      "item": "Parmesan, finely grated",
+      "need": 78,
+      "buy": "1 × 100 g",
+      "cost": 1.3,
+      "estimate": true,
+      "pill": "Buy once",
+      "shop": "S"
+    },
+    {
+      "item": "Tortilla, high-protein low-carb",
+      "need": 500,
+      "buy": "3 × 200 g",
+      "cost": 4.8,
+      "estimate": false,
+      "pill": "Freeze on day 0",
+      "shop": "S"
+    },
+    {
+      "item": "Edamame spaghetti",
+      "need": 72,
+      "buy": "1 × 250 g",
+      "cost": 1.9,
+      "estimate": false,
+      "pill": "Buy once",
+      "shop": "S"
+    },
+    {
+      "item": "Panko breadcrumbs",
+      "need": 85,
+      "buy": "1 × 150 g",
+      "cost": 1.5,
+      "estimate": true,
+      "pill": "Buy once",
+      "shop": "S"
+    },
+    {
+      "item": "Seeded low-carb loaf",
+      "need": 540,
+      "buy": "1 × 750 g",
+      "cost": 1.5,
+      "estimate": false,
+      "pill": "Freeze on day 0",
+      "shop": "S"
+    },
+    {
+      "item": "Salmon fillet, skinless",
+      "need": 440,
+      "buy": "2 × 220 g",
+      "cost": 8.7,
+      "estimate": false,
+      "pill": "Freeze on day 0",
+      "shop": "M"
+    },
+    {
+      "item": "Greek yoghurt, 0% fat",
+      "need": 1720,
+      "buy": "2 × 1,000 g",
+      "cost": 4.2,
+      "estimate": false,
+      "pill": "Buy once",
+      "shop": "M"
+    },
+    {
+      "item": "Skyr, plain natural",
+      "need": 1050,
+      "buy": "2 × 1,000 g",
+      "cost": 4.2,
+      "estimate": false,
+      "pill": "Buy once",
+      "shop": "M"
+    },
+    {
+      "item": "Cottage cheese, natural",
+      "need": 190,
+      "buy": "1 × 300 g",
+      "cost": 1.65,
+      "estimate": false,
+      "pill": "Day-7 top-up",
+      "shop": "M"
+    },
+    {
+      "item": "Red pepper, deseeded",
+      "need": 1760,
+      "buy": "4 × 450 g",
+      "cost": 5.7,
+      "estimate": false,
+      "pill": "Buy once",
+      "shop": "M"
+    },
+    {
+      "item": "Spinach, ugu or callaloo",
+      "need": 2430,
+      "buy": "3 × 950 g",
+      "cost": 4.5,
+      "estimate": false,
+      "pill": "Buy frozen",
+      "shop": "M"
+    },
+    {
+      "item": "Cauliflower, riced",
+      "need": 2185,
+      "buy": "3 × 1,000 g",
+      "cost": 4.5,
+      "estimate": false,
+      "pill": "Buy frozen",
+      "shop": "M"
+    },
+    {
+      "item": "Okra",
+      "need": 490,
+      "buy": "1 × 900 g",
+      "cost": 3.5,
+      "estimate": false,
+      "pill": "Buy frozen",
+      "shop": "M"
+    },
+    {
+      "item": "Avocado",
+      "need": 848,
+      "buy": "2 × 560 g",
+      "cost": 3,
+      "estimate": false,
+      "pill": "Buy mixed ripeness",
+      "shop": "M"
+    },
+    {
+      "item": "Courgette",
+      "need": 710,
+      "buy": "1 × 1,000 g",
+      "cost": 2.8,
+      "estimate": false,
+      "pill": "Buy once",
+      "shop": "M"
+    },
+    {
+      "item": "Red onion, peeled",
+      "need": 1630,
+      "buy": "2 × 1,000 g",
+      "cost": 1.9,
+      "estimate": false,
+      "pill": "Buy once",
+      "shop": "M"
+    },
+    {
+      "item": "Tomatoes, ripe",
+      "need": 1220,
+      "buy": "4 × 400 g",
+      "cost": 1.88,
+      "estimate": false,
+      "pill": "Day-7 top-up",
+      "shop": "M"
+    },
+    {
+      "item": "Apples",
+      "need": 870,
+      "buy": "1 × 900 g",
+      "cost": 1.8,
+      "estimate": false,
+      "pill": "Buy once",
+      "shop": "M"
+    },
+    {
+      "item": "Little gem or romaine",
+      "need": 530,
+      "buy": "3 × 250 g",
+      "cost": 1.6,
+      "estimate": false,
+      "pill": "Day-7 top-up",
+      "shop": "M"
+    },
+    {
+      "item": "Broccoli florets",
+      "need": 635,
+      "buy": "1 × 900 g",
+      "cost": 1.5,
+      "estimate": false,
+      "pill": "Buy frozen",
+      "shop": "M"
+    },
+    {
+      "item": "Carrots, peeled",
+      "need": 1240,
+      "buy": "2 × 1,000 g",
+      "cost": 1.38,
+      "estimate": false,
+      "pill": "Buy once",
+      "shop": "M"
+    },
+    {
+      "item": "Chestnut mushrooms",
+      "need": 200,
+      "buy": "1 × 400 g",
+      "cost": 1.35,
+      "estimate": true,
+      "pill": "Buy once",
+      "shop": "M"
+    },
+    {
+      "item": "Pineapple",
+      "need": 160,
+      "buy": "1 × 260 g",
+      "cost": 1.1,
+      "estimate": false,
+      "pill": "Day-7 top-up",
+      "shop": "M"
+    },
+    {
+      "item": "Raspberries",
+      "need": 320,
+      "buy": "1 × 350 g",
+      "cost": 1.05,
+      "estimate": true,
+      "pill": "Buy frozen",
+      "shop": "M"
+    },
+    {
+      "item": "Blueberries",
+      "need": 335,
+      "buy": "1 × 350 g",
+      "cost": 1.05,
+      "estimate": true,
+      "pill": "Buy frozen",
+      "shop": "M"
+    },
+    {
+      "item": "Cucumber",
+      "need": 130,
+      "buy": "1 × 300 g",
+      "cost": 0.99,
+      "estimate": false,
+      "pill": "Day-7 top-up",
+      "shop": "M"
+    },
+    {
+      "item": "Bananas",
+      "need": 305,
+      "buy": "1 × 1,000 g",
+      "cost": 0.9,
+      "estimate": true,
+      "pill": "Buy once",
+      "shop": "M"
+    },
+    {
+      "item": "Red cabbage, shredded",
+      "need": 515,
+      "buy": "1 × 700 g",
+      "cost": 0.85,
+      "estimate": true,
+      "pill": "Buy once",
+      "shop": "M"
+    },
+    {
+      "item": "Spring onions, trimmed",
+      "need": 45,
+      "buy": "1 × 100 g",
+      "cost": 0.69,
+      "estimate": false,
+      "pill": "Day-7 top-up",
+      "shop": "M"
+    },
+    {
+      "item": "Sweetcorn",
+      "need": 370,
+      "buy": "1 × 1,000 g",
+      "cost": 1.25,
+      "estimate": true,
+      "pill": "Buy once",
+      "shop": "M"
+    },
+    {
+      "item": "Extra virgin olive oil",
+      "need": 496,
+      "buy": "1 × 910 g",
+      "cost": 4.55,
+      "estimate": true,
+      "pill": "Buy once",
+      "shop": "M"
+    },
+    {
+      "item": "Peanut butter, 100% nuts",
+      "need": 150,
+      "buy": "1 × 1,000 g",
+      "cost": 3.99,
+      "estimate": false,
+      "pill": "Buy once",
+      "shop": "M"
+    },
+    {
+      "item": "Brown rice, long grain",
+      "need": 1014,
+      "buy": "2 × 1,000 g",
+      "cost": 3.7,
+      "estimate": false,
+      "pill": "Buy once",
+      "shop": "M"
+    },
+    {
+      "item": "Tomato salsa, no added sugar",
+      "need": 440,
+      "buy": "2 × 300 g",
+      "cost": 3,
+      "estimate": false,
+      "pill": "Buy once",
+      "shop": "M"
+    },
+    {
+      "item": "Chia seeds",
+      "need": 64,
+      "buy": "1 × 300 g",
+      "cost": 2.75,
+      "estimate": true,
+      "pill": "Buy once",
+      "shop": "M"
+    },
+    {
+      "item": "Pumpkin seeds",
+      "need": 94,
+      "buy": "1 × 200 g",
+      "cost": 1.8,
+      "estimate": true,
+      "pill": "Buy once",
+      "shop": "M"
+    },
+    {
+      "item": "Passata, plain",
+      "need": 1680,
+      "buy": "4 × 500 g",
+      "cost": 1.8,
+      "estimate": false,
+      "pill": "Buy once",
+      "shop": "M"
+    },
+    {
+      "item": "Black beans, tinned",
+      "need": 695,
+      "buy": "3 × 240 g",
+      "cost": 1.5,
+      "estimate": false,
+      "pill": "Buy once",
+      "shop": "M"
+    },
+    {
+      "item": "Porridge oats",
+      "need": 218,
+      "buy": "1 × 1,000 g",
+      "cost": 1.29,
+      "estimate": true,
+      "pill": "Buy once",
+      "shop": "M"
+    },
+    {
+      "item": "Coconut, desiccated unsweetened",
+      "need": 25,
+      "buy": "1 × 200 g",
+      "cost": 1.15,
+      "estimate": true,
+      "pill": "Buy once",
+      "shop": "M"
+    },
+    {
+      "item": "Red kidney beans, tinned",
+      "need": 320,
+      "buy": "2 × 240 g",
+      "cost": 1,
+      "estimate": true,
+      "pill": "Buy once",
+      "shop": "M"
+    },
+    {
+      "item": "Chickpeas, tinned",
+      "need": 405,
+      "buy": "2 × 240 g",
+      "cost": 0.9,
+      "estimate": true,
+      "pill": "Buy once",
+      "shop": "M"
+    },
+    {
+      "item": "Plantain, ripe",
+      "need": 1205,
+      "buy": "3 × 500 g",
+      "cost": 3.6,
+      "estimate": true,
+      "pill": "Buy mixed ripeness",
+      "shop": "X"
+    },
+    {
+      "item": "Egusi, ground melon seed",
+      "need": 27,
+      "buy": "1 × 250 g",
+      "cost": 3.5,
+      "estimate": true,
+      "pill": "Buy once",
+      "shop": "X"
+    }
+  ],
+  "day7": [
+    {
+      "item": "Pineapple",
+      "need": 460,
+      "buy": "2 × 260 g",
+      "cost": 2.2,
+      "estimate": false,
+      "pill": null,
+      "shop": "M",
+      "why": "4 days cut"
+    },
+    {
+      "item": "Cucumber",
+      "need": 410,
+      "buy": "2 × 300 g",
+      "cost": 1.98,
+      "estimate": false,
+      "pill": null,
+      "shop": "M",
+      "why": "7–10 days"
+    },
+    {
+      "item": "Tomatoes, ripe",
+      "need": 1220,
+      "buy": "4 × 400 g",
+      "cost": 1.88,
+      "estimate": false,
+      "pill": null,
+      "shop": "M",
+      "why": "7–10 days"
+    },
+    {
+      "item": "Cottage cheese, natural",
+      "need": 235,
+      "buy": "1 × 300 g",
+      "cost": 1.65,
+      "estimate": false,
+      "pill": null,
+      "shop": "M",
+      "why": "2 weeks sealed · 5 days open"
+    },
+    {
+      "item": "Little gem or romaine",
+      "need": 610,
+      "buy": "3 × 250 g",
+      "cost": 1.6,
+      "estimate": false,
+      "pill": null,
+      "shop": "M",
+      "why": "7–10 days"
+    },
+    {
+      "item": "Spring onions, trimmed",
+      "need": 115,
+      "buy": "2 × 100 g",
+      "cost": 1.38,
+      "estimate": false,
+      "pill": null,
+      "shop": "M",
+      "why": "1 week"
+    }
+  ],
+  "provenance": {
+    "shelfSaid": [
+      {
+        "heading": "Avocado",
+        "arrow": "Morrisons Ripen At Home Avocados, 4 pack £1.50",
+        "body": "37.5p an avocado, and 'ripen at home' is exactly the staggered-ripeness trick the storage plan needs. I had modelled £5.71/kg. Halves this line."
+      },
+      {
+        "heading": "Red onion, peeled",
+        "arrow": "Morrisons British Red Onions 1kg £0.95",
+        "body": "Loose 1 kg bag, not the 3-pack. I had modelled £2.18/kg."
+      },
+      {
+        "heading": "Peanut butter, 100% nuts",
+        "arrow": "Morrisons Smooth Peanut Butter 1kg £3.99",
+        "body": "The 1 kg jar is half the price per gram of the 340 g. Check the label if you want 100% nuts — the big jar may not be."
+      },
+      {
+        "heading": "Cauliflower, riced",
+        "arrow": "Morrisons Cauliflower Florets 1kg frozen £1.50",
+        "body": "Cheaper than whole heads (£1.19 each) AND it skips the worst twenty minutes of Sunday. Blitz from frozen. Note the ready-riced version is £4.83/kg — avoid."
+      },
+      {
+        "heading": "Cottage cheese, natural",
+        "arrow": "Morrisons British Natural Cottage Cheese 300g £1.65",
+        "body": "I had £3.67/kg. It's £5.50. Costs about 78p a fortnight more than modelled."
+      },
+      {
+        "heading": "Tomato salsa, no added sugar",
+        "arrow": "Morrisons Mild Salsa Dip 300g £1.50",
+        "body": "I had £4.00/kg."
+      },
+      {
+        "heading": "Pineapple",
+        "arrow": "Morrisons Pineapple Chunks In Juice 425g, 260g drained, £1.10",
+        "body": "I had £2.60/kg — the drained weight is what counts and I'd used the tin weight."
+      }
+    ],
+    "cutsDied": [
+      {
+        "heading": "Downgrade the eggs",
+        "arrow": null,
+        "body": "Morrisons large free-range 12-pack is £3.30 against Sainsbury's £3.35. There is no cheaper free-range tier — the only saving left is barn eggs, worth about £4/month, and that's your call rather than a modelling decision."
+      },
+      {
+        "heading": "10% beef mince instead of 5%",
+        "arrow": null,
+        "body": "Morrisons 10% mince is £11.20/kg. Sainsbury's 5% in a 1 kg pack is £8.50/kg. The leaner mince is the cheaper mince — buy 5% and add a little oil to the pan when you smash it."
+      },
+      {
+        "heading": "Frozen cauliflower rice",
+        "arrow": null,
+        "body": "Ready-riced is £4.83/kg. But frozen FLORETS are £1.50/kg — cheaper than whole heads — so the lever survives in a better form: buy frozen florets and blitz them yourself."
+      }
+    ],
+    "cutsStuck": [
+      {
+        "heading": "Half the peppers frozen",
+        "arrow": "Buying · no change to the plate",
+        "body": "Morrisons Sliced Mixed Peppers 500g £1.25. Fresh is £3.98/kg, so the saving is real but smaller than I said — £2.50/kg, not £1.60."
+      },
+      {
+        "heading": "Sweetheart cabbage where the gem is only shredded",
+        "arrow": "Buying · no change to the plate",
+        "body": "Morrisons British Sweetheart Cabbage £0.75 each, about 500 g."
+      },
+      {
+        "heading": "Split the oil two ways",
+        "arrow": "Buying · no change to the plate",
+        "body": "KTC Extended Life Rapeseed 1L £3.50 against EVOO at £7.14/kg. Less of a gap than I assumed — supermarket EVOO is cheap and rapeseed isn't free."
+      },
+      {
+        "heading": "One bag of frozen mixed berries",
+        "arrow": "Buying · no change to the plate",
+        "body": "Morrisons Wonky Berries Mix 1kg £2.99, against £6.43 and £6.71/kg buying the two separately. Better than I estimated."
+      },
+      {
+        "heading": "Frozen chicken breast instead of fresh",
+        "arrow": "Buying · no change to the plate",
+        "body": "Hank & Joes Chicken Breast Fillets 1kg £5.00 against Sainsbury's fresh at £6.15/kg. This one is free money: the storage plan already puts two-thirds of it straight in the freezer on day 0. Avoid the £4.25 Savers bag — that's added water."
+      },
+      {
+        "heading": "Friday breakfast: salmon → eggs",
+        "arrow": "Plate · macros re-checked",
+        "body": "Week B's Friday had 420 g of salmon across two meals at £19.77/kg. The teriyaki dinner is the one worth keeping. Breakfast is now scrambled eggs with blistered tomatoes on the same toast — and Week B's protein was running above target anyway."
+      },
+      {
+        "heading": "Three avocado garnishes dropped",
+        "arrow": "Plate · macros re-checked",
+        "body": "The chicken-crust pizza salad, the burrito bowl's guacamole scoop and the steak sandwich — all 20–35 g smears. Kept everywhere it is structural, including both Week B dishes named after it. A little extra oil replaces the calories for about 4p."
+      }
+    ],
+    "swaps": [
+      {
+        "heading": "Spinach",
+        "arrow": "2.4 kg fresh → frozen leaf",
+        "body": "The one that decides it. Bagged spinach is dead in four days and this plan wants 2.4 kg. Every single use across both weeks is wilted or cooked — not one is raw."
+      },
+      {
+        "heading": "Raspberries",
+        "arrow": "fresh → frozen",
+        "body": "Fresh are £14/kg and last two days. Frozen are a third of that and better in yoghurt: they bleed as they thaw and sweeten the whole pot. Saves about £4."
+      },
+      {
+        "heading": "Okra",
+        "arrow": "fresh → frozen sliced",
+        "body": "Frozen okra is picked and frozen young, which is often better than what's on the shelf. Straight from the bag into the pot."
+      },
+      {
+        "heading": "Broccoli",
+        "arrow": "fresh → frozen florets",
+        "body": "Borderline — fresh would just about last Week A. Both uses are steamed, so frozen costs nothing and removes a top-up line."
+      },
+      {
+        "heading": "Blueberries",
+        "arrow": "fresh → frozen",
+        "body": "A wash on price, bought as insurance: Week B wants them on day 11."
+      },
+      {
+        "heading": "Prawns & white fish",
+        "arrow": "counter → freezer aisle",
+        "body": "95 g of prawns in a fortnight. Buying them fresh means a use-by two days out for something you need on day 4."
+      }
+    ]
+  },
+  "anomalies": [
+    {
+      "type": "defrost-op-week-inferred",
+      "detail": "Op \"THE BIG SHOP\" (day 0, kit \"Shop\") has no explicit \"Week A/B\" kit label; week inferred as \"A\" from dayNo."
+    },
+    {
+      "type": "defrost-op-week-inferred",
+      "detail": "Op \"THE TOP-UP\" (day 7, kit \"Shop\") has no explicit \"Week A/B\" kit label; week inferred as \"B\" from dayNo."
+    },
+    {
+      "type": "day0-shop-subtotal-mismatch",
+      "detail": "Morrisons (M): sum of the 37 parsed line costs is £89.47, but the shopbar/.sum row shows £89.46. This is a rounding discrepancy present in the source document itself, not introduced by the parser (verified independently against the raw table cells)."
+    },
+    {
+      "type": "day7-shop-structural",
+      "detail": "The Day 7 top-up table (section \"Day 7 — the top-up\") has no .shopbar element, unlike the three Day-0 tables. Per PLAN.md §2, day-7 rows are Morrisons items (product strings all read \"Morrisons ...\"); shop was set to \"M\" by inference rather than read from a shopbar, to avoid the trap of attaching them to the last Day-0 shopbar (Lewisham/X)."
+    },
+    {
+      "type": "day0-header-total-mismatch",
+      "detail": "Section header tag shows £183.06 for Day 0, but the sum of all 54 parsed day0 line costs is £183.07."
+    }
+  ]
+}
