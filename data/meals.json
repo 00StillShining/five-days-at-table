@@ -860,7 +860,7 @@
         },
         {
           "n": 3,
-          "text": "Dip: peanut butter (16/20 g) loosened with warm water and lime, mashed together with the avocado (25/35 g) and salt.",
+          "text": "Dip: peanut butter (16/20 g) loosened with warm water and lemon, mashed together with the avocado (25/35 g) and salt.",
           "minutes": 1,
           "tempC": null,
           "track": null,
@@ -1891,7 +1891,7 @@
         "cucumber": 60,
         "carrot": 50,
         "lc_tortilla": 45,
-        "lettuce": 40,
+        "sweetheart_cabbage": 40,
         "avocado": 25,
         "olive_oil": 11
       },
@@ -1902,25 +1902,25 @@
         "cucumber": 70,
         "carrot": 60,
         "lc_tortilla": 55,
-        "lettuce": 50,
+        "sweetheart_cabbage": 50,
         "avocado": 35,
         "olive_oil": 15
       }
     },
     "macros": {
       "w": {
-        "kcal": 438,
+        "kcal": 442,
         "protein": 38,
         "netCarb": 22,
         "fat": 20,
-        "fibre": 15.6
+        "fibre": 15.7
       },
       "m": {
-        "kcal": 551,
+        "kcal": 556,
         "protein": 46,
-        "netCarb": 26,
+        "netCarb": 27,
         "fat": 26,
-        "fibre": 19.2
+        "fibre": 19.3
       }
     },
     "method": {
@@ -1963,7 +1963,7 @@
         },
         {
           "n": 5,
-          "text": "Build a LINE down the middle, not across the whole surface: yoghurt, chicken, slaw, lettuce (40/50 g), avocado (25/35 g). Fold the bottom up, then roll tight.",
+          "text": "Build a LINE down the middle, not across the whole surface: yoghurt, chicken, slaw, shredded cabbage (40/50 g), avocado (25/35 g). Fold the bottom up, then roll tight.",
           "minutes": 1.5,
           "tempC": null,
           "track": null,
@@ -2346,7 +2346,7 @@
       "steps": [
         {
           "n": 1,
-          "text": "Out of the fridge: Sunday's chicken — take 105/140 g (245 g total) of the ~760 g roast batch — and Sunday's rice — take 55/72 g dry (127 g total) of the 380 g dry batch.",
+          "text": "Out of the fridge: Sunday's chicken — take 105/140 g (245 g total) of the ~760 g roast batch — and Sunday's rice-and-cauliflower — rice 55/72 g dry (127 g total) of the 380 g dry batch, riced cauliflower 130/160 g (290 g total) of the ~810 g raw batch. 662 g all told.",
           "minutes": null,
           "tempC": null,
           "track": null,
@@ -2403,9 +2403,9 @@
       "why": "Leave the rice alone. Fried rice is made by contact with hot metal, not by stirring — every time you move it you drop the pan temperature and end up steaming it into porridge.",
       "batchSource": "prep-b",
       "batchTakeG": {
-        "w": 105,
-        "m": 140,
-        "total": 245
+        "w": 290,
+        "m": 372,
+        "total": 662
       },
       "approved": false,
       "rev": "B"
@@ -3217,7 +3217,7 @@
       "steps": [
         {
           "n": 1,
-          "text": "Sunday's turkey & okra stew — take the lot, 470/590 g (1,060 g total) of the ~1.05 kg batch: turkey (120/160 g), okra (120/150 g), passata (120/140 g), pepper (70/90 g), onion (40/50 g) and the oil (7/9 g) they were cooked in — into a pan on medium with a splash of water. 4 minutes, no more.",
+          "text": "Sunday's turkey & okra stew — take the lot, 477/599 g (1,076 g total) of the ~1.08 kg batch: turkey (120/160 g), okra (120/150 g), passata (120/140 g), pepper (70/90 g), onion (40/50 g) and the oil (7/9 g) they were cooked in — into a pan on medium with a splash of water. 4 minutes, no more.",
           "minutes": 4,
           "tempC": null,
           "track": "stew",
@@ -3256,9 +3256,9 @@
       "why": "The okra was cooked briefly on Sunday and will not survive a second long heating. Four minutes to warm through — go longer and you get the slime everyone complains about instead of the body it is supposed to give the stew.",
       "batchSource": "prep-b",
       "batchTakeG": {
-        "w": 470,
-        "m": 590,
-        "total": 1060
+        "w": 539,
+        "m": 684,
+        "total": 1223
       },
       "approved": false,
       "rev": "B"

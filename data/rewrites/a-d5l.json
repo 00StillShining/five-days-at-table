@@ -9,7 +9,7 @@
       "cucumber": 60,
       "carrot": 50,
       "lc_tortilla": 45,
-      "lettuce": 40,
+      "sweetheart_cabbage": 40,
       "avocado": 25,
       "olive_oil": 11
     },
@@ -20,7 +20,7 @@
       "cucumber": 70,
       "carrot": 60,
       "lc_tortilla": 55,
-      "lettuce": 50,
+      "sweetheart_cabbage": 50,
       "avocado": 35,
       "olive_oil": 15
     }
@@ -74,7 +74,7 @@
     },
     {
       "n": 5,
-      "text": "Build a LINE down the middle, not across the whole surface: yoghurt, chicken, slaw, lettuce (40/50 g), avocado (25/35 g). Fold the bottom up, then roll tight.",
+      "text": "Build a LINE down the middle, not across the whole surface: yoghurt, chicken, slaw, shredded cabbage (40/50 g), avocado (25/35 g). Fold the bottom up, then roll tight.",
       "minutes": 1.5,
       "tempC": null,
       "track": null,
@@ -92,8 +92,8 @@
   },
   "notes": [
     "D0-003: the slaw oil (raw, tossed with lemon/salt, no heat) stays olive_oil — the chicken is explicitly dry-charred, no oil in that pan.",
-    "The lettuce here is a whole-leaf wrap layer, not shredded (unlike a-d1l/a-d2l's 'shredded lettuce') — D0-003's sweetheart_cabbage substitution does not apply.",
-    "D0-014 (Sunday cabbage 515 g): this wrap's red_cabbage (70/80 g) is one of the three consumers of Sunday's shred batch — see prep-a.json for the corrected 515 g / three-consumer fix.",
-    "batchTakeG: chicken 205 g (of the 600 g roast batch) + red cabbage 150 g + carrot 110 g (both from Sunday's shredded-slaw batch). Yoghurt, cucumber, tortilla, lettuce and avocado are fresh additions."
+    "Reviewer FIX (cycle 1), supersedes this rewriter's earlier reading: the build-step lettuce (40/50 g) is now substituted to sweetheart_cabbage. This rewriter had originally held it back because the card text doesn't use the literal word 'shredded' for this ingredient (unlike a-d1l/a-d2l's 'shredded lettuce'). data/raw/shoppinglist.json's sweetheart-cabbage row states the substitution applies 'For every shredded use — the wraps, the bowls' — a source-level ruling that covers this wrap's lettuce categorically, regardless of the card's own wording. Applied per the reviewer's recommendation; the owner can still veto at the a2 batch review. Step 5 text updated to 'shredded cabbage (40/50 g)'.",
+    "D0-014 (Sunday cabbage 515 g): this wrap's red_cabbage (70/80 g) is one of the three consumers of Sunday's shred batch — see prep-a.json for the corrected 515 g / three-consumer fix. Note this is a separate ingredient row from the sweetheart_cabbage above: red_cabbage is the Sunday-shredded slaw batch (in the pre-wrap slaw), sweetheart_cabbage is the fresh shredded cabbage built into the wrap itself at plate time.",
+    "batchTakeG: chicken 205 g (of the 600 g roast batch) + red cabbage 150 g + carrot 110 g (both from Sunday's shredded-slaw batch). Yoghurt, cucumber, tortilla, sweetheart cabbage and avocado are fresh additions at plate time, not part of the Sunday batch."
   ]
 }

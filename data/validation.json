@@ -75,6 +75,11 @@
     "detail": "owner-rulings.json declares confirmedCount=31; actual un-ruled resolved-by-default entries=31"
   },
   {
+    "name": "plan-targets-match-independent-recompute-from-final-meals",
+    "pass": true,
+    "detail": "plan.json.targets equals a fresh bandsForAllWeeks(meals) recompute (proves targets were built from the FINAL post-overlay meals, not a stale earlier snapshot)."
+  },
+  {
     "name": "decisions-queue-target-30",
     "pass": true,
     "detail": "decisions-queue has 34 entries (target ~30)"

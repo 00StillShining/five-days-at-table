@@ -33,7 +33,7 @@
   "steps": [
     {
       "n": 1,
-      "text": "Sunday's turkey & okra stew — take the lot, 470/590 g (1,060 g total) of the ~1.05 kg batch: turkey (120/160 g), okra (120/150 g), passata (120/140 g), pepper (70/90 g), onion (40/50 g) and the oil (7/9 g) they were cooked in — into a pan on medium with a splash of water. 4 minutes, no more.",
+      "text": "Sunday's turkey & okra stew — take the lot, 477/599 g (1,076 g total) of the ~1.08 kg batch: turkey (120/160 g), okra (120/150 g), passata (120/140 g), pepper (70/90 g), onion (40/50 g) and the oil (7/9 g) they were cooked in — into a pan on medium with a splash of water. 4 minutes, no more.",
       "minutes": 4,
       "tempC": null,
       "track": "stew",
@@ -75,12 +75,14 @@
   "why": "The okra was cooked briefly on Sunday and will not survive a second long heating. Four minutes to warm through — go longer and you get the slime everyone complains about instead of the body it is supposed to give the stew.",
   "batchSource": "prep-b",
   "batchTakeG": {
-    "w": 470,
-    "m": 590,
-    "total": 1060
+    "w": 539,
+    "m": 684,
+    "total": 1223
   },
   "notes": [
-    "PLAN §4 worst-offender fix: this batch lunch previously had no stated portion against Sunday's ~1.05 kg stew. batchTakeG now states the exact take (470/590 g), which matches the Sunday yield exactly (single consumer, zero headroom) — see prep-b.json's yields.headroomNote for the reconciliation (470+590=1,060, matching the op's own ingredient sum of 90+160+280+260+270).",
+    "Reviewer FIX 2 (cycle 1): batchTakeG convention unified to Week A's all-components sum (cf. a-d1l's 715 g = chicken+rice+cauliflower+white sauce). This card draws TWO Sunday components — the stew and the rice — so batchTakeG is their sum, on each component's own raw/dry-weight basis: stew 477/599 g (of the 1,076 g batch, see below) + rice 62/85 g dry (of the 380 g dry batch) = 539/684 g, total 1,223 g. Restated in the step text where each is actually used (step 1: stew; step 3: rice) rather than as a single undifferentiated number, matching a-d1l's 'one honest number and its parts' pattern.",
+    "Reviewer FIX 6 (cycle 1): step 1's 'take the lot' figure previously read 470/590 g (1,060 g total) but its own itemization — once the cooking oil was included — summed to 477/599 g (1,076 g), an internal inconsistency, and prep-b.json's stew op omitted the 16 g oil entirely despite this card's covers table carrying it. Resolved coherently: prep-b.json's op now carries rapeseed_oil (16 g) in its ingredients[] and its yield qty is 1,076 g; this card's stew take is now 477/599 g (1,076 g total), matching its own itemization exactly, and folds into the all-components batchTakeG above as the stew's contribution.",
+    "PLAN §4 worst-offender fix (still applies): this batch lunch previously had no stated portion against Sunday's stew at all. batchTakeG's stew component (477/599 g) matches the Sunday stew yield exactly (single consumer, zero headroom) — see prep-b.json's yields.headroomNote for the full reconciliation.",
     "D0-003: oil (7/9 g) is entirely a Sunday cooking use (sautéing the stew's onion and pepper before the mince, passata and okra go in) — renamed olive_oil -> rapeseed_oil, unchanged grams. It is folded into the batch take at step 1 rather than added fresh at reheat, since it was never a separate ingredient the reheat itself uses.",
     "Two short parallel tracks (stew pan + rice pan warming 'alongside', per the original wording) rather than treating the rice as a strictly sequential afterthought.",
     "freebies carry the Sunday op's own trace seasoning (thyme, stock powder, scotch bonnet) forward with the batch take, same logic as the oil; lime/lemon are this card's own table seasoning."

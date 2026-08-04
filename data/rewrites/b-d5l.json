@@ -101,7 +101,7 @@
   "notes": [
     "D0-003: oil is entirely a raw dressing (mixed into the cold yoghurt dressing, never heated) — stays olive_oil, unchanged.",
     "Lettuce substitution NOT applied: the why-text explicitly says 'a leaf of lettuce is a waterproof layer' — definitively whole-leaf, not shredded. Stays lettuce.",
-    "batchTakeG covers the roast-chicken take (110/145 g of the 760 g Sunday batch, last of three consumers — see prep-b.json for the full 755/760 g reconciliation).",
+    "Reviewer FIX 2 (cycle 1): batchTakeG convention unified to Week A's all-components sum. Reviewed against this card's full covers table — chicken (110/145 g of the 760 g Sunday batch, last of three consumers) is the ONLY Sunday-drawn component here (tomato, bread, avocado, lettuce, yoghurt, cheddar and oil are all fresh, not Sunday-batch). So the all-components sum equals the chicken take alone: batchTakeG unchanged at 110/145/255 g — see prep-b.json for the full three-consumer 755/760 g chicken reconciliation.",
     "Sequential, single-flow card — no meaningful second station running in parallel, so left untracked (track: null throughout) per rule 2."
   ]
 }

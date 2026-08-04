@@ -351,6 +351,40 @@ describe("structural sanity", () => {
     expect(plan.targets.B.m.kcal.length).toBe(2);
   });
 
+  // Fable review cycle 1 FIX: plan.json's bands must be computed from the
+  // FINAL, post-Phase-1-overlay meals.json — not frozen at Phase 0 (before
+  // any rewrite's seasoning/substitution content is folded in). This
+  // recomputes every band completely independently of join.js's own
+  // targets/bandFrom/dayTotalsForWeek functions (a plain reduce here, not a
+  // shared helper) straight from the WRITTEN data/meals.json, and also
+  // asserts every one of the 5 day totals per week/cover actually falls
+  // inside its own band — the exact property the reviewer's evidence
+  // (A-him day 2 busting the ceiling by 97 kcal, etc.) showed broken.
+  it("plan.json's macro bands exactly match an independent recompute from the final data/meals.json, and every day total falls inside its own band", () => {
+    for (const week of ["A", "B"]) {
+      for (const coverKey of ["w", "m"]) {
+        const dayTotals = { kcal: [], protein: [], netCarb: [], fat: [], fibre: [] };
+        for (let day = 1; day <= 5; day++) {
+          const dayMeals = meals.filter((m) => m.week === week && m.day === day);
+          expect(dayMeals.length).toBeGreaterThan(0);
+          const sum = { kcal: 0, protein: 0, netCarb: 0, fat: 0, fibre: 0 };
+          for (const m of dayMeals) {
+            for (const k of Object.keys(sum)) sum[k] += m.macros[coverKey][k];
+          }
+          for (const k of Object.keys(dayTotals)) dayTotals[k].push(Math.round(sum[k] * 10) / 10);
+        }
+        for (const k of Object.keys(dayTotals)) {
+          const independentBand = [Math.floor(Math.min(...dayTotals[k])), Math.ceil(Math.max(...dayTotals[k]))];
+          expect(plan.targets[week][coverKey][k]).toEqual(independentBand);
+          for (const v of dayTotals[k]) {
+            expect(v).toBeGreaterThanOrEqual(independentBand[0]);
+            expect(v).toBeLessThanOrEqual(independentBand[1]);
+          }
+        }
+      }
+    }
+  });
+
   it("validation.json (written by join.js) reports all checksums passing", () => {
     const failed = validation.filter((v) => !v.pass);
     expect(failed).toEqual([]);

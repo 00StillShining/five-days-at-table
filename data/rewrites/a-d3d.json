@@ -30,7 +30,8 @@
     "scotch_bonnet",
     "bay_leaf",
     "stock_powder",
-    "lime"
+    "lime",
+    "pepper_soup_spice"
   ],
   "steps": [
     {
@@ -129,6 +130,7 @@
   "batchTakeG": null,
   "notes": [
     "D0-003: the pan-softening oil (single hot-pan use for onion/pepper) becomes rapeseed_oil.",
-    "Griddle track (plantain) runs in parallel with the soup pan from clock 0, finishing at 0:06 and sitting ready well before the pot's 0:20 finish — the original 20 min time chip only holds if the two happen side by side, not back to back."
+    "Griddle track (plantain) runs in parallel with the soup pan from clock 0, finishing at 0:06 and sitting ready well before the pot's 0:20 finish — the original 20 min time chip only holds if the two happen side by side, not back to back.",
+    "Reviewer FIX (cycle 1): freebies[] was missing pepper_soup_spice despite step 3 using it ('2 tsp pepper soup spice') — id exists in _ingredients.A.json (freebie:true). Added; no macro effect."
   ]
 }

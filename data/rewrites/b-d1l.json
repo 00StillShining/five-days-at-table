@@ -33,7 +33,7 @@
   "steps": [
     {
       "n": 1,
-      "text": "Out of the fridge: Sunday's chicken — take 105/140 g (245 g total) of the ~760 g roast batch — and Sunday's rice — take 55/72 g dry (127 g total) of the 380 g dry batch.",
+      "text": "Out of the fridge: Sunday's chicken — take 105/140 g (245 g total) of the ~760 g roast batch — and Sunday's rice-and-cauliflower — rice 55/72 g dry (127 g total) of the 380 g dry batch, riced cauliflower 130/160 g (290 g total) of the ~810 g raw batch. 662 g all told.",
       "minutes": null,
       "tempC": null,
       "track": null,
@@ -95,13 +95,13 @@
   "why": "Leave the rice alone. Fried rice is made by contact with hot metal, not by stirring — every time you move it you drop the pan temperature and end up steaming it into porridge.",
   "batchSource": "prep-b",
   "batchTakeG": {
-    "w": 105,
-    "m": 140,
-    "total": 245
+    "w": 290,
+    "m": 372,
+    "total": 662
   },
   "notes": [
     "D0-003: oil is a hot-wok cooking use throughout (frying onion, pepper, rice, chicken) — no dressing/finishing use in this dish, so the whole row renames olive_oil -> rapeseed_oil (7/9 g, unchanged grams).",
-    "batchTakeG covers the roast-chicken take only (105/140 g of the 760 g Sunday batch, one of three consumers alongside b-d2l and b-d5l — 755 g taken in total, 5 g headroom, see prep-b.json). This card also draws a second Sunday component, brown rice (55/72 g dry of the 380 g dry batch); its take is stated in step 1 and in prep-b.json's yields rather than in a second batchTakeG field, since the schema carries one batch figure per card.",
+    "Reviewer FIX 2 (cycle 1): batchTakeG convention unified to Week A's all-components sum (cf. a-d1l's 715 g = chicken+rice+cauliflower+white sauce). This card draws THREE Sunday components: chicken 105/140 g (245 g, of the 760 g roast batch, one of three consumers alongside b-d2l and b-d5l — 755 g taken in total, 5 g headroom, see prep-b.json), rice 55/72 g dry (127 g, of the 380 g dry batch) and riced cauliflower 130/160 g (290 g, of the ~810 g raw batch). Sum: 105+55+130=290 her, 140+72+160=372 him, 662 g total — restated in step 1 (chicken + rice + cauliflower named together) and again where each is actually used (rice+cauliflower in step 4, chicken in step 6).",
     "Single wide-pan/wok flow — genuinely sequential, no parallel track markup needed.",
     "No macro drift beyond the oil relabel (identical per100g to olive_oil, zero kcal change)."
   ]

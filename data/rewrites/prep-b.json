@@ -26,7 +26,7 @@
     {
       "clock": "0:10",
       "title": "Pan 1 — turkey and okra stew",
-      "body": "90 g red onion and 160 g red pepper into oil, 5 min. 280 g turkey mince broken up and browned, 5 min. 260 g passata, 200 ml stock, thyme, a pinch of stock powder, scotch bonnet. 12 min. Then 270 g okra in for the LAST 5 MINUTES ONLY.",
+      "body": "90 g red onion and 160 g red pepper into 16 g oil, 5 min. 280 g turkey mince broken up and browned, 5 min. 260 g passata, 200 ml stock, thyme, a pinch of stock powder, scotch bonnet. 12 min. Then 270 g okra in for the LAST 5 MINUTES ONLY.",
       "station": "Hob 1",
       "minutes": 22,
       "tempC": null,
@@ -35,7 +35,8 @@
         { "ingId": "peppers_frozen", "g": 160 },
         { "ingId": "turkey_mince", "g": 280 },
         { "ingId": "passata", "g": 260 },
-        { "ingId": "okra", "g": 270 }
+        { "ingId": "okra", "g": 270 },
+        { "ingId": "rapeseed_oil", "g": 16 }
       ]
     },
     {
@@ -140,10 +141,10 @@
     },
     {
       "component": "Turkey & okra stew",
-      "qty": "~1.05 kg",
+      "qty": "~1.08 kg (1,076 g: the op's 1,060 g of onion/pepper/turkey/passata/okra plus the 16 g oil they were cooked in)",
       "consumers": ["b-d3l"],
       "storage": "Fridge, 4 days",
-      "headroomNote": "Sole consumer b-d3l takes the batch in full (1,060 g exact, per its own ingredient sum) — zero headroom, as expected for a single-consumer yield."
+      "headroomNote": "Sole consumer b-d3l takes the stew in full (477 g her + 599 g him = 1,076 g exact, matching this yield to the gram now that the oil is folded in) — zero headroom, as expected for a single-consumer yield. b-d3l's own batchTakeG also adds Sunday's rice on top (a second, separate yield below), for a combined all-components take of 539/684/1,223 g — see b-d3l.json's notes."
     },
     {
       "component": "Beef koftas",
@@ -207,6 +208,7 @@
   "notes": [
     "totalMin=75 is the clock-derived total (last op at 1:15) per D0-033; sessionName carries the theme prose ('eighty minutes') verbatim — the 5-minute gap is accounted for by this rewrite's own final-op minutes (5), matching D0-033's own reasoning exactly.",
     "Op-level minutes are the task's own real duration (explicit where the body states one — chicken 28, koftas 18, eggs 8, rice 25, chicken-rest 5), not the raw gap to the next op's clock — several ops (chicken, stew, koftas) run unattended in the oven/on the hob while later ops start in parallel, exactly as the Sunday run-order's own clock column already implies.",
-    "'Two jars' op body corrected from the original's 'It appears on Tuesday, twice on Wednesday and again on Friday' to name the actual consumers verified against the two Week B cards that use suya (b-d3d: rub, dip, finishing dust; b-d5s: dip) — no Tuesday card mentions suya anywhere in methods.json. This is a wording clarification, not a gram change; flagged here for the reviewer rather than silently left contradicting the meal-level rewrites."
+    "'Two jars' op body corrected from the original's 'It appears on Tuesday, twice on Wednesday and again on Friday' to name the actual consumers verified against the two Week B cards that use suya (b-d3d: rub, dip, finishing dust; b-d5s: dip) — no Tuesday card mentions suya anywhere in methods.json. This is a wording clarification, not a gram change; flagged here for the reviewer rather than silently left contradicting the meal-level rewrites.",
+    "Reviewer FIX 6 (cycle 1): the 'Pan 1 — turkey and okra stew' op previously had no gram-quantified oil in its structured ingredients[], even though b-d3l's covers table carried a 7/9 g oil row inherited from this op — an internal inconsistency (b-d3l's 'take the lot' figure didn't sum to its own itemization once oil was included). Resolved by adding rapeseed_oil (16 g = the 7/9 g her/him split, matching the same identify-then-split logic used for every other ingredient in this op) to the op's ingredients[] and body text, and updating the stew yield's qty to 1,076 g (was ~1.05 kg / 1,060 g, oil-exclusive) to match."
   ]
 }

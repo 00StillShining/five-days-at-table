@@ -414,7 +414,7 @@
       {
         "clock": "0:10",
         "title": "Pan 1 — turkey and okra stew",
-        "body": "90 g red onion and 160 g red pepper into oil, 5 min. 280 g turkey mince broken up and browned, 5 min. 260 g passata, 200 ml stock, thyme, a pinch of stock powder, scotch bonnet. 12 min. Then 270 g okra in for the LAST 5 MINUTES ONLY.",
+        "body": "90 g red onion and 160 g red pepper into 16 g oil, 5 min. 280 g turkey mince broken up and browned, 5 min. 260 g passata, 200 ml stock, thyme, a pinch of stock powder, scotch bonnet. 12 min. Then 270 g okra in for the LAST 5 MINUTES ONLY.",
         "station": "Hob 1",
         "minutes": 22,
         "tempC": null,
@@ -438,6 +438,10 @@
           {
             "ingId": "okra",
             "g": 270
+          },
+          {
+            "ingId": "rapeseed_oil",
+            "g": 16
           }
         ]
       },
@@ -562,12 +566,12 @@
       },
       {
         "component": "Turkey & okra stew",
-        "qty": "~1.05 kg",
+        "qty": "~1.08 kg (1,076 g: the op's 1,060 g of onion/pepper/turkey/passata/okra plus the 16 g oil they were cooked in)",
         "consumers": [
           "b-d3l"
         ],
         "storage": "Fridge, 4 days",
-        "note": "Sole consumer b-d3l takes the batch in full (1,060 g exact, per its own ingredient sum) — zero headroom, as expected for a single-consumer yield."
+        "note": "Sole consumer b-d3l takes the stew in full (477 g her + 599 g him = 1,076 g exact, matching this yield to the gram now that the oil is folded in) — zero headroom, as expected for a single-consumer yield. b-d3l's own batchTakeG also adds Sunday's rice on top (a second, separate yield below), for a combined all-components take of 539/684/1,223 g — see b-d3l.json's notes."
       },
       {
         "component": "Beef koftas",

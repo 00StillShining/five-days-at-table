@@ -62,9 +62,19 @@ const registerMap = readJSON(path.join(HERE, "register-map.json"));
 
 let decisions = []; // decisions-queue.json accumulator
 let decisionSeq = 0;
+// Returns the pushed entry (a live reference into `decisions`) so callers
+// whose real content isn't known yet at call time (e.g. the targets/plan
+// re-banding decision, whose real numbers only exist after the Phase 1
+// overlay runs) can amend detail/resolvedTo in place later — WITHOUT
+// changing decisionSeq / this call's position in the sequence. Decision
+// IDs are assigned by CALL ORDER and are referenced elsewhere by fixed ID
+// string (tools/extract/owner-rulings.json rules D0-003/030/031 by name) —
+// moving a decide() CALL to fire later would renumber every decision after
+// its original position and silently misapply an owner ruling to the wrong
+// topic. Amend the object in place; never reorder the calls themselves.
 function decide({ topic, detail, options = [], recommendation, status, resolvedTo }) {
   decisionSeq += 1;
-  decisions.push({
+  const entry = {
     id: `D0-${String(decisionSeq).padStart(3, "0")}`,
     topic,
     detail,
@@ -72,7 +82,9 @@ function decide({ topic, detail, options = [], recommendation, status, resolvedT
     recommendation,
     status,
     resolvedTo,
-  });
+  };
+  decisions.push(entry);
+  return entry;
 }
 
 const validation = []; // validation.json accumulator
@@ -1285,10 +1297,18 @@ function parseRange(s) {
   return m ? [+m[1], +m[2]] : null;
 }
 
-function dayTotalsForWeek(week, coverKey) {
+// mealsList is an explicit parameter (not a closure over the module-level
+// `let meals`) precisely so this function can never silently read a stale
+// snapshot depending on where in the file it happens to be called from —
+// see the "Final targets re-banding" section below, which is the ONLY
+// place this is called, deliberately after the Phase 1 overlay has finished
+// mutating `meals` (a Fable review cycle 1 FIX: this used to be called
+// before the overlay, producing kcal bands frozen at pre-seasoning Phase 0
+// values that real post-overlay days then busted).
+function dayTotalsForWeek(mealsList, week, coverKey) {
   const totals = { kcal: [], protein: [], netCarb: [], fat: [], fibre: [] };
   for (let d = 1; d <= 5; d++) {
-    const dayMeals = meals.filter((m) => m.week === week && m.day === d);
+    const dayMeals = mealsList.filter((m) => m.week === week && m.day === d);
     const sum = { kcal: 0, protein: 0, netCarb: 0, fat: 0, fibre: 0 };
     for (const m of dayMeals) {
       for (const k of Object.keys(sum)) sum[k] += m.macros[coverKey][k];
@@ -1306,39 +1326,41 @@ function bandFrom(totals) {
   return band;
 }
 
-const targets = {
-  A: { w: bandFrom(dayTotalsForWeek("A", "w")), m: bandFrom(dayTotalsForWeek("A", "m")) },
-  B: { w: bandFrom(dayTotalsForWeek("B", "w")), m: bandFrom(dayTotalsForWeek("B", "m")) },
-};
-
-{
-  const oldW = {
-    kcal: parseRange(fd5.targets.w.kcal),
-    protein: parseRange(fd5.targets.w.p),
-    fat: parseRange(fd5.targets.w.fat),
-    netCarb: parseRange(fd5.targets.w.c),
-    fibre: parseRange(fd5.targets.w.f),
+function bandsForAllWeeks(mealsList) {
+  return {
+    A: { w: bandFrom(dayTotalsForWeek(mealsList, "A", "w")), m: bandFrom(dayTotalsForWeek(mealsList, "A", "m")) },
+    B: { w: bandFrom(dayTotalsForWeek(mealsList, "B", "w")), m: bandFrom(dayTotalsForWeek(mealsList, "B", "m")) },
   };
-  const oldM = {
-    kcal: parseRange(fd5.targets.m.kcal),
-    protein: parseRange(fd5.targets.m.p),
-    fat: parseRange(fd5.targets.m.fat),
-    netCarb: parseRange(fd5.targets.m.c),
-    fibre: parseRange(fd5.targets.m.f),
-  };
-  decide({
-    topic: "re-banded macro targets per week, old vs new (D10)",
-    detail:
-      `Old targets (fd5.json D.targets, single fixed band applied to whichever week is active): her cover ${JSON.stringify(oldW)}, him cover ${JSON.stringify(oldM)}. ` +
-      `New targets (recomputed: band = [floor(min-of-5-recomputed-day-totals), ceil(max-of-5-recomputed-day-totals)], PER WEEK, from meals.json's own recomputed macros): ` +
-      `Week A her ${JSON.stringify(targets.A.w)}, him ${JSON.stringify(targets.A.m)}; Week B her ${JSON.stringify(targets.B.w)}, him ${JSON.stringify(targets.B.m)}. ` +
-      `Week A's new kcal band reflects the D10 avocado-drop (slightly higher than fd5's old band on the days it touches). Week B, never checked against a per-week band before (fd5.json only ever published ONE combined-week band), now has its own explicit band for the first time.`,
-    options: ["Keep the single old fixed band for both weeks", "Re-band per week from the 5 recomputed day totals (D10, chosen)"],
-    recommendation: "As chosen — plan.json.targets is now {A:{w,m}, B:{w,m}}, four independent bands instead of one shared pair.",
-    status: "resolved-by-default",
-    resolvedTo: "plan.json.targets holds the 4 recomputed bands; old fd5.json bands preserved only in this decisions-queue entry.",
-  });
 }
+
+// The ACTUAL `targets`/`plan` objects are assembled further down, in
+// "Final targets re-banding + plan assembly", AFTER the Phase 1 overlay
+// section — never here, since re-banding must read final (post-overlay)
+// meals.json (Fable review cycle 1 FIX). But the DECIDE() CALL for this
+// topic fires HERE, at its original sequence position, so its id (D0-026)
+// never shifts and every decision after it keeps its own id too — decide()
+// ids are assigned by call order and tools/extract/owner-rulings.json
+// references D0-003/030/031 by that exact id string, so nothing may ever
+// reorder relative to what fired before/after it. `targetsDecision` is a
+// live reference into the decisions array; its detail/resolvedTo text is
+// amended in place once the real post-overlay numbers exist, further down.
+// NOTE: only the ID is trustworthy to hold onto across that gap, not the
+// object reference itself — the owner-rulings overlay (which runs before
+// the meal-rewrite overlay, further down) reassigns `decisions` to a FRESH
+// array of copies (applyOwnerRulings maps every entry, including this one,
+// to stamp resolvedBy), so the object decide() returns here gets orphaned;
+// mutating it later would silently vanish. The amendment step below looks
+// the entry up by id from whatever `decisions` currently IS, not from this
+// stale reference.
+const targetsDecisionId = decide({
+  topic: "re-banded macro targets per week, old vs new (D10)",
+  detail:
+    "Placeholder — this decide() call fires here (preserving its D0-026 id) purely to hold its sequence position; the real per-week band numbers only exist after the Phase 1 rewrite-overlay section runs (data/rewrites/*, tools/extract/approvals.json), since a seasoning-weighed or D0-003-substituted meal legitimately changes its day's kcal total. See the amended text further down in this same entry (join.js looks this entry up by id and amends it in place right after computing final targets/plan) — if you are reading this exact sentence in data/decisions-queue.json, the amendment step did not run and something is wrong.",
+  options: ["Keep the single old fixed band for both weeks", "Re-band per week from the 5 recomputed day totals (D10, chosen)"],
+  recommendation: "Placeholder — amended after the overlay runs.",
+  status: "resolved-by-default",
+  resolvedTo: "Placeholder — amended after the overlay runs.",
+}).id;
 
 {
   const basketMain = shoppinglist.shops.reduce((s, sh) => s + parseFloat(sh.subtotalShown.replace("£", "")), 0);
@@ -1352,17 +1374,6 @@ const targets = {
     perPersonPerDay: { amount: +(fortnightTotal / 14 / 2).toFixed(2), basis: `£${fortnightTotal.toFixed(2)} ÷ 14 days ÷ 2 people` },
   };
 }
-
-const plan = {
-  variant: "a-twice",
-  targets,
-  shops: fd5.shops,
-  days: fd5.days,
-  themes: fd5.themes,
-  train: fd5.train,
-  notes: fd5.notes,
-  economics,
-};
 
 {
   const s = shoppinglist.shops.reduce((acc, sh) => ({ ...acc, [sh.code]: parseFloat(sh.subtotalShown.replace("£", "")) }), {});
@@ -1660,6 +1671,90 @@ const freebieIdsFromMeals = new Set();
     if (approved === s.approved) return s;
     return { ...s, approved };
   });
+}
+
+// ---------------------------------------------------------------------------
+// Final targets re-banding + plan assembly — MUST run here, after every
+// overlay step above (meal rewrites, freebie flips, prep rewrites), never
+// earlier. Fable review cycle 1 FIX: this used to run before the overlay
+// (right after Phase 0's own `const meals = [...]` build), so plan.json's
+// bands were frozen at pre-seasoning Phase 0 kcal — honest post-overlay
+// days (seasonings weighed in, D0-003 substitutions applied) then legitimately
+// busted those stale ceilings/floors. `meals`/`prep` here are the FINAL,
+// fully-overlaid arrays (whatever mix of rev A/rev B that turned out to be,
+// independent of which specific meals the two rewriters had finished at
+// any given moment — every day's total is read fresh from `meals` at this
+// point, not accumulated incrementally).
+// ---------------------------------------------------------------------------
+
+const targets = bandsForAllWeeks(meals);
+
+{
+  const oldW = {
+    kcal: parseRange(fd5.targets.w.kcal),
+    protein: parseRange(fd5.targets.w.p),
+    fat: parseRange(fd5.targets.w.fat),
+    netCarb: parseRange(fd5.targets.w.c),
+    fibre: parseRange(fd5.targets.w.f),
+  };
+  const oldM = {
+    kcal: parseRange(fd5.targets.m.kcal),
+    protein: parseRange(fd5.targets.m.p),
+    fat: parseRange(fd5.targets.m.fat),
+    netCarb: parseRange(fd5.targets.m.c),
+    fibre: parseRange(fd5.targets.m.f),
+  };
+  const rewrittenMealCount = meals.filter((m) => m.method.rev === "B").length;
+  // Amend the SAME decision entry decide() pushed at its original sequence
+  // position (see `targetsDecisionId` above, ~line 1330) — looked up by id
+  // from whatever `decisions` currently IS (not the stale object decide()
+  // originally returned — the owner-rulings overlay already replaced the
+  // whole array with fresh copies by this point). This must be a mutation
+  // of the existing entry, never a new decide() call, or every id after it
+  // would shift (see decide()'s own comment). topic/options/status are
+  // already correct from the placeholder; only the numbers-bearing prose
+  // changes.
+  const targetsDecision = decisions.find((d) => d.id === targetsDecisionId);
+  targetsDecision.detail =
+    `Old targets (fd5.json D.targets, single fixed band applied to whichever week is active): her cover ${JSON.stringify(oldW)}, him cover ${JSON.stringify(oldM)}. ` +
+    `New targets (recomputed: band = [floor(min-of-5-recomputed-day-totals), ceil(max-of-5-recomputed-day-totals)], PER WEEK, from meals.json's own recomputed macros): ` +
+    `Week A her ${JSON.stringify(targets.A.w)}, him ${JSON.stringify(targets.A.m)}; Week B her ${JSON.stringify(targets.B.w)}, him ${JSON.stringify(targets.B.m)}. ` +
+    `Week A's new kcal band reflects the D10 avocado-drop (slightly higher than fd5's old band on the days it touches). Week B, never checked against a per-week band before (fd5.json only ever published ONE combined-week band), now has its own explicit band for the first time. ` +
+    `Fable review cycle 1 FIX: this recompute is deliberately positioned AFTER the Phase 1 rewrite-overlay section (data/rewrites/*, tools/extract/approvals.json) runs, not before it — the bands reflect whatever the FINAL meals.json actuals are at write time (${rewrittenMealCount}/${meals.length} meals currently carry a Phase 1 rewrite, rev "B"; the rest remain Phase 0 rev "A"), including any weighed-in seasonings and D0-003 substitutions. If run again after more rewrites land or content changes, these bands are recomputed fresh from whatever data/rewrites/* contains at that time — they are never frozen at a prior state. (This decide() call itself still fires at its original D0-026 sequence position, before the overlay runs, so every decision id stays stable; only this text is amended in place once the real numbers exist — see decide()'s own comment.)`;
+  targetsDecision.recommendation = "As chosen — plan.json.targets is now {A:{w,m}, B:{w,m}}, four independent bands instead of one shared pair, recomputed from final (post-overlay) meals.json.";
+  targetsDecision.resolvedTo = "plan.json.targets holds the 4 recomputed bands, computed from final meals.json (post Phase 1 overlay); old fd5.json bands preserved only in this decisions-queue entry.";
+}
+
+const plan = {
+  variant: "a-twice",
+  targets,
+  shops: fd5.shops,
+  days: fd5.days,
+  themes: fd5.themes,
+  train: fd5.train,
+  notes: fd5.notes,
+  economics,
+};
+
+{
+  // Independent recompute proof (Fable review cycle 1 FIX requirement):
+  // rebuild the bands a second time, from `meals` as it stands right here,
+  // via the exact same pure functions — but called fresh at THIS point in
+  // the file rather than trusting whatever `targets` was assigned above.
+  // This is the regression guard against the exact bug just fixed: if
+  // targets/plan assembly ever gets moved back before the overlay (or the
+  // overlay ever mutates `meals` again after this point without updating
+  // `targets`), this check fails loudly instead of silently shipping stale
+  // bands.
+  const independentTargets = bandsForAllWeeks(meals);
+  const bandsMatch = JSON.stringify(independentTargets) === JSON.stringify(plan.targets);
+  check(
+    "plan-targets-match-independent-recompute-from-final-meals",
+    bandsMatch,
+    bandsMatch
+      ? "plan.json.targets equals a fresh bandsForAllWeeks(meals) recompute (proves targets were built from the FINAL post-overlay meals, not a stale earlier snapshot)."
+      : `MISMATCH — plan.targets=${JSON.stringify(plan.targets)} vs independent recompute=${JSON.stringify(independentTargets)}. This means targets/plan assembly ran before some later mutation of \`meals\` — it must run last, after every overlay step.`
+  );
 }
 
 // ---------------------------------------------------------------------------

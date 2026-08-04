@@ -93,6 +93,6 @@
   "notes": [
     "D0-003: this dish's oil is entirely a raw dressing (whisked before any heat and used to dress, never poured into a hot pan) — stays olive_oil, unchanged, no rename.",
     "D0-003: lettuce -> sweetheart_cabbage applied. This is a chopped bowl salad (beans, corn, diced onion/tomato) rather than whole/torn leaves, matching the substitution note's own 'the bowls' category — id and grams unchanged (70/80 g), macro impact negligible (~7-8 kcal/cover, cabbage's per100g runs slightly higher than lettuce's).",
-    "batchTakeG covers the roast-chicken take (110/145 g of the 760 g Sunday batch, second of three consumers — see prep-b.json for the full 755/760 g reconciliation)."
+    "Reviewer FIX 2 (cycle 1): batchTakeG convention unified to Week A's all-components sum. Reviewed against this card's full covers table — chicken (110/145 g of the 760 g Sunday batch, second of three consumers) is the ONLY Sunday-drawn component here (black beans, tomato, salsa, avocado, sweetcorn, onion, sweetheart cabbage and oil are all fresh/tinned, not Sunday-batch). So the all-components sum equals the chicken take alone: batchTakeG unchanged at 110/145/255 g — see prep-b.json for the full three-consumer 755/760 g chicken reconciliation."
   ]
 }
