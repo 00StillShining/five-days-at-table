@@ -4,7 +4,12 @@ export interface PaddleOption {
 }
 
 export interface PaddleProps {
-  /** Accessible subject of the switch, e.g. "week" or "cover". */
+  /**
+   * Accessible subject of the switch, e.g. "week" or "cover". Stays constant across
+   * toggles — atlas §4.4's switch rule requires "an unchanging label and programmatic
+   * checked state". The current VALUE (a/b, her/him) is announced separately by the
+   * caller via a shared live region, since plain on/off doesn't convey it.
+   */
   name: string;
   /** false = optionA is active, true = optionB is active. */
   checked: boolean;
@@ -21,14 +26,12 @@ export interface PaddleProps {
  * never by color alone.
  */
 export function Paddle({ name, checked, optionA, optionB, onToggle, disabled }: PaddleProps) {
-  const current = checked ? optionB : optionA;
-  const other = checked ? optionA : optionB;
   return (
     <button
       type="button"
       role="switch"
       aria-checked={checked}
-      aria-label={`${name}: ${current.label}. activate to switch to ${other.label}`}
+      aria-label={name}
       className="fd5-control fd5-paddle"
       data-pos={checked ? "b" : "a"}
       onClick={onToggle}

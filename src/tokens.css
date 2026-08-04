@@ -56,6 +56,7 @@ body {
   line-height: 1.5;
   color: var(--sol-text);
   background: var(--sol-bg);
+  font-variant-numeric: tabular-nums; /* Sol §4.2 type scale: tabular lining figures on all data */
 }
 
 .fd5,
@@ -228,6 +229,13 @@ body {
   line-height: 1;
 }
 
+.fd5-topbar-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
 .fd5-paddles {
   display: flex;
   flex-wrap: wrap;
@@ -238,6 +246,21 @@ body {
   flex: 1;
   padding: 1rem;
   min-width: 0;
+}
+
+/*
+  COOK lid-closed: the scene must be an edge-to-edge dark panel below the exit rail,
+  at every viewport. Drop the chassis's own padding and let the mounted scene's root
+  (its only direct child) stretch to fill all remaining vertical space itself.
+*/
+.fd5-frame[data-lidclosed] .fd5-scene {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.fd5-frame[data-lidclosed] .fd5-scene > * {
+  flex: 1;
 }
 
 
@@ -348,7 +371,9 @@ body {
 }
 
 .fd5-exit-tab {
-  padding-inline: 1rem;
+  /* THE cook control (wet hands) — PLAN §6.1 requires >=56px here, not the 44px house default. */
+  min-block-size: var(--fd-target-list);
+  padding-inline: 1.5rem;
 }
 
 /* --- Mobile: rail moves to bottom, full-width, 64px keys, safe-area padding --- */
@@ -370,12 +395,13 @@ body {
   }
 
   .fd5-scene {
-    padding-bottom: calc(4rem + env(safe-area-inset-bottom, 0px) + 1.5rem);
+    /* Reserve the fixed rail's full footprint: 64px keys + rail-keys padding + border
+       + safe-area, rounded up with headroom rather than summed exactly. */
+    padding-bottom: calc(6rem + env(safe-area-inset-bottom, 0px));
   }
 
-  .fd5-frame[data-lidclosed] .fd5-scene {
-    padding-bottom: 1rem;
-  }
+  /* [data-lidclosed] .fd5-scene { padding: 0 } above already wins here (higher
+     specificity than this media query's plain .fd5-scene rule) — no override needed. */
 }
 
 /* ---------------------------------------------------------------------- */
@@ -618,7 +644,9 @@ body {
 }
 
 .fd5-scene-cook {
-  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 1rem;
 }
 
@@ -647,5 +675,13 @@ body {
   }
   .fd5-arbiter {
     border: 2px solid ButtonText;
+  }
+  /* Fill-only dots vanish when forced-colors strips background-color — give them an
+     explicit system-color fill + outline so they stay visible. */
+  .fd5-cycle-cursor,
+  .fd5-key-pulse {
+    background: Highlight;
+    border: 1px solid ButtonText;
+    forced-color-adjust: none;
   }
 }

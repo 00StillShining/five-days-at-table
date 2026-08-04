@@ -1,0 +1,385 @@
+/*
+  TODAY — duty deck (PLAN §6.3). Scoped entirely under .scr-today per
+  docs/PHASE2-CONTRACT.md conventions; nothing here touches tokens.css or any
+  other screen's classes. Silkscreen lowercase labels throughout (the app-wide
+  playful-technical convention already used by the chassis' own Key/Paddle
+  labels); the one engraved precision note is the ladder band-bracket (§6.0).
+  No metals/gradients/glows anywhere (Phase 2 flat law) and no animated fills
+  (reduced-motion requirement) — every state change here is an instant
+  React re-render, never a CSS transition on a meaningful value.
+*/
+
+.scr-today {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-width: 40rem;
+  margin: 0 auto;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Header: dateline + day pads                                            */
+/* ---------------------------------------------------------------------- */
+
+.scr-today-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.scr-today-dateline {
+  margin: 0;
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-transform: lowercase;
+}
+
+.scr-today-pads {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 0.375rem;
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.scr-today-pad {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.375rem 0.5rem;
+  min-width: 2.25rem;
+  border: 1px solid var(--sol-border);
+  background: var(--sol-panel);
+}
+
+.scr-today-pad--today {
+  outline: var(--sol-focus-width) solid var(--sol-focus);
+  outline-offset: 2px;
+}
+
+.scr-today-pad-num {
+  font-family: var(--sol-font-data);
+  font-size: 0.8125rem;
+}
+
+.scr-today-pad-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid var(--sol-border);
+  background: transparent;
+}
+
+.scr-today-pad--done .scr-today-pad-dot {
+  background: var(--sol-success);
+  border-color: var(--sol-success);
+}
+
+@media (max-width: 700px) {
+  .scr-today-pads {
+    scrollbar-width: thin;
+  }
+}
+
+/* ---------------------------------------------------------------------- */
+/* Onboarding card (prefs.cycleStartSaturday === null)                    */
+/* ---------------------------------------------------------------------- */
+
+.scr-today-onboard {
+  border: 1px solid var(--sol-border);
+  background: var(--sol-panel);
+  padding: 0.875rem 1rem;
+}
+
+.scr-today-onboard-title {
+  margin: 0 0 0.25rem;
+  font-weight: 700;
+  text-transform: lowercase;
+}
+
+.scr-today-onboard-body {
+  margin: 0;
+  color: var(--sol-text-muted);
+  font-size: var(--sol-text-label);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Sections                                                                */
+/* ---------------------------------------------------------------------- */
+
+.scr-today-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.scr-today-h {
+  margin: 0;
+  font-size: var(--sol-text-label);
+  text-transform: lowercase;
+  color: var(--sol-text-muted);
+  letter-spacing: 0.03em;
+}
+
+.scr-today-empty {
+  margin: 0;
+  padding: 0.75rem;
+  border: 1px dashed var(--sol-border);
+  color: var(--sol-text-muted);
+  text-transform: lowercase;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Duty stack rows                                                        */
+/* ---------------------------------------------------------------------- */
+
+.scr-today-duty-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--sol-border);
+}
+
+.scr-today-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 2.75rem; /* 44px house target */
+  padding: 0.5rem 0.75rem;
+  background: var(--sol-panel);
+}
+
+.scr-today-row + .scr-today-row {
+  border-top: 1px solid var(--sol-border);
+}
+
+.scr-today-row--danger {
+  border-left: 4px solid var(--sol-danger);
+}
+
+.scr-today-row--warning {
+  border-left: 4px solid var(--sol-warning);
+}
+
+.scr-today-row-text {
+  flex: 1;
+  min-width: 0;
+  text-transform: lowercase;
+}
+
+.scr-today-row-meta {
+  font-family: var(--sol-font-data);
+  font-size: var(--sol-text-label);
+  color: var(--sol-text-muted);
+  white-space: nowrap;
+}
+
+.scr-today-row-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 0.75rem;
+  text-decoration: none;
+  text-transform: lowercase;
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Tonight card                                                           */
+/* ---------------------------------------------------------------------- */
+
+.scr-today-tonight {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid var(--sol-border);
+  background: var(--sol-panel);
+  padding: 0.75rem;
+}
+
+.scr-today-tonight-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-weight: 700;
+  text-transform: lowercase;
+}
+
+.scr-today-tonight-time {
+  font-family: var(--sol-font-data);
+  font-size: var(--sol-text-label);
+  color: var(--sol-text-muted);
+  white-space: nowrap;
+}
+
+.scr-today-tonight-cook {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 1rem;
+  text-decoration: none;
+  text-transform: lowercase;
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Weekend guidance line                                                  */
+/* ---------------------------------------------------------------------- */
+
+.scr-today-weekend-note {
+  margin: 0;
+  padding: 0.75rem;
+  border: 1px solid var(--sol-border);
+  background: var(--sol-panel);
+  font-weight: 700;
+  text-transform: lowercase;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Ticks row                                                              */
+/* ---------------------------------------------------------------------- */
+
+.scr-today-ticks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.scr-today-tick {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.5rem 0.25rem;
+  text-transform: lowercase;
+}
+
+/* Compound selector (not just `.scr-today-tick--on`): tokens.css' shared
+   `.fd5-control` base rule also sets `background` at equal (0,1,0)
+   specificity, and which of the two wins on a tie depends on <style>
+   injection order (Vite HMR has been observed to reorder it) — pairing both
+   classes here (0,2,0) makes the state win deterministically regardless. */
+.scr-today-tick.scr-today-tick--on {
+  background: var(--sol-success);
+  color: #ffffff;
+  border-color: var(--sol-success);
+}
+
+.scr-today-tick-glyph {
+  font-size: 1rem;
+  line-height: 1;
+  min-height: 1em; /* reserve space so the glyph appearing doesn't shift the label */
+}
+
+.scr-today-tick-label {
+  font-size: var(--sol-text-label);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Console — the LED meter bridge hero                                    */
+/* ---------------------------------------------------------------------- */
+
+.scr-today-ladders {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem 1.25rem;
+  border: 1px solid var(--sol-border);
+  background: var(--sol-panel);
+  padding: 1rem;
+}
+
+.scr-today-ladder {
+  display: grid;
+  grid-template-columns: 3rem 1fr auto;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.scr-today-ladder-label {
+  font-size: var(--sol-text-label);
+  text-transform: lowercase;
+  color: var(--sol-text-muted);
+}
+
+.scr-today-ladder-graphic {
+  display: grid;
+  grid-template-columns: repeat(20, 1fr);
+  grid-template-rows: 1rem 4px;
+  column-gap: 2px;
+  row-gap: 3px;
+  min-width: 0;
+}
+
+.scr-today-seg {
+  grid-row: 1;
+  border: 1px solid var(--sol-border);
+  background: var(--sol-bg);
+}
+
+.scr-today-seg--on {
+  background: var(--ladder-channel);
+  border-color: var(--ladder-channel);
+}
+
+.scr-today-seg--hollow {
+  background: transparent;
+  border: 1px solid var(--ladder-channel);
+}
+
+.scr-today-ladder-bracket {
+  grid-row: 2;
+  align-self: start;
+  height: 0;
+  border-top: 2px solid var(--sol-text);
+}
+
+.scr-today-ladder-value {
+  font-family: var(--sol-font-data);
+  font-size: var(--sol-text-label);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .scr-today-ladders {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------------------------------------------------------------------- */
+/* Forced-colors: keep segment/bracket state visible without relying on   */
+/* the author palette (Sol §4.2 forced-colors block, chassis convention). */
+/* ---------------------------------------------------------------------- */
+
+@media (forced-colors: active) {
+  .scr-today-pad--today {
+    outline-color: Highlight;
+  }
+  .scr-today-seg,
+  .scr-today-ladder-bracket,
+  .scr-today-row--danger,
+  .scr-today-row--warning {
+    forced-color-adjust: none;
+    border-color: ButtonText;
+  }
+  .scr-today-seg--on {
+    background: ButtonText;
+  }
+  .scr-today-tick.scr-today-tick--on {
+    forced-color-adjust: none;
+    background: Highlight;
+    color: HighlightText;
+  }
+}

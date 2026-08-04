@@ -33,14 +33,36 @@ export function parseHash(hash: string): Route | null {
   return { screen: screen as ScreenId, params: {} };
 }
 
+const LONDON_TIME_ZONE = "Europe/London";
+const WEEKDAY_INDEX: Record<string, number> = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+
+const londonPartsFormatter = new Intl.DateTimeFormat("en-GB", {
+  timeZone: LONDON_TIME_ZONE,
+  weekday: "short",
+  hour: "2-digit",
+  hourCycle: "h23",
+});
+
+/**
+ * The household's weekday/hour in Europe/London, independent of the device's own
+ * timezone (matches the masthead's date formatting — PHASE2-CONTRACT conventions:
+ * "Dates: Europe/London"). Without this, a builder or owner travelling abroad would
+ * see the cycle cursor suggest the wrong day.
+ */
+function londonParts(now: Date): { day: number; hour: number } {
+  const parts = londonPartsFormatter.formatToParts(now);
+  const weekday = parts.find((p) => p.type === "weekday")?.value ?? "";
+  const hour = parts.find((p) => p.type === "hour")?.value ?? "0";
+  return { day: WEEKDAY_INDEX[weekday] ?? now.getDay(), hour: Number(hour) };
+}
+
 /**
  * The cycle cursor's suggested station, derived from weekday only (SOL-BRIEF §1 /
  * PLAN §6.2): Sat -> shop, Sun -> cook, Mon-Fri -> today, Fri evening (>=17:00) ->
  * stores. Advisory only — it never reorders or hides rail keys.
  */
 export function stationForDate(now: Date): RailScreenId {
-  const day = now.getDay(); // 0 = Sunday ... 6 = Saturday
-  const hour = now.getHours();
+  const { day, hour } = londonParts(now); // 0 = Sunday ... 6 = Saturday
   if (day === 6) return "shop";
   if (day === 0) return "cook";
   if (day === 5 && hour >= 17) return "stores";

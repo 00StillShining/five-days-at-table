@@ -1,0 +1,582 @@
+/*
+  FD-5 · MEAL screen (src/screens/meal/**)
+  Scoped by `.scr-meal` per PHASE2-CONTRACT conventions. Reads tokens.css's
+  `.fd5` custom properties (this subtree always lives inside the app-wide
+  playful-technical light scope — MEAL never overrides data-language).
+  Lean: playful-technical, precision borrowed only on the portion knob hero
+  (PLAN §6.0) — flat rendering, no gradients/metals (Phase 3 polish only).
+*/
+
+.scr-meal {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-width: 52rem;
+  margin: 0 auto;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Header                                                                  */
+/* ---------------------------------------------------------------------- */
+
+.scr-meal-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.scr-meal-kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-family: var(--sol-font-data);
+  font-size: var(--sol-text-label);
+  color: var(--sol-text-muted);
+  text-transform: lowercase;
+}
+
+.scr-meal-tag {
+  padding: 0.05rem 0.5rem;
+  border: 1px solid var(--sol-border);
+  background: var(--sol-panel);
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+}
+
+.scr-meal-tag[data-tag="batch"] {
+  color: var(--sol-accent);
+  border-color: var(--sol-accent);
+}
+
+.scr-meal-title {
+  margin: 0;
+  font-size: 1.75rem;
+  line-height: 1.15;
+}
+
+.scr-meal-origin {
+  margin: 0;
+  color: var(--sol-text-muted);
+  font-size: var(--sol-text-label);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Hero: the portion knob                                                  */
+/* ---------------------------------------------------------------------- */
+
+.scr-meal-hero {
+  display: flex;
+  justify-content: center;
+  padding: 1.25rem 1rem;
+  background: var(--sol-panel);
+  border: 1px solid var(--sol-border);
+}
+
+.mk-portion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 22rem;
+}
+
+.mk-portion-label {
+  margin: 0;
+  font-size: var(--sol-text-label);
+  color: var(--sol-text-muted);
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+}
+
+.mk-portion-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.875rem;
+}
+
+.mk-step {
+  border-radius: 50%;
+  font-size: 1.25rem;
+  line-height: 1;
+  padding: 0;
+  flex: 0 0 auto;
+}
+
+.mk-knob {
+  width: 7.5rem;
+  height: 7.5rem;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  touch-action: none;
+  cursor: pointer;
+}
+
+.mk-knob:focus-visible {
+  outline: var(--sol-focus-width) solid var(--sol-focus);
+  outline-offset: 3px;
+  border-radius: 50%;
+}
+
+.mk-face {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.mk-body {
+  fill: var(--sol-panel);
+  stroke: var(--sol-border);
+  stroke-width: 1.5;
+}
+
+.mk-tick {
+  stroke: var(--sol-border);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.mk-tick[data-active] {
+  stroke: var(--sol-accent);
+  stroke-width: 2.5;
+}
+
+.mk-index-dot {
+  fill: var(--sol-accent);
+}
+
+.mk-arc-label {
+  font-family: var(--sol-font-data);
+  font-size: 6px;
+  fill: var(--sol-text-muted);
+}
+
+.mk-portion-readout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.mk-readout {
+  font-family: var(--sol-font-data);
+  font-size: 1.375rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.mk-typed-label {
+  font-size: var(--sol-text-label);
+  color: var(--sol-text-muted);
+  text-transform: lowercase;
+}
+
+.mk-typed-input {
+  width: 5rem;
+  font-family: var(--sol-font-data);
+  text-align: center;
+  padding: 0.25rem 0.4rem;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Covers (both sides side by side on desktop; toggled stack on mobile)    */
+/* ---------------------------------------------------------------------- */
+
+.scr-meal-cover-toggle {
+  display: none;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+}
+
+.scr-meal-cover-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.scr-meal-cover {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--sol-panel);
+  border: 1px solid var(--sol-border);
+  min-width: 0;
+}
+
+.scr-meal-cover-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.scr-meal-cover-title {
+  margin: 0;
+  font-size: 1rem;
+  text-transform: lowercase;
+}
+
+.scr-meal-cover-scale {
+  font-family: var(--sol-font-data);
+  font-size: 0.6875rem;
+  color: var(--sol-text-muted);
+}
+
+.scr-meal-macro-strip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.625rem 0.5rem;
+  background: var(--sol-bg);
+  border: 1px solid var(--sol-border);
+}
+
+.scr-meal-macro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.scr-meal-macro-label {
+  margin: 0;
+  font-size: 0.625rem;
+  text-transform: lowercase;
+  color: var(--sol-text-muted);
+  white-space: nowrap;
+}
+
+.scr-meal-macro-value {
+  margin: 0;
+  font-family: var(--sol-font-data);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.scr-meal-macro[data-channel="protein"] .scr-meal-macro-value {
+  color: var(--fd-ch-protein);
+}
+.scr-meal-macro[data-channel="fat"] .scr-meal-macro-value {
+  color: var(--fd-ch-fat);
+}
+.scr-meal-macro[data-channel="carb"] .scr-meal-macro-value {
+  color: var(--fd-ch-carb);
+}
+.scr-meal-macro[data-channel="fibre"] .scr-meal-macro-value {
+  color: var(--fd-ch-fibre);
+}
+
+.scr-meal-ing-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.scr-meal-ing-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.5rem;
+  row-gap: 0.15rem;
+  padding: 0.5rem 0;
+  border-top: 1px solid var(--sol-border);
+}
+
+.scr-meal-ing-row:first-child {
+  border-top: none;
+}
+
+.scr-meal-ing-name {
+  flex: 1 1 8rem;
+  min-width: 0;
+}
+
+.scr-meal-ing-g {
+  font-family: var(--sol-font-data);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.scr-meal-ing-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: var(--sol-text-label);
+  color: var(--sol-text-muted);
+  white-space: nowrap;
+}
+
+.scr-meal-ing-row .mk-stock {
+  flex-basis: 100%;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: var(--sol-text-label);
+}
+
+.mk-stock-glyph {
+  font-size: 0.9rem;
+  line-height: 1;
+  color: var(--sol-text-muted);
+}
+
+.mk-stock[data-instock] .mk-stock-glyph,
+.mk-stock[data-instock] .mk-stock-text {
+  color: var(--sol-success);
+}
+
+.mk-stock-text {
+  color: var(--sol-text-muted);
+}
+
+.mk-stock--pantry .mk-stock-glyph,
+.mk-stock--pantry .mk-stock-text {
+  color: var(--sol-text-muted);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Batch card                                                              */
+/* ---------------------------------------------------------------------- */
+
+.scr-meal-batch {
+  padding: 1rem;
+  background: var(--sol-panel);
+  border: 1px solid var(--sol-border);
+}
+
+.scr-meal-section-title {
+  margin: 0 0 0.5rem;
+  font-size: 0.9375rem;
+  text-transform: lowercase;
+}
+
+.scr-meal-batch-take {
+  margin: 0 0 0.35rem;
+}
+
+.scr-meal-batch-total {
+  font-family: var(--sol-font-data);
+  font-variant-numeric: tabular-nums;
+}
+
+.scr-meal-batch-split {
+  color: var(--sol-text-muted);
+  font-family: var(--sol-font-data);
+  font-size: var(--sol-text-label);
+}
+
+.scr-meal-batch-source {
+  margin: 0;
+  color: var(--sol-text-muted);
+  font-size: var(--sol-text-label);
+}
+
+.scr-meal-batch-list {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--sol-text-muted);
+  font-size: var(--sol-text-label);
+}
+
+.scr-meal-batch-qty {
+  font-family: var(--sol-font-data);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Method preview                                                          */
+/* ---------------------------------------------------------------------- */
+
+.scr-meal-method {
+  padding: 1rem;
+  background: var(--sol-panel);
+  border: 1px solid var(--sol-border);
+}
+
+.scr-meal-method-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.scr-meal-method-head .scr-meal-section-title {
+  margin: 0;
+  flex: 1 1 auto;
+}
+
+.scr-meal-rev {
+  font-family: var(--sol-font-data);
+  font-size: 0.625rem;
+  color: var(--sol-text-muted);
+}
+
+.scr-meal-unapproved {
+  font-size: 0.6875rem;
+  color: var(--sol-warning);
+  border: 1px solid var(--sol-warning);
+  padding: 0.05rem 0.4rem;
+}
+
+.scr-meal-method-note {
+  margin: 0 0 0.75rem;
+  font-size: var(--sol-text-label);
+  color: var(--sol-text-muted);
+}
+
+.scr-meal-steps {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.scr-meal-step {
+  display: flex;
+  gap: 0.625rem;
+}
+
+.scr-meal-step-n {
+  flex: 0 0 auto;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--sol-font-data);
+  font-size: 0.75rem;
+  border: 1px solid var(--sol-border);
+  color: var(--sol-text-muted);
+}
+
+.scr-meal-step-body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.scr-meal-step-text {
+  margin: 0 0 0.25rem;
+}
+
+.scr-meal-step-meta {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.scr-meal-step-tag {
+  font-family: var(--sol-font-data);
+  font-size: 0.625rem;
+  text-transform: lowercase;
+  color: var(--sol-text-muted);
+  border: 1px solid var(--sol-border);
+  padding: 0.05rem 0.35rem;
+}
+
+.scr-meal-why {
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--sol-border);
+}
+
+.scr-meal-why-title {
+  margin: 0 0 0.25rem;
+  font-size: 0.8125rem;
+  text-transform: lowercase;
+  color: var(--sol-text-muted);
+}
+
+.scr-meal-why p {
+  margin: 0;
+}
+
+.scr-meal-cook-link {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Error state (unknown meal id)                                           */
+/* ---------------------------------------------------------------------- */
+
+.scr-meal--error {
+  align-items: center;
+  text-align: center;
+  gap: 0.75rem;
+  padding: 2.5rem 1.5rem;
+  background: var(--sol-panel);
+  border: 1px solid var(--sol-border);
+  max-width: 28rem;
+  margin: 2rem auto;
+}
+
+.scr-meal-error-kicker {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-transform: lowercase;
+}
+
+.scr-meal-error-id {
+  margin: 0;
+  font-family: var(--sol-font-data);
+  font-size: var(--sol-text-label);
+  color: var(--sol-text-muted);
+}
+
+.scr-meal-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 1rem;
+  text-decoration: none;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Mobile: single cover column + paddle toggle (PLAN §6.5)                 */
+/* ---------------------------------------------------------------------- */
+
+@media (max-width: 700px) {
+  .scr-meal-cover-toggle {
+    display: flex;
+  }
+
+  .scr-meal-cover-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .scr-meal-cover:not([data-primary]) {
+    display: none;
+  }
+}
+
+/* ---------------------------------------------------------------------- */
+/* Reduced motion / forced colors                                          */
+/* ---------------------------------------------------------------------- */
+
+@media (forced-colors: active) {
+  .mk-body {
+    stroke: ButtonText;
+  }
+  .mk-tick {
+    stroke: ButtonText;
+  }
+  .mk-tick[data-active] {
+    stroke: Highlight;
+  }
+  .mk-index-dot {
+    fill: Highlight;
+  }
+}

@@ -5,6 +5,8 @@ import { Paddle } from "../components/Paddle";
 export function Paddles() {
   const { state, dispatch } = useStore();
   const { week, cover } = state.prefs;
+  const weekValueLabel = week === "B" ? "b" : "a";
+  const coverValueLabel = cover === "m" ? "him 85" : "her 70";
 
   return (
     <div className="fd5-paddles" role="group" aria-label="global settings">
@@ -22,6 +24,14 @@ export function Paddles() {
         optionB={{ value: "m", label: "him 85" }}
         onToggle={() => dispatch({ type: "prefs/set", patch: { cover: cover === "w" ? "m" : "w" } })}
       />
+      {/*
+        Each Paddle keeps a stable aria-label (atlas §4.4 switch rule). Since on/off
+        doesn't map to a/b or her/him for assistive tech, the current VALUE is
+        announced here instead, in one shared live region for the whole group.
+      */}
+      <span className="fd5-visually-hidden" role="status" aria-live="polite">
+        {`week: ${weekValueLabel} · cover: ${coverValueLabel}`}
+      </span>
     </div>
   );
 }

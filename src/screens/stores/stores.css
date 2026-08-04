@@ -1,0 +1,472 @@
+/*
+  STORES — register + fuzzy inventory (PLAN §6.7). Scoped entirely under
+  .scr-stores per PHASE2-CONTRACT ("colocate your own screen CSS scoped by
+  screen-root class"). Uses only the real Sol/PHASE2-CONTRACT custom
+  properties defined in src/tokens.css (--sol-*, --fd-*, --fd5-target-list) —
+  no new global tokens invented here.
+
+  "The most purely playful screen" (PLAN §6.0): flat colour blocks, silkscreen
+  lowercase labels, no metal gradients or shine anywhere — the wheel's
+  "ridged strip" is a hard-edged flat stripe pattern (a repeating-linear-
+  gradient used as a technical means to draw stripes, not a tonal/shiny
+  gradient), and nothing in this file uses a transition on the detents
+  themselves, so reduced-motion has nothing to disable (PLAN: "reduced-
+  motion: no roll animation, instant detent" is the default, not a special case).
+*/
+
+.scr-stores {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-width: 56rem;
+  margin: 0 auto;
+}
+
+/* ---- header + status line ---------------------------------------------- */
+
+.scr-stores-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.scr-stores-title {
+  margin: 0;
+  font-size: 1.25rem;
+  text-transform: lowercase;
+}
+
+.scr-stores-status {
+  margin: 0;
+  font-family: var(--sol-font-data);
+  font-size: var(--sol-text-label);
+}
+
+.scr-stores-status--expired {
+  color: var(--sol-danger);
+}
+.scr-stores-status--expiring {
+  color: var(--sol-warning);
+}
+.scr-stores-status--fresh {
+  color: var(--sol-success);
+}
+
+/* ---- empty (first-run) state ------------------------------------------- */
+
+.scr-stores-empty {
+  background: var(--sol-panel);
+  border: 1px solid var(--sol-border);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.scr-stores-empty-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: lowercase;
+}
+
+.scr-stores-empty-body {
+  margin: 0;
+  color: var(--sol-text-muted);
+}
+
+.scr-stores-empty-cta {
+  padding-inline: 1.25rem;
+  font-weight: 600;
+}
+
+/* ---- register + wheel body --------------------------------------------- */
+
+.scr-stores-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.scr-stores-register {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.scr-stores-group-h {
+  margin: 0 0 0.375rem;
+  font-size: var(--sol-text-label);
+  text-transform: lowercase;
+  color: var(--sol-text-muted);
+  border-bottom: 1px solid var(--sol-border);
+  padding-bottom: 0.25rem;
+}
+
+.scr-stores-row-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.scr-stores-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  min-block-size: 2.75rem; /* 44px house target */
+}
+
+.scr-stores-row--armed {
+  box-shadow: inset 0 0 0 2px var(--sol-focus);
+}
+
+.scr-stores-row-name {
+  flex: 1 1 auto;
+  min-width: 8ch;
+  overflow-wrap: anywhere;
+}
+
+.scr-stores-pips {
+  flex: 0 0 auto;
+  display: inline-flex;
+  gap: 2px;
+}
+
+.scr-stores-pip {
+  width: 0.5rem;
+  height: 0.9rem;
+  background: var(--sol-bg);
+  border: 1px solid var(--sol-border);
+}
+
+.scr-stores-pip--on {
+  background: var(--sol-text);
+  border-color: var(--sol-text);
+}
+
+.scr-stores-row-countdown {
+  flex: 0 0 auto;
+  font-family: var(--sol-font-data);
+  font-variant-numeric: tabular-nums;
+  min-width: 3ch;
+  text-align: right;
+}
+
+.scr-stores-row-glyph {
+  margin-right: 0.25rem;
+}
+
+.scr-stores-row--expired .scr-stores-row-countdown {
+  color: var(--sol-danger);
+}
+.scr-stores-row--expiring .scr-stores-row-countdown {
+  color: var(--sol-warning);
+}
+.scr-stores-row--low-confidence .scr-stores-row-countdown,
+.scr-stores-row--empty .scr-stores-row-countdown {
+  color: var(--sol-text-muted);
+}
+
+/* ---- leftover rows (distinct tag, PLAN §6.7) --------------------------- */
+
+.scr-stores-leftover {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  min-block-size: 2.75rem;
+  background: var(--sol-panel);
+  border: 1px dashed var(--sol-border);
+}
+
+.scr-stores-leftover-tag {
+  font-family: var(--sol-font-data);
+  font-size: 0.6875rem; /* 11px, nonessential-engraving band */
+  text-transform: lowercase;
+  border: 1px solid var(--sol-border);
+  padding: 0.0625rem 0.375rem;
+  color: var(--sol-text-muted);
+}
+
+.scr-stores-leftover .scr-stores-row-name {
+  flex: 1 1 auto;
+  min-width: 8ch;
+}
+
+.scr-stores-leftover .scr-stores-row-countdown {
+  font-family: var(--sol-font-data);
+}
+
+.scr-stores-leftover.scr-stores-row--expired .scr-stores-row-countdown {
+  color: var(--sol-danger);
+}
+
+.scr-stores-leftover-used {
+  padding-inline: 0.75rem;
+  font-size: var(--sol-text-label);
+}
+
+/* ---- the thumbwheel (hero) ---------------------------------------------- */
+
+.scr-stores-wheel {
+  position: sticky;
+  top: 0.5rem;
+  flex: 0 0 auto;
+  width: 4.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.scr-stores-wheel-caption {
+  margin: 0;
+  font-size: 0.6875rem;
+  color: var(--sol-text-muted);
+  text-transform: lowercase;
+  text-align: center;
+}
+
+.scr-stores-wheel-strip {
+  border: 1px solid var(--sol-border);
+  background-color: var(--sol-panel);
+  background-image: repeating-linear-gradient(to bottom, var(--sol-border) 0 1px, transparent 1px 9px);
+  padding: 0.25rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+}
+
+.scr-stores-wheel-strip:disabled {
+  opacity: 0.6;
+}
+
+.scr-stores-detent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  width: 100%;
+  min-block-size: 2.75rem;
+  padding: 0.25rem;
+  background: var(--sol-panel);
+}
+
+.scr-stores-detent input {
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  accent-color: var(--sol-focus);
+}
+
+.scr-stores-detent-glyph {
+  font-family: var(--sol-font-data);
+  font-size: 0.75rem;
+}
+
+.scr-stores-detent[data-checked] {
+  background: var(--sol-text);
+  color: var(--sol-bg);
+}
+
+.scr-stores-detent:focus-within {
+  outline: var(--sol-focus-width) solid var(--sol-focus);
+  outline-offset: 2px;
+}
+
+.scr-stores-wheel-announce {
+  margin: 0;
+  font-size: 0.6875rem;
+  text-align: center;
+  min-height: 2.2em; /* reserve space so the announcement appearing doesn't jump layout */
+  color: var(--sol-text-muted);
+}
+
+/* ---- generic sections ---------------------------------------------------- */
+
+.scr-stores-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.scr-stores-h {
+  margin: 0;
+  font-size: var(--sol-text-label);
+  text-transform: lowercase;
+  color: var(--sol-text-muted);
+}
+
+.scr-stores-muted {
+  margin: 0;
+  color: var(--sol-text-muted);
+}
+
+/* ---- cook-from-stock strip ------------------------------------------------ */
+
+.scr-stores-cookstock-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.scr-stores-cookstock-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  text-decoration: none;
+}
+
+.scr-stores-cookstock-pct {
+  font-family: var(--sol-font-data);
+  color: var(--sol-text-muted);
+}
+
+/* ---- restock queue + waste log entry point -------------------------------- */
+
+.scr-stores-footer-row {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.scr-stores-restock {
+  flex: 1 1 auto;
+  min-width: 12rem;
+}
+
+.scr-stores-restock-list {
+  margin: 0;
+  font-family: var(--sol-font-data);
+}
+
+.scr-stores-wastelog-btn {
+  padding-inline: 1rem;
+}
+
+/* ---- log dinner ------------------------------------------------------------ */
+
+.scr-stores-logdinner-name {
+  margin: 0;
+  font-weight: 600;
+}
+
+.scr-stores-logdinner-actions,
+.scr-stores-logdinner-portions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.scr-stores-logdinner-btn {
+  padding-inline: 1rem;
+}
+
+.scr-stores-logdinner-cancel {
+  padding-inline: 1rem;
+  color: var(--sol-text-muted);
+}
+
+.scr-stores-logdinner-status {
+  margin: 0;
+  min-height: 1.5em;
+  font-family: var(--sol-font-data);
+  font-size: var(--sol-text-label);
+}
+
+/* ---- waste sheet ------------------------------------------------------------ */
+
+.scr-stores-waste-month {
+  margin: 0 0 0.75rem;
+  font-family: var(--sol-font-data);
+  font-weight: 700;
+}
+
+.scr-stores-waste-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.scr-stores-waste-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  border-bottom: 1px solid var(--sol-border);
+  padding-bottom: 0.5rem;
+}
+
+.scr-stores-waste-ref {
+  font-weight: 600;
+}
+
+.scr-stores-waste-meta {
+  font-family: var(--sol-font-data);
+  font-size: var(--sol-text-label);
+  color: var(--sol-text-muted);
+}
+
+.scr-stores-waste-note {
+  font-size: var(--sol-text-label);
+  color: var(--sol-text-muted);
+}
+
+/* ---- responsive: mobile 390×844, wheel stays right-edge, no h-scroll ------- */
+
+@media (max-width: 700px) {
+  .scr-stores-wheel {
+    width: 3.75rem;
+  }
+
+  .scr-stores-detent-glyph {
+    font-size: 0.6875rem;
+  }
+
+  .scr-stores-row-name {
+    min-width: 6ch;
+  }
+}
+
+/* ---- forced-colors -------------------------------------------------------- */
+
+@media (forced-colors: active) {
+  .scr-stores-row--armed {
+    box-shadow: none;
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+  .scr-stores-detent[data-checked] {
+    forced-color-adjust: none;
+    background: Highlight;
+    color: HighlightText;
+  }
+  .scr-stores-pip--on {
+    forced-color-adjust: none;
+    background: ButtonText;
+  }
+}

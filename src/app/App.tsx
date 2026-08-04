@@ -26,11 +26,14 @@ function AppShell() {
     window.location.hash = `#/${screen}`;
   }, []);
 
-  // Hotkeys 1-5 for the five rail keys — never steal from inputs, and never fire
-  // alongside a modifier (so browser/OS shortcuts stay intact).
+  // Hotkeys 1-5 for the five rail keys — never steal from inputs, never fire
+  // alongside a modifier (so browser/OS shortcuts stay intact), and never fire behind
+  // an open modal (e.g. the settings Sheet) — its own focus-trapped controls own the
+  // keyboard while it's up.
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.metaKey || event.ctrlKey || event.altKey) return;
+      if (document.querySelector("dialog[open]")) return;
       const target = event.target as HTMLElement | null;
       const tag = target?.tagName;
       const isEditable =
@@ -52,8 +55,18 @@ function AppShell() {
     <div className="fd5" data-language="playful">
       <div className="fd5-frame" data-lidclosed={lidClosed || undefined}>
         <div className="fd5-topbar">
-          <Masthead now={now} cookRunning={cookRunning} onOpenSettings={() => setSettingsOpen(true)} />
-          <Paddles />
+          <Masthead now={now} cookRunning={cookRunning} />
+          <div className="fd5-topbar-controls">
+            <Paddles />
+            <button
+              type="button"
+              className="fd5-control fd5-gear"
+              onClick={() => setSettingsOpen(true)}
+              aria-label="settings"
+            >
+              <span aria-hidden="true">{"⚙"}</span>
+            </button>
+          </div>
         </div>
         <LoopRail
           activeScreen={route.screen}

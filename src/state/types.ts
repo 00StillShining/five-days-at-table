@@ -74,6 +74,22 @@ export interface PriceCheck {
 
 export type PriceChecks = Record<string, PriceCheck>;
 
+/**
+ * PLAN §6.4 swap deck: which meal is actually shown/cooked for a slot, when
+ * it differs from the plan. Keyed by the ORIGINAL (planned) meal's id ->
+ * replacement meal's id — e.g. `{ "a-d2d": "b-d2d" }` means "day 2's dinner
+ * slot, planned as a-d2d, is swapped to b-d2d." Meal ids already encode
+ * "<week>-d<day><slotInitial>" (P2-PLAN-001's suggested slotKey shape is
+ * exactly the existing meal-id format), so keying by the planned meal's own
+ * id — rather than re-deriving a parallel "week:day:slot" string — reuses an
+ * identifier that's already unique, already validated by data/validation.json,
+ * and needs no parsing to resolve (`getMeal(swaps[plannedId])`). The
+ * executing fortnight is always Week A (D5), so in practice every key is an
+ * "a-d#…" id, but nothing here enforces that — see selectors.ts
+ * `effectiveMealForSlot`.
+ */
+export type Swaps = Record<string, string>;
+
 // ---- timers (engine-owned slice; src/engine/timers.ts drives it) ---------
 
 export interface TimerSliceState {
@@ -99,6 +115,7 @@ export interface AppState {
   waste: WasteEntry[];
   priceChecks: PriceChecks;
   timers: TimerSliceState;
+  swaps: Swaps;
 }
 
 export type SliceKey = keyof AppState;
