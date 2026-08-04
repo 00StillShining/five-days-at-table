@@ -1,5 +1,6 @@
-import { createContext, useContext, useMemo, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { getProgram } from "../engine/programs";
+import { virtualElapsedMs } from "../engine/timers";
 import { useStore } from "../state/store";
 
 /**
@@ -43,6 +44,58 @@ export function CookRunningProvider({ children }: { children: ReactNode }) {
   return <CookRunningContext.Provider value={running}>{children}</CookRunningContext.Provider>;
 }
 
+/**
+ * Plain boolean, changes only on genuine start/pause/complete transitions
+ * (see the doc comment above `isCookRunning`). Consumed app-wide (App.tsx,
+ * LoopRail's pulsing cook key) — deliberately NEVER carries a per-second
+ * value, so those consumers don't re-render every tick. For the masthead's
+ * ticking "cooking · MM:SS" text, use `useCookElapsedLabel()` below instead,
+ * from a small isolated component — see its doc comment for why.
+ */
 export function useCookRunning(): boolean {
   return useContext(CookRunningContext);
+}
+
+function pad2(n: number): string {
+  return n < 10 ? `0${n}` : `${n}`;
+}
+
+/** "MM:SS" elapsed since the running program actually started (pause-aware, via
+ * engine/timers.ts's own `virtualElapsedMs` — same math the COOK screen's own
+ * clock uses, so the masthead never disagrees with it). */
+function formatElapsed(elapsedMs: number): string {
+  const totalSeconds = Math.floor(elapsedMs / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${minutes}:${pad2(seconds)}`;
+}
+
+/**
+ * The masthead's "cooking · MM:SS" text (PLAN §6.2), ~1Hz while a program
+ * runs, `null` otherwise. Deliberately NOT folded into CookRunningContext's
+ * boolean above: that value is read by the whole chassis and must only
+ * change on genuine start/pause/complete transitions. This hook keeps its
+ * own 1Hz interval, so call it ONLY from a small leaf component (the
+ * masthead's status text) — React scopes the resulting re-renders to that
+ * leaf, not the chassis around it, exactly like COOK's own useProgram() tick
+ * is scoped to COOK's own scene rather than re-rendering the whole app.
+ */
+export function useCookElapsedLabel(): string | null {
+  const { state } = useStore();
+  const { programId, startedAt, pausedAt, doneSteps } = state.timers;
+  const running = useMemo(
+    () => isCookRunning(programId, startedAt, pausedAt, doneSteps),
+    [programId, startedAt, pausedAt, doneSteps]
+  );
+
+  const [nowMs, setNowMs] = useState(() => Date.now());
+  useEffect(() => {
+    if (!running) return;
+    setNowMs(Date.now()); // resync immediately on start, don't wait a full second
+    const id = window.setInterval(() => setNowMs(Date.now()), 1000);
+    return () => window.clearInterval(id);
+  }, [running]);
+
+  if (!running) return null;
+  return formatElapsed(virtualElapsedMs(state.timers, nowMs));
 }

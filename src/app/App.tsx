@@ -58,7 +58,7 @@ function AppShell() {
       <OpenSettingsProvider value={openSettings}>
         <div className="fd5-frame" data-lidclosed={lidClosed || undefined}>
           <div className="fd5-topbar">
-            <Masthead now={now} cookRunning={cookRunning} />
+            <Masthead now={now} />
             <div className="fd5-topbar-controls">
               <Paddles />
               <button
