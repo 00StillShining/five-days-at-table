@@ -37,9 +37,17 @@ export interface ArbiterSlotProps {
 const DEFAULT_IDLE_TEXT = "board's clear";
 
 /**
- * The attention arbiter's single act-now slot (PLAN §6.0 project signature). This is
- * the ONLY place --sol-accent-fill appears anywhere in the app — and ONLY when a real
- * duty occupies it; the idle variant is a plain quiet panel (see convention above).
+ * The attention arbiter's single act-now slot (PLAN §6.0 project signature). Across
+ * the shared chassis and every playful-technical screen, this is the ONLY place
+ * --sol-accent-fill appears — and only when a real duty occupies it; the idle variant
+ * is a plain quiet panel (see convention above).
+ *
+ * SANCTIONED EXCEPTION: COOK (dark, precision-industrial) never renders this
+ * component at all — the stopped reel is COOK's own act-now signal — so its "done ▸"
+ * bottom edge (PLAN §6.6: `.scr-cook-done` / `.scr-cook-tally-done` in cook.css)
+ * legitimately uses accent-fill too, as COOK's own single act-now control. That is
+ * not a violation of this rule; do not "fix" it.
+ *
  * role="status" so assistive tech is told when the text changes; the optional action
  * is a real nested <button>, not the whole banner, so the live-region role and button
  * semantics never collide. Reduced-motion-safe: the chevron carries data-motion so

@@ -179,7 +179,10 @@ body {
   Semantic role reference (PLAN §6.1 — enforced app-wide, every screen):
     --sol-success        settled / confirmed / in-stock / verified / in-band (+ shape or label cue)
     --sol-focus           the cursor family: today-ring, cycle cursor, playhead, focused row
-    --sol-accent-fill     THE arbiter's single act-now slot — nowhere else (.fd5-arbiter only)
+    --sol-accent-fill     THE arbiter's single act-now slot (.fd5-arbiter), playful screens.
+                          Sanctioned exception: COOK's own "done" edge (PLAN §6.6, cook.css's
+                          .scr-cook-done / .scr-cook-tally-done) — COOK never renders
+                          ArbiterSlot; the stopped reel + done edge ARE its act-now signal.
     --sol-danger/warning   true error/warning states only, never decorative
     estimates              ink "≈" + dotted underline (.fd5-estimate) — never color alone
     --fd-ch-*              macro channel identity on ladders/gauges, paired with label+position
@@ -511,7 +514,9 @@ body {
   text-underline-offset: 3px;
 }
 
-/* --- ArbiterSlot (accent-fill act-now banner — the ONLY place accent-fill appears) --- */
+/* --- ArbiterSlot (accent-fill act-now banner — the only place accent-fill appears on
+   the shared chassis / playful screens; COOK's own "done" edge is a sanctioned
+   exception, PLAN §6.6 — see the semantic role reference comment above) --- */
 
 .fd5-arbiter {
   display: flex;
@@ -695,7 +700,7 @@ body {
 }
 
 /* ---------------------------------------------------------------------- */
-/* 7. Supplementary reduced-motion / forced-colors                        */
+/* 7. Supplementary reduced-motion / forced-colors / print                */
 /* ---------------------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
@@ -727,5 +732,30 @@ body {
     background: Highlight;
     border: 1px solid ButtonText;
     forced-color-adjust: none;
+  }
+}
+
+/*
+  Print: the chassis chrome (masthead, paddles, gear, loop rail, and the arbiter
+  banner — present on every screen that hasn't migrated off the legacy ArbiterSlot
+  props, not just ones using `rank1`) has no business on a printed page. SHOP's own
+  print rule (src/screens/shop/shop.css) already isolates its market ticket down to
+  chrome-free 1-bit content; the chassis just needs to get out of the way so nothing
+  else on the page prints around it with an empty chrome-shaped gap.
+*/
+@media print {
+  .fd5-topbar,
+  .fd5-rail,
+  .fd5-arbiter {
+    display: none;
+  }
+
+  .fd5-frame {
+    padding: 0;
+    min-height: 0;
+  }
+
+  .fd5-scene {
+    padding: 0;
   }
 }

@@ -12,7 +12,7 @@
 // `prefs.week`. dayMacros/bands take `week` explicitly because PLAN needs to
 // show both weeks' figures side by side.
 import type { Band, Cover, Ingredient, Macros, Meal, Slot, Week } from "../data/types";
-import { bandsFor, canonicalCalendar, getMeal, ingredientsById, ingredientsList, mealForSlot, mealsByWeek, mealsByWeekDay, referenceUnitG, requireMeal } from "../data";
+import { bandsFor, canonicalCalendar, getMeal, ingredientShortName, ingredientsById, ingredientsList, mealForSlot, mealsByWeek, mealsByWeekDay, referenceUnitG, requireMeal } from "../data";
 import { isFreezerStock, operativeLifeDays, type LifeConfidence } from "../data/lifeEstimate";
 import { criticalPathMinutes } from "../engine/programs";
 import { addCalendarDays, londonCalendarDaysBetween, londonDateIso, londonParts, londonWallTimeToEpochMs } from "./london";
@@ -329,11 +329,14 @@ export function formatRemainingDays(remainingDays: number): string {
  * HEURISTIC — defrost "done" detection (documented, no dedicated ledger
  * exists in AppState for it): a defrost duty is considered actioned once
  * `inventory[ingId].updatedAt`'s London calendar date is on/after the duty's
- * scheduled calendar date. This reuses inventory's existing freshness-anchor
- * field rather than inventing a new state slot — semantically consistent,
- * since "moved from freezer to fridge" IS a freshness-resetting event (see
- * src/data/lifeEstimate.ts's freeze-day0/buy-frozen bucket choice, which
- * already assumes `updatedAt` marks the thaw moment).
+ * scheduled calendar date. This deliberately still reads `updatedAt` (bumped
+ * by ANY inventory touch, e.g. a stocktake), not `thawedAt` — "done" only
+ * needs to know the row was touched on/after the scheduled day, it doesn't
+ * need to know WHY. The separate `thawedAt` field (P1 wave-1-review fix)
+ * governs a different question — when the post-thaw shelf-life countdown
+ * itself starts — and is set specifically by `inventory/markThawed`, not by
+ * this "done" check. See `remainingLifeDays` below and
+ * src/data/lifeEstimate.ts's `isFreezerStock`.
  */
 export function dutyStack(state: AppState, now: Date): Duty[] {
   const info = todayInfo(now, state.prefs.cycleStartSaturday);
@@ -351,13 +354,12 @@ export function dutyStack(state: AppState, now: Date): Duty[] {
         if (done) continue;
         const dueAtMs = londonWallTimeToEpochMs(dueDateIso, DEFROST_DUE_HOUR, 0);
         const overdue = entry.day < info.fortnightDay || nowMs >= dueAtMs;
-        const ing = ingredientsById[item.ingId];
         duties.push({
           kind: "defrost",
           id: `${entry.day}:${item.ingId}`,
           ingId: item.ingId,
           g: item.g,
-          text: `move ${ing?.name.short ?? item.ingId} fz → fr`,
+          text: `move ${ingredientShortName(item.ingId)} fz → fr`,
           fortnightDay: entry.day,
           dueAt: new Date(dueAtMs).toISOString(),
           overdue,
@@ -376,7 +378,7 @@ export function dutyStack(state: AppState, now: Date): Duty[] {
       kind: "expiring",
       id: ingId,
       ingId,
-      text: remainingDays < 0 ? `expired · ${ing.name.short}` : `use today · ${ing.name.short}`,
+      text: remainingDays < 0 ? `expired · ${ingredientShortName(ingId)}` : `use today · ${ingredientShortName(ingId)}`,
       remainingDays,
       expired: remainingDays < 0,
       confidence: operativeLifeDays(ing).confidence,

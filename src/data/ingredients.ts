@@ -26,6 +26,22 @@ export function requireIngredient(id: string): Ingredient {
   return ing;
 }
 
+/**
+ * The ingredient's short display name (falling back to `display`, then to
+ * the raw id if the ingredient can't be resolved at all — every id used in
+ * duty/trip text is already join-verified against data/validation.json, but
+ * text-formatting code shouldn't assume that rather than degrade gracefully).
+ * INT-3 (final integration review): the one place duty/trip text should turn
+ * an `ingId` into words — e.g. engine/arbiter.ts's verify-nominee text and
+ * state/selectors.ts's dutyStack defrost text, which previously rendered the
+ * raw id ("verify price · banana", "move beef_mince fz -> fr").
+ */
+export function ingredientShortName(ingId: string): string {
+  const ing = ingredientsById[ingId];
+  if (!ing) return ingId;
+  return ing.name.short || ing.name.display || ingId;
+}
+
 export const aisles: string[] = [...new Set(ingredientsList.map((i) => i.aisle))];
 
 export function ingredientsByAisle(aisle: string): Ingredient[] {

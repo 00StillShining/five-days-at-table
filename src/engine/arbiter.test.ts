@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { ingredientShortName } from "../data/ingredients";
 import { defaultState } from "../state/reducer";
 import type { AppState } from "../state/types";
 import { arbiterFor } from "./arbiter";
@@ -51,6 +52,17 @@ describe("arbiterFor — single-category presence", () => {
     const state = baseState({ prefs: { ...defaultState.prefs, cycleStartSaturday: null, cover: "w", week: "A" } });
     const result = arbiterFor("shop", state, WEDNESDAY_MORNING, { tripDay: 0 });
     expect(result.rank1?.kind).toBe("verify-nominee");
+  });
+
+  it("verify-nominee text uses the ingredient's display name, not its raw ingId (INT-3)", () => {
+    const state = baseState({ prefs: { ...defaultState.prefs, cycleStartSaturday: null, cover: "w", week: "A" } });
+    const result = arbiterFor("shop", state, WEDNESDAY_MORNING, { tripDay: 0 });
+    expect(result.rank1?.kind).toBe("verify-nominee");
+    const nomineeId = result.rank1!.id;
+    expect(result.rank1!.text).toBe(`verify price · ${ingredientShortName(nomineeId)}`);
+    // Regression guard for the review's exact reproduction: snake_case ids
+    // never leak into the display text.
+    expect(result.rank1!.text).not.toMatch(/_/);
   });
 
   it("returns null with zero queued when nothing at all applies", () => {

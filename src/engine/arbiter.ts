@@ -9,6 +9,7 @@
 // regardless of which screen you're looking at ("runners-up render quiet
 // with a queue count and inherit the slot when rank 1 clears," PLAN §6.0).
 // Only `primary-action` is screen-specific.
+import { ingredientShortName } from "../data/ingredients";
 import { bands, coverageForAllMeals, eatenSoFar, dutyStack, overBandMacros, todayInfo, tripBuild, type StartByDuty, type TripDay } from "../state/selectors";
 import type { AppState } from "../state/types";
 import { deriveProgramState } from "./timers";
@@ -171,7 +172,9 @@ export function arbiterFor(screen: ScreenId, state: AppState, now: Date, ctx: Ar
       candidates.push({
         kind: "verify-nominee",
         id: outstanding[0],
-        text: `verify price · ${outstanding[0]}`,
+        // INT-3: display name, not the raw ingId ("verify price · banana",
+        // not "· beef_mince") — id stays on `target`/`id` for navigation.
+        text: `verify price · ${ingredientShortName(outstanding[0])}`,
         target: { screen: "shop", id: outstanding[0] },
       });
     }
