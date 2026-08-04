@@ -176,6 +176,9 @@ export function reducer(state: AppState, action: Action): AppState {
     case "swaps/clearAll":
       return { ...state, swaps: {} };
 
+    case "slice/replace":
+      return { ...state, [action.slice]: action.value };
+
     case "state/replace":
       return action.state;
 

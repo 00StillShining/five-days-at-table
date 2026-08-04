@@ -175,4 +175,10 @@ export type Action =
   | { type: "swaps/commit"; slotMealId: string; replacementMealId: string }
   | { type: "swaps/clear"; slotMealId: string }
   | { type: "swaps/clearAll" }
+  /** Multi-tab race fix: StoreProvider's cross-tab `storage`-event handler
+   * dispatches this when a FOREIGN tab writes a slice this tab has no
+   * pending local write for — replaces just that one slice with the
+   * (already zod-validated) foreign value. Never dispatched by screens
+   * directly. */
+  | { type: "slice/replace"; slice: SliceKey; value: AppState[SliceKey] }
   | { type: "state/replace"; state: AppState }; // used by importExport

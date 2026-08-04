@@ -155,8 +155,19 @@ body {
     Macro channels (heritage hues, AA-adjusted where used as text — PHASE2-CONTRACT).
     Always paired with a second cue (label + position) wherever used on ladders/gauges;
     never the sole way a value is communicated.
+
+    --fd-ch-protein was darkened from the original #ff4d00 (Phase 2 checkpoint owner
+    ruling): as a non-text UI component (segment fills, dial arcs) it needs >=3:1
+    against every background it sits on (WCAG 1.4.11) and the original only measured
+    2.33:1 on --sol-bg / 2.92:1 on --sol-panel. #d13f00 clears both with margin —
+    3.33:1 on --sol-bg (#d9d8d4), 4.17:1 on --sol-panel (#f2f0ea) — while staying the
+    same hue (~18 deg orange-red) so it still reads as "the protein channel", and
+    staying visually distinct from both --sol-accent-fill (#ff5a1f — much brighter/
+    more saturated) and --fd-ch-fat (#8a6d00 — a completely different, olive/yellow
+    hue). --fd-ch-protein-text (#ad3400, below) is a separate, already-passing token
+    for colored TEXT use (4.5:1) — untouched by this change.
   */
-  --fd-ch-protein: #ff4d00;
+  --fd-ch-protein: #d13f00;
   --fd-ch-fat: #8a6d00;
   --fd-ch-carb: #1160ff;
   --fd-ch-fibre: #00753f;
@@ -518,6 +529,18 @@ body {
    the shared chassis / playful screens; COOK's own "done" edge is a sanctioned
    exception, PLAN §6.6 — see the semantic role reference comment above) --- */
 
+/*
+  Border contrast (Phase 2 checkpoint owner ruling, WCAG 1.4.11 non-text contrast):
+  --sol-accent-fill (this component's fill when active) is a Sol atlas §4.2 VERBATIM
+  token (owner ruling R1) and measures only 2.19:1 against --sol-bg on its own — too
+  low to rely on the fill alone to mark the component's boundary. The 1px
+  var(--sol-accent) border (#8a2e00, 5.96:1 vs --sol-bg / 7.46:1 vs --sol-panel) is
+  what actually satisfies 1.4.11 here, and it is intentionally declared ONCE on the
+  base .fd5-arbiter rule rather than repeated in .fd5-arbiter--idle below, so idle and
+  active can never drift apart and re-fail a future contrast pass: the boundary color
+  is identical across every state, including the idle-to-active transition — only the
+  fill and text color change.
+*/
 .fd5-arbiter {
   display: flex;
   align-items: center;
@@ -532,11 +555,11 @@ body {
 /*
   Idle variant (integration review convention): the slot is ALWAYS present, but
   accent-fill is reserved for a real act-now item — idle reads as a plain quiet panel.
+  Border deliberately NOT overridden here — see the border-contrast comment above.
 */
 .fd5-arbiter--idle {
   background: var(--sol-panel);
   color: var(--sol-text-muted);
-  border: 1px solid var(--sol-border);
 }
 
 .fd5-arbiter-chevron {

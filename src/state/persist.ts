@@ -11,6 +11,12 @@ import { SLICE_SCHEMAS } from "./schemas";
 export const STORAGE_VERSION = "v1";
 const KEY_PREFIX = `fd5.${STORAGE_VERSION}.`;
 
+/** Every persisted slice key, in AppState's own declared order. The single
+ * canonical list — store.tsx's persist/rehydrate effects and
+ * state/crossTab.ts's cross-tab decision logic both iterate this one array
+ * rather than each keeping their own copy. */
+export const SLICE_KEYS: SliceKey[] = ["prefs", "inventory", "eaten", "shopTicks", "leftovers", "waste", "priceChecks", "timers", "swaps"];
+
 export function storageKey(slice: SliceKey): string {
   return `${KEY_PREFIX}${slice}`;
 }
@@ -75,20 +81,21 @@ function safeSetItem(key: string, value: string): void {
 }
 
 /**
- * Read+validate one slice from localStorage. Returns `defaultValue` (and
- * warns) if the key is missing, unparsable, or fails its zod schema — a
- * corrupt slice never crashes the app and never contaminates the other
- * slices (each slice hydrates independently).
+ * Parse + migrate + zod-validate one slice's raw JSON string. Returns
+ * `undefined` (and warns) on unparsable JSON or a schema failure — never
+ * throws. The one place this logic lives: both `hydrateSlice` (boot-time
+ * read) and StoreProvider's cross-tab `storage`-event handler (a foreign
+ * tab's write, mid-session) run every value through this exact same gate,
+ * so a corrupt/malicious foreign write can't get in via one path just
+ * because it would have been rejected via the other.
  */
-export function hydrateSlice<K extends SliceKey>(slice: K, defaultValue: AppState[K]): AppState[K] {
-  const raw = safeGetItem(storageKey(slice));
-  if (raw == null) return defaultValue;
+export function parseAndValidateSlice<K extends SliceKey>(slice: K, raw: string): AppState[K] | undefined {
   let parsedJson: unknown;
   try {
     parsedJson = JSON.parse(raw);
   } catch (err) {
-    console.warn(`[fd5.state] corrupt JSON in ${storageKey(slice)}, falling back to default:`, err);
-    return defaultValue;
+    console.warn(`[fd5.state] corrupt JSON in ${storageKey(slice)}, ignoring:`, err);
+    return undefined;
   }
   const migrated = migrate(slice, parsedJson);
   // The lookup's inferred type is a union across all eight slice schemas,
@@ -100,10 +107,23 @@ export function hydrateSlice<K extends SliceKey>(slice: K, defaultValue: AppStat
   const schema = SLICE_SCHEMAS[slice] as unknown as ZodType<AppState[K]>;
   const result = schema.safeParse(migrated);
   if (!result.success) {
-    console.warn(`[fd5.state] ${storageKey(slice)} failed validation, falling back to default:`, result.error.issues);
-    return defaultValue;
+    console.warn(`[fd5.state] ${storageKey(slice)} failed validation, ignoring:`, result.error.issues);
+    return undefined;
   }
   return result.data;
+}
+
+/**
+ * Read+validate one slice from localStorage. Returns `defaultValue` (and
+ * warns) if the key is missing, unparsable, or fails its zod schema — a
+ * corrupt slice never crashes the app and never contaminates the other
+ * slices (each slice hydrates independently).
+ */
+export function hydrateSlice<K extends SliceKey>(slice: K, defaultValue: AppState[K]): AppState[K] {
+  const raw = safeGetItem(storageKey(slice));
+  if (raw == null) return defaultValue;
+  const parsed = parseAndValidateSlice(slice, raw);
+  return parsed === undefined ? defaultValue : parsed;
 }
 
 export function hydrateAll(defaults: AppState): AppState {
@@ -150,4 +170,18 @@ export function flushPendingWrites(): void {
     p.write();
     pending.delete(key);
   }
+}
+
+/**
+ * True while this tab has a debounced write for `slice` still in flight
+ * (scheduled but not yet actually written to localStorage). Used by
+ * StoreProvider's cross-tab `storage`-event handler: multi-tab race fix,
+ * "if the current tab HAS a pending write for that slice, last-dispatch-
+ * wins locally" — a foreign tab's write arriving mid-debounce must not
+ * clobber an edit the user just made in THIS tab that hasn't hit disk yet;
+ * this tab's own pending write will land shortly after and become the
+ * final value regardless of what the foreign write said.
+ */
+export function hasPendingWrite(slice: SliceKey): boolean {
+  return pending.has(storageKey(slice));
 }
