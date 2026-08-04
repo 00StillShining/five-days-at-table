@@ -28,6 +28,7 @@ import { useNow } from "../../state/useNow";
 import { requireMeal } from "../../data";
 import { LOCATION_GROUP_LABEL, LOCATION_GROUP_ORDER, REGISTER_FLAT, REGISTER_GROUPS } from "./location";
 import { countdownForIngredient } from "./countdown";
+import { registerDisambiguator } from "./registerName";
 import { RegisterRow } from "./RegisterRow";
 import { LeftoverRow } from "./LeftoverRow";
 import { ThumbWheel, DETENT_ANNOUNCE } from "./wheel";
@@ -153,7 +154,7 @@ export default function StoresScene(_props: SceneProps) {
   const restockAll = REGISTER_FLAT.filter((ing) => {
     const entry = state.inventory[ing.id];
     return entry !== undefined && entry.level <= 1;
-  }).map((ing) => ing.name.short);
+  }).map((ing) => `${ing.name.short}${registerDisambiguator(ing)}`);
   const restockShown = restockAll.slice(0, RESTOCK_DISPLAY_CAP);
   const restockMoreCount = restockAll.length - restockShown.length;
 
