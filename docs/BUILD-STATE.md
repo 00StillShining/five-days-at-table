@@ -10,7 +10,9 @@
 - Additional rulings: done ▸ targets the alarm's earliest-deadline overdue step; estimate mark renders figure-then-≈ app-wide; LIST arbiter guards verify-nominees against the loaded envelope and never navigates to #/shop mid-trip.
 - Owner chose **Netlify CLI** hosting (installed isolated at ~/.local/fd5-netlify — NOT a project dep, conflicts with vitest; use $HOME/.local/fd5-netlify/node_modules/.bin/netlify). Login initiated, awaiting owner browser auth.
 - IN FLIGHT: §8 P2 verification-residue agent (Lighthouse, forced-colors rendered pass, 200% zoom, keyboard loop, contrast sweep, multi-tab localStorage check).
-- Remaining: P2 report → deploy via netlify (site create + deploy dist/) → owner walkthrough (desktop + iPhone, PLAN §9.5) with design-review verdicts + screenshots available → queue-record session-2 rulings → then Phase 3 polish (heroes only, before/after per hero, §8 re-run, rubric ≥85 to ship).
+- §8 P2 suite COMPLETE (desktop Lighthouse 100/100/100, mobile-throttled perf 80 = accepted D1 tradeoff; forced-colors rendered PASS all 7; 200% zoom PASS; keyboard loop PASS incl. Escape-close; contrast sweep PASS after fixes). DEPLOYED + redeployed with pre-polish fixes.
+- Phase 2 owner checkpoint delivered (docs/PHASE2-CHECKPOINT.md): 7 session rulings RATIFIED by owner; findings ruling = fix-before-polish, DONE (protein fill #d13f00 at 3.33/4.17:1; arbiter border drift-proofed; multi-tab race fixed — mount gating + storage-event rehydrate, 251/251 tests).
+- **PAUSED ON: owner walkthrough** (desktop + iPhone, script in PHASE2-CHECKPOINT.md). On approval → Phase 3 polish (heroes only: knob, gauge, reel, thumbwheel, odometer, paddles, engraved labels + darken-protein already done; before/after screenshots per hero to owner; §8 re-run; rubric ≥85 to ship). On issues → fix cycle first.
 
 ## Where the build stands
 
