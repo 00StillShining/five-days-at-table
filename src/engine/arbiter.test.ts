@@ -175,3 +175,57 @@ describe("arbiterFor — per-screen primary-action table", () => {
     expect(result.rank1).toBeNull();
   });
 });
+
+// Wave-1 integration review: over-band was comparing the FULL PLANNED day
+// against the band (which sits by design right at the edge — see
+// data/meals.json's a-d1b/a-d1l/a-d1d/a-d1s, whose combined cover-w protein
+// is 118.1g against a 118g band max), so it fired on nearly every relevant
+// day regardless of the time of day or what had actually been eaten. Fixed
+// to read eatenSoFar (ticked slots only) — see state/selectors.ts.
+describe("arbiterFor — over-band uses eaten-so-far, not the full planned day", () => {
+  // Monday under ANCHOR ("2026-08-01" Saturday) -> fortnightDay 2, dayNo 1.
+  // No calendar defrost entries exist before fortnightDay 3, so a clean
+  // (empty inventory, no timers) Monday state has no expired/defrost-overdue/
+  // timer-due candidates ahead of over-band — isolates the category cleanly.
+  const MONDAY = new Date("2026-08-03T08:00:00Z"); // 09:00 London (BST)
+
+  function mondayState(eaten: AppState["eaten"] = {}): AppState {
+    return { ...structuredClone(defaultState), prefs: { ...defaultState.prefs, cycleStartSaturday: ANCHOR, cover: "w", week: "A" }, eaten };
+  }
+
+  it("a planned-but-entirely-uneaten day never fires over-band at 9am, even though the full plan would be over-band once eaten", () => {
+    const result = arbiterFor("today", mondayState(), MONDAY);
+    // With nothing ticked, the only remaining candidate is TODAY's own
+    // primary action (tonight's start-by) — over-band must be absent, not
+    // just out-ranked, since nothing outranks it here.
+    expect(result.rank1?.kind).not.toBe("over-band");
+    expect(result.rank1?.kind).toBe("primary-action");
+  });
+
+  it("ticking part of the day (under the band) still does not fire over-band", () => {
+    const eaten: AppState["eaten"] = {
+      "2026-08-03": {
+        breakfast: { mealId: "a-d1b", at: MONDAY.toISOString() },
+        lunch: { mealId: "a-d1l", at: MONDAY.toISOString() },
+        dinner: { mealId: "a-d1d", at: MONDAY.toISOString() },
+        // snack intentionally left un-ticked — protein without it is ~102g, well under the 118g band max.
+      },
+    };
+    const result = arbiterFor("today", mondayState(eaten), MONDAY);
+    expect(result.rank1?.kind).not.toBe("over-band");
+  });
+
+  it("ticking the full day (matching the known over-band plan total) fires over-band", () => {
+    const eaten: AppState["eaten"] = {
+      "2026-08-03": {
+        breakfast: { mealId: "a-d1b", at: MONDAY.toISOString() },
+        lunch: { mealId: "a-d1l", at: MONDAY.toISOString() },
+        dinner: { mealId: "a-d1d", at: MONDAY.toISOString() },
+        snack: { mealId: "a-d1s", at: MONDAY.toISOString() },
+      },
+    };
+    const result = arbiterFor("today", mondayState(eaten), MONDAY);
+    expect(result.rank1?.kind).toBe("over-band");
+    expect(result.rank1?.text).toMatch(/protein/);
+  });
+});
