@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- FD-5 PWA icon source. See generate.sh in this folder for regeneration and provenance notes. -->
+  <rect width="512" height="512" fill="#D9D8D4"/>
+  <text
+    x="256"
+    y="296"
+    font-family="ui-monospace, 'SF Mono', Menlo, 'JetBrains Mono', Consolas, monospace"
+    font-weight="700"
+    font-size="132"
+    letter-spacing="-2"
+    text-anchor="middle"
+    fill="#FF5A1F"
+  >fd-5</text>
+  <rect x="146" y="336" width="220" height="10" fill="#8A2E00"/>
+</svg>

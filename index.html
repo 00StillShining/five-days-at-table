@@ -4,6 +4,19 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#D9D8D4" />
+    <!-- Sol light field (--sol-bg), matching manifest.webmanifest's background/theme colors. -->
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./icon-512.png" type="image/png" />
+    <!-- iOS ignores manifest icons for add-to-home-screen; apple-touch-icon is the
+         reliable path (SOL-BRIEF R4 — iPhone Safari is the mobile target). -->
+    <link rel="apple-touch-icon" href="./icon-180.png" />
+    <!-- Legacy iOS standalone-mode tags — belt-and-suspenders alongside the manifest's
+         own display:"standalone" (webkit added manifest display support in 16.4,
+         SOL-BRIEF R4's own SW floor, so these are additive, not a fallback path). -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="fd-5" />
     <title>fd-5</title>
   </head>
   <body>

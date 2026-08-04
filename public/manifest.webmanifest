@@ -1,0 +1,22 @@
+{
+  "name": "fd-5",
+  "short_name": "fd-5",
+  "description": "FD-5 two-week rotating meal plan dashboard.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#D9D8D4",
+  "theme_color": "#D9D8D4",
+  "icons": [
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "./icon-180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
