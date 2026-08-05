@@ -677,6 +677,15 @@ body {
   margin: 0;
 }
 
+/* Cycle-start snap confirmation (SettingsDrawer) — sits inside the
+   flex-column `.fd5-field`, not the flex-row `.fd5-settings-io`, so
+   `.fd5-note`'s flex-basis:100% (meant to force a row-wrap there) is reset
+   here; only the shared typography is kept. */
+.fd5-settings-confirm {
+  flex-basis: auto;
+  margin-top: 0.25rem;
+}
+
 @media (max-width: 700px) {
   .fd5-sheet {
     position: fixed;

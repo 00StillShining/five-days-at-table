@@ -1,6 +1,6 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { defaultState } from "./reducer";
-import { hydrateAll, hydrateSlice, setStorageBackend, storageKey, type StorageLike } from "./persist";
+import { flushPendingWrites, hydrateAll, hydrateSlice, setStorageBackend, storageKey, type StorageLike } from "./persist";
 
 // This repo's vitest run has no DOM (no jsdom — file ownership rules forbid
 // adding a new dependency via package.json), so there's no real
@@ -64,5 +64,58 @@ describe("hydrateSlice — corrupt localStorage never crashes", () => {
     const state = hydrateAll(defaultState);
     expect(state.inventory).toEqual(defaultState.inventory); // corrupt -> default
     expect(state.prefs).toEqual(goodPrefs); // untouched, hydrates fine
+  });
+});
+
+describe("hydrateAll — self-heals a non-Saturday cycleStartSaturday (owner-walkthrough fix)", () => {
+  let storage: MapStorage;
+
+  beforeEach(() => {
+    storage = new MapStorage();
+    setStorageBackend(storage);
+    vi.restoreAllMocks();
+  });
+
+  afterEach(() => flushPendingWrites()); // never leak a scheduled debounce timer into the next test
+
+  it("snaps a stored non-Saturday date onto the preceding Saturday, in-memory", () => {
+    const badPrefs = { ...defaultState.prefs, cycleStartSaturday: "2026-08-05" }; // a Wednesday
+    storage.setItem(storageKey("prefs"), JSON.stringify(badPrefs));
+
+    const state = hydrateAll(defaultState);
+    expect(state.prefs.cycleStartSaturday).toBe("2026-08-01"); // preceding Saturday
+  });
+
+  it("writes the healed value back to storage so the fix sticks on the next boot", () => {
+    const badPrefs = { ...defaultState.prefs, cycleStartSaturday: "2026-08-05" };
+    storage.setItem(storageKey("prefs"), JSON.stringify(badPrefs));
+
+    hydrateAll(defaultState);
+    flushPendingWrites();
+
+    const persisted = JSON.parse(storage.getItem(storageKey("prefs"))!);
+    expect(persisted.cycleStartSaturday).toBe("2026-08-01");
+  });
+
+  it("leaves an already-Saturday stored date untouched, and writes nothing back", () => {
+    const goodPrefs = { ...defaultState.prefs, cycleStartSaturday: "2026-08-01" };
+    storage.setItem(storageKey("prefs"), JSON.stringify(goodPrefs));
+    const setItemSpy = vi.spyOn(storage, "setItem");
+
+    const state = hydrateAll(defaultState);
+    expect(state.prefs.cycleStartSaturday).toBe("2026-08-01");
+    flushPendingWrites();
+    expect(setItemSpy).not.toHaveBeenCalled();
+  });
+
+  it("leaves a null (never-set) cycleStartSaturday alone — still routes to onboarding", () => {
+    const state = hydrateAll(defaultState);
+    expect(state.prefs.cycleStartSaturday).toBeNull();
+  });
+
+  it("never crashes on a well-formed but unusual stored date", () => {
+    const badPrefs = { ...defaultState.prefs, cycleStartSaturday: "2026-01-01" }; // a Thursday
+    storage.setItem(storageKey("prefs"), JSON.stringify(badPrefs));
+    expect(() => hydrateAll(defaultState)).not.toThrow();
   });
 });

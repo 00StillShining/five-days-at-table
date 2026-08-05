@@ -60,6 +60,17 @@ export function formatShortDate(date: Date): string {
   return `${String(d).padStart(2, "0")} ${SHORT_MONTH_NAMES[m - 1]}`;
 }
 
+/** Same "04 aug" convention as `formatShortDate`, but for a value that's
+ * ALREADY a plain "YYYY-MM-DD" calendar date (e.g. `prefs.cycleStartSaturday`)
+ * rather than an instant — formats straight from the ISO string's own y/m/d,
+ * no Date/timezone round-trip needed (there's no wall-clock instant to
+ * convert; see this module's top-of-file doc on the two distinct kinds of
+ * calculation). */
+export function formatShortDateFromIso(iso: string): string {
+  const [, m, d] = iso.split("-").map(Number);
+  return `${String(d).padStart(2, "0")} ${SHORT_MONTH_NAMES[m - 1]}`;
+}
+
 /** "YYYY-MM-DD" -> integer day number (pure calendar-date arithmetic, UTC-anchored). */
 export function isoDateToDayNumber(iso: string): number {
   const [y, m, d] = iso.split("-").map(Number);
@@ -75,6 +86,38 @@ export function dayNumberToIsoDate(dayNumber: number): string {
 /** "YYYY-MM-DD" + N calendar days -> "YYYY-MM-DD". */
 export function addCalendarDays(iso: string, days: number): string {
   return dayNumberToIsoDate(isoDateToDayNumber(iso) + days);
+}
+
+/** 0=Sun..6=Sat for a plain "YYYY-MM-DD" calendar date — pure UTC integer-day
+ * arithmetic (same family as isoDateToDayNumber/addCalendarDays above), no
+ * timezone conversion involved: the value is already a naive calendar date,
+ * not an instant, so there is no wall-clock reading to take. */
+function calendarWeekday(iso: string): number {
+  return new Date(isoDateToDayNumber(iso) * MS_PER_DAY).getUTCDay();
+}
+
+/**
+ * Snap an arbitrary "YYYY-MM-DD" calendar date to the most recent Saturday
+ * on-or-before it (already-Saturday dates pass through unchanged — the
+ * function is idempotent). Pure calendar-date arithmetic, no Europe/London
+ * wall-clock conversion needed — `cycleStartSaturday` is a naive Y-M-D, not
+ * an instant (see this module's top-of-file doc).
+ *
+ * Used two places (owner-walkthrough fix — a non-Saturday
+ * `prefs.cycleStartSaturday` silently broke `todayInfo`'s fortnight-day
+ * math: no day number, wrong duty copy):
+ *  - SettingsDrawer.tsx snaps on commit, so the stored value is always a
+ *    genuine Saturday even if the date picker's raw input wasn't.
+ *  - state/persist.ts's hydrateAll self-heals any already-stored non-Saturday
+ *    value (e.g. from a profile created before this fix shipped) on every
+ *    boot — migration-safe, no schema version bump needed since the stored
+ *    value was always a syntactically valid ISO date, just semantically
+ *    wrong.
+ */
+export function snapToSaturdayOnOrBefore(iso: string): string {
+  const dow = calendarWeekday(iso); // 0=Sun..6=Sat
+  const daysSinceSaturday = (dow + 1) % 7; // Sat->0, Sun->1, Mon->2, ... Fri->6
+  return addCalendarDays(iso, -daysSinceSaturday);
 }
 
 /** Integer count of Europe/London calendar days between two instants

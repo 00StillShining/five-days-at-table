@@ -7,6 +7,7 @@
 import type { ZodType } from "zod";
 import type { AppState, SliceKey } from "./types";
 import { SLICE_SCHEMAS } from "./schemas";
+import { snapToSaturdayOnOrBefore } from "./london";
 
 export const STORAGE_VERSION = "v1";
 const KEY_PREFIX = `fd5.${STORAGE_VERSION}.`;
@@ -126,9 +127,35 @@ export function hydrateSlice<K extends SliceKey>(slice: K, defaultValue: AppStat
   return parsed === undefined ? defaultValue : parsed;
 }
 
+/**
+ * Self-heal migration (owner-walkthrough defect): a stored
+ * `prefs.cycleStartSaturday` that isn't actually a Saturday (possible before
+ * SettingsDrawer.tsx started snapping on commit — the owner's own profile
+ * had one) silently broke `todayInfo`'s fortnight-day math, degrading TODAY
+ * into a weekend-ish state on ordinary weekdays: no day number, wrong duty
+ * copy. The stored value is still a syntactically valid ISO date (zod's
+ * `PrefsSchema` has no day-of-week constraint — see schemas.ts), just
+ * semantically wrong, so this isn't a versioned slice migration; it's a
+ * cheap, idempotent correction applied to every hydrate. Snapping the
+ * already-validated stored value back onto disk (rather than only fixing
+ * the in-memory copy) means the fix "sticks" from the very next boot, even
+ * for a profile that never happens to touch `prefs` again. Never crashes —
+ * `snapToSaturdayOnOrBefore` is pure calendar-date arithmetic with no
+ * failure mode for any well-formed "YYYY-MM-DD" string, and a `null`
+ * (never-set) pref is left untouched (still routes to onboarding).
+ */
+function healCycleStartSaturday(prefs: AppState["prefs"]): AppState["prefs"] {
+  if (prefs.cycleStartSaturday == null) return prefs;
+  const snapped = snapToSaturdayOnOrBefore(prefs.cycleStartSaturday);
+  if (snapped === prefs.cycleStartSaturday) return prefs; // already a genuine Saturday — no-op
+  const healed = { ...prefs, cycleStartSaturday: snapped };
+  persistSlice("prefs", healed); // write the correction back, not just an in-memory patch
+  return healed;
+}
+
 export function hydrateAll(defaults: AppState): AppState {
   return {
-    prefs: hydrateSlice("prefs", defaults.prefs),
+    prefs: healCycleStartSaturday(hydrateSlice("prefs", defaults.prefs)),
     inventory: hydrateSlice("inventory", defaults.inventory),
     eaten: hydrateSlice("eaten", defaults.eaten),
     shopTicks: hydrateSlice("shopTicks", defaults.shopTicks),
