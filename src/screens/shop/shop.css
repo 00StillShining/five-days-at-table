@@ -635,6 +635,13 @@
   .scr-shop .scr-shop-key,
   .scr-shop .scr-shop-key:active:not(:disabled) {
     background: Highlight;
+    /* color/border must be restated at THIS specificity too: the base
+       `.scr-shop .scr-shop-key { color: var(--sol-accent); border: 2px … }`
+       rule outranks the single-class fc rule above, so without these the
+       key rendered accent-orange text on Highlight (~1.5:1 — the Phase 3
+       ship-gate finding). */
+    color: HighlightText;
+    border-color: ButtonText;
     box-shadow: none;
   }
   .scr-shop-key--open {
