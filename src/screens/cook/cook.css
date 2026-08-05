@@ -10,13 +10,18 @@
   labels, not body copy, and forcing a whole sentence to caps would fight the
   "legible at 2m" requirement on the NOW line specifically.
 
-  Colour discipline: this screen deliberately never paints --sol-danger on
-  the reel itself. "Exactly ONE red element" for the step-due alarm (PLAN
-  §6.6 / Sol §5.1) is the single .scr-cook-alarm banner (its dot + text count
-  as one composite unit, same idea as the shared .fd5-arbiter's chevron+text+
-  badge being one unit) — the reel communicates due/paused/running purely
-  through motion (spin/stopped) + shape (dashed vs solid rim) + its own
-  neutral-coloured glyph swap, never colour.
+  Colour discipline: through Phase 2 this screen deliberately never painted
+  --sol-danger on the reel itself — due/paused/running read purely through
+  motion (spin/stopped) + shape (dashed vs solid rim) + a neutral glyph swap.
+  Phase 3 polish amendment (PLAN §6.6 hero brief: "rim glow in danger tone
+  ONLY when due"): the due-state rim now additionally gets a subtle
+  --sol-danger `filter: drop-shadow` glow. This is still never a standalone
+  cue — "exactly ONE red element" for the step-due alarm (Sol §5.1) remains
+  the single .scr-cook-alarm banner (its dot + text count as one composite
+  unit, same idea as the shared .fd5-arbiter's chevron+text+badge being one
+  unit), which is always rendered alongside the reel whenever dueNow is true;
+  the glow is a redundant reinforcement layered on top of the pre-existing
+  shape + glyph + banner cues, not a replacement for any of them.
 */
 
 .scr-cook {
@@ -254,6 +259,13 @@
   position: relative;
   width: 8.5rem;
   height: 8.5rem;
+  /* Local polish tokens (Phase 3, this file only — never tokens.css). The
+     "black platter" (TP-7 quote, D14): a lit centre falling to a near-black
+     vignette at the rim, so the machined --sol-border stroke reads as a
+     bright edge against it. */
+  --ck-platter-hi: #34383c;
+  --ck-platter-lo: #121315;
+  --ck-hub-lo: #0c0d0e;
 }
 
 .scr-cook-reel-svg {
@@ -262,8 +274,18 @@
   display: block;
 }
 
+/* Dims as one unit when paused (see .scr-cook-reel--paused below) — the
+   index dot and brake mark are deliberately siblings of this group, not
+   children, so they stay at full contrast as state indicators. */
+.scr-cook-reel-platter {
+  transition: opacity var(--sol-motion-state) ease;
+}
+
 .scr-cook-reel-rim {
-  fill: var(--sol-panel);
+  /* Paint-server first, flat panel colour as the fallback (used if the
+     gradient reference ever fails to resolve) — forced-colors overrides
+     `fill` outright further down, same pattern as the knob's dot gradient. */
+  fill: url(#ck-platter-grad) var(--sol-panel);
   stroke: var(--sol-border);
   stroke-width: 1.5;
 }
@@ -273,10 +295,57 @@
   stroke-width: 1.25;
 }
 
+/* Machined spoke shadow: a darker, offset duplicate drawn underneath the
+   real spokes (same rotating group, see Reel.tsx) — depth without a filter
+   per spoke. */
+.scr-cook-reel-spoke-shadow {
+  stroke: rgba(0, 0, 0, 0.55);
+  stroke-width: 1.25;
+}
+
 .scr-cook-reel-hub {
-  fill: var(--sol-bg);
+  fill: url(#ck-hub-grad) var(--sol-bg);
   stroke: var(--sol-border);
   stroke-width: 1.5;
+  /* Honest recess depth (Sol §1B "depth follows structure"): the gradient
+     alone reads as a dish because it is genuinely darker toward the centre,
+     not a decorative bevel — see the radialGradient stops in Reel.tsx. */
+}
+
+/* Rotational light play: a CSS conic sheen layered over the SVG, sized to
+   exactly the rim's r=47 (of a 100-unit viewBox => 94% diameter => 3% inset
+   each side). Spins WITH the platter using the identical `scr-cook-spin`
+   keyframe (see .scr-cook-reel-sheen-spin below) — same animation, richer
+   face, never an independent motion cue. mix-blend-mode makes it read as a
+   highlight sweeping the dark platter rather than a flat overlay. */
+.scr-cook-reel-sheen {
+  position: absolute;
+  inset: 3%;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 40deg,
+    transparent 0deg,
+    rgba(255, 255, 255, 0.28) 30deg,
+    transparent 70deg,
+    transparent 180deg,
+    rgba(255, 255, 255, 0.16) 210deg,
+    transparent 250deg,
+    transparent 360deg
+  );
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.scr-cook-reel-sheen-spin {
+  animation: scr-cook-spin 3s linear infinite;
+}
+
+/* Visible brake (Phase 3 polish, paused state): hidden by default, shown
+   only via .scr-cook-reel--paused below — see the forced-colors block for
+   its system-colour override. */
+.scr-cook-reel-brake {
+  fill: var(--sol-text-muted);
+  opacity: 0;
 }
 
 .scr-cook-reel-index {
@@ -310,14 +379,25 @@
   }
 }
 
-/* Shape-only cues (never colour) for due/paused — the reel's rim goes from
-   a plain solid ring to dashed (paused) or double-weight (due). */
+/* Shape-only cues (never colour ALONE — see the due-glow addition below,
+   always paired with the rim's own thickness + the always-present alarm
+   banner) for due/paused — the reel's rim goes from a plain solid ring to
+   dashed (paused) or double-weight (due). */
 .scr-cook-reel--paused .scr-cook-reel-rim {
   stroke-dasharray: 4 3;
 }
 
+.scr-cook-reel--paused .scr-cook-reel-platter {
+  opacity: 0.55;
+}
+
+.scr-cook-reel--paused .scr-cook-reel-brake {
+  opacity: 1;
+}
+
 .scr-cook-reel--due .scr-cook-reel-rim {
   stroke-width: 3;
+  filter: drop-shadow(0 0 5px var(--sol-danger)) drop-shadow(0 0 1px var(--sol-danger));
 }
 
 .scr-cook-hero-readout {
@@ -779,16 +859,24 @@
 
 /* ---------------------------------------------------------------------- */
 /* Reduced motion: collapse mechanical motion to instant state swaps.     */
-/* The reel's <g data-motion> spin is caught by tokens.css's global rule  */
-/* automatically; the tally's entrance keyframes are separately silenced  */
-/* here since they're not tagged data-motion (a one-shot decorative       */
-/* flourish, not a stateful control — still honoured, per PLAN §6.1).     */
+/* The reel's <g data-motion> spin AND the Phase 3 sheen's [data-motion]   */
+/* spin are both caught by tokens.css's global rule automatically; the    */
+/* tally's entrance keyframes are separately silenced here since they're  */
+/* not tagged data-motion (a one-shot decorative flourish, not a stateful */
+/* control — still honoured, per PLAN §6.1). The platter's paused-state   */
+/* opacity dim uses a `transition` (not an `animation`), which tokens.css's */
+/* [data-motion] rule doesn't reach (that element isn't tagged — the dim  */
+/* is a state swap, not motion, and reduced-motion only needs to remove   */
+/* the tween, not the end state) — silenced directly here instead.       */
 /* ---------------------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
   .scr-cook-tally-ring,
   .scr-cook-tally-check {
     animation: none;
+  }
+  .scr-cook-reel-platter {
+    transition: none;
   }
 }
 
@@ -802,6 +890,24 @@
   .scr-cook-reel-hub {
     forced-color-adjust: none;
     stroke: ButtonText;
+  }
+  .scr-cook-reel-rim,
+  .scr-cook-reel-hub {
+    forced-color-adjust: none;
+    fill: Canvas;
+  }
+  .scr-cook-reel-spoke-shadow {
+    display: none;
+  }
+  .scr-cook-reel-sheen {
+    display: none;
+  }
+  .scr-cook-reel--due .scr-cook-reel-rim {
+    filter: none;
+  }
+  .scr-cook-reel-brake {
+    forced-color-adjust: none;
+    fill: ButtonText;
   }
   .scr-cook-reel-index {
     forced-color-adjust: none;

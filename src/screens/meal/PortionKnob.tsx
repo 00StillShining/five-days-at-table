@@ -166,6 +166,20 @@ export function PortionKnob({ scale, onChange }: PortionKnobProps) {
               (checked via getBBox, not just eyeballed) rather than sitting
               pixel-exact on the edge. */}
           <svg viewBox="-14 -14 128 128" className="mk-face" aria-hidden="true" focusable="false">
+            {/* Phase 3 polish only: a radial highlight for the index dot's "tiny
+                inset highlight" (PLAN §6.5 polish attach point). Referenced from
+                meal.css via `fill: url(#mk-dot-grad) var(--sol-accent)` — the
+                trailing fallback colour is what forced-colors' later same-
+                specificity `.mk-index-dot { fill: Highlight }` rule overrides in
+                the cascade, same pattern as the pre-existing tick/body rules. No
+                behavior here, purely a paint-server definition. */}
+            <defs>
+              <radialGradient id="mk-dot-grad" cx="35%" cy="28%" r="75%">
+                <stop offset="0%" stopColor="var(--mk-dot-hi)" />
+                <stop offset="45%" stopColor="var(--mk-dot-mid)" />
+                <stop offset="100%" stopColor="var(--sol-accent)" />
+              </radialGradient>
+            </defs>
             <circle cx={50} cy={50} r={44} className="mk-body" />
             {SCALE_DETENTS.map((d) => {
               const deg = angleForValue(d);

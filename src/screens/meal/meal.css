@@ -4,7 +4,19 @@
   `.fd5` custom properties (this subtree always lives inside the app-wide
   playful-technical light scope — MEAL never overrides data-language).
   Lean: playful-technical, precision borrowed only on the portion knob hero
-  (PLAN §6.0) — flat rendering, no gradients/metals (Phase 3 polish only).
+  (PLAN §6.0).
+
+  Phase 3 polish (this file's `.mk-*` block below): the knob face gets a
+  turned-metal read — a CSS conic-gradient "brushed" sweep + a radial "soft
+  top light" sheen sit BEHIND the SVG face as `.mk-knob::before`/`::after`
+  (painted first per normal DOM order; the SVG is given its own stacking
+  order via `z-index` so it always paints on top), with `.mk-body`'s SVG fill
+  turned semi-transparent so the CSS texture reads through while the ring
+  stroke/ticks/index dot stay crisp on top. Everything else on this screen
+  (readout, steppers, covers) stays deliberately flat/quiet — "the knob is
+  the jewel" (PLAN brief) — no gradients anywhere else in this file. Local
+  custom properties (`--mk-*`) are polish-only and defined here, never in
+  tokens.css.
 */
 
 .scr-meal {
@@ -71,6 +83,11 @@
   padding: 1.25rem 1rem;
   background: var(--sol-panel);
   border: 1px solid var(--sol-border);
+  /* SP3000 framing (atlas §3.16): a shallow recessed well protects/frames the
+     knob as the screen's one crafted object — everything else stays flat. */
+  box-shadow:
+    inset 0 2px 6px rgba(0, 0, 0, 0.14),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.5);
 }
 
 .mk-portion {
@@ -112,6 +129,58 @@
   border-radius: 50%;
   touch-action: none;
   cursor: pointer;
+  position: relative;
+  /* Local polish tokens (Phase 3, this file only — never tokens.css). */
+  --mk-brush-hi: rgba(255, 255, 255, 0.55);
+  --mk-brush-lo: rgba(0, 0, 0, 0.1);
+  --mk-sheen: rgba(255, 255, 255, 0.5);
+  --mk-dot-hi: #ffd9b8;
+  --mk-dot-mid: var(--sol-accent-fill);
+  /* Rim bevel: a raised bezel at rest, sinks on press (see :active below). */
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.2),
+    inset 0 1px 1px rgba(255, 255, 255, 0.55),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.22);
+  transition: box-shadow var(--sol-motion-state) ease;
+}
+
+/* Turned-metal face: a conic "brushed" sweep (::before) + a soft top-light
+   radial sheen (::after), both sized to exactly the SVG's r=44 body circle
+   (viewBox is -14..114 over a 128-unit box, so the r=44 circle occupies the
+   middle 68.75% => 15.625% inset on every side) and painted BEHIND the SVG
+   (`.mk-face` gets z-index:1 below; these stay at the implicit z-index:0 of
+   normal DOM order). `.mk-body`'s fill-opacity (below) is lowered so this
+   texture reads through while the stroke/ticks/dot on top stay crisp. */
+.mk-knob::before,
+.mk-knob::after {
+  content: "";
+  position: absolute;
+  inset: 15.625%;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.mk-knob::before {
+  background: conic-gradient(
+    from 205deg,
+    var(--mk-brush-lo) 0deg,
+    var(--mk-brush-hi) 6deg,
+    var(--mk-brush-lo) 14deg,
+    var(--mk-brush-hi) 40deg,
+    var(--mk-brush-lo) 66deg,
+    var(--mk-brush-hi) 100deg,
+    var(--mk-brush-lo) 150deg,
+    var(--mk-brush-hi) 190deg,
+    var(--mk-brush-lo) 230deg,
+    var(--mk-brush-hi) 270deg,
+    var(--mk-brush-lo) 310deg,
+    var(--mk-brush-hi) 345deg,
+    var(--mk-brush-lo) 360deg
+  );
+}
+
+.mk-knob::after {
+  background: radial-gradient(circle at 32% 26%, var(--mk-sheen), rgba(255, 255, 255, 0) 55%);
 }
 
 .mk-knob:focus-visible {
@@ -120,14 +189,28 @@
   border-radius: 50%;
 }
 
+/* Press state (Sol §5.1 active/pressed: "immediate response, no layout
+   shift"): transform is intentionally NOT in the transition list above, so
+   it snaps instantly on pointer-down/keyboard-activate — same convention as
+   the shared `.fd5-control:active` in tokens.css. */
+.mk-knob:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 2px 3px rgba(0, 0, 0, 0.3),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.3);
+}
+
 .mk-face {
   width: 100%;
   height: 100%;
   display: block;
+  position: relative;
+  z-index: 1;
 }
 
 .mk-body {
   fill: var(--sol-panel);
+  fill-opacity: 0.4;
   stroke: var(--sol-border);
   stroke-width: 1.5;
 }
@@ -136,15 +219,22 @@
   stroke: var(--sol-border);
   stroke-width: 1.5;
   stroke-linecap: round;
+  /* Engraved groove: a hairline light offset under the stroke. */
+  filter: drop-shadow(0 0.5px 0 rgba(255, 255, 255, 0.5));
 }
 
 .mk-tick[data-active] {
   stroke: var(--sol-accent);
   stroke-width: 2.5;
+  /* The active detent is "lit" — a small glow instead of the plain groove. */
+  filter: drop-shadow(0 0 3px var(--sol-accent-fill));
 }
 
 .mk-index-dot {
-  fill: var(--sol-accent);
+  /* Paint-server first, plain accent colour as the CSS fallback (used if the
+     gradient reference ever fails to resolve) — forced-colors overrides this
+     property outright further down, same pattern as the tick rules above. */
+  fill: url(#mk-dot-grad) var(--sol-accent);
 }
 
 .mk-arc-label {
@@ -582,17 +672,45 @@
 /* Reduced motion / forced colors                                          */
 /* ---------------------------------------------------------------------- */
 
+/* The knob has no mechanical motion (the index dot repositions instantly by
+   design — see PortionKnob.tsx's header comment) so there's nothing for
+   [data-motion] to catch; the one cosmetic transition added by Phase 3
+   polish (the rim bevel's box-shadow on hover/press) is silenced directly,
+   same convention tokens.css itself uses for `.fd5-control`. */
+@media (prefers-reduced-motion: reduce) {
+  .mk-knob {
+    transition: none;
+  }
+}
+
 @media (forced-colors: active) {
+  .mk-knob {
+    box-shadow: none;
+  }
+  .mk-knob:active {
+    box-shadow: none;
+  }
+  .mk-knob::before,
+  .mk-knob::after {
+    background: none;
+  }
   .mk-body {
+    fill: Canvas;
+    fill-opacity: 1;
     stroke: ButtonText;
   }
   .mk-tick {
     stroke: ButtonText;
+    filter: none;
   }
   .mk-tick[data-active] {
     stroke: Highlight;
+    filter: none;
   }
   .mk-index-dot {
     fill: Highlight;
+  }
+  .scr-meal-hero {
+    box-shadow: none;
   }
 }

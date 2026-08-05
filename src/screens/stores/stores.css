@@ -6,12 +6,20 @@
   no new global tokens invented here.
 
   "The most purely playful screen" (PLAN §6.0): flat colour blocks, silkscreen
-  lowercase labels, no metal gradients or shine anywhere — the wheel's
-  "ridged strip" is a hard-edged flat stripe pattern (a repeating-linear-
-  gradient used as a technical means to draw stripes, not a tonal/shiny
-  gradient), and nothing in this file uses a transition on the detents
-  themselves, so reduced-motion has nothing to disable (PLAN: "reduced-
-  motion: no roll animation, instant detent" is the default, not a special case).
+  lowercase labels everywhere EXCEPT the wheel hero, which is where Phase 3
+  polish (PLAN §6.7 attach point) lives — "fuzzy/friendly, playful-technical
+  lean — machined but toy-serious, not luxury" (not the SP3000/Pagani
+  precision-industrial treatment MEAL/COOK get). The wheel's ridge texture is
+  now a light+shadow repeating-linear-gradient (edge-on ridge rhythm implying
+  the five click-stops) plus a vertical light-falloff on the housing (barrel
+  curvature) and a soft backlight glow on the checked detent — all
+  background-image/box-shadow layers, still no gradient anywhere else on the
+  screen. Nothing in this file uses a transition on the detents themselves,
+  so reduced-motion has nothing to disable (PLAN: "reduced-motion: no roll
+  animation, instant detent" is the default, not a special case, even with
+  the richer texture). Local custom properties (none needed here beyond
+  `color-mix()` reading the existing --sol-* tokens directly) stay
+  screen-local per Phase 3 law — nothing added to tokens.css.
 */
 
 .scr-stores {
@@ -245,7 +253,22 @@
 .scr-stores-wheel-strip {
   border: 1px solid var(--sol-border);
   background-color: var(--sol-panel);
-  background-image: repeating-linear-gradient(to bottom, var(--sol-border) 0 1px, transparent 1px 9px);
+  /* Edge-on thumbwheel housing: a light+shadow ridge pair every 9px (the
+     click-stop rhythm) over a vertical light-falloff (barrel curvature —
+     the housing reads darker at the top/bottom, lighter through the
+     middle, like a cylinder lit from the front). Both layers are technical
+     stripes/falloff, not a tonal "shine" gradient. */
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.5) 0px,
+      rgba(255, 255, 255, 0.5) 1px,
+      rgba(0, 0, 0, 0.16) 1px,
+      rgba(0, 0, 0, 0.16) 2px,
+      transparent 2px,
+      transparent 9px
+    ),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.16) 0%, transparent 16%, transparent 84%, rgba(0, 0, 0, 0.16) 100%);
   padding: 0.25rem;
   margin: 0;
   display: flex;
@@ -266,7 +289,19 @@
   width: 100%;
   min-block-size: 2.75rem;
   padding: 0.25rem;
-  background: var(--sol-panel);
+  background-color: var(--sol-panel);
+  /* Same ridge rhythm as the housing (.scr-stores-wheel-strip) so each
+     detent reads as part of one continuous machined surface, not a flat
+     block sitting on top of it. */
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.4) 0px,
+    rgba(255, 255, 255, 0.4) 1px,
+    rgba(0, 0, 0, 0.12) 1px,
+    rgba(0, 0, 0, 0.12) 2px,
+    transparent 2px,
+    transparent 9px
+  );
 }
 
 .scr-stores-detent input {
@@ -282,8 +317,16 @@
 }
 
 .scr-stores-detent[data-checked] {
-  background: var(--sol-text);
+  background-color: var(--sol-text);
   color: var(--sol-bg);
+  /* The checked detent, softly backlit — a glow in the cursor-blue family
+     (--sol-focus), the same semantic channel used everywhere else in the
+     app to mark "this is the current position" (PHASE2-CONTRACT §6.1).
+     color-mix() degrades gracefully to no glow (still a fully accessible
+     solid-invert block) on engines that don't support it. */
+  box-shadow:
+    inset 0 0 0 1px var(--sol-bg),
+    0 0 9px 2px color-mix(in srgb, var(--sol-focus) 55%, transparent);
 }
 
 .scr-stores-detent:focus-within {
@@ -461,10 +504,15 @@
     outline: 2px solid Highlight;
     outline-offset: -2px;
   }
+  .scr-stores-wheel-strip,
+  .scr-stores-detent {
+    background-image: none;
+  }
   .scr-stores-detent[data-checked] {
     forced-color-adjust: none;
     background: Highlight;
     color: HighlightText;
+    box-shadow: none;
   }
   .scr-stores-pip--on {
     forced-color-adjust: none;

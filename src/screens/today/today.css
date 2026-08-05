@@ -135,6 +135,10 @@
   text-transform: lowercase;
   color: var(--sol-text-muted);
   letter-spacing: 0.03em;
+  /* PHASE 3 polish (item 5): silkscreen section-head, barely-there engraved
+     — opts into the shared token defined in tokens.css's PHASE 3 POLISH
+     section (same 0.5px highlight offset as the masthead brand). */
+  text-shadow: var(--fd5-engrave);
 }
 
 .scr-today-empty {
@@ -307,6 +311,16 @@
   border: 1px solid var(--sol-border);
   background: var(--sol-panel);
   padding: 1rem;
+  /* PHASE 3 polish (item 1): "the bridge sits on a subtly recessed
+     instrument strip" — a soft inset shadow reading the whole console as
+     one recessed panel the LED segments are mounted into. Colors/border
+     untouched; this is a shadow-only addition so it auto-strips under
+     forced-colors (box-shadow is in the forced-colors "computes to none"
+     list whenever forced-color-adjust isn't set to none, which it isn't
+     here) with no explicit override needed. */
+  box-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.14),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.5);
 }
 
 .scr-today-ladder {
@@ -336,16 +350,46 @@
   grid-row: 1;
   border: 1px solid var(--sol-border);
   background: var(--sol-bg);
+  /* PHASE 3 polish (item 1): a hair of lens rounding on every segment cell —
+     shared by on/off/hollow so the three states read as the same physical
+     socket in three different lamp states, not three different shapes. */
+  border-radius: 2px;
 }
 
 .scr-today-seg--on {
   background: var(--ladder-channel);
   border-color: var(--ladder-channel);
+  color: var(--ladder-channel); /* feeds the currentColor glow below */
+  /* Soft inner glow + a small hot-spot highlight near the top edge — a lit
+     LED, not a flat color chip. Outer blur uses currentColor so every
+     channel's glow matches its own fill with no per-channel literal here;
+     blur naturally fades the (opaque) color to nothing, so no alpha channel
+     is needed on --ladder-channel itself. box-shadow is on the forced-colors
+     "forced to none" list by default (forced-color-adjust isn't set on this
+     element), so this whole treatment already disappears under
+     forced-colors, falling back to the plain ButtonText fill declared in
+     that media block further down — verified, not left to chance. */
+  box-shadow:
+    0 0 3px 0 currentColor,
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.2);
 }
 
 .scr-today-seg--hollow {
   background: transparent;
   border: 1px solid var(--ladder-channel);
+  /* Crisp hollow-lens ring: a second, tighter inset ring (not a glow) so an
+     over-band segment reads as an empty lamp housing, not a dim lit one —
+     the shape cue this state exists for (segmentLayout's own doc: "a SHAPE
+     cue for over-band, not a color-only one") stays unambiguous. */
+  box-shadow: inset 0 0 0 1px var(--sol-bg);
+}
+
+.scr-today-seg--off {
+  /* Recessed dark-glass look: an unlit LED reads as a shallow well, not an
+     absence — inset shadow only (no fill/border color change), so it can't
+     be confused with the hollow (over-band) ring's outline-only shape. */
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.22), inset 0 -1px 0 rgba(255, 255, 255, 0.35);
 }
 
 .scr-today-ladder-bracket {
@@ -361,6 +405,12 @@
   border-top: 2px solid var(--sol-text);
   border-left: 2px solid var(--sol-text);
   border-right: 2px solid var(--sol-text);
+  /* PHASE 3 polish (item 1): "genuinely engraved" — the existing 2px hairline
+     (item-4 wave-1 fix, kept exactly as-is: width/ticks are load-bearing for
+     legibility at the narrowest band) gains an inset highlight edge just
+     below/inside it, the light catching the far side of a cut groove. Inset
+     shadow only, no geometry change. */
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), inset 0 -1px 1px rgba(0, 0, 0, 0.2);
 }
 
 .scr-today-ladder-value {
@@ -382,6 +432,9 @@
 /* ---------------------------------------------------------------------- */
 
 @media (forced-colors: active) {
+  .scr-today-h {
+    text-shadow: none;
+  }
   .scr-today-pad--today {
     outline-color: Highlight;
   }
@@ -391,6 +444,13 @@
   .scr-today-row--warning {
     forced-color-adjust: none;
     border-color: ButtonText;
+    /* PHASE 3 polish additions (glow/recess/groove) are decorative box-shadow
+       only — both these selectors already opt out of the automatic
+       forced-colors stripping (forced-color-adjust: none, above, predates
+       this polish pass), so the new shadows must be zeroed explicitly here
+       or they'd survive into forced-colors as low-contrast decoration on
+       top of the flat system-color fallback below. */
+    box-shadow: none;
   }
   .scr-today-seg--on {
     background: ButtonText;

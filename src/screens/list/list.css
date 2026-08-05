@@ -268,6 +268,11 @@
   font-family: var(--sol-font-data);
   font-weight: 700;
   font-size: 1.05rem;
+  /* PHASE 3 polish (item 3): the whole housing reads as one recessed strip
+     the drum windows are set into. box-shadow auto-strips under
+     forced-colors (no forced-color-adjust set here), so this falls back to
+     the plain bordered box it already was. */
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .scr-list-odo-currency,
@@ -283,6 +288,33 @@
   width: 0.65em;
   overflow: hidden;
   position: relative;
+}
+
+/* PHASE 3 polish (item 3): real drum digits — a recessed window with
+   top/bottom shading implying the drum's curvature, plus a faint horizontal
+   split-line (the seam between two half-drums on a real mechanical
+   counter). Both are decorative overlays (aria-hidden parent, see
+   Odometer.tsx) painted above the rolling digit strip; the roll transition
+   itself is untouched. Both use `background`, which is on the forced-colors
+   "computes to none" list by default (neither pseudo-element sets
+   forced-color-adjust), so they auto-fall-back to the plain flat window. */
+.scr-list-odo-digit::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.32) 0%, rgba(0, 0, 0, 0) 42%), linear-gradient(to top, rgba(0, 0, 0, 0.24) 0%, rgba(0, 0, 0, 0) 42%);
+}
+
+.scr-list-odo-digit::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.28);
+  pointer-events: none;
 }
 
 .scr-list-odo-strip {
@@ -322,9 +354,20 @@
   gap: 0.5rem;
   padding: 0.5rem 0.75rem;
   padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
-  background: var(--sol-panel);
   border: 1px solid var(--sol-border);
   border-bottom: none;
+  /* PHASE 3 polish (item 3): "a quiet brushed-instrument strip so the
+     odometer reads as mounted hardware" — very low-amplitude repeating
+     lines over the same --sol-panel base (D8: light surface stays light,
+     store legibility), plus a hairline top highlight for a mounted-plate
+     edge. Opacity is kept low enough that the effective background stays
+     within a hair of --sol-panel's own value, so every control/text inside
+     this bar keeps its existing contrast margin. Two background-image
+     layers + a background-color: forced-colors strips the whole
+     `background` shorthand by default (no forced-color-adjust here),
+     falling back to a flat system color automatically. */
+  background: repeating-linear-gradient(100deg, rgba(255, 255, 255, 0.35) 0 1px, rgba(0, 0, 0, 0) 1px 3px), var(--sol-panel);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 .scr-list-next {
@@ -438,6 +481,10 @@
   font-size: var(--sol-text-label);
   text-transform: lowercase;
   color: var(--sol-text-muted);
+  /* PHASE 3 polish (item 5): silkscreen section-head, barely-there engraved
+     — opts into the shared token defined in tokens.css's PHASE 3 POLISH
+     section. */
+  text-shadow: var(--fd5-engrave);
 }
 
 .scr-list-summary-muted {
@@ -488,6 +535,9 @@
 /* ---- forced-colors --------------------------------------------------------- */
 
 @media (forced-colors: active) {
+  .scr-list-summary-h {
+    text-shadow: none;
+  }
   .scr-list-row[aria-pressed="true"] {
     border-left-color: Highlight;
     forced-color-adjust: none;

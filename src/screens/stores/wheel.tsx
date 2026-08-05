@@ -7,11 +7,14 @@
 // supports arrow keys directly; see RegisterRow.tsx). Each detent's <label>
 // is sized to the house ≥44px target.
 //
-// Flat rendering only (PLAN §6.7: "a ridged strip + detent ticks, no metal
-// gradients — Phase 3 machines it"): the "ridges" are a flat two-colour
-// repeating pattern, not a shine/gradient. No transition is applied anywhere
-// on the detents, so reduced-motion has nothing to collapse — the contract's
-// "instant detent" is the default, not a special case.
+// Phase 3 polish (stores.css): the flat Phase 2 "ridges" (a two-colour
+// repeating pattern) are now a real light+shadow ridge texture plus a
+// vertical light-falloff on the housing (barrel curvature) and a soft
+// backlight glow on whichever detent is checked — all CSS background-image/
+// box-shadow layers on the existing elements below, no new markup. Still no
+// transition/animation is applied anywhere on the detents, so reduced-motion
+// has nothing to collapse — the contract's "instant detent" stays the
+// default, not a special case, even after the polish pass.
 import type { InventoryLevel } from "../../state/store";
 
 export const DETENT_LABELS: [string, string, string, string, string] = ["empty", "¼", "½", "¾", "full"];

@@ -1,17 +1,30 @@
 // COOK's hero — the reel (PLAN §6.6/§6.10: "rotating platter"; TP-7 quote,
 // SOL-BRIEF §2: "state belongs to the control — reel motion IS program
-// state; stopped-reel-as-alarm"). Flat SVG only (no gradients/metal — Phase 2
-// law; Phase 3 machines it), spokes rotate via a single CSS animation on the
-// wrapping <g data-motion> so tokens.css's global reduced-motion rule
+// state; stopped-reel-as-alarm"). Spokes rotate via a single CSS animation on
+// the wrapping <g data-motion> so tokens.css's global reduced-motion rule
 // collapses it to a static frame for free (same pattern as PLAN's needle
 // dial and the chassis's own pulsing dot/chevron).
+//
+// Phase 3 polish (cook.css): the platter/hub fills are now radial gradients
+// (the "black platter" — TP-7 quote, D14) referenced from <defs> below, the
+// spokes get a duplicated, offset, darker copy underneath for a machined
+// shadow, and a separate CSS conic-gradient "sheen" layer (.scr-cook-reel-
+// sheen) rotates WITH the platter using the exact same `scr-cook-spin`
+// keyframe for a rotational light-play highlight. All of that lives inside
+// `.scr-cook-reel-platter` so the paused state can dim it as one unit; the
+// index dot and the (paused-only) brake mark sit OUTSIDE that group so they
+// stay at full legibility/contrast as state indicators. None of this is new
+// STATE — `spinning`/`stopped`/`dueNow`/paused are the same booleans as
+// Phase 2, only the paint changes.
 //
 // The reel's motion is NEVER the only cue for anything: running/paused/due
 // are each also named in the text readout beside it, and the step-due alarm
 // additionally gets its own text banner (rendered by the caller) — see
 // index.tsx's assembly and cook.css's comment block for the "exactly one red
 // element" discipline (Sol §5.1 / PLAN §6.0 arbiter motif, quoted here even
-// though COOK never renders the shared <ArbiterSlot> itself).
+// though COOK never renders the shared <ArbiterSlot> itself). The Phase 3
+// due-state rim glow (cook.css) is a redundant amplification of that same
+// already-present banner, never a standalone cue.
 import { useId, type KeyboardEvent } from "react";
 import { formatMinutesAsClock, formatScrubOffset } from "./format";
 
@@ -36,7 +49,10 @@ export interface ReelProps {
 
 const SPOKE_COUNT = 12;
 
-function Spokes() {
+/** `shadow` renders the darker, offset duplicate drawn underneath the real
+ * spokes (Phase 3 polish — "machined spoke shadows"); both copies live
+ * inside the same rotating <g> so they turn together as one unit. */
+function Spokes({ shadow = false }: { shadow?: boolean }) {
   const spokes = [];
   for (let i = 0; i < SPOKE_COUNT; i++) {
     const angle = (360 / SPOKE_COUNT) * i;
@@ -47,7 +63,7 @@ function Spokes() {
         y1={50}
         x2={50}
         y2={14}
-        className="scr-cook-reel-spoke"
+        className={shadow ? "scr-cook-reel-spoke-shadow" : "scr-cook-reel-spoke"}
         transform={`rotate(${angle} 50 50)`}
       />
     );
@@ -100,13 +116,48 @@ export function Reel({
         aria-hidden="true"
       >
         <svg viewBox="0 0 100 100" className="scr-cook-reel-svg" focusable="false">
-          <circle cx={50} cy={50} r={47} className="scr-cook-reel-rim" />
-          <g className={spinning ? "scr-cook-reel-spin" : undefined} data-motion>
-            <Spokes />
+          <defs>
+            {/* Paint servers only — no behavior. Referenced from cook.css via
+                `fill: url(#id) <fallback-color>`; forced-colors overrides
+                `fill` outright further down (cook.css), same pattern as the
+                knob's dot gradient in meal.css. */}
+            <radialGradient id="ck-platter-grad" cx="40%" cy="35%" r="75%">
+              <stop offset="0%" stopColor="var(--ck-platter-hi)" />
+              <stop offset="58%" stopColor="var(--sol-panel)" />
+              <stop offset="100%" stopColor="var(--ck-platter-lo)" />
+            </radialGradient>
+            <radialGradient id="ck-hub-grad" cx="42%" cy="36%" r="80%">
+              <stop offset="0%" stopColor="var(--sol-panel)" />
+              <stop offset="45%" stopColor="var(--ck-hub-lo)" />
+              <stop offset="100%" stopColor="var(--ck-hub-lo)" />
+            </radialGradient>
+          </defs>
+          {/* Dims as one unit when paused; the index dot + brake mark below
+              stay outside so they keep full contrast as state indicators. */}
+          <g className="scr-cook-reel-platter">
+            <circle cx={50} cy={50} r={47} className="scr-cook-reel-rim" />
+            <g className={spinning ? "scr-cook-reel-spin" : undefined} data-motion>
+              <g className="scr-cook-reel-spoke-shadow-layer" transform="translate(0.7 0.9)">
+                <Spokes shadow />
+              </g>
+              <Spokes />
+            </g>
+            <circle cx={50} cy={50} r={16} className="scr-cook-reel-hub" />
           </g>
-          <circle cx={50} cy={50} r={16} className="scr-cook-reel-hub" />
           <circle cx={50} cy={22} r={3.2} className={`scr-cook-reel-index${dueNow ? " scr-cook-reel-index--due" : ""}`} />
+          {/* Visible brake (Phase 3 polish): a caliper mark straddling the
+              rim edge, shown only while paused — redundant with the dashed
+              rim + the "❚❚" glyph, never the sole cue. */}
+          <rect x={93} y={47} width={6} height={6} className="scr-cook-reel-brake" />
         </svg>
+        {/* Rotational light-play: a CSS conic sheen that spins WITH the
+            platter using the identical `scr-cook-spin` keyframe/duration as
+            the spokes above — same animation, richer face. [data-motion]
+            lets tokens.css's global reduced-motion rule freeze it for free. */}
+        <div
+          className={spinning ? "scr-cook-reel-sheen scr-cook-reel-sheen-spin" : "scr-cook-reel-sheen"}
+          data-motion
+        />
         <span className="scr-cook-reel-glyph">{dueNow ? "!" : status === "paused" ? "❚❚" : stopped && status !== "complete" ? "○" : "●"}</span>
       </div>
 

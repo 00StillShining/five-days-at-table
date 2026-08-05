@@ -95,9 +95,36 @@
    attention-grabber. */
 .scr-shop .scr-shop-key {
   min-block-size: 4.5rem;
-  background: var(--sol-panel);
   color: var(--sol-accent);
   border: 2px solid var(--sol-accent);
+  /* PHASE 3 polish (item 4): "the convex key from §6.8 — doming via radial
+     highlight, crisp edge bevel." A soft off-center highlight simulates a
+     domed cap; a thin inset ring just inside the accent border reads as a
+     machined bevel catching light. Kept low-amplitude (peak 0.32 alpha,
+     fading out by 45% of the key's width) so the ink-orange label/border
+     keep their existing contrast margin regardless of where the highlight
+     falls under the text. A static "resting on the surface" lift shadow
+     replaces the flat panel fill — still one background property, so the
+     whole thing auto-strips under forced-colors and falls back to the
+     explicit Highlight/HighlightText override further down (which already
+     existed before this pass). */
+  background: radial-gradient(circle at 30% 24%, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0) 48%), var(--sol-panel);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 2px 0 rgba(0, 0, 0, 0.12),
+    0 3px 5px rgba(0, 0, 0, 0.14);
+}
+
+/* Key-travel press state (item 4): the shared .fd5-control:active rule
+   already sinks the key 1px via `transform: translateY(1px)` (no layout
+   shift — pure transform); this deepens the SHADOW story to match, flipping
+   the dome's highlight into a pressed-in hollow. Same transition as every
+   other .fd5-control (tokens.css: border-color/box-shadow, var(--sol-motion-state)),
+   so this isn't a new timing, just a new end-state for the existing one. */
+.scr-shop .scr-shop-key:active:not(:disabled) {
+  background: var(--sol-panel);
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.38), inset 0 -1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .scr-shop-key-glyph {
@@ -105,9 +132,10 @@
 }
 
 .scr-shop-key--open {
+  background: var(--sol-panel);
   box-shadow:
-    inset 0 2px 4px rgba(0, 0, 0, 0.35),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+    inset 0 2px 5px rgba(0, 0, 0, 0.4),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .scr-shop-flipcard {
@@ -119,9 +147,20 @@
   background: var(--sol-panel);
   border: 1px solid var(--sol-border);
   align-items: stretch;
-  transform-origin: top right;
+  transform-origin: top center;
+  /* PHASE 3 polish (item 4): a static "lifted panel" shadow so the card
+     reads as hinged hardware sitting proud of the console rather than a
+     flat popover — no forced-color-adjust set here, so it auto-strips
+     under forced-colors like every other decorative shadow on this
+     screen. */
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.14);
 }
 
+/* Re-skinned, not re-timed (item 4): same selector, same duration/easing
+   (var(--sol-motion-state) ease, untouched below) — only the motion's
+   CHARACTER changes, from a plain scale-fade to a hinge-drop, so the card
+   reads as a panel opening on a top edge rather than zooming in. Still
+   transform/opacity only. */
 @media (prefers-reduced-motion: no-preference) {
   .scr-shop-flipcard {
     animation: scr-shop-flip-open var(--sol-motion-state) ease;
@@ -129,11 +168,11 @@
 }
 @keyframes scr-shop-flip-open {
   from {
-    transform: scaleY(0.85);
+    transform: perspective(700px) rotateX(-10deg) scaleY(0.94);
     opacity: 0;
   }
   to {
-    transform: scaleY(1);
+    transform: perspective(700px) rotateX(0deg) scaleY(1);
     opacity: 1;
   }
 }
@@ -257,6 +296,10 @@
   color: var(--sol-text-muted);
   border-bottom: 1px solid var(--sol-border);
   padding-bottom: 0.375rem;
+  /* PHASE 3 polish (item 5): silkscreen section-head, barely-there engraved
+     — opts into the shared token defined in tokens.css's PHASE 3 POLISH
+     section. */
+  text-shadow: var(--fd5-engrave);
 }
 
 .scr-shop-col-empty {
@@ -554,6 +597,13 @@
     font-size: 1.3rem;
     border: none;
   }
+
+  /* Chrome-free 1-bit print (PLAN §6.8): the PHASE 3 engraved-label
+     text-shadow is a screen-only nicety — strip it so the printed ticket
+     stays pure black-on-white. */
+  .scr-shop-col-h {
+    text-shadow: none;
+  }
 }
 
 /* ---- reduced motion ---- */
@@ -567,11 +617,28 @@
 /* ---- forced-colors ---- */
 
 @media (forced-colors: active) {
+  .scr-shop-col-h {
+    text-shadow: none;
+  }
   .scr-shop-key {
     forced-color-adjust: none;
     background: Highlight;
     color: HighlightText;
     border-color: ButtonText;
+  }
+  /* PHASE 3 polish additions (dome highlight, bevel ring, press/open
+     shadows, hinge-lift shadow) all land on selectors at least as specific
+     as `.scr-shop .scr-shop-key` — matching that specificity here (rather
+     than relying on the single-class rule above) so forced-colors keeps
+     exactly the flat Highlight/HighlightText key it already had, with none
+     of this pass's decorative shadow/gradient surviving into it. */
+  .scr-shop .scr-shop-key,
+  .scr-shop .scr-shop-key:active:not(:disabled) {
+    background: Highlight;
+    box-shadow: none;
+  }
+  .scr-shop-key--open {
+    box-shadow: none;
   }
   .scr-shop-chip {
     forced-color-adjust: none;

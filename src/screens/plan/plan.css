@@ -53,6 +53,10 @@
   font-weight: 700;
   text-transform: lowercase;
   color: var(--sol-text-muted);
+  /* PHASE 3 polish (item 5): silkscreen section-head, barely-there engraved
+     — opts into the shared token defined in tokens.css's PHASE 3 POLISH
+     section. */
+  text-shadow: var(--fd5-engrave);
 }
 
 .scr-plan-hero-body {
@@ -81,6 +85,30 @@
   height: auto;
 }
 
+/* PHASE 3 polish (item 2): the recessed dial well + rim sit behind
+   everything else in the dial (track/ticks/needle) — Sol §1B "depth follows
+   structure". Flat fill on an existing token (--sol-bg), not a gradient:
+   this dial is the board's one precision object (PLAN §6.0) and stays
+   restrained rather than a showpiece. */
+.scr-plan-dial-well {
+  fill: var(--sol-bg);
+}
+
+.scr-plan-dial-well-rim {
+  fill: none;
+  stroke: var(--sol-border);
+  stroke-width: 1;
+  stroke-opacity: 0.55;
+}
+
+/* Printed-scale ticks: thin static marks, same visual weight regardless of
+   channel or state — a fixed instrument scale, not a data encoding. */
+.scr-plan-dial-tick {
+  stroke: var(--sol-border);
+  stroke-width: 1;
+  stroke-opacity: 0.8;
+}
+
 .scr-plan-dial-track {
   fill: none;
   stroke: var(--sol-border);
@@ -103,10 +131,20 @@
   stroke-width: 2.5;
   stroke-linecap: round;
   transition: transform var(--sol-motion-state) ease;
+  /* Soft needle shadow (item 2). `filter` isn't on the forced-colors forced
+     property list, so it survives that mode by default — reset explicitly
+     below to keep the forced-colors dial perfectly flat, matching every
+     other forced-colors override on this screen. */
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.35));
 }
 
 .scr-plan-dial-pivot {
   fill: var(--sol-text);
+}
+
+/* Center pivot cap: a tiny machined highlight dot on top of the pivot. */
+.scr-plan-dial-pivot-cap {
+  fill: var(--sol-panel);
 }
 
 .scr-plan-dial-label {
@@ -409,6 +447,9 @@
 /* --- forced colors --- */
 
 @media (forced-colors: active) {
+  .scr-plan-hero-title {
+    text-shadow: none;
+  }
   .scr-plan-card,
   .scr-plan-hero,
   .scr-plan-swapdeck-candidate,
@@ -418,11 +459,25 @@
 
   .scr-plan-dial-track,
   .scr-plan-dial-band,
-  .scr-plan-dial-needle {
+  .scr-plan-dial-needle,
+  .scr-plan-dial-tick,
+  .scr-plan-dial-well-rim {
     stroke: CanvasText;
   }
 
   .scr-plan-dial-pivot {
     fill: CanvasText;
+  }
+
+  /* PHASE 3 polish additions: flatten the well/pivot-cap fills to the system
+     canvas color and drop the needle's soft shadow, so forced-colors keeps
+     the exact same flat, high-contrast dial it had before this pass. */
+  .scr-plan-dial-well,
+  .scr-plan-dial-pivot-cap {
+    fill: Canvas;
+  }
+
+  .scr-plan-dial-needle {
+    filter: none;
   }
 }

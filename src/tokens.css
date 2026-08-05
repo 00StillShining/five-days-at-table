@@ -340,6 +340,14 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.375rem;
+  /* PHASE 3 polish (item 5): "a finer key-face material" — one very subtle
+     top-light layer, not a full gradient across every surface (Sol §4.6
+     anti-pattern: "material gradients on every surface, creating luxury
+     soup" — this is the one place on the rail it appears, restrained to a
+     narrow band near the top edge rather than the whole face). Auto-strips
+     under forced-colors (background is on the forced list; no
+     forced-color-adjust set on .fd5-key). */
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0) 45%), var(--sol-panel);
 }
 
 .fd5-key-label {
@@ -492,8 +500,16 @@ body {
   gap: 0.75rem;
   padding: 0.3rem 0.6rem;
   border: 1px solid var(--sol-border);
-  background: var(--sol-bg);
   overflow: hidden;
+  /* PHASE 3 polish (item 5): a visible pivot seam down the track's center —
+     the rocker's physical hinge line. Painted as part of the track's own
+     background (layer 0, i.e. behind the ::before active plate and the
+     option labels), so it only shows through on the inactive half; that's
+     enough to read as "this switch pivots around its middle" without a
+     third stacked pseudo-element. Auto-strips under forced-colors
+     (background is on the forced list; forced-color-adjust isn't set on
+     this element). */
+  background: linear-gradient(to right, transparent calc(50% - 1px), rgba(0, 0, 0, 0.22) calc(50% - 1px), rgba(0, 0, 0, 0.22) calc(50% + 1px), transparent calc(50% + 1px)), var(--sol-bg);
 }
 
 .fd5-paddle-track::before {
@@ -502,12 +518,22 @@ body {
   inset: 2px;
   width: calc(50% - 2px);
   background: var(--sol-panel);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25);
+  /* Plate depth (item 5): the active plate reads as pressed IN, with the
+     shadow biased toward the pivot seam (the plate's inner edge) rather
+     than symmetric — a rocker pressed down tilts around its center, so the
+     shadow should be deepest nearest that center, not evenly spread.
+     data-pos="a"/"b" below flips which inner edge that is. */
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(255, 255, 255, 0.4);
   transition: transform var(--sol-motion-state) ease;
+}
+
+.fd5-paddle[data-pos="a"] .fd5-paddle-track::before {
+  box-shadow: inset 2px 1px 3px rgba(0, 0, 0, 0.28), inset 0 -1px 0 rgba(255, 255, 255, 0.4);
 }
 
 .fd5-paddle[data-pos="b"] .fd5-paddle-track::before {
   transform: translateX(100%);
+  box-shadow: inset -2px 1px 3px rgba(0, 0, 0, 0.28), inset 0 -1px 0 rgba(255, 255, 255, 0.4);
 }
 
 .fd5-paddle-opt {
@@ -753,6 +779,15 @@ body {
   .fd5-paddle-track::before {
     background: Highlight;
     forced-color-adjust: none;
+    box-shadow: none;
+  }
+  /* PHASE 3 polish (pivot-consistent plate shadow) is decorative box-shadow
+     on top of the already-forced-color-adjust:none ::before above; these
+     position-specific selectors are more specific than the plain rule just
+     above, so they need their own explicit reset to actually win. */
+  .fd5-paddle[data-pos="a"] .fd5-paddle-track::before,
+  .fd5-paddle[data-pos="b"] .fd5-paddle-track::before {
+    box-shadow: none;
   }
   .fd5-arbiter {
     border: 2px solid ButtonText;
@@ -789,5 +824,58 @@ body {
 
   .fd5-scene {
     padding: 0;
+  }
+}
+
+/* ---------------------------------------------------------------------- */
+/* PHASE 3 POLISH — builder B (display/key family)                        */
+/* ---------------------------------------------------------------------- */
+/*
+  Scope: TODAY LED meter bridge, PLAN adherence gauge, LIST till odometer,
+  SHOP send-to-phone key (all colocated in their own screen CSS — this
+  section only holds what's shared/chassis-owned), plus the paddle/key edits
+  directly above in section 5 and the SHOP key's forced-colors edit in
+  shop.css. Skins only: no markup/ARIA/keyboard/target-size/§5.1-state
+  change anywhere in this pass. Every new effect is box-shadow/background
+  gradient/text-shadow/transform/opacity — nothing that WCAG 1.4.11 or
+  1.4.3 treats as conveying meaning on its own, and every property used here
+  is either on the forced-colors "computes to none" list by default (and
+  left to auto-strip where nothing already opts an element out via
+  forced-color-adjust: none) or explicitly neutralised alongside the
+  existing forced-color-adjust:none rule it layers onto (paddle plate,
+  SHOP key — see section 7 above and shop.css respectively). Reduced-motion:
+  no new animation/transition is introduced by this section — the one
+  re-skinned animation (SHOP's flip-card, shop.css) reuses its existing
+  selector and duration, still gated by the same
+  `@media (prefers-reduced-motion: reduce) { animation: none }` rule that
+  predates this pass.
+*/
+
+.fd5[data-language="playful"] {
+  /* "Barely-there engraved" silkscreen-label treatment (item 5): a single
+     0.5px highlight offset — never a full emboss pair, restraint above all.
+     The masthead brand consumes this directly below; each screen opts its
+     own section-head class in locally (today.css/plan.css/list.css/
+     shop.css), per PHASE2-CONTRACT's "screen-local polish props live in
+     each screen's own CSS". text-shadow isn't on the forced-colors forced
+     list, so it would otherwise survive that mode — reset explicitly below
+     for a clean flat fallback everywhere this token is used. */
+  --fd5-engrave: 0 0.5px 0 rgba(255, 255, 255, 0.65);
+}
+
+.fd5[data-language="precision-industrial"] {
+  /* Same treatment, inverted for light-on-dark ink (COOK's scope — the
+     masthead is the only place this token reaches a dark-scoped element,
+     since every screen with its own section-head opt-in is playful-only). */
+  --fd5-engrave: 0 0.5px 0 rgba(0, 0, 0, 0.65);
+}
+
+.fd5-brand {
+  text-shadow: var(--fd5-engrave);
+}
+
+@media (forced-colors: active) {
+  .fd5-brand {
+    text-shadow: none;
   }
 }
