@@ -126,6 +126,39 @@ Zone fence: `data-cd-language="<slug>"` on each scene root. **No element may rea
 
 `src/state/**` · `src/engine/**` · `src/data/**` · `tools/**` · `data/**`. All **358 tests must stay green**. The plan-variant system (`full` | `morrisons-tester`) must survive: every screen keeps consuming `activeVariant(state)`; only how a cut slot *looks* changes.
 
+## Self-critique — mandatory, before every handoff
+
+There are **no intermediate design reviews on this build**. One Fable review runs at the very end, over the whole product, and its findings are planned rather than applied. That makes your own critique the only critique your work receives before it lands, so run the full protocol, not a glance.
+
+**Run the five passes in fixed order — truth → hierarchy → physics → craft → character.**
+
+| Pass | The question | Fails when |
+|---|---|---|
+| **Truth** | Does every rendered value report real state? | Invented numbers, smoothed reversals, progress theater, a stale reading without its age, motion with nothing behind it |
+| **Hierarchy** | Does the reading order serve the frame's task? | The operator's eye lands somewhere the task doesn't need. *(Note: CD's "exactly one element leads" is **revoked** by CORRECTIONARY §3.1 — four-to-six heroes is the normal condition. Judge reading order, not hero count.)* |
+| **Physics** | Does mass track consequence, and does the commit land at input? | Animation delaying the semantic commit; an Anchored control that overshoots; a needle that jumps instead of sweeping |
+| **Craft** | Is every value committed and every recipe executed as written? | A shadow layer with no role; a gradient without stops; a duration that exists only as a feeling |
+| **Character** | Would the anchor companies ship this? | Anonymous competence; it reads as an app before it reads as an object |
+
+**The halt rule:** a pass that fails receives findings for that pass alone and **the critique stops there** — "a craft note on a lying gauge polishes the lie." Repair, then **re-run from truth**, because repairs regress.
+
+**Write findings before you change anything**, in defect–evidence–repair form, with committed values in the repair and no taste-words:
+
+```
+DEFECT    Needle smoothing hides a threshold crossing (truth pass)
+EVIDENCE  Stock level 0→1 at 14:32:07 renders as a 300ms ease; the warning lamp fires 280ms late
+REPAIR    Bypass the 120ms display smoothing for any excursion past a zone boundary
+```
+
+**Then run these tests** (the distance test is revoked by §3.4 — the §2 acceptance test replaces it):
+- **Static equivalence** — freeze all motion, mute all sound, desaturate to grey. The task must still complete. Motion, sound and colour are reinforcement channels only.
+- **Squint / 8px blur** — the reading order must survive.
+- **Real data** — the longest ingredient name, the 65-row register, the 49-line basket, the un-anchored fortnight, the tester variant, an expired item, an empty state.
+- **Hundredth use** — perform the core loop once attentively, then as the hundredth repetition of the day. Every motion the operator must wait through fails.
+- **§2 acceptance** — would a viewer's first words name an *object*, or a software category?
+
+> **"An agent that reports zero findings on a first build has not critiqued. It has glanced."** A report with an empty findings list will be returned.
+
 ## Reporting requirements
 
-Every builder's final report must contain: the committed values used (hexes, springs, durations, sizes) with the chapter clause each came from · the §6.6 checklist, seven lines, each answered · confirmation you **rendered and looked at it**, with what you saw · measured contrast and target sizes · anything you could not meet, stated plainly (§6.5).
+Every builder's final report must contain: the committed values used (hexes, springs, durations, sizes) with the chapter clause each came from · **your five-pass critique with every finding in defect–evidence–repair form, and what you repaired** · the §6.6 checklist, seven lines, each answered · confirmation you **rendered and looked at it**, with what you actually saw · measured contrast and target sizes · anything you could not meet, stated plainly (§6.5).
