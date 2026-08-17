@@ -59,6 +59,27 @@ page-length scrolling — grouped accordion, one section open at a time.
   parallel against the proven chassis. Then **wave 2 in risk order**: STORES → LIST →
   PLAN → MEAL → SHOP. Then deploy, then the single Fable review.
 
+### Open verification gaps (carry these to the end; do not let them pass as verified)
+
+- **`prefers-reduced-motion` has never been verified by rendering under the media
+  query** — only by rule inspection. No tool available in this session can force the
+  media feature (`chrome-devtools emulate` covers colour scheme, CPU, network and
+  viewport, but not this one), and changing the owner's system setting to test it is not
+  acceptable. **Close it one of two ways:** a confirming render on a machine with the
+  setting on, or — better, because it then runs on every commit — an automated rule test
+  over the built CSS asserting that every animated property has a translating (never
+  deleting) counterpart inside the media block. Position that carries meaning must still
+  move.
+- **Lighthouse's performance category is not obtainable** through the available tooling
+  (`lighthouse_audit` excludes it), so the "mobile-throttled 80" baseline figure has not
+  been reproduced this phase. Direct rAF frame sampling plus Long Animation Frame
+  attribution was substituted and is stronger evidence for the 60fps question — but it
+  is not the same number.
+- **GPU memory and real-device raster are unmeasured.** CPU throttling does not model a
+  phone's GPU. This does not affect the shipping recommendation (the milled-plate pattern
+  uses zero `backdrop-filter` nodes) but the naive translation's true cost on an iPhone
+  is unknown.
+
 ### Standing law for this phase
 
 - Frozen: `src/state/**`, `src/engine/**`, `src/data/**`, `tools/**`, `data/**`.
