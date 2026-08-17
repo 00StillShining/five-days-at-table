@@ -159,6 +159,64 @@ REPAIR    Bypass the 120ms display smoothing for any excursion past a zone bound
 
 > **"An agent that reports zero findings on a first build has not critiqued. It has glanced."** A report with an empty findings list will be returned.
 
+## Measured performance law (STORES spike, 2026-08-17 — binding, not advisory)
+
+The spike built one STORES accordion group at full material against the real 65-row
+register and measured it three ways. **Its findings overturn the assumption the plan was
+built on, so build from these numbers, not from instinct.**
+
+**Full material is NOT the bottleneck, and you may stop economising on it.** Four-layer
+shadow stacks, specular, procedural texture and live acrylic at 65 rows cost **under 1ms
+of style+layout per frame even at 20× CPU throttle** — 0.9% of the frame. Zero Long
+Animation Frames at the mobile-throttled baseline in *every* configuration tested,
+including a deliberately naive translation with 828 shadow layers, 65 `backdrop-filter`
+panes and 66 blend layers. 60fps held throughout. **Richness is affordable. Spend it.**
+
+**What actually costs frames is React reconciling the register — 97% of the frame is
+JavaScript.** Budget renders, not layers.
+
+Therefore, binding for every screen from here:
+
+1. **Commit synchronously at input; do not rely on a React dispatch.** A `dispatch` alone
+   does **not** satisfy the Floor's 16ms acknowledgement, because the reducer runs during
+   the *next render* — the model is still stale when your handler returns. Keep the model
+   in a ref, apply the frozen reducer to it **inline at the input event**, and let
+   `setState` be only the request to re-render. Measured: ack commit **0.01–0.9ms** while
+   the visible report takes 12–39ms. This is the Floor made structural; promote it first.
+2. **Unmount closed accordion groups.** This was not in the plan and it is the single
+   largest saving: 767 → 335 nodes, render 19.4 → 12.5ms, input→paint 39.0 → 17.6ms.
+   **R7 alone is insufficient** — a collapsed drawer at `grid-template-rows: 0fr` is
+   hidden from paint but *not* from React, so one level change still reconciles all 65
+   rows. Measure the accordion on the real device before generalising: at desk width this
+   trades stocktake cost for group-switch cost.
+3. **One cached texture per family is non-negotiable** — 65 requests on one key cost
+   4.0ms/1 paint; on 65 keys, 341.0ms/64 paints. The cache saves **98.8%**.
+4. **Isolate clocks.** A 1Hz age clock mounted above a 65-row list re-renders 65 rows per
+   second forever. Put it inside the one component that reads it, and give
+   day-granularity countdowns a 60s clock, not a 1s one.
+5. **`content-visibility: auto` on closed groups bought nothing measurable** and is
+   marginally *worse* on open. Do not reach for it.
+6. **One integrator vs per-row rAF made no measurable difference at this scale.** Keep the
+   shared integrator for *correctness* (II.4.13, one clock) — do not claim it as a
+   performance win. The cheapest sweep is neither: a rate-derived CSS transition, zero
+   script per frame.
+7. **Do not reach for virtualization.** Nothing measured justifies it.
+
+**Two known foundation limits, recorded rather than hidden:**
+- **Shed stage 1 is a no-op on slow-data screens** (no honest live process means no pulse
+  to pause), and **stage 3 has no lever on `reveal`** — the accordion's own 260ms reveal
+  is the most expensive motion on STORES and II.4.12 lists only peer, drill-in and tray.
+  Either accept a two-rung ladder on these screens or extend stage 3 to cover `reveal`.
+- **`src/cd/material/textures.ts` cannot be re-keyed to a world's palette.** It bakes
+  neutral hexes in (`knurl` at `#34373D`/`#4A4E56`/`#2C2F35`) and offers no seam, which
+  violates II.2's own "a language re-keys hue and value to its own palette without
+  touching structure". Workaround until the factory takes palette keys:
+  `background-blend-mode: overlay` over the world's own control token.
+
+The shed ladder's trigger was repaired at `fe6a23e` — it had been measuring the interval
+*between* frames as though it were the cost *of* one, and escalated to stage 3 on any
+idle page within ~3s. If you are reading a pre-`fe6a23e` branch, that bug is live.
+
 ## Reporting requirements
 
 Every builder's final report must contain: the committed values used (hexes, springs, durations, sizes) with the chapter clause each came from · **your five-pass critique with every finding in defect–evidence–repair form, and what you repaired** · the §6.6 checklist, seven lines, each answered · confirmation you **rendered and looked at it**, with what you actually saw · measured contrast and target sizes · anything you could not meet, stated plainly (§6.5).
