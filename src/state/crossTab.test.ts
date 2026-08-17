@@ -15,7 +15,7 @@ class MapStorage implements StorageLike {
   }
 }
 
-const bareprefs = { cover: "w" as const, week: "A" as const, scale: 1, serveTime: "19:30", cycleStartSaturday: null };
+const bareprefs = { cover: "w" as const, week: "A" as const, scale: 1, serveTime: "19:30", cycleStartSaturday: null, planVariant: "full" as const };
 
 describe("slicesChanged — the mount-gating fix", () => {
   it("returns nothing when the two snapshots are the same object (the mount-time seed)", () => {

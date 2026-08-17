@@ -18,6 +18,7 @@ import { ArbiterSlot } from "../../components/ArbiterSlot";
 import { Paddle } from "../../components/Paddle";
 import { arbiterFor } from "../../engine/arbiter";
 import { makeTripId, type TripKind } from "../../engine/tripCodec";
+import { activeVariant } from "../../data/variant";
 import { tripBuild, type TripDay } from "../../state/selectors";
 import { londonDateIso } from "../../state/london";
 import { useStore } from "../../state/store";
@@ -33,10 +34,14 @@ import "./shop.css";
 export default function ShopScreen(_props: SceneProps) {
   const { state, dispatch } = useStore();
   const now = useNow(60_000); // SHOP's existing cadence (state/useNow.ts default is 30s)
+  const variant = activeVariant(state);
 
   const [tripDay, setTripDay] = useState<TripDay>(0);
   const [forcedIncludeIds, setForcedIncludeIds] = useState<Set<string>>(new Set());
   const [phoneKeyOpen, setPhoneKeyOpen] = useState(false);
+  // docs/VARIANT-SPEC.md: "no day-7 toggle in tester mode" — the tester has
+  // exactly one trip (the authored basket), not a day-0/day-7 split.
+  const effectiveTripDay: TripDay = variant.isTester ? 0 : tripDay;
 
   const heroContainerRef = useRef<HTMLDivElement | null>(null);
   const verifyInputRefs = useRef(new Map<string, HTMLInputElement>());
@@ -46,13 +51,21 @@ export default function ShopScreen(_props: SceneProps) {
   // fresh id/timestamp is exactly right there. Contract: "deterministic per
   // build call is fine" — this doesn't need to change on every unrelated
   // re-render (e.g. an inventory tick), only when the trip itself changes.
-  const tripMeta = useMemo(() => ({ tripId: makeTripId(now), createdOn: now.toISOString() }), [tripDay]); // eslint-disable-line react-hooks/exhaustive-deps
+  const tripMeta = useMemo(() => ({ tripId: makeTripId(now), createdOn: now.toISOString() }), [effectiveTripDay]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const trip = useMemo(() => tripBuild(state.inventory, tripDay, state.swaps), [state.inventory, tripDay, state.swaps]);
+  const trip = useMemo(
+    () => tripBuild(state.inventory, effectiveTripDay, state.swaps, variant),
+    [state.inventory, effectiveTripDay, state.swaps, variant]
+  );
   const lines = useMemo(() => effectiveLines(trip, forcedIncludeIds), [trip, forcedIncludeIds]);
 
-  const kind: TripKind = tripDay === 0 ? "full" : "day7";
-  const columns = SHOP_ORDER.map((code) => ({
+  const kind: TripKind = effectiveTripDay === 0 ? "full" : "day7";
+  // docs/VARIANT-SPEC.md: "single Morrisons column" in tester mode — every
+  // tester basket line already carries shop "M" (see selectors.ts's
+  // buildTesterTrip), so restricting SHOP_ORDER to just "M" collapses the
+  // usual three-column layout down to one without any other code changing.
+  const shopOrder = variant.isTester ? (["M"] as const) : SHOP_ORDER;
+  const columns = shopOrder.map((code) => ({
     code,
     displayName: planShops[code]?.name ?? code,
     rows: buyLinesForShop(lines, code),
@@ -69,7 +82,7 @@ export default function ShopScreen(_props: SceneProps) {
     return buildEnvelope(tripMeta.tripId, tripMeta.createdOn, kind, lines, trip.verifyNominees);
   }, [lines, trip.verifyNominees, tripMeta, kind, buyLineCount]);
 
-  const arbiter = arbiterFor("shop", state, now, { tripDay });
+  const arbiter = arbiterFor("shop", state, now, { tripDay: effectiveTripDay });
   const rank1 = arbiter.rank1;
 
   function handleIncludeAnyway(ingId: string) {
@@ -116,20 +129,33 @@ export default function ShopScreen(_props: SceneProps) {
       <header className="scr-shop-header">
         <h1 className="scr-shop-title">shop</h1>
         <p className="scr-shop-status">
-          {kind === "full" ? "full shop" : "day-7 top-up"} · {buyLineCount} line{buyLineCount === 1 ? "" : "s"} to buy
+          {variant.isTester ? "morrisons starter" : kind === "full" ? "full shop" : "day-7 top-up"} · {buyLineCount} line
+          {buyLineCount === 1 ? "" : "s"} to buy
           {estimateCount > 0 && ` · ${estimateCount} estimated`}
           {verifyOutstanding.length > 0 && ` · ${verifyOutstanding.length} to verify`}
         </p>
+        {/* docs/VARIANT-SPEC.md: "note rendered saying so" — the tester trip
+            is an on-ramp first shop, deliberately not deduped against stock. */}
+        {variant.isTester && (
+          <p className="scr-shop-tester-note" role="note">
+            one retailer, {trip.lines.length} lines, verified prices — this is the tester's own first shop, so nothing here
+            is skipped against what's already on the shelf.
+          </p>
+        )}
       </header>
 
       <div className="scr-shop-console">
-        <Paddle
-          name="trip"
-          checked={tripDay === 7}
-          optionA={{ value: "0", label: "full shop" }}
-          optionB={{ value: "7", label: "day-7 top-up" }}
-          onToggle={() => setTripDay((d) => (d === 0 ? 7 : 0))}
-        />
+        {/* docs/VARIANT-SPEC.md: "no day-7 toggle in tester mode" — the
+            tester has exactly one trip, so the paddle simply doesn't render. */}
+        {!variant.isTester && (
+          <Paddle
+            name="trip"
+            checked={tripDay === 7}
+            optionA={{ value: "0", label: "full shop" }}
+            optionB={{ value: "7", label: "day-7 top-up" }}
+            onToggle={() => setTripDay((d) => (d === 0 ? 7 : 0))}
+          />
+        )}
         <SendToPhoneKey envelope={envelope} open={phoneKeyOpen} onOpenChange={setPhoneKeyOpen} containerRef={(el) => (heroContainerRef.current = el)} />
       </div>
 
@@ -152,6 +178,9 @@ export default function ShopScreen(_props: SceneProps) {
               verifyNominees={verifyNomineeSet}
               priceChecks={state.priceChecks}
               market={col.code === "X"}
+              // Fable review FIX round: the tester basket renders the source
+              // document verbatim — no canonical "— alt: …" note grafted on.
+              suppressAlternativeNote={variant.isTester}
             />
           ))}
         </div>
@@ -162,7 +191,11 @@ export default function ShopScreen(_props: SceneProps) {
         <span className="scr-shop-total-figure">£{total.toFixed(2)}</span>
       </p>
 
-      <HaveList lines={lines} inventory={state.inventory} onIncludeAnyway={handleIncludeAnyway} />
+      {/* docs/VARIANT-SPEC.md: "no have-list dedupe" — the tester trip never
+          produces dedupe rows (haveG is always 0 on an authored line), so
+          the section is hidden outright rather than rendering an
+          always-empty "nothing to skip" list. */}
+      {!variant.isTester && <HaveList lines={lines} inventory={state.inventory} onIncludeAnyway={handleIncludeAnyway} />}
 
       <p className="scr-shop-waste">
         this month · £{wasteTotal.toFixed(2)} binned

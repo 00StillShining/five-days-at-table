@@ -521,6 +521,18 @@
   font-size: var(--sol-text-label);
 }
 
+/* Fable review FIX round: tester per-op note — quiet secondary text next to
+   "now", not a chip/badge (text-only, no color-only meaning); italic is the
+   ONE extra cue beyond size/weight/position, kept subtle since COOK's dark
+   lean already reserves saturated color for true alarm states only. */
+.scr-cook-now-testernote {
+  margin: 0;
+  font-style: italic;
+  color: var(--sol-text-muted);
+  font-size: var(--sol-text-label);
+  line-height: 1.3;
+}
+
 /* --- Track lanes --- */
 
 .scr-cook-lanes-body {

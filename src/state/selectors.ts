@@ -14,9 +14,10 @@
 import type { Band, Cover, Ingredient, Macros, Meal, Slot, Week } from "../data/types";
 import { bandsFor, canonicalCalendar, getMeal, ingredientShortName, ingredientsById, ingredientsList, mealForSlot, mealsByWeek, mealsByWeekDay, referenceUnitG, requireMeal } from "../data";
 import { isFreezerStock, operativeLifeDays, type LifeConfidence } from "../data/lifeEstimate";
+import { activeVariant, FULL_VARIANT, type ActiveVariant } from "../data/variant";
 import { criticalPathMinutes } from "../engine/programs";
 import { addCalendarDays, londonCalendarDaysBetween, londonDateIso, londonParts, londonWallTimeToEpochMs } from "./london";
-import type { AppState, Inventory, InventoryEntry, Swaps } from "./types";
+import type { AppState, Inventory, InventoryEntry, Prefs, Swaps } from "./types";
 
 const FORTNIGHT_DAYS = 14;
 const DEFROST_DUE_HOUR = 18; // "by 18:00" — PLAN §6.3's own worked example; see dutyStack doc below.
@@ -78,10 +79,42 @@ function effectiveMeal(planned: Meal, swaps: Swaps): Meal {
  * Returns undefined only when the slot itself doesn't exist (defensive —
  * every real week/day/slot combination in the dataset has a meal).
  */
-export function effectiveMealForSlot(week: Week, day: number, slot: Slot, state: Pick<AppState, "swaps">): Meal | undefined {
+/**
+ * `prefs` is OPTIONAL on the state param (unlike `swaps`, which every caller
+ * already has) — deliberately, so every pre-existing call site that narrows
+ * its state object to `{ swaps }` (screens/plan/helpers.ts, this module's own
+ * dutyStack, selectors.test.ts) keeps compiling and behaving exactly as
+ * before without being touched: no `prefs` -> full mode -> `activeVariant`
+ * never flags a cut slot, identical to pre-variant behavior. Callers that DO
+ * pass a real `prefs` (today/index.tsx, stores/index.tsx — both already hold
+ * the full AppState) get docs/VARIANT-SPEC.md's runtime contract: a cut
+ * slot's meal resolves to `undefined`, same as a genuinely nonexistent slot
+ * — see `cutReasonForSlot` below for the reason text UI needs alongside it.
+ */
+export function effectiveMealForSlot(
+  week: Week,
+  day: number,
+  slot: Slot,
+  state: Pick<AppState, "swaps"> & { prefs?: Pick<Prefs, "planVariant"> },
+): Meal | undefined {
   const planned = mealForSlot(week, day, slot);
   if (!planned) return undefined;
+  const variant = state.prefs ? activeVariant({ prefs: state.prefs }) : FULL_VARIANT;
+  if (variant.isCutMealId(planned.id)) return undefined;
   return effectiveMeal(planned, state.swaps);
+}
+
+/**
+ * The tester's stated reason a slot is cut (docs/VARIANT-SPEC.md: "Cut with
+ * stated reasons"), or `null` when the slot isn't cut (including: full mode,
+ * where nothing is ever cut). TODAY's Wednesday off-state and PLAN's "cut ·
+ * reason" cells both read this alongside `effectiveMealForSlot` returning
+ * `undefined` for the same slot.
+ */
+export function cutReasonForSlot(week: Week, day: number, slot: Slot, state: { prefs: Pick<Prefs, "planVariant"> }): string | null {
+  const planned = mealForSlot(week, day, slot);
+  if (!planned) return null;
+  return activeVariant(state).cutReason(planned.id);
 }
 
 // ---------------------------------------------------------------------------
@@ -139,9 +172,17 @@ export function mealMacros(mealId: string, cover: Cover, scale = 1): Macros {
  * Always Week A in practice (the only week actually executed, D5), but this
  * takes `week` explicitly since PLAN also shows Week B's own (unswapped)
  * figures for comparison.
+ *
+ * `variant` (default `FULL_VARIANT`, backward compatible with every existing
+ * call site): docs/VARIANT-SPEC.md's "cut slots resolve to null" — a cut
+ * slot's meal is excluded from the day's totals entirely (a Wednesday under
+ * the tester, with all four slots cut, correctly comes out as all-zero
+ * macros rather than the full plan's figures).
  */
-export function dayMacros(week: Week, dayNo: number, cover: Cover, scale = 1, swaps: Swaps = {}): Macros {
-  const meals = mealsByWeekDay(week, dayNo).map((planned) => effectiveMeal(planned, swaps));
+export function dayMacros(week: Week, dayNo: number, cover: Cover, scale = 1, swaps: Swaps = {}, variant: ActiveVariant = FULL_VARIANT): Macros {
+  const meals = mealsByWeekDay(week, dayNo)
+    .filter((planned) => !variant.isCutMealId(planned.id))
+    .map((planned) => effectiveMeal(planned, swaps));
   const totals: Macros = { kcal: 0, protein: 0, netCarb: 0, fat: 0, fibre: 0 };
   for (const meal of meals) {
     const m = macrosFromCovers(meal.covers[cover], scale);
@@ -197,7 +238,15 @@ export function eatenSoFar(week: Week, dayNo: number, cover: Cover, state: Pick<
   return roundMacros(totals);
 }
 
-export function bands(week: Week, cover: Cover): { kcal: Band; protein: Band; netCarb: Band; fat: Band; fibre: Band } {
+/**
+ * `variant` (default `FULL_VARIANT`): docs/VARIANT-SPEC.md "Bands/arbiter:
+ * over/under-band judgments use variant targets" — when the tester is active
+ * and its own `targets` are present, those replace plan.json's own bands for
+ * this cover; otherwise (full mode, or tester data not yet emitted) falls
+ * back to `bandsFor`, identical to pre-variant behavior.
+ */
+export function bands(week: Week, cover: Cover, variant: ActiveVariant = FULL_VARIANT): { kcal: Band; protein: Band; netCarb: Band; fat: Band; fibre: Band } {
+  if (variant.isTester && variant.targets) return variant.targets[cover];
   return bandsFor(week, cover);
 }
 
@@ -341,29 +390,60 @@ export function formatRemainingDays(remainingDays: number): string {
 export function dutyStack(state: AppState, now: Date): Duty[] {
   const info = todayInfo(now, state.prefs.cycleStartSaturday);
   const duties: Duty[] = [];
+  const variant = activeVariant(state);
 
   if (info.anchored && info.fortnightDay != null && state.prefs.cycleStartSaturday) {
     const nowMs = now.getTime();
-    for (const entry of canonicalCalendar()) {
-      if (entry.phase !== "defrost" || entry.day > info.fortnightDay) continue;
-      const dueDateIso = addCalendarDays(state.prefs.cycleStartSaturday, entry.day);
-      for (const item of entry.items) {
-        if (item.move !== "freezer → fridge") continue;
+    if (variant.isTester && variant.defrost.length > 0) {
+      // Tester mode: defrost moves come from the variant's own authored list
+      // (docs/VARIANT-SPEC.md "defrost"), not the canonical a-twice calendar
+      // — the tester's single Week-A pass has its own bring-down schedule.
+      // `item.dayNo` is 1-5 (Mon-Fri, matching TodayInfo.dayNo); the tester
+      // only ever runs within the fortnight's FIRST pass, where
+      // `fortnightDay === offset` directly (todayInfo: offset = dayNo + 1
+      // for weekdays, verified against WEEKDAY_DAYNO above).
+      for (const item of variant.defrost) {
+        const entryFortnightDay = item.dayNo + 1;
+        if (entryFortnightDay > info.fortnightDay) continue;
+        const dueDateIso = addCalendarDays(state.prefs.cycleStartSaturday, entryFortnightDay);
         const updatedAt = state.inventory[item.ingId]?.updatedAt;
         const done = updatedAt != null && londonDateIso(new Date(updatedAt)) >= dueDateIso;
         if (done) continue;
         const dueAtMs = londonWallTimeToEpochMs(dueDateIso, DEFROST_DUE_HOUR, 0);
-        const overdue = entry.day < info.fortnightDay || nowMs >= dueAtMs;
+        const overdue = entryFortnightDay < info.fortnightDay || nowMs >= dueAtMs;
         duties.push({
           kind: "defrost",
-          id: `${entry.day}:${item.ingId}`,
+          id: `tester:${item.dayNo}:${item.ingId}`,
           ingId: item.ingId,
           g: item.g,
           text: `move ${ingredientShortName(item.ingId)} fz → fr`,
-          fortnightDay: entry.day,
+          fortnightDay: entryFortnightDay,
           dueAt: new Date(dueAtMs).toISOString(),
           overdue,
         });
+      }
+    } else {
+      for (const entry of canonicalCalendar()) {
+        if (entry.phase !== "defrost" || entry.day > info.fortnightDay) continue;
+        const dueDateIso = addCalendarDays(state.prefs.cycleStartSaturday, entry.day);
+        for (const item of entry.items) {
+          if (item.move !== "freezer → fridge") continue;
+          const updatedAt = state.inventory[item.ingId]?.updatedAt;
+          const done = updatedAt != null && londonDateIso(new Date(updatedAt)) >= dueDateIso;
+          if (done) continue;
+          const dueAtMs = londonWallTimeToEpochMs(dueDateIso, DEFROST_DUE_HOUR, 0);
+          const overdue = entry.day < info.fortnightDay || nowMs >= dueAtMs;
+          duties.push({
+            kind: "defrost",
+            id: `${entry.day}:${item.ingId}`,
+            ingId: item.ingId,
+            g: item.g,
+            text: `move ${ingredientShortName(item.ingId)} fz → fr`,
+            fortnightDay: entry.day,
+            dueAt: new Date(dueAtMs).toISOString(),
+            overdue,
+          });
+        }
       }
     }
   }
@@ -544,7 +624,44 @@ export interface TripBuild {
  * IS "recompute the shopping deltas" (PLAN §6.4) — the recomputed trip is the
  * delta view.
  */
-export function tripBuild(inventory: Inventory, tripDay: TripDay, swaps: Swaps = {}): TripBuild {
+/**
+ * Tester-mode trip (docs/VARIANT-SPEC.md): "the trip IS the authored basket
+ * verbatim — single Morrisons column; no day-7 toggle; no have-list dedupe
+ * (the tester is an on-ramp first shop); totals from the basket; all lines
+ * verified (no ≈ marks, no verify nominees)." `tripDay` is accepted for
+ * signature compatibility but ignored — the tester has exactly one trip, not
+ * a day-0/day-7 split; SHOP hides the day-7 paddle in tester mode.
+ */
+function buildTesterTrip(variant: ActiveVariant): TripBuild {
+  const basket = variant.basket!;
+  const lines: TripLine[] = basket.lines.map((l) => ({
+    ingId: l.ingId,
+    name: l.label,
+    shop: "M",
+    product: l.product,
+    packG: l.packG,
+    // D0-036: `price` is the PER-PACK rate (ShopColumn/tripHelpers'
+    // `effectiveCost = effectivePacks * price` reconstructs the line total
+    // from this, the same formula full-mode SKU-priced lines already use —
+    // so tester rows render identically through the shared column
+    // component). `lineCost` below is `lineP` taken verbatim rather than
+    // re-derived (`packP * qty`) so the rendered subtotal always matches the
+    // source document's own printed line price to the penny, even on the
+    // rare line where real-world rounding means the two aren't identical.
+    price: l.packP / 100,
+    estimate: false, // verified basket — no ≈ marks
+    needG: l.packG * l.qty,
+    haveG: 0, // "on-ramp first shop — no have-list dedupe"
+    buyG: l.packG * l.qty,
+    packsToBuy: l.qty,
+    lineCost: l.lineP / 100,
+    mergedWith: l.coversAlso?.[0] ?? null,
+  }));
+  return { tripDay: 0, lines, verifyNominees: [], subtotal: basket.totalP / 100 };
+}
+
+export function tripBuild(inventory: Inventory, tripDay: TripDay, swaps: Swaps = {}, variant: ActiveVariant = FULL_VARIANT): TripBuild {
+  if (variant.isTester && variant.basket) return buildTesterTrip(variant);
   const classesForTrip = tripDay === 0 ? ["buy-once", "freeze-day0", "buy-frozen"] : ["topup", "stagger"];
   const passMultiplier = tripDay === 0 ? 2 : 1;
 

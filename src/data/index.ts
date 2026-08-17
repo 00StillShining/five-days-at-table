@@ -9,3 +9,5 @@ export * from "./calendar";
 export * from "./plan";
 export * from "./yieldMap";
 export * from "./lifeEstimate";
+export * from "./variant";
+export * from "./variantMorrisons";

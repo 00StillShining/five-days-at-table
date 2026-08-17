@@ -3,12 +3,22 @@
 // ("the contract API is law, supersets fine").
 import type { Cover, Slot, Week } from "../data/types";
 
+/** Plan-variant selector (docs/VARIANT-SPEC.md "Runtime contract"): "full" is
+ * the canonical fortnight (default); "morrisons-tester" swaps the whole app
+ * onto the owner's hand-authored 10-meal/one-retailer tester week. Additive —
+ * the full dataset never changes, this only picks which lens src/data/variant.ts's
+ * `activeVariant(state)` returns. Migration-safe: absent on any prefs blob
+ * persisted before this field existed (schemas.ts's PrefsSchema `.default("full")`
+ * fills it in on hydrate — see state/persist.ts's zod-validated hydration). */
+export type PlanVariant = "full" | "morrisons-tester";
+
 export interface Prefs {
   cover: Cover;
   week: Week;
   scale: number;
   serveTime: string; // "HH:MM", default "19:30"
   cycleStartSaturday: string | null; // ISO date (the Saturday the fortnight anchors to); null -> onboarding
+  planVariant: PlanVariant;
 }
 
 export type InventoryLevel = 0 | 1 | 2 | 3 | 4;

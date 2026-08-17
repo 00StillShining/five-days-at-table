@@ -9,7 +9,8 @@ import type { Slot } from "../data/types";
 import { londonDateIso } from "../state/london";
 import { useStore } from "../state/store";
 import type { TimerSliceState } from "../state/types";
-import { getProgram, type Program, type ProgramStep } from "./programs";
+import { activeVariant } from "../data/variant";
+import { getVariantProgram, type Program, type ProgramStep } from "./programs";
 
 // ---------------------------------------------------------------------------
 // Pure derivation (no React) — this is what src/engine/timers.test.ts drives
@@ -153,7 +154,14 @@ export function useProgram(): UseProgramResult {
   const [nowMs, setNowMs] = useState(() => Date.now());
   const [previewOffsetMinutes, setPreviewOffsetMinutes] = useState(0);
 
-  const program = useMemo(() => (state.timers.programId ? getProgram(state.timers.programId) : null), [state.timers.programId]);
+  // Variant-aware (docs/VARIANT-SPEC.md): resolves the tester's reduced
+  // "prep-a-tester" id to its filtered program; every other id (including
+  // every id in full mode) resolves identically to the old `getProgram` call.
+  const variant = activeVariant(state);
+  const program = useMemo(
+    () => (state.timers.programId ? getVariantProgram(state.timers.programId, variant) : null),
+    [state.timers.programId, variant]
+  );
 
   const isTicking = state.timers.startedAt != null && state.timers.pausedAt == null;
   useEffect(() => {

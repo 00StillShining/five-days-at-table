@@ -22,6 +22,7 @@ import { useStore } from "../../state/store";
 import type { InventoryLevel } from "../../state/store";
 import { arbiterFor } from "../../engine/arbiter";
 import { ArbiterSlot, type ArbiterDuty as SlotDuty } from "../../components/ArbiterSlot";
+import { activeVariant } from "../../data/variant";
 import { coverageForAllMeals, effectiveMealForSlot, todayInfo } from "../../state/selectors";
 import { londonDateIso } from "../../state/london";
 import { useNow } from "../../state/useNow";
@@ -56,6 +57,7 @@ export default function StoresScene(_props: SceneProps) {
 
   const todayIso = londonDateIso(now);
   const info = todayInfo(now, state.prefs.cycleStartSaturday);
+  const variant = activeVariant(state);
   const dinner = typeof info.dayNo === "number" ? (effectiveMealForSlot("A", info.dayNo, "dinner", state) ?? null) : null;
   const alreadyEaten = Boolean(state.eaten[todayIso]?.dinner);
 
@@ -158,7 +160,14 @@ export default function StoresScene(_props: SceneProps) {
   const restockShown = restockAll.slice(0, RESTOCK_DISPLAY_CAP);
   const restockMoreCount = restockAll.length - restockShown.length;
 
-  const cookFromStock = hasAnyInventory ? coverageForAllMeals(state.inventory, state.prefs.cover, ["A", "B"]).slice(0, 5) : [];
+  // docs/VARIANT-SPEC.md: "coverage strip ranks kept meals first in tester
+  // mode (others still listed, marked 'not this week')." Stable partition —
+  // kept meals keep their existing coverage-descending order among
+  // themselves, same for the rest; only the group boundary is new.
+  const cookFromStockAll = hasAnyInventory ? coverageForAllMeals(state.inventory, state.prefs.cover, ["A", "B"]) : [];
+  const cookFromStock = variant.isTester
+    ? [...cookFromStockAll].sort((a, b) => Number(variant.isKeptMealId(b.mealId)) - Number(variant.isKeptMealId(a.mealId))).slice(0, 5)
+    : cookFromStockAll.slice(0, 5);
 
   const armedIng = armedId ? (REGISTER_FLAT.find((i) => i.id === armedId) ?? null) : null;
   const armedLevel: InventoryLevel | null = armedIng ? ((state.inventory[armedIng.id]?.level ?? 0) as InventoryLevel) : null;
@@ -241,11 +250,16 @@ export default function StoresScene(_props: SceneProps) {
           <ul className="scr-stores-cookstock-list">
             {cookFromStock.map((c) => {
               const meal = requireMeal(c.mealId);
+              const notThisWeek = variant.isTester && !variant.isKeptMealId(c.mealId);
               return (
                 <li key={c.mealId}>
-                  <a className="fd5-control scr-stores-cookstock-chip" href={`#/meal/${c.mealId}`}>
+                  <a className="fd5-control scr-stores-cookstock-chip" href={`#/meal/${c.mealId}`} data-not-this-week={notThisWeek || undefined}>
                     <span>{meal.name}</span>
-                    <span className="scr-stores-cookstock-pct">~{Math.round(c.coverage * 100)}%</span>
+                    {notThisWeek ? (
+                      <span className="scr-stores-cookstock-pct">not this week</span>
+                    ) : (
+                      <span className="scr-stores-cookstock-pct">~{Math.round(c.coverage * 100)}%</span>
+                    )}
                   </a>
                 </li>
               );

@@ -20,13 +20,14 @@ import { mealsByWeekDay, planDays, planThemes } from "../../data";
 import type { Slot } from "../../data/types";
 import type { ArbiterDuty } from "../../engine/arbiter";
 import { arbiterFor } from "../../engine/arbiter";
+import { activeVariant } from "../../data/variant";
 import { dayMacros } from "../../state/selectors";
 import { useStore } from "../../state/store";
 import { useNow } from "../../state/useNow";
 import { AdherenceGauge } from "./AdherenceGauge";
 import { dayOverBand, MACRO_LABEL } from "./helpers";
 import "./plan.css";
-import { EmptySlotCard, SlotCard } from "./SlotCard";
+import { CutSlotCard, EmptySlotCard, SlotCard } from "./SlotCard";
 import { SwapDeck } from "./SwapDeck";
 
 const SLOTS: Slot[] = ["breakfast", "lunch", "dinner", "snack"];
@@ -41,6 +42,7 @@ export default function PlanScreen(_props: SceneProps) {
   const { state, dispatch } = useStore();
   const { week, cover } = state.prefs;
   const swaps = state.swaps;
+  const variant = activeVariant(state);
 
   // swapTarget stays defined once initialized (defaults harmlessly to day 1
   // breakfast, never shown until sheetOpen flips true) rather than resetting
@@ -87,7 +89,7 @@ export default function PlanScreen(_props: SceneProps) {
         </p>
       </header>
 
-      <AdherenceGauge week={week} cover={cover} swaps={swaps} />
+      <AdherenceGauge week={week} cover={cover} swaps={swaps} variant={variant} />
 
       <section className="scr-plan-grid" aria-label={`week ${week} fortnight board`}>
         {planDays.map((dayName, i) => {
@@ -95,8 +97,8 @@ export default function PlanScreen(_props: SceneProps) {
           const dayAbbr = dayName.slice(0, 3).toLowerCase();
           const theme = planThemes[i];
           const mealBySlot = new Map(mealsByWeekDay(week, day).map((m) => [m.slot, m]));
-          const dayTotals = dayMacros(week, day, cover, 1, swaps);
-          const over = dayOverBand(week, day, cover, swaps);
+          const dayTotals = dayMacros(week, day, cover, 1, swaps, variant);
+          const over = dayOverBand(week, day, cover, swaps, variant);
 
           return (
             <article className="scr-plan-day" key={day}>
@@ -107,9 +109,15 @@ export default function PlanScreen(_props: SceneProps) {
               <ul className="scr-plan-day-slots">
                 {SLOTS.map((slot) => {
                   const meal = mealBySlot.get(slot);
+                  // docs/VARIANT-SPEC.md: "cut slots as quiet 'cut · reason'
+                  // cells (non-color second cue); swap deck hidden for cut
+                  // slots (nothing to swap into a cut slot in tester mode)."
+                  const cutReason = meal ? variant.cutReason(meal.id) : null;
                   return (
                     <li key={slot}>
-                      {meal ? (
+                      {meal && cutReason != null ? (
+                        <CutSlotCard slot={slot} reason={cutReason} />
+                      ) : meal ? (
                         <SlotCard
                           week={week}
                           day={day}

@@ -5,7 +5,7 @@ import type { AppState } from "./types";
 
 function nonTrivialState(): AppState {
   return {
-    prefs: { cover: "m", week: "B", scale: 1.1, serveTime: "19:00", cycleStartSaturday: "2026-08-01" },
+    prefs: { cover: "m", week: "B", scale: 1.1, serveTime: "19:00", cycleStartSaturday: "2026-08-01", planVariant: "full" },
     inventory: {
       egg: { level: 3, updatedAt: "2026-08-01T09:00:00.000Z" },
       chicken: { level: 1, updatedAt: "2026-08-02T09:00:00.000Z" },

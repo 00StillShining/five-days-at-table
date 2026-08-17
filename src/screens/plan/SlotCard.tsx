@@ -88,3 +88,21 @@ export function EmptySlotCard({ slot }: { slot: Slot }) {
     </div>
   );
 }
+
+/**
+ * docs/VARIANT-SPEC.md: a slot the tester cuts renders this quiet "cut ·
+ * reason" cell instead of the normal SlotCard — flat-functional (no new hero
+ * treatment), non-color second cue (the dashed border + "cut" text label,
+ * not a color alone), and deliberately carries no swap affordance — there's
+ * nothing to swap into a slot the tester doesn't cook.
+ */
+export function CutSlotCard({ slot, reason }: { slot: Slot; reason: string }) {
+  return (
+    <div className="scr-plan-card scr-plan-card--cut" data-tag="cut">
+      <p className="scr-plan-card-slot">{slot}</p>
+      <p className="scr-plan-card-cut-text">
+        cut <span aria-hidden="true">·</span> {reason}
+      </p>
+    </div>
+  );
+}

@@ -247,7 +247,7 @@
     "weekday": "Sat",
     "phase": "shop",
     "title": "THE TOP-UP",
-    "body": "Seven lines, £8.58, restocking the short-life produce that would not have lasted the second Week-A pass: Salad tomatoes, Little gem lettuce, Cucumber, Spring onions, Pineapple chunks, Cottage cheese, Avocados. Sourced from FD5-Shopping-List.html's day-7 card (the canonical A-twice top-up), not from provisioning.json's Week-B-specific day-7 table. Then bring down the second pass's chicken (770 g) and chicken breast mince (140 g) from the freezer — it needs a full night before tomorrow's Sunday session, exactly as the source A+B calendar's own day-7 op brings down Week B's meat the night before Week B's prep.",
+    "body": "Seven lines, £6.93, restocking the short-life produce that would not have lasted the second Week-A pass: Salad tomatoes, Little gem lettuce, Cucumber, Spring onions, Pineapple chunks, Avocados. Sourced from FD5-Shopping-List.html's day-7 card (the canonical A-twice top-up), not from provisioning.json's Week-B-specific day-7 table. Then bring down the second pass's chicken (770 g) and chicken breast mince (140 g) from the freezer — it needs a full night before tomorrow's Sunday session, exactly as the source A+B calendar's own day-7 op brings down Week B's meat the night before Week B's prep.",
     "station": "Shop",
     "items": [
       {
@@ -273,11 +273,6 @@
       {
         "ingId": "pineapple",
         "g": 260,
-        "move": "buy"
-      },
-      {
-        "ingId": "cottage",
-        "g": 300,
         "move": "buy"
       },
       {

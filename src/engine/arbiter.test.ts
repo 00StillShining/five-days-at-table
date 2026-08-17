@@ -227,13 +227,29 @@ describe("arbiterFor — over-band uses eaten-so-far, not the full planned day",
     expect(result.rank1?.kind).not.toBe("over-band");
   });
 
-  it("ticking the full day (matching the known over-band plan total) fires over-band", () => {
+  // A later data round widened plan.json's bands (the exact "sits right at
+  // the edge" fragility this describe block's own top comment warned about)
+  // — no authored day in the current dataset lands over-band any more (every
+  // week/day/cover combination checked; see this file's git history for the
+  // verification script). Rather than lock this test to whichever specific
+  // meal ids/macros happen to sit closest to the (now-wider) edge today —
+  // re-fragile in exactly the same way — this ticks all four of Monday's
+  // slots with a single genuinely high-protein meal (b-d5l, 47g/serving for
+  // cover w) from a DIFFERENT day/week: `eatenSoFar` only requires the tick's
+  // `mealId` to resolve via `getMeal`, it never checks that the ticked meal
+  // matches what was actually PLANNED for that slot (state/selectors.ts's
+  // own doc: "an eaten tick's own mealId is written at the moment of
+  // cooking... the authoritative record of what was actually eaten"). Four
+  // slots at 47g each is 188g, comfortably over even a generously widened
+  // band by design, not by a coincidence of which meal happens to be
+  // planned for Monday today.
+  it("ticking a full day of a genuinely high-protein meal fires over-band", () => {
     const eaten: AppState["eaten"] = {
       "2026-08-03": {
-        breakfast: { mealId: "a-d1b", at: MONDAY.toISOString() },
-        lunch: { mealId: "a-d1l", at: MONDAY.toISOString() },
-        dinner: { mealId: "a-d1d", at: MONDAY.toISOString() },
-        snack: { mealId: "a-d1s", at: MONDAY.toISOString() },
+        breakfast: { mealId: "b-d5l", at: MONDAY.toISOString() },
+        lunch: { mealId: "b-d5l", at: MONDAY.toISOString() },
+        dinner: { mealId: "b-d5l", at: MONDAY.toISOString() },
+        snack: { mealId: "b-d5l", at: MONDAY.toISOString() },
       },
     };
     const result = arbiterFor("today", mondayState(eaten), MONDAY);

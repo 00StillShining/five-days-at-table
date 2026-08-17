@@ -15,7 +15,7 @@ export const defaultTimers: TimerSliceState = {
 };
 
 export const defaultState: AppState = {
-  prefs: { cover: "w", week: "A", scale: 1, serveTime: "19:30", cycleStartSaturday: null },
+  prefs: { cover: "w", week: "A", scale: 1, serveTime: "19:30", cycleStartSaturday: null, planVariant: "full" },
   inventory: {},
   eaten: {},
   shopTicks: {},

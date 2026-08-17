@@ -4,6 +4,8 @@
 import { mealMacros } from "../../state/selectors";
 import type { AppState } from "../../state/types";
 import type { Meal } from "../../data/types";
+import { activeVariant } from "../../data/variant";
+import { TESTER_PROGRAM_SUFFIX } from "../../engine/programs";
 import { groupedMealOptions, prepProgramDisplayName, prepSessionOptions, resolveTonightMeal, tonightDuty } from "./programGroups";
 
 const SLOT_LABEL: Record<string, string> = { breakfast: "breakfast", lunch: "lunch", dinner: "dinner", snack: "snack" };
@@ -15,10 +17,11 @@ export interface ProgramPickerProps {
 }
 
 export function ProgramPicker({ state, now, onLoad }: ProgramPickerProps) {
+  const variant = activeVariant(state);
   const duty = tonightDuty(state, now);
   const tonight = resolveTonightMeal(duty);
-  const sessions = prepSessionOptions();
-  const weekGroups = groupedMealOptions();
+  const sessions = prepSessionOptions(variant);
+  const weekGroups = groupedMealOptions(variant);
 
   return (
     <div className="scr-cook-picker">
@@ -49,17 +52,22 @@ export function ProgramPicker({ state, now, onLoad }: ProgramPickerProps) {
           sunday sessions
         </h2>
         <ul className="scr-cook-picker-session-list">
-          {sessions.map(({ week, programId, session, totalMinutes }) => (
-            <li key={programId}>
-              <button type="button" className="fd5-control scr-cook-picker-session" onClick={() => onLoad(programId)}>
-                <span className="scr-cook-picker-session-text">
-                  <span className="scr-cook-picker-session-name">{prepProgramDisplayName(week)}</span>
-                  <span className="scr-cook-picker-session-desc">{session.sessionName}</span>
-                </span>
-                <span className="scr-cook-picker-session-meta">{totalMinutes} min</span>
-              </button>
-            </li>
-          ))}
+          {sessions.map(({ week, programId, session, totalMinutes, reducedNote }) => {
+            const isReduced = programId.endsWith(TESTER_PROGRAM_SUFFIX);
+            return (
+              <li key={programId}>
+                <button type="button" className="fd5-control scr-cook-picker-session" onClick={() => onLoad(programId)}>
+                  <span className="scr-cook-picker-session-text">
+                    <span className="scr-cook-picker-session-name">
+                      {isReduced ? "starter sunday session" : prepProgramDisplayName(week)}
+                    </span>
+                    <span className="scr-cook-picker-session-desc">{reducedNote ?? session.sessionName}</span>
+                  </span>
+                  <span className="scr-cook-picker-session-meta">{totalMinutes} min</span>
+                </button>
+              </li>
+            );
+          })}
         </ul>
       </section>
 

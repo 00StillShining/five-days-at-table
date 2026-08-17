@@ -1,0 +1,940 @@
+{
+  "shop": {
+    "code": "M",
+    "heading": "Morrisons",
+    "blurb": "Everything — one order, one delivery slot",
+    "amtShown": "£69.83"
+  },
+  "header": {
+    "subLine": "FD-5 · Week A · 10 of 15 meals · One retailer, one order · 39 lines",
+    "hint": "Everything here comes from one Morrisons order — no second shop, no market run. 5 meals are cut, cleanly, because Morrisons doesn't stock what they need: all of Wednesday (egg sauce, efo riro, pepper soup) and Friday's breakfast (callaloo & egg skillet) need plantain — Morrisons' plantain search turns up only plantain crisps. Wednesday's lunch also needs egusi, which returns zero results. Thursday's lunch needs edamame spaghetti and turkey breast mince — neither is stocked (turkey mince here is thigh, not breast). Everything else survives untouched, at real Morrisons prices, verified 11 Aug. This is meant as the on-ramp: fewer meals, one shop, lower total spend, so cooking from the plan is a small commitment rather than a big one.",
+    "totals": {
+      "wholeOrder": "£69.83",
+      "mealsCovered": "10",
+      "perMeal": "£6.98"
+    }
+  },
+  "rows": [
+    {
+      "domIndex": 0,
+      "name": "Chicken breast",
+      "productString": "Morrisons British Chicken Breast Fillets, 630 g",
+      "pack": 630,
+      "qty": 1,
+      "priceShown": "£4.85",
+      "tags": [
+        "Freeze on arrival"
+      ],
+      "note": "Verified 11 Aug: £7.70/kg — the 630 g pack costs less in total than rounding up to the 1 kg pack (£6.99) for a 575 g need.",
+      "aisle": "Meat, fish & eggs"
+    },
+    {
+      "domIndex": 1,
+      "name": "Beef mince, 5%",
+      "productString": "Morrisons Scotch Steak Mince 5% Fat, 500 g",
+      "pack": 500,
+      "qty": 1,
+      "priceShown": "£5.19",
+      "tags": [
+        "Freeze on arrival"
+      ],
+      "note": "Verified 11 Aug: £10.38/kg.",
+      "aisle": "Meat, fish & eggs"
+    },
+    {
+      "domIndex": 2,
+      "name": "Sirloin steak",
+      "productString": "Morrisons British Sirloin Steak, 200 g",
+      "pack": 200,
+      "qty": 1,
+      "priceShown": "£4.00",
+      "tags": [
+        "Freeze on arrival"
+      ],
+      "note": "Tuesday's breakfast sandwich. Verified 11 Aug: £20.00/kg — the cheapest sirloin on the site, under the frying-steak heading.",
+      "aisle": "Meat, fish & eggs"
+    },
+    {
+      "domIndex": 3,
+      "name": "Chicken breast mince",
+      "productString": "Morrisons British Chicken Mince 5% Fat, 500 g, Price Match",
+      "pack": 500,
+      "qty": 1,
+      "priceShown": "£2.59",
+      "tags": [
+        "Freeze on arrival"
+      ],
+      "note": "Monday's pizza. Verified 11 Aug: £5.18/kg.",
+      "aisle": "Meat, fish & eggs"
+    },
+    {
+      "domIndex": 4,
+      "name": "Salmon fillets",
+      "productString": "Morrisons 2 Salmon Fillets, 220 g",
+      "pack": 220,
+      "qty": 1,
+      "priceShown": "£4.35",
+      "tags": [
+        "Freeze on arrival"
+      ],
+      "note": "Friday's dish. Verified 11 Aug: £19.77/kg.",
+      "aisle": "Meat, fish & eggs"
+    },
+    {
+      "domIndex": 5,
+      "name": "Eggs",
+      "productString": "Morrisons Large Free Range Eggs, 12 pack",
+      "pack": 600,
+      "qty": 1,
+      "priceShown": "£3.30",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "Verified 11 Aug: unchanged at £3.30.",
+      "aisle": "Meat, fish & eggs"
+    },
+    {
+      "domIndex": 6,
+      "name": "Reduced-fat cheddar",
+      "productString": "Cathedral City Lighter Mature Cheddar Slices, 5 x 20 g",
+      "pack": 100,
+      "qty": 1,
+      "priceShown": "£1.50",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "Verified 11 Aug: £15.00/kg, but it's one small pack either way for a 76 g need — this beats the 400 g block (£2.95) on total cost.",
+      "aisle": "Dairy & chilled"
+    },
+    {
+      "domIndex": 7,
+      "name": "Mozzarella",
+      "productString": "Morrisons Savers Mozzarella, 100 g",
+      "pack": 100,
+      "qty": 1,
+      "priceShown": "£0.55",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "Monday's pizza, used once. Verified 11 Aug: £5.50/kg — the Savers bag is a third of the price of the branded grated bags for the same job.",
+      "aisle": "Dairy & chilled"
+    },
+    {
+      "domIndex": 8,
+      "name": "Parmesan",
+      "productString": "Loyd Grossman Italian Grated Cheese, 80 g",
+      "pack": 80,
+      "qty": 1,
+      "priceShown": "£1.65",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "Verified 11 Aug: £20.63/kg — cheapest grated Italian hard cheese on the site; a 27 g need doesn't justify true Parmigiano Reggiano at £28/kg.",
+      "aisle": "Dairy & chilled"
+    },
+    {
+      "domIndex": 9,
+      "name": "Fat-free Greek yoghurt",
+      "productString": "Morrisons Fat Free Greek Style Yoghurt, 1 kg",
+      "pack": 1000,
+      "qty": 1,
+      "priceShown": "£2.10",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "ONE tub covers both the yoghurt and the skyr lines. Verified 11 Aug: unchanged at £2.10.",
+      "aisle": "Dairy & chilled"
+    },
+    {
+      "domIndex": 10,
+      "name": "Avocados",
+      "productString": "Morrisons Ripen At Home Avocados, 4 pack",
+      "pack": 560,
+      "qty": 1,
+      "priceShown": "£1.50",
+      "tags": [
+        "Mixed ripeness"
+      ],
+      "note": "Buy hard, ripen on the counter.",
+      "aisle": "Fruit & veg"
+    },
+    {
+      "domIndex": 11,
+      "name": "Salad tomatoes",
+      "productString": "Morrisons Salad Tomatoes, 750 g",
+      "pack": 750,
+      "qty": 1,
+      "priceShown": "£1.79",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "Counter, not fridge. Verified 11 Aug: £2.39/kg.",
+      "aisle": "Fruit & veg"
+    },
+    {
+      "domIndex": 12,
+      "name": "Little gem lettuce",
+      "productString": "British Little Gem Lettuce, 2 pack",
+      "pack": 250,
+      "qty": 1,
+      "priceShown": "£0.77",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "The raw-salad share of the need — whole heads, never bagged leaves.",
+      "aisle": "Fruit & veg"
+    },
+    {
+      "domIndex": 13,
+      "name": "Sweetheart cabbage",
+      "productString": "British Sweetheart Cabbage, each ~500 g",
+      "pack": 500,
+      "qty": 1,
+      "priceShown": "£0.75",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "The shredded/slaw share — a cheaper stand-in than buying more little gem for the same job.",
+      "aisle": "Fruit & veg"
+    },
+    {
+      "domIndex": 14,
+      "name": "Red onions",
+      "productString": "British Red Onions, 1 kg",
+      "pack": 1000,
+      "qty": 1,
+      "priceShown": "£0.95",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "Loose bag, not the 3-pack.",
+      "aisle": "Fruit & veg"
+    },
+    {
+      "domIndex": 15,
+      "name": "Carrots",
+      "productString": "British Carrots, 1 kg",
+      "pack": 1000,
+      "qty": 1,
+      "priceShown": "£0.69",
+      "tags": [
+        "Store normally"
+      ],
+      "note": null,
+      "aisle": "Fruit & veg"
+    },
+    {
+      "domIndex": 16,
+      "name": "Chestnut mushrooms",
+      "productString": "British Closed Cup Mushrooms, 465 g, Price Match",
+      "pack": 465,
+      "qty": 1,
+      "priceShown": "£1.50",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "Out of the plastic, into a paper bag. Verified 11 Aug: £3.23/kg.",
+      "aisle": "Fruit & veg"
+    },
+    {
+      "domIndex": 17,
+      "name": "Red cabbage",
+      "productString": "Red Cabbage, each ~700 g",
+      "pack": 700,
+      "qty": 1,
+      "priceShown": "£0.85",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "Whole, not shredded — best keeper in the fridge.",
+      "aisle": "Fruit & veg"
+    },
+    {
+      "domIndex": 18,
+      "name": "Cucumber",
+      "productString": "Whole Cucumber ~300 g",
+      "pack": 300,
+      "qty": 1,
+      "priceShown": "£0.99",
+      "tags": [
+        "Store normally"
+      ],
+      "note": null,
+      "aisle": "Fruit & veg"
+    },
+    {
+      "domIndex": 19,
+      "name": "Spring onions",
+      "productString": "Salad Onions, min 100 g",
+      "pack": 100,
+      "qty": 1,
+      "priceShown": "£0.69",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "Stand them in a glass of water and they'll keep.",
+      "aisle": "Fruit & veg"
+    },
+    {
+      "domIndex": 20,
+      "name": "Pineapple chunks",
+      "productString": "Pineapple Chunks in Juice, 425 g tin (260 g drained)",
+      "pack": 260,
+      "qty": 1,
+      "priceShown": "£1.10",
+      "tags": [
+        "Store normally"
+      ],
+      "note": null,
+      "aisle": "Fruit & veg"
+    },
+    {
+      "domIndex": 21,
+      "name": "Red peppers",
+      "productString": "Savers Mixed Peppers, 3 pack",
+      "pack": 450,
+      "qty": 1,
+      "priceShown": "£1.79",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "Raw — no frozen split needed for a single small shop.",
+      "aisle": "Fruit & veg"
+    },
+    {
+      "domIndex": 22,
+      "name": "Frozen leaf spinach",
+      "productString": "Whole Leaf Spinach, 950 g",
+      "pack": 950,
+      "qty": 1,
+      "priceShown": "£1.50",
+      "tags": [
+        "Freezer aisle"
+      ],
+      "note": "Every use here is cooked, so frozen changes nothing.",
+      "aisle": "Freezer"
+    },
+    {
+      "domIndex": 23,
+      "name": "Frozen cauliflower florets",
+      "productString": "Cauliflower Florets, 1 kg",
+      "pack": 1000,
+      "qty": 2,
+      "priceShown": "£3.00",
+      "tags": [
+        "Freezer aisle"
+      ],
+      "note": "Blitz from frozen — cheaper than ready-riced.",
+      "aisle": "Freezer"
+    },
+    {
+      "domIndex": 24,
+      "name": "Frozen broccoli florets",
+      "productString": "Broccoli Florets, 900 g",
+      "pack": 900,
+      "qty": 1,
+      "priceShown": "£1.50",
+      "tags": [
+        "Freezer aisle"
+      ],
+      "note": null,
+      "aisle": "Freezer"
+    },
+    {
+      "domIndex": 25,
+      "name": "Frozen mixed berries",
+      "productString": "Wonky Berries Mix, 1 kg",
+      "pack": 1000,
+      "qty": 1,
+      "priceShown": "£2.99",
+      "tags": [
+        "Freezer aisle"
+      ],
+      "note": "One bag replaces both the raspberries and the blueberries.",
+      "aisle": "Freezer"
+    },
+    {
+      "domIndex": 26,
+      "name": "Frozen sweetcorn",
+      "productString": "Morrisons Supersweet Sweetcorn, 800 g",
+      "pack": 800,
+      "qty": 1,
+      "priceShown": "£1.50",
+      "tags": [
+        "Freezer aisle"
+      ],
+      "note": "Verified 11 Aug: £1.88/kg.",
+      "aisle": "Freezer"
+    },
+    {
+      "domIndex": 27,
+      "name": "Brown rice",
+      "productString": "Brown Basmati Rice, 1 kg",
+      "pack": 1000,
+      "qty": 1,
+      "priceShown": "£1.85",
+      "tags": [
+        "Store normally"
+      ],
+      "note": null,
+      "aisle": "Cupboard"
+    },
+    {
+      "domIndex": 28,
+      "name": "Passata",
+      "productString": "Passata, 500 g",
+      "pack": 500,
+      "qty": 1,
+      "priceShown": "£0.45",
+      "tags": [
+        "Store normally"
+      ],
+      "note": null,
+      "aisle": "Cupboard"
+    },
+    {
+      "domIndex": 29,
+      "name": "Black beans",
+      "productString": "Black Beans in Water, 400 g tin (240 g drained)",
+      "pack": 240,
+      "qty": 1,
+      "priceShown": "£0.50",
+      "tags": [
+        "Store normally"
+      ],
+      "note": null,
+      "aisle": "Cupboard"
+    },
+    {
+      "domIndex": 30,
+      "name": "Red kidney beans",
+      "productString": "Morrisons Red Kidney Beans, 400 g tin (240 g drained), Price Match",
+      "pack": 240,
+      "qty": 1,
+      "priceShown": "£0.37",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "Verified 11 Aug: £1.54/kg.",
+      "aisle": "Cupboard"
+    },
+    {
+      "domIndex": 31,
+      "name": "Chickpeas",
+      "productString": "Morrisons Chickpeas in Water, 400 g tin (240 g drained), Price Match",
+      "pack": 240,
+      "qty": 1,
+      "priceShown": "£0.37",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "Verified 11 Aug: £1.54/kg.",
+      "aisle": "Cupboard"
+    },
+    {
+      "domIndex": 32,
+      "name": "Porridge oats",
+      "productString": "Morrisons Savers Porridge Oats, 1 kg, Price Match",
+      "pack": 1000,
+      "qty": 1,
+      "priceShown": "£0.85",
+      "tags": [
+        "Store normally"
+      ],
+      "note": null,
+      "aisle": "Cupboard"
+    },
+    {
+      "domIndex": 33,
+      "name": "Peanut butter",
+      "productString": "Morrisons 100% Smooth Peanut Butter, 340 g",
+      "pack": 340,
+      "qty": 1,
+      "priceShown": "£1.80",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "The small jar, deliberately — a 19 g need doesn't justify the 1 kg tub (£3.99) this shop would otherwise carry as pure stock.",
+      "aisle": "Cupboard"
+    },
+    {
+      "domIndex": 34,
+      "name": "Tomato salsa",
+      "productString": "Mild Salsa Dip, 300 g",
+      "pack": 300,
+      "qty": 1,
+      "priceShown": "£1.50",
+      "tags": [
+        "Store normally"
+      ],
+      "note": null,
+      "aisle": "Cupboard"
+    },
+    {
+      "domIndex": 35,
+      "name": "Extra virgin olive oil",
+      "productString": "Morrisons Extra Virgin Olive Oil, 250 ml",
+      "pack": 230,
+      "qty": 1,
+      "priceShown": "£3.40",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "Smallest bottle on the site — no reason to carry a full litre for one shop's 178 g of dressing use.",
+      "aisle": "Cupboard"
+    },
+    {
+      "domIndex": 36,
+      "name": "Seeded low-carb loaf",
+      "productString": "Morrisons The Best Thick Cut Soya & Linseed Loaf, 800 g",
+      "pack": 800,
+      "qty": 1,
+      "priceShown": "£1.75",
+      "tags": [
+        "Freeze on arrival"
+      ],
+      "note": "Toast from frozen. Verified 11 Aug: £2.19/kg.",
+      "aisle": "Cupboard"
+    },
+    {
+      "domIndex": 37,
+      "name": "Low-carb wraps",
+      "productString": "Mission Carb Balance Original Wraps x4, 200 g",
+      "pack": 200,
+      "qty": 1,
+      "priceShown": "£1.50",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "Verified 11 Aug: £1.50, on offer from £1.80.",
+      "aisle": "Cupboard"
+    },
+    {
+      "domIndex": 38,
+      "name": "Panko breadcrumbs",
+      "productString": "Yutaka Panko Japanese Style Breadcrumbs, 180 g",
+      "pack": 180,
+      "qty": 1,
+      "priceShown": "£1.55",
+      "tags": [
+        "Store normally"
+      ],
+      "note": "Verified 11 Aug: £8.61/kg — cheaper than the own-brand tub.",
+      "aisle": "Cupboard"
+    }
+  ],
+  "keptCutCard": {
+    "entries": [
+      {
+        "title": "Mon",
+        "detail": "Egg & cheese, chicken over rice, chicken-crust pizza",
+        "status": "Kept"
+      },
+      {
+        "title": "Tue",
+        "detail": "Protein pancakes, burrito bowl, chicken katsu curry",
+        "status": "Kept"
+      },
+      {
+        "title": "Wed",
+        "detail": "Egg sauce, efo riro, pepper soup — plantain & egusi",
+        "status": "Cut"
+      },
+      {
+        "title": "Thu",
+        "detail": "Steak & egg sandwich, smash burger — lunch needs edamame",
+        "status": "2 of 3 kept"
+      },
+      {
+        "title": "Fri",
+        "detail": "Chicken shawarma, jerk salmon — breakfast needs plantain",
+        "status": "2 of 3 kept, breakfast cut"
+      }
+    ]
+  },
+  "putAwayCard": {
+    "entries": [
+      {
+        "title": "Bag and label the meat",
+        "detail": "By the day it's wanted, not by type",
+        "status": "Freezer"
+      },
+      {
+        "title": "Salmon and steak in too",
+        "detail": "Not needed until Thu/Fri",
+        "status": "Freezer"
+      },
+      {
+        "title": "Loaf and wraps in",
+        "detail": "Toast the bread straight from frozen",
+        "status": "Freezer"
+      },
+      {
+        "title": "Tomatoes on the counter",
+        "detail": "Cold kills the flavour",
+        "status": "Counter"
+      },
+      {
+        "title": "Avocados out",
+        "detail": "Fridge each one the day it softens",
+        "status": "Counter"
+      },
+      {
+        "title": "Mushrooms into paper",
+        "detail": "Straight out of the plastic",
+        "status": "Fridge"
+      }
+    ]
+  },
+  "costsChecksum": {
+    "length": 39,
+    "sum": 69.83,
+    "matchesRowOrder": true,
+    "mismatchCount": 0
+  },
+  "menu": {
+    "header": {
+      "subLine": "FD-5 · Week A · 10 meals over 4 days · What the starter shop cooks",
+      "hint": "The plate side of the Morrisons starter shop — same 10 meals, same reasons the other 5 aren't here. Monday and Tuesday run in full; Wednesday is off completely; Thursday and Friday each keep two of three. Difficulty is tagged on every card — green cooks in under ten minutes with no real technique, orange wants your attention on the pan.",
+      "totals": {
+        "mealsThisWeek": "10",
+        "minutes": "125",
+        "kcalTotal": "4,753/6,141"
+      }
+    },
+    "days": [
+      {
+        "code": "D1",
+        "weekday": "Monday",
+        "kcalShown": "1,420 / 1,786 kcal",
+        "kcal": {
+          "w": 1420,
+          "m": 1786,
+          "raw": "1,420 / 1,786 kcal"
+        },
+        "meals": [
+          {
+            "slot": "breakfast",
+            "name": "Bodega egg & cheese",
+            "difficulty": "Easy",
+            "metaItems": [
+              "American",
+              "· 7 min",
+              "·"
+            ],
+            "spiceDots": 1,
+            "method": "Wilt the spinach in the pan, pour the beaten eggs over, fold into one soft slab and lay the cheese on top to melt under a lid. Folded into a warmed tortilla rather than a roll — same sandwich, a third of the starch. Tomato, black pepper, and enough hot sauce to make it count.",
+            "macros": {
+              "w": {
+                "kcal": 426,
+                "protein": 27,
+                "fat": 26,
+                "netCarb": 14
+              },
+              "m": {
+                "kcal": 502,
+                "protein": 31,
+                "fat": 32,
+                "netCarb": 16
+              }
+            }
+          },
+          {
+            "slot": "lunch",
+            "name": "Halal cart chicken over rice",
+            "difficulty": "Easy",
+            "metaItems": [
+              "American",
+              "· 6 min",
+              "·"
+            ],
+            "spiceDots": 2,
+            "method": "Sunday's chicken chopped and warmed through with oregano, cumin and turmeric. Underneath, rice cut half-and-half with cauliflower — riced, dry-fried, and honestly indistinguishable once the sauce is on. Chickpeas, shredded lettuce and tomato around the edge. White sauce: yoghurt, grated garlic, lemon, a great deal of black pepper.",
+            "macros": {
+              "w": {
+                "kcal": 528,
+                "protein": 37,
+                "fat": 11,
+                "netCarb": 62
+              },
+              "m": {
+                "kcal": 716,
+                "protein": 49,
+                "fat": 15,
+                "netCarb": 86
+              }
+            }
+          },
+          {
+            "slot": "dinner",
+            "name": "Chicken-crust pizza",
+            "difficulty": "Hands-on",
+            "metaItems": [
+              "Italian-American",
+              "· 25 min",
+              "·"
+            ],
+            "spiceDots": 1,
+            "method": "The base is the trick: chicken mince pressed thin with parmesan and egg, baked fifteen minutes at 220°C until it firms and browns. Passata over it, mozzarella, mushrooms, peppers, onion and spinach, then back in for eight. It carves like a pizza, lifts like a pizza, and does it without a gram of flour.",
+            "macros": {
+              "w": {
+                "kcal": 466,
+                "protein": 38,
+                "fat": 27,
+                "netCarb": 15
+              },
+              "m": {
+                "kcal": 568,
+                "protein": 45,
+                "fat": 33,
+                "netCarb": 18
+              }
+            }
+          }
+        ],
+        "cutCards": []
+      },
+      {
+        "code": "D2",
+        "weekday": "Tuesday",
+        "kcalShown": "1,428 / 1,919 kcal",
+        "kcal": {
+          "w": 1428,
+          "m": 1919,
+          "raw": "1,428 / 1,919 kcal"
+        },
+        "meals": [
+          {
+            "slot": "breakfast",
+            "name": "Protein pancakes with berries",
+            "difficulty": "Easy",
+            "metaItems": [
+              "American",
+              "· 10 min",
+              "·"
+            ],
+            "spiceDots": 0,
+            "method": "Oats blitzed to flour with the whey, egg and half the skyr, then dropped in small rounds into a dry non-stick pan — small ones hold together, large ones do not. Stacked with the remaining skyr and a great heap of berries.",
+            "macros": {
+              "w": {
+                "kcal": 422,
+                "protein": 25,
+                "fat": 15,
+                "netCarb": 39
+              },
+              "m": {
+                "kcal": 589,
+                "protein": 37,
+                "fat": 22,
+                "netCarb": 53
+              }
+            }
+          },
+          {
+            "slot": "lunch",
+            "name": "Chipotle burrito bowl",
+            "difficulty": "Easy",
+            "metaItems": [
+              "Tex-Mex",
+              "· 5 min",
+              "·"
+            ],
+            "spiceDots": 2,
+            "method": "Sunday's chipotle beef over rice cut with cauliflower, with black beans, roast peppers and onion, sweetcorn, salsa, shredded lettuce and a restrained scoop of guacamole. Lime over the lot.",
+            "macros": {
+              "w": {
+                "kcal": 522,
+                "protein": 32,
+                "fat": 11,
+                "netCarb": 60
+              },
+              "m": {
+                "kcal": 715,
+                "protein": 42,
+                "fat": 15,
+                "netCarb": 87
+              }
+            }
+          },
+          {
+            "slot": "dinner",
+            "name": "Chicken katsu curry",
+            "difficulty": "Medium",
+            "metaItems": [
+              "Japanese",
+              "· 22 min",
+              "·"
+            ],
+            "spiceDots": 1,
+            "method": "Chicken flattened thin, through beaten egg then panko, baked at 220°C for eighteen minutes and turned once — it crisps properly without a fryer. The sauce is onion and carrot cooked soft with curry powder and then blitzed smooth, which thickens it without flour. Rice cut with cauliflower, broccoli steamed.",
+            "macros": {
+              "w": {
+                "kcal": 484,
+                "protein": 36,
+                "fat": 12,
+                "netCarb": 53
+              },
+              "m": {
+                "kcal": 615,
+                "protein": 45,
+                "fat": 15,
+                "netCarb": 68
+              }
+            }
+          }
+        ],
+        "cutCards": []
+      },
+      {
+        "code": "D3",
+        "weekday": "Wednesday",
+        "kcalShown": "cut",
+        "kcal": {
+          "w": null,
+          "m": null,
+          "raw": "cut"
+        },
+        "meals": [],
+        "cutCards": [
+          "Wednesday's off entirely — egg sauce, efo riro and pepper soup all need plantain, and efo riro needs egusi too. Neither is stocked at Morrisons."
+        ]
+      },
+      {
+        "code": "D4",
+        "weekday": "Thursday",
+        "kcalShown": "917 / 1,133 kcal",
+        "kcal": {
+          "w": 917,
+          "m": 1133,
+          "raw": "917 / 1,133 kcal"
+        },
+        "meals": [
+          {
+            "slot": "breakfast",
+            "name": "Steak & egg breakfast sandwich",
+            "difficulty": "Easy",
+            "metaItems": [
+              "American",
+              "· 10 min",
+              "·"
+            ],
+            "spiceDots": 0,
+            "method": "Sirloin seasoned hard, seared two minutes a side and rested while the eggs fry in the same pan. Stacked on toasted seeded bread with wilted spinach and tomato. The bread is the low-carb seeded sort, which toasts far better than it has any right to.",
+            "macros": {
+              "w": {
+                "kcal": 425,
+                "protein": 29,
+                "fat": 28,
+                "netCarb": 9
+              },
+              "m": {
+                "kcal": 515,
+                "protein": 35,
+                "fat": 35,
+                "netCarb": 11
+              }
+            }
+          },
+          {
+            "slot": "dinner",
+            "name": "Smash burger with slaw",
+            "difficulty": "Medium",
+            "metaItems": [
+              "American",
+              "· 14 min",
+              "·"
+            ],
+            "spiceDots": 0,
+            "method": "Mince divided into two thin balls, pressed hard onto a screaming pan and left alone until the crust forms, then flipped with the cheese on. Seeded bun toasted in the fat. Lettuce, tomato, raw onion. Slaw of red cabbage, carrot and yoghurt alongside to keep it honest.",
+            "macros": {
+              "w": {
+                "kcal": 492,
+                "protein": 36,
+                "fat": 26,
+                "netCarb": 20
+              },
+              "m": {
+                "kcal": 618,
+                "protein": 44,
+                "fat": 35,
+                "netCarb": 23
+              }
+            }
+          }
+        ],
+        "cutCards": [
+          "Thursday's lunch (turkey bolognese with edamame spaghetti) is cut — Morrisons has no plain edamame or red-lentil pasta, and no turkey breast mince, only thigh."
+        ]
+      },
+      {
+        "code": "D5",
+        "weekday": "Friday",
+        "kcalShown": "988 / 1,303 kcal",
+        "kcal": {
+          "w": 988,
+          "m": 1303,
+          "raw": "988 / 1,303 kcal"
+        },
+        "meals": [
+          {
+            "slot": "lunch",
+            "name": "Chicken shawarma wrap",
+            "difficulty": "Easy",
+            "metaItems": [
+              "Middle Eastern",
+              "· 8 min",
+              "·"
+            ],
+            "spiceDots": 1,
+            "method": "Sunday's chicken tossed in shawarma spice and flashed in a hot dry pan. Cabbage, carrot and cucumber shredded with lemon. Rolled in a high-fibre tortilla with garlic yoghurt — one wrap, not two, because these are large and they are dense.",
+            "macros": {
+              "w": {
+                "kcal": 438,
+                "protein": 38,
+                "fat": 20,
+                "netCarb": 22
+              },
+              "m": {
+                "kcal": 551,
+                "protein": 46,
+                "fat": 26,
+                "netCarb": 26
+              }
+            }
+          },
+          {
+            "slot": "dinner",
+            "name": "Jerk salmon, rice & red beans",
+            "difficulty": "Medium",
+            "metaItems": [
+              "Jamaican",
+              "· 18 min",
+              "·"
+            ],
+            "spiceDots": 3,
+            "method": "Salmon rubbed with jerk paste and grilled ten to twelve minutes. Rice cooked with the kidney beans, thyme and a spoonful of coconut, then cauliflower stirred through at the end. Slaw of red cabbage and charred pineapple with lime, which is the part that makes the plate work.",
+            "macros": {
+              "w": {
+                "kcal": 550,
+                "protein": 30,
+                "fat": 17,
+                "netCarb": 61
+              },
+              "m": {
+                "kcal": 752,
+                "protein": 40,
+                "fat": 23,
+                "netCarb": 87
+              }
+            }
+          }
+        ],
+        "cutCards": [
+          "Friday's breakfast (callaloo & egg skillet) is cut — it needs plantain."
+        ]
+      }
+    ],
+    "readingNumbers": "Kcal, protein, fat and net carb are per portion, already split by the two of you the way the whole plan is — his side runs bigger throughout. Spice is dots out of four, not a warning: the jerk salmon is the only thing here past two. Difficulty is genuinely about attention, not skill — the chicken-crust pizza takes the longest and needs a second bake, everything tagged green is a one-pan job under ten minutes."
+  },
+  "anomalies": []
+}

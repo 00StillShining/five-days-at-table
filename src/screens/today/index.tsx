@@ -11,7 +11,8 @@
 import type { SceneProps } from "../../app/router";
 import { useStore } from "../../state/store";
 import type { DefrostDuty, ExpiringDuty, StartByDuty } from "../../state/selectors";
-import { bands, dayMacros, dutyStack, eatenSoFar, effectiveMealForSlot, formatRemainingDays, ticksFor, todayInfo } from "../../state/selectors";
+import { bands, cutReasonForSlot, dayMacros, dutyStack, eatenSoFar, effectiveMealForSlot, formatRemainingDays, ticksFor, todayInfo } from "../../state/selectors";
+import { activeVariant } from "../../data/variant";
 import { addCalendarDays, formatShortDate, londonDateIso, londonParts } from "../../state/london";
 import { useNow } from "../../state/useNow";
 import { arbiterFor, type ScreenId } from "../../engine/arbiter";
@@ -78,6 +79,7 @@ export default function TodayScene(_props: SceneProps) {
 
   const info = todayInfo(now, prefs.cycleStartSaturday);
   const todayIso = londonDateIso(now);
+  const variant = activeVariant(state);
   const duties = dutyStack(state, now);
   const stackDuties = duties.filter((d): d is DefrostDuty | ExpiringDuty => d.kind !== "start-by");
   const tonightDuty = duties.find((d): d is StartByDuty => d.kind === "start-by") ?? null;
@@ -196,6 +198,25 @@ export default function TodayScene(_props: SceneProps) {
         </p>
       )}
 
+      {/* docs/VARIANT-SPEC.md: "TODAY: Wednesday renders an explicit 'off in
+          the tester' state (reason shown)." allCut is true only when every
+          one of the day's authored slots is cut — a partially-cut day (Thu
+          lunch only, in the tester) still gets the normal ticks section
+          below, just with that one slot rendered as a quiet cut cell. */}
+      {typeof info.dayNo === "number" &&
+        (() => {
+          const daySlots = mealsByWeekDay("A", info.dayNo as number);
+          const allCut = variant.isTester && daySlots.length > 0 && daySlots.every((m) => variant.isCutMealId(m.id));
+          if (!allCut) return null;
+          const anyReason = daySlots.map((m) => variant.cutReason(m.id)).find((r): r is string => Boolean(r));
+          return (
+            <div className="scr-today-offstate" role="note">
+              <p className="scr-today-offstate-title">off in the starter</p>
+              {anyReason && <p className="scr-today-offstate-body">{anyReason}</p>}
+            </div>
+          );
+        })()}
+
       {typeof info.dayNo === "number" && (
         <section className="scr-today-section" aria-labelledby="scr-today-ticks-h">
           <h2 id="scr-today-ticks-h" className="scr-today-h">
@@ -203,10 +224,26 @@ export default function TodayScene(_props: SceneProps) {
           </h2>
           <ul className="scr-today-ticks">
             {/* wave-1 fix (item 1): resolve each slot through
-                effectiveMealForSlot (swaps-aware) rather than the raw planned
-                meal — after a swap, ticking dinner must record and read back
-                the COOKED meal's id, so PLAN's swapped card shows logged. */}
+                effectiveMealForSlot (swaps-aware AND variant-aware) rather
+                than the raw planned meal — after a swap, ticking dinner must
+                record and read back the COOKED meal's id, so PLAN's swapped
+                card shows logged. A cut slot (docs/VARIANT-SPEC.md) renders a
+                quiet "cut · reason" cell instead of a tick button — no tick
+                affordance on a slot the tester doesn't cook. */}
             {SLOT_ORDER.map((slot) => {
+              const planned = mealsByWeekDay("A", info.dayNo as number).find((m) => m.slot === slot);
+              if (!planned) return null;
+              const cutReason = cutReasonForSlot("A", info.dayNo as number, slot, state);
+              if (cutReason != null) {
+                return (
+                  <li key={slot}>
+                    <span className="scr-today-tick scr-today-tick--cut" data-cut="true">
+                      <span className="scr-today-tick-label">{SLOT_LABEL[slot]}</span>
+                      <span className="scr-today-tick-cut-reason">cut <span aria-hidden="true">·</span> {cutReason}</span>
+                    </span>
+                  </li>
+                );
+              }
               const meal = effectiveMealForSlot("A", info.dayNo as number, slot, state);
               if (!meal) return null;
               const isOn = Boolean(ticksFor(state, todayIso)[slot]);
@@ -241,8 +278,8 @@ export default function TodayScene(_props: SceneProps) {
               stay the week's macro bands (unaffected by swaps or by the hour). */}
           <MacroLadders
             eaten={eatenSoFar("A", info.dayNo, prefs.cover, state, now)}
-            planned={dayMacros("A", info.dayNo, prefs.cover, 1, state.swaps)}
-            bands={bands("A", prefs.cover)}
+            planned={dayMacros("A", info.dayNo, prefs.cover, 1, state.swaps, variant)}
+            bands={bands("A", prefs.cover, variant)}
           />
         </section>
       )}

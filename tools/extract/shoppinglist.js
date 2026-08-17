@@ -159,10 +159,15 @@ function parsePrimary(html, anomalies) {
     }
   }
 
-  if (rows.length !== 55) {
+  // 49, not 55: per the 2026-08-11 owner-ruled canonical revision (6 lines
+  // dropped — Cottage cheese, Apples, Bananas, Chia seeds, Pumpkin seeds,
+  // Desiccated coconut — none needed at the till that pass). See
+  // data/decisions-queue.json's "canonical-revision-2026-08-11-adopted"
+  // entry for the full old-vs-new numbers.
+  if (rows.length !== 49) {
     anomalies.push({
       type: 'row-count-mismatch',
-      detail: `Expected 55 rows in ${PRIMARY_FILE}, found ${rows.length}.`,
+      detail: `Expected 49 rows in ${PRIMARY_FILE} (2026-08-11 revision), found ${rows.length}.`,
     });
   }
 
@@ -457,14 +462,18 @@ function main() {
   console.log(`Day-7 total shown:   ${data.day7Card.totalShown}`);
   console.log(`Legacy total shown:  ${data.legacy.totalShown}`);
   console.log('');
-  console.log(pass('exactly 55 rows', _report.rowCount === 55));
-  console.log(pass('COSTS length 55', data.costsChecksum.length === 55));
-  console.log(pass('COSTS sum = £179.31', Math.round(data.costsChecksum.sum * 100) === 17931));
+  // 2026-08-11 owner-ruled canonical revision: 49 rows / £172.57 / S£82.51 /
+  // M£81.76 / X£8.30 / day-7 £6.93 (was 55 / £179.31 / £72.70 / £98.31 /
+  // £8.30 / £8.58). See data/decisions-queue.json's
+  // "canonical-revision-2026-08-11-adopted" entry.
+  console.log(pass('exactly 49 rows', _report.rowCount === 49));
+  console.log(pass('COSTS length 49', data.costsChecksum.length === 49));
+  console.log(pass('COSTS sum = £172.57', Math.round(data.costsChecksum.sum * 100) === 17257));
   console.log(pass('COSTS matches row order (0 mismatches)', data.costsChecksum.matchesRowOrder, `${data.costsChecksum.mismatchCount} mismatches`));
-  console.log(pass('shop S subtotal = £72.70', S.S === 7270));
-  console.log(pass('shop M subtotal = £98.31', S.M === 9831));
+  console.log(pass('shop S subtotal = £82.51', S.S === 8251));
+  console.log(pass('shop M subtotal = £81.76', S.M === 8176));
   console.log(pass('shop X subtotal = £8.30', S.X === 830));
-  console.log(pass('day-7 total = £8.58', priceToPence(data.day7Card.totalShown) === 858));
+  console.log(pass('day-7 total = £6.93', priceToPence(data.day7Card.totalShown) === 693));
   console.log(pass('every row has shop+name', data.rows.every((r) => r.shop && r.name)));
   console.log(pass('legacy rows ~54', _report.legacyRowCount === 54, `actual ${_report.legacyRowCount}`));
   console.log(pass('legacy total = £257.32', priceToPence(data.legacy.totalShown) === 25732));

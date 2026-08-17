@@ -13,13 +13,20 @@ export interface ShopColumnProps {
   verifyNominees: ReadonlySet<string>;
   priceChecks: PriceChecks;
   market?: boolean;
+  /** Fable review FIX round: the tester basket is the source document
+   * verbatim — the canonical `alternativeNote` lookup (a full-mode-only
+   * concept, keyed off the CANONICAL ingredient's own storage note) has no
+   * business appearing inside an otherwise-verbatim authored basket row
+   * (e.g. sweetheart cabbage's "— alt: …" note, reviewer cosmetic). Default
+   * false/undefined so every pre-existing full-mode call site is unchanged. */
+  suppressAlternativeNote?: boolean;
 }
 
 function truncate(text: string, max: number): string {
   return text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text;
 }
 
-export function ShopColumn({ displayName, rows, subtotal, verifyNominees, priceChecks, market }: ShopColumnProps) {
+export function ShopColumn({ displayName, rows, subtotal, verifyNominees, priceChecks, market, suppressAlternativeNote }: ShopColumnProps) {
   const rootClass = `scr-shop-col${market ? " scr-shop-col--market" : ""}`;
   return (
     <section className={rootClass} aria-labelledby={`scr-shop-col-h-${displayName}`}>
@@ -35,7 +42,7 @@ export function ShopColumn({ displayName, rows, subtotal, verifyNominees, priceC
           </caption>
           <tbody>
             {rows.map((el) => {
-              const alt = alternativeNote(el.line.ingId);
+              const alt = suppressAlternativeNote ? null : alternativeNote(el.line.ingId);
               const checked = priceChecks[el.line.ingId];
               const isNominee = verifyNominees.has(el.line.ingId);
               return (

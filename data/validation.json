@@ -10,9 +10,9 @@
     "detail": "cards=40 (A=20, B=20), every card has 2x5 macros: true, every card >=3 ingredient rows: true"
   },
   {
-    "name": "alias-map-covers-55-short-names",
+    "name": "alias-map-covers-49-short-names",
     "pass": true,
-    "detail": "alias-map.json has 55 short-name keys (expect 55)"
+    "detail": "alias-map.json has 49 short-name keys (expect 49, per the 2026-08-11 owner-ruled canonical revision — was 55/6 removed)"
   },
   {
     "name": "alias-map-zero-fuzzy (all mapped ids exist)",
@@ -23,6 +23,16 @@
     "name": "register-map-covers-54-rows",
     "pass": true,
     "detail": "register-map.json has 54 keys (expect 54)"
+  },
+  {
+    "name": "reverified-2026-08-11-count-22",
+    "pass": true,
+    "detail": "22 re-verified short names tracked (expect 22)"
+  },
+  {
+    "name": "pantry-optional-count-6",
+    "pass": true,
+    "detail": "6 pantryOptional ids tracked (expect 6)"
   },
   {
     "name": "54-register-rows-have-shelf-life-and-location",
@@ -55,9 +65,14 @@
     "detail": "recomputed=[1671,1675,1670,1650,1694] vs legacy PLAN.md figures=[1667,1663,1670,1646,1694], diffs=[4,12,0,4,0], expected diffs=[4,12,0,4,0]. Days 1,2,4 diffs match the D10 avocado-garnish-drop-plus-compensating-oil-increase deltas exactly (see decisions-queue); days 3,5 match the legacy figure exactly (diff 0)."
   },
   {
-    "name": "costs-sum-179.31-per-shop-subtotals",
+    "name": "costs-sum-172.57-per-shop-subtotals",
     "pass": true,
-    "detail": "costsChecksum.sum=179.31, per-shop={\"S\":72.7,\"M\":98.31,\"X\":8.3}"
+    "detail": "rows=49, costsChecksum.sum=172.57, per-shop={\"S\":82.51,\"M\":81.76,\"X\":8.3}"
+  },
+  {
+    "name": "day7-topup-6.93-per-2026-08-11-revision",
+    "pass": true,
+    "detail": "day7Card rows=6, totalShown=£6.93"
   },
   {
     "name": "week-A-x3-reproduces-257.32-legacy",
@@ -83,5 +98,90 @@
     "name": "decisions-queue-target-30",
     "pass": true,
     "detail": "decisions-queue has 34 entries (target ~30)"
+  },
+  {
+    "name": "variant-morrisons-kept-count-10",
+    "pass": true,
+    "detail": "derived 10 kept meal ids from morrisons.json menu (expect 10)"
+  },
+  {
+    "name": "variant-morrisons-cut-nonsnack-count-5",
+    "pass": true,
+    "detail": "derived 5 non-snack cut meals (expect 5)"
+  },
+  {
+    "name": "variant-morrisons-snack-cuts-5",
+    "pass": true,
+    "detail": "found 5 week-A snack meals (expect 5)"
+  },
+  {
+    "name": "variant-morrisons-39-lines-pennies-exact",
+    "pass": true,
+    "detail": "39 lines, totalP=6983 (expect 39 lines, 6983p)"
+  },
+  {
+    "name": "variant-morrisons-qty-x-packP-reconstitutes-lineP",
+    "pass": true,
+    "detail": "every line's qty x packP must reconstitute its verbatim lineP (proves the qty!=1 cauliflower row isn't double-counted)"
+  },
+  {
+    "name": "variant-morrisons-all-lines-mapped",
+    "pass": true,
+    "detail": "0 unmapped lines"
+  },
+  {
+    "name": "variant-morrisons-all-lines-storage-classed",
+    "pass": true,
+    "detail": "0 lines without a resolved storageClass"
+  },
+  {
+    "name": "variant-morrisons-coverage-missing-reported",
+    "pass": true,
+    "detail": "coverage.missing = [] (0 ids) — reported, not a hard gate per spec"
+  },
+  {
+    "name": "variant-morrisons-no-staple-missing",
+    "pass": true,
+    "detail": "missing=[] — a STAPLE (chicken/egg/oil) here would indicate a mapping bug"
+  },
+  {
+    "name": "variant-morrisons-defrost-days-in-range",
+    "pass": true,
+    "detail": "every defrost entry is day 0 (arrival advisory) or a Thursday/Friday bring-down"
+  },
+  {
+    "name": "variant-morrisons-defrost-count-5",
+    "pass": true,
+    "detail": "5 defrost entries (expect 5: chicken, chicken_mince, beef_steak, beef_mince, salmon)"
+  },
+  {
+    "name": "variant-morrisons-keptops-no-orphaned-mention-without-testernote",
+    "pass": true,
+    "detail": "kept ops with a dropped-component mention but no testerNote: []"
+  },
+  {
+    "name": "variant-morrisons-keptops-no-dropped-op-dependency",
+    "pass": true,
+    "detail": "kept yield components with no kept op producing them: []"
+  },
+  {
+    "name": "variant-morrisons-chickpea-tin-not-contended",
+    "pass": true,
+    "detail": "every kept op touching the jerk-chickpea tray either carries a testerNote or was dropped — Monday's a-d1l chickpea need is never put at risk by the Sunday session"
+  },
+  {
+    "name": "variant-morrisons-keptops-nonempty",
+    "pass": true,
+    "detail": "10 of 15 prep-a ops kept"
+  },
+  {
+    "name": "variant-morrisons-economics-total-matches-basket",
+    "pass": true,
+    "detail": "basket totalP=6983, header claims £69.83"
+  },
+  {
+    "name": "variant-morrisons-shape-ok",
+    "pass": true,
+    "detail": "variant-morrisons.json top-level shape sanity"
   }
 ]

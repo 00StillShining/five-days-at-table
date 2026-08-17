@@ -44,6 +44,15 @@
   color: var(--sol-text-muted);
 }
 
+/* docs/VARIANT-SPEC.md tester note — flat text, own row under the title/status
+   line (flex-basis: 100% inside .scr-shop-header's wrapping flex row). */
+.scr-shop-tester-note {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: var(--sol-text-label);
+  color: var(--sol-text-muted);
+}
+
 /* ---- console row: trip-strategy paddle + the send-to-phone hero key ---- */
 
 .scr-shop-console {

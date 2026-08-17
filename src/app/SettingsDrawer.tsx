@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { useStore } from "../state/store";
+import { Paddle } from "../components/Paddle";
 import { Sheet } from "../components/Sheet";
 import { exportState, importState } from "../state/importExport";
 import { formatShortDateFromIso, londonDateIso, snapToSaturdayOnOrBefore } from "../state/london";
@@ -38,7 +39,7 @@ const IO_STATUS_TIMEOUT_MS = 6000;
  */
 export function SettingsDrawer({ open, onClose }: SettingsDrawerProps) {
   const { state, dispatch } = useStore();
-  const { serveTime, cycleStartSaturday } = state.prefs;
+  const { serveTime, cycleStartSaturday, planVariant } = state.prefs;
   const ioNoteId = useId();
   const cycleStartInputId = useId();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -152,6 +153,29 @@ export function SettingsDrawer({ open, onClose }: SettingsDrawerProps) {
               cycle start <span aria-hidden="true">·</span> saturday {formatShortDateFromIso(cycleStartSaturday)}
             </p>
           )}
+        </div>
+        {/* docs/VARIANT-SPEC.md "Runtime contract": a two-position control near
+            week/cover semantics (the masthead's own Paddle-driven controls) —
+            same Sol switch grammar (role=switch, both labels always visible,
+            position + label weight as the second cue, never color alone). */}
+        <div className="fd5-field">
+          <Paddle
+            name="plan · full | starter"
+            checked={planVariant === "morrisons-tester"}
+            optionA={{ value: "full", label: "full" }}
+            optionB={{ value: "morrisons-tester", label: "starter" }}
+            onToggle={() =>
+              dispatch({
+                type: "prefs/set",
+                patch: { planVariant: planVariant === "morrisons-tester" ? "full" : "morrisons-tester" },
+              })
+            }
+          />
+          <p className="fd5-note fd5-settings-confirm" role="status" aria-live="polite">
+            {planVariant === "morrisons-tester"
+              ? "plan · morrisons starter · 10 meals, one retailer"
+              : "plan · full fortnight"}
+          </p>
         </div>
       </div>
       <div className="fd5-settings-io">

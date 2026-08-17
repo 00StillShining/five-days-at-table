@@ -1,0 +1,914 @@
+{
+  "id": "morrisons-tester",
+  "label": "morrisons starter · 10 meals",
+  "week": "A",
+  "slots": {
+    "kept": [
+      "a-d1b",
+      "a-d1l",
+      "a-d1d",
+      "a-d2b",
+      "a-d2l",
+      "a-d2d",
+      "a-d4b",
+      "a-d4d",
+      "a-d5l",
+      "a-d5d"
+    ],
+    "cut": [
+      {
+        "mealId": "a-d3b",
+        "reason": "Wednesday's off entirely — egg sauce, efo riro and pepper soup all need plantain, and efo riro needs egusi too. Neither is stocked at Morrisons."
+      },
+      {
+        "mealId": "a-d3l",
+        "reason": "Wednesday's off entirely — egg sauce, efo riro and pepper soup all need plantain, and efo riro needs egusi too. Neither is stocked at Morrisons."
+      },
+      {
+        "mealId": "a-d3d",
+        "reason": "Wednesday's off entirely — egg sauce, efo riro and pepper soup all need plantain, and efo riro needs egusi too. Neither is stocked at Morrisons."
+      },
+      {
+        "mealId": "a-d4l",
+        "reason": "Thursday's lunch (turkey bolognese with edamame spaghetti) is cut — Morrisons has no plain edamame or red-lentil pasta, and no turkey breast mince, only thigh."
+      },
+      {
+        "mealId": "a-d5b",
+        "reason": "Friday's breakfast (callaloo & egg skillet) is cut — it needs plantain."
+      },
+      {
+        "mealId": "a-d1s",
+        "reason": "not part of the tester week — no snack ingredients appear in the 39-line Morrisons basket"
+      },
+      {
+        "mealId": "a-d2s",
+        "reason": "not part of the tester week — no snack ingredients appear in the 39-line Morrisons basket"
+      },
+      {
+        "mealId": "a-d3s",
+        "reason": "not part of the tester week — no snack ingredients appear in the 39-line Morrisons basket"
+      },
+      {
+        "mealId": "a-d4s",
+        "reason": "not part of the tester week — no snack ingredients appear in the 39-line Morrisons basket"
+      },
+      {
+        "mealId": "a-d5s",
+        "reason": "not part of the tester week — no snack ingredients appear in the 39-line Morrisons basket"
+      }
+    ]
+  },
+  "targets": {
+    "A": {
+      "w": {
+        "kcal": [
+          916,
+          1449
+        ],
+        "protein": [
+          65,
+          103
+        ],
+        "netCarb": [
+          28,
+          155
+        ],
+        "fat": [
+          39,
+          65
+        ],
+        "fibre": [
+          22,
+          38
+        ]
+      },
+      "m": {
+        "kcal": [
+          1133,
+          1945
+        ],
+        "protein": [
+          79,
+          126
+        ],
+        "netCarb": [
+          34,
+          213
+        ],
+        "fat": [
+          51,
+          80
+        ],
+        "fibre": [
+          26,
+          47
+        ]
+      }
+    }
+  },
+  "basket": {
+    "retailer": "M",
+    "verifiedOn": "2026-08-11",
+    "totalP": 6983,
+    "lines": [
+      {
+        "ingId": "chicken",
+        "label": "Chicken breast",
+        "product": "Morrisons British Chicken Breast Fillets, 630 g",
+        "packG": 630,
+        "qty": 1,
+        "lineP": 485,
+        "packP": 485,
+        "aisle": "Meat, fish & eggs",
+        "tags": [
+          "Freeze on arrival"
+        ],
+        "note": "Verified 11 Aug: £7.70/kg — the 630 g pack costs less in total than rounding up to the 1 kg pack (£6.99) for a 575 g need.",
+        "storageClass": "freeze-on-arrival"
+      },
+      {
+        "ingId": "beef_mince",
+        "label": "Beef mince, 5%",
+        "product": "Morrisons Scotch Steak Mince 5% Fat, 500 g",
+        "packG": 500,
+        "qty": 1,
+        "lineP": 519,
+        "packP": 519,
+        "aisle": "Meat, fish & eggs",
+        "tags": [
+          "Freeze on arrival"
+        ],
+        "note": "Verified 11 Aug: £10.38/kg.",
+        "storageClass": "freeze-on-arrival"
+      },
+      {
+        "ingId": "beef_steak",
+        "label": "Sirloin steak",
+        "product": "Morrisons British Sirloin Steak, 200 g",
+        "packG": 200,
+        "qty": 1,
+        "lineP": 400,
+        "packP": 400,
+        "aisle": "Meat, fish & eggs",
+        "tags": [
+          "Freeze on arrival"
+        ],
+        "note": "Tuesday's breakfast sandwich. Verified 11 Aug: £20.00/kg — the cheapest sirloin on the site, under the frying-steak heading.",
+        "storageClass": "freeze-on-arrival"
+      },
+      {
+        "ingId": "chicken_mince",
+        "label": "Chicken breast mince",
+        "product": "Morrisons British Chicken Mince 5% Fat, 500 g, Price Match",
+        "packG": 500,
+        "qty": 1,
+        "lineP": 259,
+        "packP": 259,
+        "aisle": "Meat, fish & eggs",
+        "tags": [
+          "Freeze on arrival"
+        ],
+        "note": "Monday's pizza. Verified 11 Aug: £5.18/kg.",
+        "storageClass": "freeze-on-arrival"
+      },
+      {
+        "ingId": "salmon",
+        "label": "Salmon fillets",
+        "product": "Morrisons 2 Salmon Fillets, 220 g",
+        "packG": 220,
+        "qty": 1,
+        "lineP": 435,
+        "packP": 435,
+        "aisle": "Meat, fish & eggs",
+        "tags": [
+          "Freeze on arrival"
+        ],
+        "note": "Friday's dish. Verified 11 Aug: £19.77/kg.",
+        "storageClass": "freeze-on-arrival"
+      },
+      {
+        "ingId": "egg",
+        "label": "Eggs",
+        "product": "Morrisons Large Free Range Eggs, 12 pack",
+        "packG": 600,
+        "qty": 1,
+        "lineP": 330,
+        "packP": 330,
+        "aisle": "Meat, fish & eggs",
+        "tags": [
+          "Store normally"
+        ],
+        "note": "Verified 11 Aug: unchanged at £3.30.",
+        "storageClass": "fridge"
+      },
+      {
+        "ingId": "cheddar_rf",
+        "label": "Reduced-fat cheddar",
+        "product": "Cathedral City Lighter Mature Cheddar Slices, 5 x 20 g",
+        "packG": 100,
+        "qty": 1,
+        "lineP": 150,
+        "packP": 150,
+        "aisle": "Dairy & chilled",
+        "tags": [
+          "Store normally"
+        ],
+        "note": "Verified 11 Aug: £15.00/kg, but it's one small pack either way for a 76 g need — this beats the 400 g block (£2.95) on total cost.",
+        "storageClass": "fridge"
+      },
+      {
+        "ingId": "mozzarella",
+        "label": "Mozzarella",
+        "product": "Morrisons Savers Mozzarella, 100 g",
+        "packG": 100,
+        "qty": 1,
+        "lineP": 55,
+        "packP": 55,
+        "aisle": "Dairy & chilled",
+        "tags": [
+          "Store normally"
+        ],
+        "note": "Monday's pizza, used once. Verified 11 Aug: £5.50/kg — the Savers bag is a third of the price of the branded grated bags for the same job.",
+        "storageClass": "fridge"
+      },
+      {
+        "ingId": "parmesan",
+        "label": "Parmesan",
+        "product": "Loyd Grossman Italian Grated Cheese, 80 g",
+        "packG": 80,
+        "qty": 1,
+        "lineP": 165,
+        "packP": 165,
+        "aisle": "Dairy & chilled",
+        "tags": [
+          "Store normally"
+        ],
+        "note": "Verified 11 Aug: £20.63/kg — cheapest grated Italian hard cheese on the site; a 27 g need doesn't justify true Parmigiano Reggiano at £28/kg.",
+        "storageClass": "fridge"
+      },
+      {
+        "ingId": "greek_yog",
+        "label": "Fat-free Greek yoghurt",
+        "product": "Morrisons Fat Free Greek Style Yoghurt, 1 kg",
+        "packG": 1000,
+        "qty": 1,
+        "lineP": 210,
+        "packP": 210,
+        "aisle": "Dairy & chilled",
+        "tags": [
+          "Store normally"
+        ],
+        "note": "ONE tub covers both the yoghurt and the skyr lines. Verified 11 Aug: unchanged at £2.10.",
+        "storageClass": "fridge",
+        "coversAlso": [
+          "skyr"
+        ]
+      },
+      {
+        "ingId": "avocado",
+        "label": "Avocados",
+        "product": "Morrisons Ripen At Home Avocados, 4 pack",
+        "packG": 560,
+        "qty": 1,
+        "lineP": 150,
+        "packP": 150,
+        "aisle": "Fruit & veg",
+        "tags": [
+          "Mixed ripeness"
+        ],
+        "note": "Buy hard, ripen on the counter.",
+        "storageClass": "counter"
+      },
+      {
+        "ingId": "tomato",
+        "label": "Salad tomatoes",
+        "product": "Morrisons Salad Tomatoes, 750 g",
+        "packG": 750,
+        "qty": 1,
+        "lineP": 179,
+        "packP": 179,
+        "aisle": "Fruit & veg",
+        "tags": [
+          "Store normally"
+        ],
+        "note": "Counter, not fridge. Verified 11 Aug: £2.39/kg.",
+        "storageClass": "counter"
+      },
+      {
+        "ingId": "lettuce",
+        "label": "Little gem lettuce",
+        "product": "British Little Gem Lettuce, 2 pack",
+        "packG": 250,
+        "qty": 1,
+        "lineP": 77,
+        "packP": 77,
+        "aisle": "Fruit & veg",
+        "tags": [
+          "Store normally"
+        ],
+        "note": "The raw-salad share of the need — whole heads, never bagged leaves.",
+        "storageClass": "fridge"
+      },
+      {
+        "ingId": "sweetheart_cabbage",
+        "label": "Sweetheart cabbage",
+        "product": "British Sweetheart Cabbage, each ~500 g",
+        "packG": 500,
+        "qty": 1,
+        "lineP": 75,
+        "packP": 75,
+        "aisle": "Fruit & veg",
+        "tags": [
+          "Store normally"
+        ],
+        "note": "The shredded/slaw share — a cheaper stand-in than buying more little gem for the same job.",
+        "storageClass": "fridge"
+      },
+      {
+        "ingId": "red_onion",
+        "label": "Red onions",
+        "product": "British Red Onions, 1 kg",
+        "packG": 1000,
+        "qty": 1,
+        "lineP": 95,
+        "packP": 95,
+        "aisle": "Fruit & veg",
+        "tags": [
+          "Store normally"
+        ],
+        "note": "Loose bag, not the 3-pack.",
+        "storageClass": "fridge"
+      },
+      {
+        "ingId": "carrot",
+        "label": "Carrots",
+        "product": "British Carrots, 1 kg",
+        "packG": 1000,
+        "qty": 1,
+        "lineP": 69,
+        "packP": 69,
+        "aisle": "Fruit & veg",
+        "tags": [
+          "Store normally"
+        ],
+        "note": null,
+        "storageClass": "fridge"
+      },
+      {
+        "ingId": "mushrooms",
+        "label": "Chestnut mushrooms",
+        "product": "British Closed Cup Mushrooms, 465 g, Price Match",
+        "packG": 465,
+        "qty": 1,
+        "lineP": 150,
+        "packP": 150,
+        "aisle": "Fruit & veg",
+        "tags": [
+          "Store normally"
+        ],
+        "note": "Out of the plastic, into a paper bag. Verified 11 Aug: £3.23/kg.",
+        "storageClass": "fridge"
+      },
+      {
+        "ingId": "red_cabbage",
+        "label": "Red cabbage",
+        "product": "Red Cabbage, each ~700 g",
+        "packG": 700,
+        "qty": 1,
+        "lineP": 85,
+        "packP": 85,
+        "aisle": "Fruit & veg",
+        "tags": [
+          "Store normally"
+        ],
+        "note": "Whole, not shredded — best keeper in the fridge.",
+        "storageClass": "fridge"
+      },
+      {
+        "ingId": "cucumber",
+        "label": "Cucumber",
+        "product": "Whole Cucumber ~300 g",
+        "packG": 300,
+        "qty": 1,
+        "lineP": 99,
+        "packP": 99,
+        "aisle": "Fruit & veg",
+        "tags": [
+          "Store normally"
+        ],
+        "note": null,
+        "storageClass": "fridge"
+      },
+      {
+        "ingId": "spring_onion",
+        "label": "Spring onions",
+        "product": "Salad Onions, min 100 g",
+        "packG": 100,
+        "qty": 1,
+        "lineP": 69,
+        "packP": 69,
+        "aisle": "Fruit & veg",
+        "tags": [
+          "Store normally"
+        ],
+        "note": "Stand them in a glass of water and they'll keep.",
+        "storageClass": "fridge"
+      },
+      {
+        "ingId": "pineapple",
+        "label": "Pineapple chunks",
+        "product": "Pineapple Chunks in Juice, 425 g tin (260 g drained)",
+        "packG": 260,
+        "qty": 1,
+        "lineP": 110,
+        "packP": 110,
+        "aisle": "Fruit & veg",
+        "tags": [
+          "Store normally"
+        ],
+        "note": "Tin — cupboard while sealed. Once opened, decant and refrigerate; use within a couple of days.",
+        "storageClass": "cupboard"
+      },
+      {
+        "ingId": "peppers",
+        "label": "Red peppers",
+        "product": "Savers Mixed Peppers, 3 pack",
+        "packG": 450,
+        "qty": 1,
+        "lineP": 179,
+        "packP": 179,
+        "aisle": "Fruit & veg",
+        "tags": [
+          "Store normally"
+        ],
+        "note": "Raw — no frozen split needed for a single small shop.",
+        "storageClass": "fridge",
+        "coversAlso": [
+          "peppers_frozen"
+        ]
+      },
+      {
+        "ingId": "spinach",
+        "label": "Frozen leaf spinach",
+        "product": "Whole Leaf Spinach, 950 g",
+        "packG": 950,
+        "qty": 1,
+        "lineP": 150,
+        "packP": 150,
+        "aisle": "Freezer",
+        "tags": [
+          "Freezer aisle"
+        ],
+        "note": "Every use here is cooked, so frozen changes nothing.",
+        "storageClass": "freezer-aisle"
+      },
+      {
+        "ingId": "cauliflower",
+        "label": "Frozen cauliflower florets",
+        "product": "Cauliflower Florets, 1 kg",
+        "packG": 1000,
+        "qty": 2,
+        "lineP": 300,
+        "packP": 150,
+        "aisle": "Freezer",
+        "tags": [
+          "Freezer aisle"
+        ],
+        "note": "Blitz from frozen — cheaper than ready-riced.",
+        "storageClass": "freezer-aisle"
+      },
+      {
+        "ingId": "broccoli",
+        "label": "Frozen broccoli florets",
+        "product": "Broccoli Florets, 900 g",
+        "packG": 900,
+        "qty": 1,
+        "lineP": 150,
+        "packP": 150,
+        "aisle": "Freezer",
+        "tags": [
+          "Freezer aisle"
+        ],
+        "note": null,
+        "storageClass": "freezer-aisle"
+      },
+      {
+        "ingId": "raspberries",
+        "label": "Frozen mixed berries",
+        "product": "Wonky Berries Mix, 1 kg",
+        "packG": 1000,
+        "qty": 1,
+        "lineP": 299,
+        "packP": 299,
+        "aisle": "Freezer",
+        "tags": [
+          "Freezer aisle"
+        ],
+        "note": "One bag replaces both the raspberries and the blueberries.",
+        "storageClass": "freezer-aisle",
+        "coversAlso": [
+          "blueberries"
+        ]
+      },
+      {
+        "ingId": "sweetcorn",
+        "label": "Frozen sweetcorn",
+        "product": "Morrisons Supersweet Sweetcorn, 800 g",
+        "packG": 800,
+        "qty": 1,
+        "lineP": 150,
+        "packP": 150,
+        "aisle": "Freezer",
+        "tags": [
+          "Freezer aisle"
+        ],
+        "note": "Verified 11 Aug: £1.88/kg.",
+        "storageClass": "freezer-aisle"
+      },
+      {
+        "ingId": "brown_rice",
+        "label": "Brown rice",
+        "product": "Brown Basmati Rice, 1 kg",
+        "packG": 1000,
+        "qty": 1,
+        "lineP": 185,
+        "packP": 185,
+        "aisle": "Cupboard",
+        "tags": [
+          "Store normally"
+        ],
+        "note": null,
+        "storageClass": "cupboard"
+      },
+      {
+        "ingId": "passata",
+        "label": "Passata",
+        "product": "Passata, 500 g",
+        "packG": 500,
+        "qty": 1,
+        "lineP": 45,
+        "packP": 45,
+        "aisle": "Cupboard",
+        "tags": [
+          "Store normally"
+        ],
+        "note": null,
+        "storageClass": "cupboard"
+      },
+      {
+        "ingId": "black_beans",
+        "label": "Black beans",
+        "product": "Black Beans in Water, 400 g tin (240 g drained)",
+        "packG": 240,
+        "qty": 1,
+        "lineP": 50,
+        "packP": 50,
+        "aisle": "Cupboard",
+        "tags": [
+          "Store normally"
+        ],
+        "note": null,
+        "storageClass": "cupboard"
+      },
+      {
+        "ingId": "kidney_beans",
+        "label": "Red kidney beans",
+        "product": "Morrisons Red Kidney Beans, 400 g tin (240 g drained), Price Match",
+        "packG": 240,
+        "qty": 1,
+        "lineP": 37,
+        "packP": 37,
+        "aisle": "Cupboard",
+        "tags": [
+          "Store normally"
+        ],
+        "note": "Verified 11 Aug: £1.54/kg.",
+        "storageClass": "cupboard"
+      },
+      {
+        "ingId": "chickpeas",
+        "label": "Chickpeas",
+        "product": "Morrisons Chickpeas in Water, 400 g tin (240 g drained), Price Match",
+        "packG": 240,
+        "qty": 1,
+        "lineP": 37,
+        "packP": 37,
+        "aisle": "Cupboard",
+        "tags": [
+          "Store normally"
+        ],
+        "note": "Verified 11 Aug: £1.54/kg.",
+        "storageClass": "cupboard"
+      },
+      {
+        "ingId": "oats",
+        "label": "Porridge oats",
+        "product": "Morrisons Savers Porridge Oats, 1 kg, Price Match",
+        "packG": 1000,
+        "qty": 1,
+        "lineP": 85,
+        "packP": 85,
+        "aisle": "Cupboard",
+        "tags": [
+          "Store normally"
+        ],
+        "note": null,
+        "storageClass": "cupboard"
+      },
+      {
+        "ingId": "peanut_butter",
+        "label": "Peanut butter",
+        "product": "Morrisons 100% Smooth Peanut Butter, 340 g",
+        "packG": 340,
+        "qty": 1,
+        "lineP": 180,
+        "packP": 180,
+        "aisle": "Cupboard",
+        "tags": [
+          "Store normally"
+        ],
+        "note": "The small jar, deliberately — a 19 g need doesn't justify the 1 kg tub (£3.99) this shop would otherwise carry as pure stock.",
+        "storageClass": "cupboard"
+      },
+      {
+        "ingId": "salsa",
+        "label": "Tomato salsa",
+        "product": "Mild Salsa Dip, 300 g",
+        "packG": 300,
+        "qty": 1,
+        "lineP": 150,
+        "packP": 150,
+        "aisle": "Cupboard",
+        "tags": [
+          "Store normally"
+        ],
+        "note": null,
+        "storageClass": "cupboard"
+      },
+      {
+        "ingId": "olive_oil",
+        "label": "Extra virgin olive oil",
+        "product": "Morrisons Extra Virgin Olive Oil, 250 ml",
+        "packG": 230,
+        "qty": 1,
+        "lineP": 340,
+        "packP": 340,
+        "aisle": "Cupboard",
+        "tags": [
+          "Store normally"
+        ],
+        "note": "Smallest bottle on the site — no reason to carry a full litre for one shop's 178 g of dressing use.",
+        "storageClass": "cupboard",
+        "coversAlso": [
+          "rapeseed_oil"
+        ]
+      },
+      {
+        "ingId": "seeded_bread",
+        "label": "Seeded low-carb loaf",
+        "product": "Morrisons The Best Thick Cut Soya & Linseed Loaf, 800 g",
+        "packG": 800,
+        "qty": 1,
+        "lineP": 175,
+        "packP": 175,
+        "aisle": "Cupboard",
+        "tags": [
+          "Freeze on arrival"
+        ],
+        "note": "Toast from frozen. Verified 11 Aug: £2.19/kg.",
+        "storageClass": "freeze-on-arrival"
+      },
+      {
+        "ingId": "lc_tortilla",
+        "label": "Low-carb wraps",
+        "product": "Mission Carb Balance Original Wraps x4, 200 g",
+        "packG": 200,
+        "qty": 1,
+        "lineP": 150,
+        "packP": 150,
+        "aisle": "Cupboard",
+        "tags": [
+          "Store normally"
+        ],
+        "note": "Verified 11 Aug: £1.50, on offer from £1.80.",
+        "storageClass": "cupboard"
+      },
+      {
+        "ingId": "panko",
+        "label": "Panko breadcrumbs",
+        "product": "Yutaka Panko Japanese Style Breadcrumbs, 180 g",
+        "packG": 180,
+        "qty": 1,
+        "lineP": 155,
+        "packP": 155,
+        "aisle": "Cupboard",
+        "tags": [
+          "Store normally"
+        ],
+        "note": "Verified 11 Aug: £8.61/kg — cheaper than the own-brand tub.",
+        "storageClass": "cupboard"
+      }
+    ],
+    "putAway": [
+      {
+        "heading": "Bag and label the meat",
+        "body": "By the day it's wanted, not by type",
+        "where": "Freezer"
+      },
+      {
+        "heading": "Salmon and steak in too",
+        "body": "Not needed until Thu/Fri",
+        "where": "Freezer"
+      },
+      {
+        "heading": "Loaf and wraps in",
+        "body": "Toast the bread straight from frozen",
+        "where": "Freezer"
+      },
+      {
+        "heading": "Tomatoes on the counter",
+        "body": "Cold kills the flavour",
+        "where": "Counter"
+      },
+      {
+        "heading": "Avocados out",
+        "body": "Fridge each one the day it softens",
+        "where": "Counter"
+      },
+      {
+        "heading": "Mushrooms into paper",
+        "body": "Straight out of the plastic",
+        "where": "Fridge"
+      }
+    ]
+  },
+  "coverage": {
+    "coveredByBasket": [
+      "avocado",
+      "beef_mince",
+      "beef_steak",
+      "black_beans",
+      "blueberries",
+      "broccoli",
+      "brown_rice",
+      "carrot",
+      "cauliflower",
+      "cheddar_rf",
+      "chicken",
+      "chicken_mince",
+      "chickpeas",
+      "cucumber",
+      "egg",
+      "greek_yog",
+      "kidney_beans",
+      "lc_tortilla",
+      "lettuce",
+      "mozzarella",
+      "mushrooms",
+      "oats",
+      "olive_oil",
+      "panko",
+      "parmesan",
+      "passata",
+      "peanut_butter",
+      "peppers_frozen",
+      "pineapple",
+      "rapeseed_oil",
+      "raspberries",
+      "red_cabbage",
+      "red_onion",
+      "salmon",
+      "salsa",
+      "seeded_bread",
+      "skyr",
+      "spinach",
+      "spring_onion",
+      "sweetcorn",
+      "sweetheart_cabbage",
+      "tomato"
+    ],
+    "assumedPantry": [
+      "chipotle_adobo",
+      "coconut_des",
+      "jerk_paste",
+      "sugar"
+    ],
+    "missing": []
+  },
+  "defrost": [
+    {
+      "dayNo": 3,
+      "ingId": "beef_steak",
+      "g": 200,
+      "move": "freezer → fridge",
+      "note": "Thursday breakfast's steak & egg sandwich (a-d4b) — Week A Thursday only, freeze on arrival, down Wednesday night (matches ingredients.json's own canonical beef_steak note)."
+    },
+    {
+      "dayNo": 4,
+      "ingId": "salmon",
+      "g": 220,
+      "move": "freezer → fridge",
+      "note": "Friday dinner's jerk salmon (a-d5d) — down Thursday night for Friday's grill."
+    },
+    {
+      "dayNo": 3,
+      "ingId": "beef_mince",
+      "g": 335,
+      "move": "freezer → fridge",
+      "note": "Thursday dinner's smash burger (a-d4d, 157g raw both covers) — the pack's other 165g goes straight into Sunday's prep-a session (Chipotle beef batch, for Tuesday's a-d2l) and is never frozen; only this 335g remainder is bagged for the freezer, brought down Wednesday night."
+    },
+    {
+      "dayNo": 0,
+      "ingId": "chicken",
+      "g": 630,
+      "move": "arrival → fridge (conditional — do not freeze)",
+      "note": "Feeds Sunday's own prep-a session (Roast chicken yield, for Mon a-d1l and Fri a-d5l) — don't freeze it if that session lands within ~24h of the shop; fridge it straight from the bag instead (matches ingredients.json's canonical chicken note: '2 days fresh', comfortably covering shop-day to session-day). Only freeze it if the session is genuinely more than a day out."
+    },
+    {
+      "dayNo": 0,
+      "ingId": "chicken_mince",
+      "g": 500,
+      "move": "freezer → fridge (bring down Sunday night)",
+      "note": "Monday dinner's chicken-crust pizza (a-d1d, 140g raw both covers, out of the 500g pack — no prep-a yield uses chicken_mince, so the whole pack is for this one meal). If it went in the freezer on arrival per the basket's tag, bring it down Sunday night for Monday's bake; otherwise treat it the same as the chicken above and just fridge it on arrival."
+    }
+  ],
+  "prep": {
+    "sessionBase": "prep-a",
+    "keptOps": [
+      {
+        "opIndex": 0,
+        "clock": "0:00",
+        "title": "Oven on, three trays out",
+        "testerNote": "No need to dry the chickpeas for Tray B — that tray's skipped in the starter (see op 1's note). The oven/trays are still needed for the chicken."
+      },
+      {
+        "opIndex": 1,
+        "clock": "0:10",
+        "title": "Trays in — chicken, chickpeas, peppers",
+        "testerNote": "Skip Tray B — jerk chickpeas aren't in the starter; leave the 240 g tin for Monday's lunch instead."
+      },
+      {
+        "opIndex": 3,
+        "clock": "0:20",
+        "title": "Pan 2 — chipotle beef"
+      },
+      {
+        "opIndex": 6,
+        "clock": "0:37",
+        "title": "Chicken and peppers out",
+        "testerNote": "Skip the chickpea tray here too (see op 1) — the tin stays whole for Monday's lunch."
+      },
+      {
+        "opIndex": 7,
+        "clock": "0:40",
+        "title": "Pan 2 free — plain rice on"
+      },
+      {
+        "opIndex": 10,
+        "clock": "0:50",
+        "title": "Rice the cauliflower — the big job"
+      },
+      {
+        "opIndex": 11,
+        "clock": "1:05",
+        "title": "Shred for two slaws — and Friday's salmon slaw"
+      },
+      {
+        "opIndex": 12,
+        "clock": "1:12",
+        "title": "The two jars",
+        "testerNote": "Skip the suya half — nothing in the starter needs it. Just make the white sauce."
+      },
+      {
+        "opIndex": 13,
+        "clock": "1:20",
+        "title": "Bolognese and rice off — cool them FAST",
+        "testerNote": "Ignore the bolognese mention — it's cut from the starter. Only the rice needs the fast cool here."
+      },
+      {
+        "opIndex": 14,
+        "clock": "1:35",
+        "title": "Portion and label"
+      }
+    ],
+    "note": "Ops whose yield(s) feed no kept meal are dropped (Turkey bolognese/Efo riro base/Jerk chickpeas/Boiled eggs/Jollof — all Wednesday or the Tue/Wed snacks, none of which survive the tester); grams stay as authored. Kept ops that still touch a dropped component (op0/op1/op6's jerk-chickpea thread, op12's suya, op13's bolognese mention) carry their own testerNote rather than being dropped outright — dropping op6 or op12 would strand a-d1l's own roast-chicken/white-sauce prep, and op1's Tray B specifically would otherwise consume the tester's single 240g chickpea tin that Monday's a-d1l lunch also needs straight from the tin. Anomaly: prep-a's op1 body reads '600 g chicken breast' but the Morrisons basket buys a 630 g pack (the smallest pack that clears the 575 g whole-Week-A need at a lower total cost than the 1 kg pack) — the op text was never re-derived from the pack size, it states the batch's own working figure."
+  },
+  "economics": {
+    "total": "£69.83",
+    "meals": 10,
+    "perMeal": "£6.98 (both covers)"
+  },
+  "anomalies": [
+    {
+      "type": "menu-prose-provenance-whey",
+      "detail": "FD5-Menu-Morrisons.html's protein-pancakes method prose (Tuesday breakfast, a-d2b) still reads 'Oats blitzed to flour with the whey, egg and half the skyr...' — a leftover mention from the old tool. The app's approved rev-B covers for a-d2b (oats, egg, blueberries, raspberries, peanut_butter, rapeseed_oil, skyr) carry NO whey ingredient at all, and no 'whey' id exists anywhere in ingredients.json. Per docs/VARIANT-SPEC.md, the rev-B covers are the truth; this menu-prose mention is recorded here as provenance, not imported or treated as a missing ingredient."
+    },
+    {
+      "type": "menu-prose-provenance-legacy-kcal",
+      "detail": "FD5-Menu-Morrisons.html's per-meal kcal figures are the OLD tool's pre-seasoning numbers, not the app's rev-B recompute. 5 of the 10 kept meals now differ from the menu's published kcal (a-d1l, a-d2l, a-d2d, a-d5l, a-d5d all run slightly higher post-seasoning; the LCD header's own \"4,753/6,141 kcal total\" sums the menu's legacy per-meal figures exactly, not the rev-B totals used to compute this variant's own targets band). The app's recomputed macros win, per spec."
+    }
+  ],
+  "_decisionIds": {
+    "coverageDecision": "D0-037"
+  }
+}

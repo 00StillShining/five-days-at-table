@@ -10,10 +10,11 @@
 // with a queue count and inherit the slot when rank 1 clears," PLAN §6.0).
 // Only `primary-action` is screen-specific.
 import { ingredientShortName } from "../data/ingredients";
+import { activeVariant } from "../data/variant";
 import { bands, coverageForAllMeals, eatenSoFar, dutyStack, overBandMacros, todayInfo, tripBuild, type StartByDuty, type TripDay } from "../state/selectors";
 import type { AppState } from "../state/types";
 import { deriveProgramState } from "./timers";
-import { getProgram } from "./programs";
+import { getVariantProgram } from "./programs";
 
 export type ScreenId = "today" | "plan" | "meal" | "cook" | "stores" | "shop" | "list";
 
@@ -104,6 +105,7 @@ function primaryActionFor(screen: ScreenId, state: AppState, now: Date, ctx: Arb
 
 export function arbiterFor(screen: ScreenId, state: AppState, now: Date, ctx: ArbiterContext = {}): ArbiterResult {
   const candidates: ArbiterDuty[] = [];
+  const variant = activeVariant(state); // docs/VARIANT-SPEC.md: over-band uses variant targets; verify-nominee idles under the tester's all-verified basket
 
   const duties = dutyStack(state, now);
 
@@ -125,7 +127,7 @@ export function arbiterFor(screen: ScreenId, state: AppState, now: Date, ctx: Ar
 
   // timer-due: the loaded program's alarm state, computed the same way
   // engine/timers.ts's useProgram() derives it, so the two never disagree.
-  const program = state.timers.programId ? getProgram(state.timers.programId) : null;
+  const program = state.timers.programId ? getVariantProgram(state.timers.programId, variant) : null;
   if (program) {
     const derived = deriveProgramState(program, state.timers, now.getTime());
     if (derived.dueNow && derived.stepNow) {
@@ -149,7 +151,7 @@ export function arbiterFor(screen: ScreenId, state: AppState, now: Date, ctx: Ar
     const dayNo = info.anchored ? (info.dayNo as number) : null;
     if (dayNo != null) {
       const macros = eatenSoFar("A", dayNo, state.prefs.cover, state, now); // always Week A
-      const macroBands = bands("A", state.prefs.cover);
+      const macroBands = bands("A", state.prefs.cover, variant);
       const over = overBandMacros(macros, macroBands);
       if (over.length > 0) {
         candidates.push({
@@ -166,7 +168,7 @@ export function arbiterFor(screen: ScreenId, state: AppState, now: Date, ctx: Ar
   // excluding anything already recorded in priceChecks.
   const tripDay = ctx.tripDay ?? inferTripDay(state, now);
   if (tripDay != null) {
-    const trip = tripBuild(state.inventory, tripDay, state.swaps); // swaps-aware (P2-PLAN-001)
+    const trip = tripBuild(state.inventory, tripDay, state.swaps, variant); // swaps-aware (P2-PLAN-001); variant-aware (tester's basket is all-verified, no nominees)
     const outstanding = trip.verifyNominees.filter((ingId) => !state.priceChecks[ingId]);
     if (outstanding.length > 0) {
       candidates.push({

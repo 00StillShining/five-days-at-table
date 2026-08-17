@@ -193,13 +193,19 @@ describe("checksum 4: basket totals", () => {
     expect(+byShop.X.toFixed(2)).toBe(9.5);
   });
 
-  it("canonical COSTS sums to £179.31 with per-shop subtotals S £72.70 / M £98.31 / X £8.30", () => {
-    expect(shoppinglist.costsChecksum.sum).toBe(179.31);
+  it("canonical COSTS sums to £172.57 with per-shop subtotals S £82.51 / M £81.76 / X £8.30 (2026-08-11 owner-ruled revision: 49 lines, was 55/£179.31)", () => {
+    expect(shoppinglist.rows.length).toBe(49);
+    expect(shoppinglist.costsChecksum.sum).toBe(172.57);
     const byShop = {};
     for (const s of shoppinglist.shops) byShop[s.code] = s.subtotalShown;
-    expect(byShop.S).toBe("£72.70");
-    expect(byShop.M).toBe("£98.31");
+    expect(byShop.S).toBe("£82.51");
+    expect(byShop.M).toBe("£81.76");
     expect(byShop.X).toBe("£8.30");
+  });
+
+  it("day-7 top-up totals £6.93 across 6 rows (2026-08-11 revision: was £8.58/7 rows)", () => {
+    expect(shoppinglist.day7Card.rows.length).toBe(6);
+    expect(shoppinglist.day7Card.totalShown).toBe("£6.93");
   });
 
   it("plan.json economics cites labeled divisors for every figure", () => {
@@ -238,16 +244,48 @@ describe("checksum 5: register + map coverage", () => {
     }
   });
 
-  it("alias-map.json covers all 55 shopping-list short names with zero fuzzy matches (exact ingredient-id references only)", () => {
+  it("alias-map.json covers all 49 shopping-list short names with zero fuzzy matches (exact ingredient-id references only; 2026-08-11 revision, was 55)", () => {
     const aliasMap = readJSON(path.join(ROOT, "tools", "extract", "alias-map.json"));
     const keys = Object.keys(aliasMap).filter((k) => !k.startsWith("_"));
-    expect(keys.length).toBe(55);
+    expect(keys.length).toBe(49);
     const shopRowNames = new Set(shoppinglist.rows.map((r) => r.name));
     for (const k of keys) expect(shopRowNames.has(k)).toBe(true);
     const ingIds = new Set(ingredients.map((i) => i.id));
     for (const ids of Object.values(aliasMap)) {
       if (!Array.isArray(ids)) continue;
       for (const id of ids) expect(ingIds.has(id)).toBe(true);
+    }
+  });
+
+  it("the 6 ingredients dropped from the 2026-08-11 revision carry pantryOptional:true and sku:null; their meals.json references are untouched", () => {
+    const pantryOptionalIds = ["cottage", "apple", "banana", "chia", "pumpkin_seeds", "coconut_des"];
+    for (const id of pantryOptionalIds) {
+      const ing = ingredients.find((i) => i.id === id);
+      expect(ing, `${id} missing from ingredients.json`).toBeTruthy();
+      expect(ing.pantryOptional).toBe(true);
+      expect(ing.sku).toBeNull();
+    }
+    // untouched elsewhere: not flagged on any other ingredient
+    for (const ing of ingredients) {
+      if (!pantryOptionalIds.includes(ing.id)) expect(ing.pantryOptional).toBeUndefined();
+    }
+  });
+
+  it("the 22 re-verified 2026-08-11 SKUs carry verifiedOn/estimate:false/estimateSource", () => {
+    const reverifiedIds = [
+      "chicken", "egg", "beef_mince", "tilapia", "beef_steak", "turkey_mince", "chicken_mince",
+      "prawns", "cheddar_rf", "mozzarella", "parmesan", "panko", "greek_yog", "skyr",
+      "avocado", "tomato", "carrot", "mushrooms", "sweetcorn", "kidney_beans", "chickpeas",
+      "oats", "rapeseed_oil",
+    ];
+    expect(reverifiedIds.length).toBe(23); // 22 rows, but the shared yoghurt/skyr SKU is 2 ingredient records
+    for (const id of reverifiedIds) {
+      const ing = ingredients.find((i) => i.id === id);
+      expect(ing, `${id} missing from ingredients.json`).toBeTruthy();
+      expect(ing.sku, `${id} has no sku`).toBeTruthy();
+      expect(ing.sku.verifiedOn).toBe("2026-08-11");
+      expect(ing.sku.estimate).toBe(false);
+      expect(ing.sku.estimateSource).toBe("owner-reverify-2026-08-11");
     }
   });
 
@@ -360,7 +398,28 @@ describe("structural sanity", () => {
   // asserts every one of the 5 day totals per week/cover actually falls
   // inside its own band — the exact property the reviewer's evidence
   // (A-him day 2 busting the ceiling by 97 kcal, etc.) showed broken.
-  it("plan.json's macro bands exactly match an independent recompute from the final data/meals.json, and every day total falls inside its own band", () => {
+  // Fable review cycle 2 FIX-2 (root fix): bands must derive from UNROUNDED
+  // day totals — summing meals[].macros (Math.round'd per meal) before
+  // floor/ceil could freeze a band edge short of where the app's own raw
+  // covers-sum actually lands (e.g. Monday's her cover read 102 rounded but
+  // summed 102.2 raw, band ceiling frozen at 102 -> spurious "over band").
+  // This independent recompute now mirrors join.js's unroundedCoverMacros
+  // exactly: straight from covers x ingredients per100g, never through the
+  // pre-rounded macros field.
+  it("plan.json's macro bands exactly match an independent recompute from UNROUNDED covers, and every day total falls inside its own band", () => {
+    function unroundedCoverMacros(coverGrams) {
+      let kcal = 0, protein = 0, fibre = 0, carb = 0, fat = 0;
+      for (const [ingId, g] of Object.entries(coverGrams)) {
+        const ing = ingredients.find((i) => i.id === ingId);
+        const f = ing.per100g;
+        kcal += (f.kcal * g) / 100;
+        protein += (f.protein * g) / 100;
+        fibre += (f.fibre * g) / 100;
+        carb += (f.carb * g) / 100;
+        fat += (f.fat * g) / 100;
+      }
+      return { kcal, protein, netCarb: carb - fibre, fat, fibre };
+    }
     for (const week of ["A", "B"]) {
       for (const coverKey of ["w", "m"]) {
         const dayTotals = { kcal: [], protein: [], netCarb: [], fat: [], fibre: [] };
@@ -369,9 +428,10 @@ describe("structural sanity", () => {
           expect(dayMeals.length).toBeGreaterThan(0);
           const sum = { kcal: 0, protein: 0, netCarb: 0, fat: 0, fibre: 0 };
           for (const m of dayMeals) {
-            for (const k of Object.keys(sum)) sum[k] += m.macros[coverKey][k];
+            const raw = unroundedCoverMacros(m.covers[coverKey]);
+            for (const k of Object.keys(sum)) sum[k] += raw[k];
           }
-          for (const k of Object.keys(dayTotals)) dayTotals[k].push(Math.round(sum[k] * 10) / 10);
+          for (const k of Object.keys(dayTotals)) dayTotals[k].push(sum[k]);
         }
         for (const k of Object.keys(dayTotals)) {
           const independentBand = [Math.floor(Math.min(...dayTotals[k])), Math.ceil(Math.max(...dayTotals[k]))];

@@ -12,7 +12,7 @@ import { fileURLToPath } from "node:url";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 
-const steps = ["fd5.js", "methods.js", "provisioning.js", "shoppinglist.js", "join.js"];
+const steps = ["fd5.js", "methods.js", "provisioning.js", "shoppinglist.js", "morrisons.js", "join.js"];
 
 for (const step of steps) {
   console.log(`\n=== running ${step} ===`);

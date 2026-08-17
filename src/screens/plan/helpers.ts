@@ -3,8 +3,11 @@
 // src/state/selectors.ts's exported pure functions, per PHASE2-CONTRACT).
 import { mealForSlot, mealsByWeek } from "../../data";
 import type { Band, Cover, Macros, Meal, Slot, Week } from "../../data/types";
+import { activeVariant, FULL_VARIANT, type ActiveVariant } from "../../data/variant";
 import { bands, coverageForMeal, dayMacros, effectiveMealForSlot, mealMacros, overBandMacros } from "../../state/selectors";
 import type { Eaten, Inventory, Swaps } from "../../state/types";
+
+export { activeVariant, FULL_VARIANT, type ActiveVariant };
 
 // ---------------------------------------------------------------------------
 // Macro group presentation (the hero's four dials — PLAN §6.4: "kcal/protein/
@@ -55,13 +58,13 @@ export function effectiveMeal(week: Week, day: number, slot: Slot, original: Mea
   return effectiveMealForSlot(week, day, slot, { swaps }) ?? original;
 }
 
-export function dayOverBand(week: Week, day: number, cover: Cover, swaps: Swaps): (keyof Macros)[] {
-  const macros = dayMacros(week, day, cover, 1, swaps);
-  return overBandMacros(macros, bands(week, cover));
+export function dayOverBand(week: Week, day: number, cover: Cover, swaps: Swaps, variant: ActiveVariant = FULL_VARIANT): (keyof Macros)[] {
+  const macros = dayMacros(week, day, cover, 1, swaps, variant);
+  return overBandMacros(macros, bands(week, cover, variant));
 }
 
-export function weekBand(week: Week, cover: Cover, days: number): Record<MacroGroup, Band> {
-  const b = bands(week, cover);
+export function weekBand(week: Week, cover: Cover, days: number, variant: ActiveVariant = FULL_VARIANT): Record<MacroGroup, Band> {
+  const b = bands(week, cover, variant);
   return {
     kcal: [b.kcal[0] * days, b.kcal[1] * days],
     protein: [b.protein[0] * days, b.protein[1] * days],
@@ -70,10 +73,10 @@ export function weekBand(week: Week, cover: Cover, days: number): Record<MacroGr
   };
 }
 
-export function weekTotals(week: Week, cover: Cover, swaps: Swaps, days: number): Record<MacroGroup, number> {
+export function weekTotals(week: Week, cover: Cover, swaps: Swaps, days: number, variant: ActiveVariant = FULL_VARIANT): Record<MacroGroup, number> {
   const totals: Record<MacroGroup, number> = { kcal: 0, protein: 0, fat: 0, netCarb: 0 };
   for (let day = 1; day <= days; day++) {
-    const m = dayMacros(week, day, cover, 1, swaps);
+    const m = dayMacros(week, day, cover, 1, swaps, variant);
     totals.kcal += m.kcal;
     totals.protein += m.protein;
     totals.fat += m.fat;

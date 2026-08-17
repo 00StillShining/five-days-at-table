@@ -7,12 +7,21 @@ export const WeekSchema = z.union([z.literal("A"), z.literal("B")]);
 export const SlotSchema = z.union([z.literal("breakfast"), z.literal("lunch"), z.literal("dinner"), z.literal("snack")]);
 export const InventoryLevelSchema = z.union([z.literal(0), z.literal(1), z.literal(2), z.literal(3), z.literal(4)]);
 
+/** docs/VARIANT-SPEC.md: default "full", migration-safe — `.default("full")`
+ * means an absent key on any prefs blob persisted before this field existed
+ * parses to "full" rather than failing validation (see state/persist.ts's
+ * hydrateSlice: a schema failure would otherwise fall back to the WHOLE
+ * default prefs object, silently discarding cover/week/scale/serveTime/
+ * cycleStartSaturday too — `.default` avoids that). */
+export const PlanVariantSchema = z.union([z.literal("full"), z.literal("morrisons-tester")]).default("full");
+
 export const PrefsSchema = z.object({
   cover: CoverSchema,
   week: WeekSchema,
   scale: z.number(),
   serveTime: z.string(),
   cycleStartSaturday: z.string().nullable(),
+  planVariant: PlanVariantSchema,
 });
 
 export const InventoryEntrySchema = z.object({

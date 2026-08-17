@@ -57,7 +57,12 @@ const fd5 = readJSON(path.join(RAW, "fd5.json"));
 const methods = readJSON(path.join(RAW, "methods.json"));
 const provisioning = readJSON(path.join(RAW, "provisioning.json"));
 const shoppinglist = readJSON(path.join(RAW, "shoppinglist.json"));
+const morrisons = readJSON(path.join(RAW, "morrisons.json"));
 const aliasMap = readJSON(path.join(HERE, "alias-map.json"));
+// Variant-only extension (kept separate from alias-map.json so its own
+// "alias-map-covers-49-short-names" hard gate, scoped to the canonical
+// 49-row basket, is never disturbed by Morrisons-tester-only additions).
+const aliasMapMorrisons = readJSON(path.join(HERE, "alias-map-morrisons.json"));
 const registerMap = readJSON(path.join(HERE, "register-map.json"));
 
 let decisions = []; // decisions-queue.json accumulator
@@ -256,7 +261,7 @@ decide({
     "rapeseed_oil uses the standard pure-oil reference (884 kcal, 100g fat, 0 protein/carb/fibre per 100g), identical in shape to olive_oil since both are pure fats. " +
     "Provisioning's provenance.cutsStuck section independently corroborates all three as genuine SKU decisions: 'Half the peppers frozen' (Morrisons Sliced Mixed Peppers 500g £1.25 vs fresh £3.98/kg), 'Sweetheart cabbage where the gem is only shredded' (Morrisons British Sweetheart Cabbage £0.75 each ~500g), 'Split the oil two ways' (KTC Extended Life Rapeseed 1L £3.50 vs EVOO £7.14/kg).",
   options: [
-    "Leave the 3 shopping rows unmapped (breaks the 'alias map covers all 55 short names' checksum)",
+    "Leave the 3 shopping rows unmapped (breaks the 'alias map covers all short names' checksum)",
     "Create 3 new ingredient records with standard-reference composition (chosen)",
   ],
   recommendation: "Create the 3 records; no meal in meals.json references sweetheart_cabbage or rapeseed_oil (methods.json prose never distinguishes them from their siblings) — they exist as shopping-list/basket SKUs only. peppers_frozen IS wired into meals.json per the raw/cooked split decision below.",
@@ -346,9 +351,9 @@ for (const [shortName, ids] of Object.entries(aliasMap)) {
     if (Array.isArray(ids)) ids.forEach((i) => idSet.add(i));
   }
   check(
-    "alias-map-covers-55-short-names",
-    keys.length === 55,
-    `alias-map.json has ${keys.length} short-name keys (expect 55)`
+    "alias-map-covers-49-short-names",
+    keys.length === 49,
+    `alias-map.json has ${keys.length} short-name keys (expect 49, per the 2026-08-11 owner-ruled canonical revision — was 55/6 removed)`
   );
   // "peppers_frozen" and "peppers" both used, plus 54 active + 3 new = distinct id coverage
   check(
@@ -426,6 +431,43 @@ const ESTIMATE_OVERLAY = {}; // id -> {estimate, source}
   });
 }
 
+// --- 2026-08-11 owner-ruled canonical revision -----------------------------
+// The owner re-verified the canonical basket at the till on 2026-08-11:
+// 6 lines dropped entirely (never actually needed at that shop), 22
+// remaining lines got updated prices. Both are derived from alias-map.json
+// (which lines still have a mapping = still bought) and the shortName set
+// below (hand-verified against a name-for-name diff of the old vs revised
+// FD5-Shopping-List.html, git history), not guessed.
+const PANTRY_OPTIONAL_IDS = new Set(["cottage", "apple", "banana", "chia", "pumpkin_seeds", "coconut_des"]);
+const REVERIFIED_2026_08_11_SHORT_NAMES = new Set([
+  "Chicken breast", "Eggs", "Beef mince, 5%", "Basa fillets", "Rump or sirloin steak",
+  "Turkey breast mince", "Chicken breast mince", "King prawns", "Reduced-fat cheddar",
+  "Mozzarella", "Parmesan", "Panko breadcrumbs", "Fat-free Greek yoghurt", "Avocados",
+  "Salad tomatoes", "Carrots", "Chestnut mushrooms", "Frozen sweetcorn", "Red kidney beans",
+  "Chickpeas", "Porridge oats", "Rapeseed oil",
+]);
+check(
+  "reverified-2026-08-11-count-22",
+  REVERIFIED_2026_08_11_SHORT_NAMES.size === 22,
+  `${REVERIFIED_2026_08_11_SHORT_NAMES.size} re-verified short names tracked (expect 22)`
+);
+check(
+  "pantry-optional-count-6",
+  PANTRY_OPTIONAL_IDS.size === 6,
+  `${PANTRY_OPTIONAL_IDS.size} pantryOptional ids tracked (expect 6)`
+);
+
+// NOTE: the decide() call documenting this revision is placed at the very
+// END of the decisions sequence (right before the variant-morrisons build,
+// alongside that section's own new decisions), NOT here — decisionSeq
+// assigns D0-XXX ids by CALL ORDER, and owner-rulings.json references
+// D0-003/030/031 by that exact id (see the `decide()` helper's own comment,
+// top of file). Inserting a new decide() call at this early point would
+// renumber every decision after it and silently misapply an owner ruling to
+// the wrong topic — confirmed the hard way: doing this once during
+// development dropped the confirmed-defaults count from 31 to 30 and
+// tripped the "owner-rulings-confirmed-defaults-count" STOP gate.
+
 let ingredients = [];
 
 for (const id of ALL_ING_IDS) {
@@ -492,6 +534,7 @@ for (const id of ALL_ING_IDS) {
 
   // sku
   let sku = null;
+  const reverified = shortName ? REVERIFIED_2026_08_11_SHORT_NAMES.has(shortName) : false;
   if (shopRow) {
     const unitPrice = +(parseFloat(shopRow.priceShown.replace("£", "")) / shopRow.qty).toFixed(2);
     const fd5Price = fd5.prices[id];
@@ -504,9 +547,14 @@ for (const id of ALL_ING_IDS) {
       product: shopRow.productString,
       packG: shopRow.pack,
       price: unitPrice,
-      estimate: isNew ? true : estimate,
-      estimateSource: isNew ? "extraction-assumed" : estimateSource,
-      verifiedOn: null,
+      // 2026-08-11 owner re-verification wins over both the fd5/provisioning
+      // base estimate flags AND null verifiedOn (D0-031's 2026-08-04 ruling
+      // kept verifiedOn null until a REAL price-check event existed — this
+      // is that event, not a backfilled extraction/file date; see the
+      // "canonical-revision-2026-08-11-adopted" decision below).
+      estimate: reverified ? false : isNew ? true : estimate,
+      estimateSource: reverified ? "owner-reverify-2026-08-11" : isNew ? "extraction-assumed" : estimateSource,
+      verifiedOn: reverified ? "2026-08-11" : null,
       sharedSkuWith: idToSharedWith[id]?.[0] ?? null,
     };
   }
@@ -525,6 +573,12 @@ for (const id of ALL_ING_IDS) {
     aisle,
     freebie: false,
     ...(isNew ? { addedInExtraction: true } : {}),
+    // "Not bought in the canonical basket / assumed on hand or optional" —
+    // the 6 ids dropped from the 2026-08-11 canonical revision. Their
+    // meals.json references are untouched (per the owner's instruction);
+    // sku is already null here via the shortName->shopRow chain above,
+    // since their alias-map.json entries were removed, not left dangling.
+    ...(PANTRY_OPTIONAL_IDS.has(id) ? { pantryOptional: true } : {}),
     storage,
     sku,
   });
@@ -1305,15 +1359,52 @@ function parseRange(s) {
 // mutating `meals` (a Fable review cycle 1 FIX: this used to be called
 // before the overlay, producing kcal bands frozen at pre-seasoning Phase 0
 // values that real post-overlay days then busted).
+// Fable review cycle 2 FIX (root cause, both canonical and variant bands):
+// bands used to be built from PER-MEAL ROUNDED macros (meals[].macros —
+// Math.round'd kcal/protein/netCarb/fat, round1'd fibre) summed per day and
+// then floor/ceil'd again. The app itself sums the RAW per-cover gram
+// covers directly (never meals[].macros), so a day whose rounded-macro sum
+// landed exactly on a band edge could have its true (unrounded) sum spill
+// 0.0-0.9 past that edge — e.g. Monday's her cover read 102 (rounded) but
+// summed 102.2 raw, band ceiling frozen at 102, spurious "over band" arrow.
+// Fix: recompute every meal's macros UNROUNDED straight from its own
+// `covers` (grams) x the FINAL `ingredients` per100g table — bypassing
+// meals[].macros entirely for band purposes — sum those raw floats per day,
+// and only then floor(min)/ceil(max) across the day set. This is the same
+// arithmetic recompute() / recomputeMacros() already do, minus their final
+// Math.round/round1 step; meals[].macros itself is untouched (still
+// rounded, still what meal cards display) since only band derivation needed
+// the raw values.
+function unroundedCoverMacros(coverGrams) {
+  let kcal = 0,
+    protein = 0,
+    fibre = 0,
+    carb = 0,
+    fat = 0;
+  for (const [ingId, g] of Object.entries(coverGrams)) {
+    const ing = ingredients.find((i) => i.id === ingId);
+    const f = ing.per100g;
+    kcal += (f.kcal * g) / 100;
+    protein += (f.protein * g) / 100;
+    fibre += (f.fibre * g) / 100;
+    carb += (f.carb * g) / 100;
+    fat += (f.fat * g) / 100;
+  }
+  return { kcal, protein, netCarb: carb - fibre, fat, fibre };
+}
+
 function dayTotalsForWeek(mealsList, week, coverKey) {
   const totals = { kcal: [], protein: [], netCarb: [], fat: [], fibre: [] };
   for (let d = 1; d <= 5; d++) {
     const dayMeals = mealsList.filter((m) => m.week === week && m.day === d);
     const sum = { kcal: 0, protein: 0, netCarb: 0, fat: 0, fibre: 0 };
     for (const m of dayMeals) {
-      for (const k of Object.keys(sum)) sum[k] += m.macros[coverKey][k];
+      const raw = unroundedCoverMacros(m.covers[coverKey]);
+      for (const k of Object.keys(sum)) sum[k] += raw[k];
     }
-    for (const k of Object.keys(totals)) totals[k].push(round1(sum[k]));
+    // No intermediate rounding — bandFrom floors/ceils the true unrounded
+    // day total, matching how the app itself sums covers.
+    for (const k of Object.keys(totals)) totals[k].push(sum[k]);
   }
   return totals;
 }
@@ -1367,7 +1458,7 @@ const targetsDecisionId = decide({
   const basketTopUp = parseFloat(shoppinglist.day7Card.totalShown.replace("£", ""));
   const fortnightTotal = +(basketMain + basketTopUp).toFixed(2);
   var economics = {
-    basketMain: { amount: +basketMain.toFixed(2), basis: "sum of shoppinglist.json shops[].subtotalShown (S £72.70 + M £98.31 + X £8.30), the day-0 canonical basket for one Week-A pass" },
+    basketMain: { amount: +basketMain.toFixed(2), basis: "sum of shoppinglist.json shops[].subtotalShown (S £82.51 + M £81.76 + X £8.30, per the 2026-08-11 owner-ruled canonical revision), the day-0 canonical basket for one Week-A pass" },
     basketDay7TopUp: { amount: basketTopUp, basis: "shoppinglist.json day7Card.totalShown, the second-pass produce top-up" },
     fortnightTotal: { amount: fortnightTotal, basis: `£${basketMain.toFixed(2)} (day-0 basket) + £${basketTopUp.toFixed(2)} (day-7 top-up) over the 14-day A-twice fortnight` },
     perDay: { amount: +(fortnightTotal / 14).toFixed(2), basis: `£${fortnightTotal.toFixed(2)} ÷ 14 days` },
@@ -1377,13 +1468,23 @@ const targetsDecisionId = decide({
 
 {
   const s = shoppinglist.shops.reduce((acc, sh) => ({ ...acc, [sh.code]: parseFloat(sh.subtotalShown.replace("£", "")) }), {});
+  // Gate values as of the 2026-08-11 owner-ruled canonical revision (was
+  // 55 lines / £179.31 / S£72.70 / M£98.31 / X£8.30; day-7 £8.58/7 rows —
+  // see the "canonical-revision-2026-08-11-adopted" decision below for the
+  // full old-vs-new numbers and the 6 reclassified ingredients).
   check(
-    "costs-sum-179.31-per-shop-subtotals",
-    Math.abs(shoppinglist.costsChecksum.sum - 179.31) < 0.001 &&
-      s.S === 72.7 &&
-      s.M === 98.31 &&
+    "costs-sum-172.57-per-shop-subtotals",
+    shoppinglist.rows.length === 49 &&
+      Math.abs(shoppinglist.costsChecksum.sum - 172.57) < 0.001 &&
+      s.S === 82.51 &&
+      s.M === 81.76 &&
       s.X === 8.3,
-    `costsChecksum.sum=${shoppinglist.costsChecksum.sum}, per-shop=${JSON.stringify(s)}`
+    `rows=${shoppinglist.rows.length}, costsChecksum.sum=${shoppinglist.costsChecksum.sum}, per-shop=${JSON.stringify(s)}`
+  );
+  check(
+    "day7-topup-6.93-per-2026-08-11-revision",
+    shoppinglist.day7Card.rows.length === 6 && Math.abs(shoppinglist.day7Card.totalShown.replace("£", "") - 6.93) < 0.001,
+    `day7Card rows=${shoppinglist.day7Card.rows.length}, totalShown=${shoppinglist.day7Card.totalShown}`
   );
   const legacyByShop = {};
   for (const r of shoppinglist.legacy.rows) {
@@ -1782,6 +1883,9 @@ const IngredientSchema = z.object({
   addedInExtraction: z.boolean().optional(),
   addedInContentPass: z.boolean().optional(),
   contentPassSources: z.array(z.enum(["A", "B"])).optional(),
+  // Additive (2026-08-11 canonical revision): "not bought in the canonical
+  // basket — assumed on hand / optional". Absent for every other ingredient.
+  pantryOptional: z.boolean().optional(),
   storage: z.object({
     class: StorageClass,
     location: z.string(),
@@ -1968,6 +2072,662 @@ validateOrStop(PlanSchema, plan, "plan.json");
 
 check("decisions-queue-target-30", decisions.length >= 25, `decisions-queue has ${decisions.length} entries (target ~30)`);
 
+decide({
+  topic: "canonical-revision-2026-08-11-adopted: owner re-verified FD5-Shopping-List.html at the till",
+  detail:
+    "Owner ruling, 2026-08-11: the previously-canonical 55-line basket is superseded by a 49-line re-verified revision. OLD -> NEW, all pennies-exact: " +
+    "lines 55 -> 49; day-0 total £179.31 -> £172.57; shop S subtotal £72.70 -> £82.51; shop M subtotal £98.31 -> £81.76; shop X subtotal £8.30 -> £8.30 (unchanged); " +
+    "day-7 top-up £8.58/7 rows -> £6.93/6 rows (the day-7 card itself lost one row as a side effect of the day-0 removals, since day-7 top-up rows are always a subset of day-0 items); " +
+    "'straight to the freezer' weight 13.0kg -> 12.6kg. " +
+    "6 lines removed entirely (all Morrisons: Cottage cheese £1.65, Apples £3.60, Bananas £0.90, Chia seeds £2.75, Pumpkin seeds £1.80, Desiccated coconut £1.15 — none needed at the till this pass). " +
+    "22 remaining lines got updated prices (12 Sainsbury's: Chicken breast £10.00->£15.00, Eggs £16.75->£13.40, Beef mince 5% £8.50->£10.38, Basa fillets £3.50->£5.50, Rump or sirloin steak £5.50->£8.00, Turkey breast mince £4.50->£4.95, Chicken breast mince £4.25->£3.00, King prawns £3.50->£5.28, Reduced-fat cheddar £3.25->£2.95, Mozzarella £2.25->£2.95, Parmesan £2.60->£3.10, Panko breadcrumbs £1.50->£1.40; 10 Morrisons: Fat-free Greek yoghurt £6.30->£4.20, Avocados £3.00->£1.50, Salad tomatoes £1.88->£3.58, Carrots £1.38->£0.69, Chestnut mushrooms £1.35->£1.50, Frozen sweetcorn £1.25->£1.50, Red kidney beans £1.00->£0.74, Chickpeas £1.80->£0.74, Porridge oats £1.29->£0.85, Rapeseed oil £3.50->£2.75). " +
+    "The 6 removed ingredient ids (cottage, apple, banana, chia, pumpkin_seeds, coconut_des) are NOT deleted from ingredients.json — their meals.json references stay exactly as-is, per the owner's instruction — they are flagged pantryOptional:true (\"not bought in the canonical basket — assumed on hand / optional\") with sku:null. Affected meals, by id (kept untouched, just no longer basket-sourced): cottage -> a-d5s, b-d1s; apple -> a-d4s, b-d2b; banana -> a-d1s; chia -> a-d1s, b-d1s, b-d2b, b-d3s; pumpkin_seeds -> a-d1s, a-d4s, b-d1s, b-d3s, b-d4s; coconut_des -> a-d4s, a-d5d, b-d4s (coconut_des is independently already classified assumedPantry in the Morrisons-tester variant's own coverage audit — this canonical flag corroborates that classification rather than conflicting with it). " +
+    "The 22 re-verified prices flow into ingredients.json SKUs with verifiedOn:\"2026-08-11\", estimate:false, estimateSource:\"owner-reverify-2026-08-11\" — this is the first REAL population of D0-031's verifiedOn field (D0-031, 2026-08-04: verifiedOn stays null until a real price-check event exists, never backfilled from a file/extraction date). This is that event, not a backfill: the owner actually re-verified these 22 prices at the till on 2026-08-11, which is exactly the case D0-031's own resolution anticipated (\"populated only by real price-check events\") — this decision extends D0-031, it does not override it. " +
+    "The LEGACY 3-week cross-checks (£257.32 total, legacy per-shop £102.58/£145.24/£9.50, legacy estimateMark<->fd5.prices.ver checksum) are untouched: the legacy shopping-list.html file itself was not touched by this revision, only the canonical FD5-Shopping-List.html was.",
+  options: [
+    "Keep the old 55-line/£179.31 numbers as canonical, treat the owner's edit as a draft (rejected — owner ruling is binding per the coordinator's explicit instruction)",
+    "Adopt the revised 49-line/£172.57 file as canonical; re-point every §3 checksum gate at the new numbers; flag the 6 dropped ingredients pantryOptional rather than deleting them (chosen)",
+  ],
+  recommendation: "As chosen. join.js's checksum gates (alias-map-covers-49-short-names, costs-sum-172.57-per-shop-subtotals, day7-topup-6.93-per-2026-08-11-revision) and validate.test.js's checksum-4/5 assertions now read the revised numbers; alias-map.json's 6 obsolete keys were removed (not left dangling) so the 49-count invariant stays live-checkable.",
+  status: "resolved",
+  resolvedTo:
+    "data/raw/shoppinglist.json: 49 rows, £172.57 (S£82.51/M£81.76/X£8.30), day-7 £6.93/6 rows. data/ingredients.json: 22 SKUs carry verifiedOn:\"2026-08-11\"/estimate:false/estimateSource:\"owner-reverify-2026-08-11\"; 6 SKUs carry pantryOptional:true/sku:null. tools/extract/alias-map.json: 49 keys (6 removed). tools/extract/join.js: 2 renamed/updated checksum gates, 2 new gates (re-verified-count, pantry-optional-count).",
+});
+
+// ---------------------------------------------------------------------------
+// Variant: "morrisons-tester" plan-variant (docs/VARIANT-SPEC.md, binding).
+// Additive-only, mirrors how calendar.json already layers a second variant
+// (a-twice) alongside the canonical one (a+b) without disturbing it: reads
+// the FINAL `meals`/`ingredients`/`prep` (post Phase-1 overlay, already
+// computed above) plus data/raw/morrisons.json, and writes a single new
+// file, data/variant-morrisons.json. Nothing above this point is touched;
+// no existing data/*.json output changes shape or content.
+// ---------------------------------------------------------------------------
+
+const variantMorrisons = (function buildVariantMorrisons() {
+  const va = []; // local anomalies for this section, folded into the output's own anomalies[]
+
+  // --- 1. Kept/cut slots, derived from morrisons.json's own menu section,
+  //     cross-checked against meals.json's own `name` field so a silent
+  //     mismatch (wrong day/slot) fails loudly instead of shipping wrong. ---
+  const DAY_CODE_TO_NUM = { D1: 1, D2: 2, D3: 3, D4: 4, D5: 5 };
+  const kept = [];
+  const cutNonSnack = [];
+  for (const day of morrisons.menu.days) {
+    const dayNo = DAY_CODE_TO_NUM[day.code];
+    if (dayNo === undefined) {
+      va.push({ type: "unrecognized-day-code", detail: `morrisons.json menu day code "${day.code}" not in D1..D5.` });
+      continue;
+    }
+    for (const meal of day.meals) {
+      const found = meals.find((m) => m.week === "A" && m.day === dayNo && m.slot === meal.slot);
+      if (!found) {
+        va.push({ type: "kept-meal-not-found", detail: `No meals.json entry for week A day ${dayNo} slot ${meal.slot} ("${meal.name}").` });
+        continue;
+      }
+      if (found.name !== meal.name) {
+        va.push({
+          type: "kept-meal-name-mismatch",
+          detail: `meals.json ${found.id} name "${found.name}" != morrisons.json menu name "${meal.name}" for week A day ${dayNo} ${meal.slot}.`,
+        });
+      }
+      kept.push(found.id);
+    }
+    // Any breakfast/lunch/dinner slot in this day NOT present among the kept
+    // meals for that day is a non-snack cut. Wednesday has none kept, so all
+    // three of its slots are cuts; Thu/Fri drop exactly one slot each.
+    const keptSlotsThisDay = new Set(day.meals.map((m) => m.slot));
+    for (const slot of ["breakfast", "lunch", "dinner"]) {
+      if (keptSlotsThisDay.has(slot)) continue;
+      const cutMeal = meals.find((m) => m.week === "A" && m.day === dayNo && m.slot === slot);
+      if (!cutMeal) {
+        va.push({ type: "cut-meal-not-found", detail: `No meals.json entry for week A day ${dayNo} slot ${slot} (expected a cut meal).` });
+        continue;
+      }
+      // Reason text: the day's own cutCard(s), verbatim. Wednesday carries
+      // one combined cutCard for all three of its slots (the source text
+      // genuinely is one shared reason); Thursday/Friday each carry exactly
+      // one cutCard naming their single cut slot.
+      const reason = day.cutCards.length === 1 ? day.cutCards[0] : day.cutCards.join(" ") || null;
+      if (!reason) va.push({ type: "cut-meal-no-reason", detail: `${cutMeal.id} (week A day ${dayNo} ${slot}) has no cutCard text to cite as a reason.` });
+      cutNonSnack.push({ mealId: cutMeal.id, reason });
+    }
+  }
+
+  check("variant-morrisons-kept-count-10", kept.length === 10, `derived ${kept.length} kept meal ids from morrisons.json menu (expect 10)`);
+  check("variant-morrisons-cut-nonsnack-count-5", cutNonSnack.length === 5, `derived ${cutNonSnack.length} non-snack cut meals (expect 5)`);
+
+  // All 5 Week A snacks are absent from the tester basket entirely (no
+  // snack ingredients appear anywhere in morrisons.json's 39 lines) — per
+  // docs/VARIANT-SPEC.md's own framing, these are cuts too, just not
+  // itemised on the source's day cards the way the b/l/d cuts are.
+  const snackCuts = meals
+    .filter((m) => m.week === "A" && m.slot === "snack")
+    .sort((a, b) => a.day - b.day)
+    .map((m) => ({ mealId: m.id, reason: "not part of the tester week — no snack ingredients appear in the 39-line Morrisons basket" }));
+  check("variant-morrisons-snack-cuts-5", snackCuts.length === 5, `found ${snackCuts.length} week-A snack meals (expect 5)`);
+
+  const slots = { kept, cut: [...cutNonSnack, ...snackCuts] };
+
+  // --- 2. Basket lines: ingId resolution (alias-map.json, zero fuzzy) +
+  //     storageClass derivation (from the row's own tag TEXT + aisle + note
+  //     — never the reused t-* colour class) + coversAlso (shared-SKU rows,
+  //     plus two variant-specific substitutions this basket's own note text
+  //     documents explicitly — see VARIANT_COVERS_ALSO below). ---
+
+  // Two substitutions this smaller single-shop basket makes that the
+  // canonical (49-line) basket does not, each evidenced by the row's own
+  // note text rather than assumed:
+  //   - "Red peppers" (raw): note says "Raw — no frozen split needed for a
+  //     single small shop" — stands in for peppers_frozen too.
+  //   - "Extra virgin olive oil": note cites "178 g of dressing use" for
+  //     the smallest bottle on the site. The 10 kept meals' rev-B covers
+  //     need rapeseed_oil (39+50=89 g, w+m) AND olive_oil (38+51=89 g, w+m)
+  //     — 89+89=178 g exactly, matching the note's own figure only when
+  //     both oils are combined. One bottle is standing in for both.
+  const VARIANT_COVERS_ALSO = {
+    "Red peppers": ["peppers_frozen"],
+    "Extra virgin olive oil": ["rapeseed_oil"],
+  };
+
+  // Fable review cycle 2 FIX-3(a): a derived clarifying note, applied ONLY
+  // where the source row carries no note of its own (row.note === null —
+  // never overwrites real verbatim prose). "Pineapple chunks" moved to
+  // storageClass:"cupboard" above (it's an unopened tin, not chilled
+  // produce, despite sitting under the "Fruit & veg" aisle heading); this
+  // records the after-opening handling the storageClass alone can't convey.
+  const DERIVED_NOTE_WHEN_ABSENT = {
+    "Pineapple chunks": "Tin — cupboard while sealed. Once opened, decant and refrigerate; use within a couple of days.",
+  };
+
+  function deriveStorageClass(row) {
+    const tag = row.tags[0] ?? null;
+    if (tag === "Freeze on arrival") return "freeze-on-arrival";
+    if (tag === "Freezer aisle") return "freezer-aisle";
+    if (tag === "Mixed ripeness") return "counter"; // avocados: "Buy hard, ripen on the counter."
+    if (tag === "Store normally") {
+      if (row.note && /counter/i.test(row.note)) return "counter"; // "Counter, not fridge." (tomatoes)
+      // Fable review cycle 2 FIX-3(a): "Pineapple chunks" sits under the
+      // "Fruit & veg" aisle heading (the source's own layout groups it with
+      // fresh produce) but its productString reads "Pineapple Chunks in
+      // Juice, 425 g tin (260 g drained)" — an unopened tin, not chilled
+      // produce. Storage is cupboard until opened; the "goes in the fridge
+      // once opened" detail belongs in the line's own note text, not the
+      // top-level storageClass. Checked by product text ("tin"), not aisle,
+      // so this rule only ever fires for genuinely tinned lines.
+      if (row.productString && /\btin\b/i.test(row.productString)) return "cupboard";
+      if (row.aisle === "Dairy & chilled") return "fridge";
+      if (row.aisle === "Cupboard") return "cupboard";
+      if (row.aisle === "Meat, fish & eggs") return "fridge"; // eggs, the one non-freeze row in this aisle
+      if (row.aisle === "Fruit & veg") return "fridge"; // default for fresh produce; counter/tinned cases are caught above
+    }
+    va.push({ type: "unresolved-storage-class", detail: `Row "${row.name}" (tag "${tag}", aisle "${row.aisle}") did not match any storageClass rule.` });
+    return null;
+  }
+
+  const lines = morrisons.rows.map((row) => {
+    const ids = aliasMap[row.name] ?? aliasMapMorrisons[row.name];
+    if (!ids) {
+      va.push({ type: "unmapped-basket-row", detail: `No alias-map.json entry for basket row "${row.name}".` });
+      return null;
+    }
+    const [ingId, ...sharedSkuAlso] = ids;
+    const extraCoversAlso = VARIANT_COVERS_ALSO[row.name] ?? [];
+    const coversAlso = [...sharedSkuAlso, ...extraCoversAlso];
+    // The source's .cost column (and the COSTS[] checksum array) is the LINE
+    // TOTAL, source-verbatim — not a per-pack unit price. Confirmed by the
+    // one row where qty != 1 ("Frozen cauliflower florets", "2 × 1,000 g",
+    // cost "£3.00"): £3.00 is 2 packs at £1.50 each, and COSTS[]'s own 3.0
+    // entry at that position is what sums the 39-line array to exactly
+    // 69.83. Storing this as a would-be per-pack price and multiplying by
+    // qty downstream double-counts it (300p x 2 = 600p, not 300p). `lineP`
+    // is the verbatim total (what basket.totalP must sum to); `packP` is
+    // derived (lineP/qty) for any per-pack unit-price display.
+    const lineP = priceToPence(row.priceShown);
+    if (lineP === null) va.push({ type: "unparseable-line-price", detail: `Row "${row.name}" price "${row.priceShown}" did not parse.` });
+    let packP = null;
+    if (lineP !== null && row.qty) {
+      if (lineP % row.qty !== 0) {
+        va.push({ type: "line-price-not-evenly-divisible", detail: `Row "${row.name}": lineP ${lineP}p is not evenly divisible by qty ${row.qty}.` });
+      }
+      packP = Math.round(lineP / row.qty);
+    }
+    return {
+      ingId,
+      label: row.name,
+      product: row.productString,
+      packG: row.pack,
+      qty: row.qty,
+      lineP,
+      packP,
+      aisle: row.aisle,
+      tags: row.tags,
+      note: row.note ?? DERIVED_NOTE_WHEN_ABSENT[row.name] ?? null,
+      storageClass: deriveStorageClass(row),
+      ...(coversAlso.length ? { coversAlso } : {}),
+    };
+  });
+
+  const totalP = lines.reduce((acc, l) => acc + (l ? l.lineP : 0), 0);
+  check("variant-morrisons-39-lines-pennies-exact", lines.length === 39 && totalP === 6983, `${lines.length} lines, totalP=${totalP} (expect 39 lines, 6983p)`);
+  check(
+    "variant-morrisons-qty-x-packP-reconstitutes-lineP",
+    lines.every((l) => !l || l.qty * l.packP === l.lineP),
+    "every line's qty x packP must reconstitute its verbatim lineP (proves the qty!=1 cauliflower row isn't double-counted)"
+  );
+
+  decide({
+    topic: "variant-morrisons basket price field semantics: lineP vs packP (runtime-builder-reported bug fix)",
+    detail:
+      "The runtime builder found data/variant-morrisons.json basket lines summed to 7283p under Σ(qty x priceP) against a stated total of 6983p — a 300p overcount. Root cause: the single field this section originally emitted, `priceP`, held the source's .cost column value directly, which is the LINE TOTAL, not a per-pack unit price — confirmed by the one qty!=1 row ('Frozen cauliflower florets', '2 × 1,000 g', cost '£3.00'): £3.00 is 2 packs at £1.50 each, and the COSTS[] checksum array's own 3.0 entry at that position is exactly what makes the 39-entry array sum to 69.83. Any consumer that (reasonably, given the ambiguous single-field name `priceP`) treated it as a per-pack price and multiplied by qty double-counted this one row (300p x 2 = 600p instead of 300p, a 300p/£3.00 overcount — exactly the 7283-6983=300p gap reported). " +
+      "Fix: the field is renamed `lineP` (source-verbatim line total; basket.totalP = Σ lineP, still 6983p exactly) and a new derived field `packP` (lineP/qty, integer pence, 150p for the cauliflower row) is added to every line so a consumer that wants a per-pack unit price for display has one without needing to re-derive it. qty x packP reconstitutes lineP exactly for every line (locked as a checksum above).",
+    options: [
+      "Keep the single `priceP` field, document that it is a line total in prose only (rejected — the exact ambiguity that caused the bug)",
+      "Split into `lineP` (verbatim total) + `packP` (derived unit price), both always present (chosen)",
+    ],
+    recommendation: "As chosen — matches the runtime builder's own suggested contract.",
+    status: "resolved",
+    resolvedTo: `basket.lines[].priceP renamed to lineP; basket.lines[].packP added (=lineP/qty). basket.totalP unchanged at 6983p, now = Σ lineP exactly. Verified: totalP=${totalP}p.`,
+  });
+  check("variant-morrisons-all-lines-mapped", lines.every((l) => l && l.ingId), `${lines.filter((l) => !l || !l.ingId).length} unmapped lines`);
+  check(
+    "variant-morrisons-all-lines-storage-classed",
+    lines.every((l) => l && l.storageClass),
+    `${lines.filter((l) => !l || !l.storageClass).length} lines without a resolved storageClass`
+  );
+
+  function priceToPence(str) {
+    const m = /^£\s*([\d,]+(?:\.\d+)?)$/.exec((str ?? "").trim());
+    if (!m) return null;
+    return Math.round(parseFloat(m[1].replace(/,/g, "")) * 100);
+  }
+
+  const basket = {
+    retailer: morrisons.shop.code,
+    verifiedOn: "2026-08-11",
+    totalP,
+    lines,
+    putAway: morrisons.putAwayCard.entries.map((e) => ({ heading: e.title, body: e.detail, where: e.status })),
+  };
+
+  // --- 3. Targets: D0-026 method (bandFrom, already defined above for the
+  //     canonical plan) but over the FOUR kept days only (Wed dropped
+  //     entirely), and within Thu/Fri only the kept slots — i.e. exactly
+  //     what the tester week's own days actually total, not the full
+  //     canonical day. ---
+  // Same root fix as the canonical bands (unroundedCoverMacros, defined
+  // above): sum RAW per-cover gram covers, never the pre-rounded
+  // meals[].macros, so the tester's band edges match what the app itself
+  // computes when it sums covers directly (Fable review cycle 2 FIX).
+  function dayTotalsForKeptMeals(keptIds, coverKey) {
+    const totals = { kcal: [], protein: [], netCarb: [], fat: [], fibre: [] };
+    for (const d of [1, 2, 4, 5]) {
+      const dayMeals = meals.filter((m) => m.week === "A" && m.day === d && keptIds.includes(m.id));
+      const sum = { kcal: 0, protein: 0, netCarb: 0, fat: 0, fibre: 0 };
+      for (const m of dayMeals) {
+        const raw = unroundedCoverMacros(m.covers[coverKey]);
+        for (const k of Object.keys(sum)) sum[k] += raw[k];
+      }
+      for (const k of Object.keys(totals)) totals[k].push(sum[k]);
+    }
+    return totals;
+  }
+  const targets = {
+    A: {
+      w: bandFrom(dayTotalsForKeptMeals(kept, "w")),
+      m: bandFrom(dayTotalsForKeptMeals(kept, "m")),
+    },
+  };
+
+  // --- 4. Coverage audit: kept meals' rev-B covers vs basket ingIds (+
+  //     coversAlso). Freebies never appear as covers keys (fd5's own
+  //     treatment — untracked seasonings are omitted from covers entirely,
+  //     see the OP_INGREDIENTS comment above), so nothing here needs a
+  //     separate freebie carve-out; the four content-pass/spice-jar
+  //     seasonings below are gram-tracked but deliberately absent from a
+  //     39-line single-shop basket (named explicitly in
+  //     docs/VARIANT-SPEC.md's own coverage-audit guidance: "suya/jerk/
+  //     adobo/shawarma etc." classify as assumedPantry) — recorded as a
+  //     decision below, not silently assumed. ---
+  const neededIds = new Set();
+  const keptMealObjs = meals.filter((m) => kept.includes(m.id));
+  for (const m of keptMealObjs) {
+    for (const k of Object.keys(m.covers.w)) neededIds.add(k);
+    for (const k of Object.keys(m.covers.m)) neededIds.add(k);
+  }
+  const basketCoveredIds = new Set();
+  for (const l of lines) {
+    if (!l) continue;
+    basketCoveredIds.add(l.ingId);
+    for (const id of l.coversAlso ?? []) basketCoveredIds.add(id);
+  }
+  const ASSUMED_PANTRY_IDS = new Set(["chipotle_adobo", "jerk_paste", "sugar", "coconut_des"]);
+  const coveredByBasket = [];
+  const assumedPantry = [];
+  const missing = [];
+  for (const id of [...neededIds].sort()) {
+    if (basketCoveredIds.has(id)) coveredByBasket.push(id);
+    else if (ASSUMED_PANTRY_IDS.has(id)) assumedPantry.push(id);
+    else missing.push(id);
+  }
+  const coverageDecision = decide({
+    topic: "morrisons-tester coverage audit: 4 gram-tracked seasonings absent from the 39-line basket",
+    detail:
+      `The 10 kept meals' rev-B covers need ${neededIds.size} distinct ingredient ids. ${coveredByBasket.length} are covered by the basket's 39 lines (${lines.length - coveredByBasket.length + assumedPantry.length + missing.length >= 0 ? "including" : ""} shared-SKU coversAlso: skyr via the yoghurt tub, blueberries via the wonky-berries bag, peppers_frozen via the raw-peppers substitution, rapeseed_oil via the single olive-oil bottle). The remaining 4 — chipotle_adobo, jerk_paste, sugar, coconut_des — never appear anywhere in the 39 lines. All four are small-gram (3-30g raw-batch) spice-jar/condiment ingredients: chipotle_adobo and jerk_paste are literally the "adobo"/"jerk" seasoning-jar category docs/VARIANT-SPEC.md names explicitly; sugar is a content-pass pinch-seasoning (ingredients.json's own storage note: "Introduced in the Phase 1 content pass ... pinches are weighed at 1g rather than listed in freebies[]"); coconut_des is a 3g garnish quantity in a-d5d. None is a bulk/staple ingredient (meat, veg, starch, dairy, oil) whose absence would indicate a mapping bug.`,
+    options: [
+      "Report all 4 as coverage.missing (treats a genuinely tiny spice-jar gap as equivalent to a real basket gap)",
+      "Classify all 4 as coverage.assumedPantry, matching the spec's own named example categories (chosen)",
+    ],
+    recommendation: "Classify as assumedPantry, per docs/VARIANT-SPEC.md's coverage-audit guidance.",
+    // "resolved" (not "resolved-by-default"): the latter status is reserved
+    // by the owner-checkpoint overlay (tools/extract/owner-rulings.json,
+    // validate.test.js's "owner-rulings checkpoint overlay" suite) for an
+    // EXACT pre-counted set of Phase-0 decisions confirmed-as-is on
+    // 2026-08-04 — this decision postdates that checkpoint and must not be
+    // folded into its count.
+    status: "resolved",
+    resolvedTo: `coverage.assumedPantry = [${[...assumedPantry].sort().join(", ")}]; coverage.missing = [] (empty, as expected).`,
+  });
+  check("variant-morrisons-coverage-missing-reported", true, `coverage.missing = ${JSON.stringify(missing)} (${missing.length} ids) — reported, not a hard gate per spec`);
+  check(
+    "variant-morrisons-no-staple-missing",
+    missing.every((id) => id !== "chicken" && id !== "egg" && id !== "olive_oil" && id !== "rapeseed_oil"),
+    `missing=${JSON.stringify(missing)} — a STAPLE (chicken/egg/oil) here would indicate a mapping bug`
+  );
+
+  const coverage = { coveredByBasket, assumedPantry, missing };
+
+  // --- 5. Defrost derivation. Only the 6 "Freeze on arrival" basket lines
+  //     are candidates. seeded_bread is toasted straight from frozen per
+  //     both the basket's own note ("Toast from frozen") and
+  //     ingredients.json's canonical note ("no defrosting") — no defrost
+  //     entry, ever. beef_steak (Thu) and salmon (Fri) are single-use
+  //     bring-downs. beef_mince is a split case: 165g of its 500g pack is
+  //     used immediately Sunday for prep-a's "Chipotle beef" batch (a-d2l,
+  //     Tuesday's lunch) — hand-verified against prep.json's own yield note
+  //     (165g raw, consumers:["a-d2l"]) — and the remaining 335g is
+  //     fresh-cooked Thursday for the smash burger (a-d4d, which appears in
+  //     NO prep-a yield's consumers list, i.e. it is never batch-prepped,
+  //     only cooked same-day) and so needs its own bring-down. chicken and
+  //     chicken_mince (Fable review cycle 2 FIX-3(b)) are both needed
+  //     almost immediately (day 0's prep-a session / day 1's fresh-cooked
+  //     pizza) — rather than silently omitting them (the original
+  //     reasoning: "never actually frozen"), they now get their own day-0
+  //     advisory entries below, since a user following the basket's literal
+  //     "Freeze on arrival" tag with no guidance could easily freeze
+  //     something they need out again within a day. ---
+  function findKeptMeal(id) {
+    return keptMealObjs.find((m) => m.id === id) ?? null;
+  }
+  const beefMinceThuNeed = (() => {
+    const m = findKeptMeal("a-d4d");
+    if (!m || m.covers.w.beef_mince == null || m.covers.m.beef_mince == null) {
+      va.push({ type: "defrost-beef-mince-need-missing", detail: "a-d4d covers no longer contain beef_mince for both covers — defrost figure needs re-deriving." });
+      return null;
+    }
+    return m.covers.w.beef_mince + m.covers.m.beef_mince;
+  })();
+
+  const defrost = [];
+  const findLine = (ingId) => lines.find((l) => l && l.ingId === ingId);
+
+  const steakLine = findLine("beef_steak");
+  if (steakLine) {
+    defrost.push({
+      dayNo: 3,
+      ingId: "beef_steak",
+      g: steakLine.packG,
+      move: "freezer → fridge",
+      note: "Thursday breakfast's steak & egg sandwich (a-d4b) — Week A Thursday only, freeze on arrival, down Wednesday night (matches ingredients.json's own canonical beef_steak note).",
+    });
+  }
+  const salmonLine = findLine("salmon");
+  if (salmonLine) {
+    defrost.push({
+      dayNo: 4,
+      ingId: "salmon",
+      g: salmonLine.packG,
+      move: "freezer → fridge",
+      note: "Friday dinner's jerk salmon (a-d5d) — down Thursday night for Friday's grill.",
+    });
+  }
+  const minceLine = findLine("beef_mince");
+  if (minceLine && beefMinceThuNeed != null) {
+    const frozenRemainderG = minceLine.packG - 165; // 165g = prep-a "Chipotle beef" yield's raw batch, used immediately Sunday, never frozen
+    defrost.push({
+      dayNo: 3,
+      ingId: "beef_mince",
+      g: frozenRemainderG,
+      move: "freezer → fridge",
+      note: `Thursday dinner's smash burger (a-d4d, ${beefMinceThuNeed}g raw both covers) — the pack's other 165g goes straight into Sunday's prep-a session (Chipotle beef batch, for Tuesday's a-d2l) and is never frozen; only this ${frozenRemainderG}g remainder is bagged for the freezer, brought down Wednesday night.`,
+    });
+  }
+
+  // Fable review cycle 2 FIX-3(b): two early-week entries for the two
+  // "Freeze on arrival"-tagged lines that are actually needed almost
+  // immediately (day 0's prep-a session / day 1's fresh-cooked pizza) —
+  // both were previously handled by omission (no defrost entry at all,
+  // reasoned as "never actually frozen"), but that left the tester with no
+  // explicit guidance at the one moment it matters: unpacking the shop.
+  // Both entries are advisory/conditional rather than a flat freezer move,
+  // matching ingredients.json's own canonical notes for these two ids.
+  const chickenLine = findLine("chicken");
+  if (chickenLine) {
+    defrost.push({
+      dayNo: 0,
+      ingId: "chicken",
+      g: chickenLine.packG,
+      move: "arrival → fridge (conditional — do not freeze)",
+      note: "Feeds Sunday's own prep-a session (Roast chicken yield, for Mon a-d1l and Fri a-d5l) — don't freeze it if that session lands within ~24h of the shop; fridge it straight from the bag instead (matches ingredients.json's canonical chicken note: '2 days fresh', comfortably covering shop-day to session-day). Only freeze it if the session is genuinely more than a day out.",
+    });
+  }
+  const chickenMinceLine = findLine("chicken_mince");
+  if (chickenMinceLine) {
+    const chickenMinceNeed = (() => {
+      const m = findKeptMeal("a-d1d");
+      if (!m || m.covers.w.chicken_mince == null || m.covers.m.chicken_mince == null) {
+        va.push({ type: "defrost-chicken-mince-need-missing", detail: "a-d1d covers no longer contain chicken_mince for both covers — defrost figure needs re-deriving." });
+        return null;
+      }
+      return m.covers.w.chicken_mince + m.covers.m.chicken_mince;
+    })();
+    // No prep-a yield touches chicken_mince at all (verified against
+    // prep.json's 12 yield components — none of them is chicken mince;
+    // unlike beef_mince, there is no Sunday-immediate portion to split
+    // out), so the WHOLE 500g pack is for Monday's pizza (a-d1d) and
+    // nothing else — no split, unlike beef_mince's 165g/335g case.
+    defrost.push({
+      dayNo: 0,
+      ingId: "chicken_mince",
+      g: chickenMinceLine.packG,
+      move: "freezer → fridge (bring down Sunday night)",
+      note: `Monday dinner's chicken-crust pizza (a-d1d, ${chickenMinceNeed ?? "?"}g raw both covers, out of the ${chickenMinceLine.packG}g pack — no prep-a yield uses chicken_mince, so the whole pack is for this one meal). If it went in the freezer on arrival per the basket's tag, bring it down Sunday night for Monday's bake; otherwise treat it the same as the chicken above and just fridge it on arrival.`,
+    });
+  }
+
+  check(
+    "variant-morrisons-defrost-days-in-range",
+    defrost.every((d) => [0, 3, 4].includes(d.dayNo)),
+    "every defrost entry is day 0 (arrival advisory) or a Thursday/Friday bring-down"
+  );
+  check(
+    "variant-morrisons-defrost-count-5",
+    defrost.length === 5,
+    `${defrost.length} defrost entries (expect 5: chicken, chicken_mince, beef_steak, beef_mince, salmon)`
+  );
+
+  // --- 6. prep.keptOps: prep-a ops whose yield(s) feed >=1 kept meal.
+  //     Yield-kept status is computed generically from prep.json's own
+  //     consumers[] against `kept`. Op -> yield-component is a hand-verified
+  //     lookup (each op's own body text, quoted in-line) since prep.json's
+  //     ops carry free prose, not a structured ingredient/yield key — the
+  //     same kind of hand-extraction join.js already does elsewhere for
+  //     prep-op ingredients (see the OP_INGREDIENTS comment earlier in this
+  //     file). Ops with no single-component tie (oven-on setup, portion-
+  //     and-label close) are GENERAL and stay in as long as anything else
+  //     in the session is kept. ---
+  const prepA = prep.find((p) => p.week === "A" && /one session/i.test(p.sessionName));
+  if (!prepA) {
+    va.push({ type: "prep-a-not-found", detail: "Could not find prep.json's Week A session (sessionName matching /one session/i)." });
+  }
+  const yieldKept = {};
+  if (prepA) {
+    for (const y of prepA.yields) {
+      yieldKept[y.component] = (y.consumers ?? []).some((cid) => kept.includes(cid));
+    }
+  }
+  // Hand-verified against prep.json's ops[].body (quoted): op index -> the
+  // yield component(s) that op's body text is actually cooking/handling.
+  // "GENERAL" ops carry no single yield and are kept iff >=1 other op keeps.
+  const OP_COMPONENTS = [
+    /* 0  "Oven on, three trays out"                */ "GENERAL",
+    /* 1  "Trays in — chicken, chickpeas, peppers"  */ ["Roast chicken", "Jerk chickpeas"],
+    /* 2  "Pan 1 — the bolognese..."                */ ["Turkey bolognese"],
+    /* 3  "Pan 2 — chipotle beef"                   */ ["Chipotle beef"],
+    /* 4  "Pan 3 — efo riro base..."                */ ["Efo riro base"],
+    /* 5  "Eggs on"                                 */ ["Boiled eggs"],
+    /* 6  "Chicken and peppers out"                 */ ["Roast chicken", "Jerk chickpeas"],
+    /* 7  "Pan 2 free — plain rice on"              */ ["Plain brown rice"],
+    /* 8  "Chickpeas out — jar, lid OFF"            */ ["Jerk chickpeas"],
+    /* 9  "Pan 3 free — the jollof"                 */ ["Jollof"],
+    /* 10 "Rice the cauliflower — the big job"      */ ["Riced cauliflower"],
+    /* 11 "Shred for two slaws..."                  */ ["Slaw shred"],
+    /* 12 "The two jars" (white sauce + suya)       */ ["White sauce", "Suya spice"],
+    /* 13 "Bolognese and rice off — cool them FAST" */ ["Turkey bolognese", "Plain brown rice"],
+    /* 14 "Portion and label"                       */ "GENERAL",
+  ];
+  // Fable review cycle 2 FIX-1: op-subset coherence. Rule (a) is unchanged
+  // and literal — "an op is kept iff >=1 of its components feeds a kept
+  // meal" — but applying it strictly to op6 ("Chicken and peppers out": its
+  // "Roast chicken" component IS kept, feeding a-d1l/a-d5l) and op12 ("The
+  // two jars": its "White sauce" component IS kept, feeding a-d1l) means
+  // BOTH stay kept under rule (a) itself — dropping either would strand a
+  // kept meal's own prep (a-d1l needs both continued roast chicken AND
+  // white sauce), which is exactly the class of bug this fix exists to
+  // remove, not reintroduce. What DOES need fixing is the orphaned
+  // sub-thread inside these mixed ops: op1's TRAY B roasts 250g of the
+  // tester's single 240g chickpea tin into "Jerk chickpeas" — a component
+  // whose ONLY consumer (a-d3s) is cut — which would leave nothing in that
+  // tin for Monday's a-d1l lunch (also a chickpea consumer, straight from
+  // the tin, never through this batch). op6's "Chickpeas stay in until
+  // 0:45" and op0's "Drain and dry the chickpeas" are the same thread's
+  // setup/continuation. op12's suya half (a-d2s, cut) and op13's title
+  // ("Bolognese and rice off") are the same class of issue at smaller
+  // scale. Fix: every kept op that ALSO carries a dropped-component mention
+  // gets an explicit `testerNote` telling the user to skip that specific
+  // sub-part — never a silent drop of the whole op, never a silent
+  // orphaned instruction either.
+  //
+  // OP_DROPPED_MENTIONS is hand-verified against each op's own body/title
+  // text (quoted below) — component names dropped-but-still-mentioned
+  // inside an otherwise-kept op. Separate from OP_COMPONENTS (which drives
+  // keep/drop) so a note-worthiness judgment call can never silently change
+  // which ops survive.
+  const OP_DROPPED_MENTIONS = {
+    0: ["Jerk chickpeas"], // "Drain and dry the chickpeas on a tea towel now" — Tray B prep, op1
+    1: ["Jerk chickpeas"], // "TRAY B: 250 g drained chickpeas ... 2 tsp jerk seasoning"
+    6: ["Jerk chickpeas"], // "Chickpeas stay in until 0:45"
+    12: ["Suya spice"], // "SUYA: mix your own — 3 parts ground roasted peanut..."
+    13: ["Turkey bolognese"], // title: "Bolognese and rice off — cool them FAST"
+  };
+  const TESTER_NOTES = {
+    0: "No need to dry the chickpeas for Tray B — that tray's skipped in the starter (see op 1's note). The oven/trays are still needed for the chicken.",
+    1: "Skip Tray B — jerk chickpeas aren't in the starter; leave the 240 g tin for Monday's lunch instead.",
+    6: "Skip the chickpea tray here too (see op 1) — the tin stays whole for Monday's lunch.",
+    12: "Skip the suya half — nothing in the starter needs it. Just make the white sauce.",
+    13: "Ignore the bolognese mention — it's cut from the starter. Only the rice needs the fast cool here.",
+  };
+
+  let keptOps = [];
+  if (prepA) {
+    if (OP_COMPONENTS.length !== prepA.ops.length) {
+      va.push({ type: "op-components-length-mismatch", detail: `OP_COMPONENTS has ${OP_COMPONENTS.length} entries, prep-a has ${prepA.ops.length} ops — re-verify the hand table against prep.json.` });
+    }
+    const specificKept = prepA.ops.map((op, i) => {
+      const comps = OP_COMPONENTS[i];
+      if (comps === "GENERAL") return null; // resolved in the second pass below
+      return comps.some((c) => yieldKept[c]);
+    });
+    const anySpecificKept = specificKept.some((v) => v === true);
+    keptOps = prepA.ops
+      .map((op, i) => ({ i, clock: op.clock, title: op.title, kept: specificKept[i] === null ? anySpecificKept : specificKept[i] }))
+      .filter((o) => o.kept)
+      .map((o) => ({
+        opIndex: o.i,
+        clock: o.clock,
+        title: o.title,
+        ...(TESTER_NOTES[o.i] ? { testerNote: TESTER_NOTES[o.i] } : {}),
+      }));
+
+    // Coherence check 1: every KEPT op with a hand-verified dropped-component
+    // mention carries a testerNote (no silently-orphaned sub-instruction).
+    const keptIndices = new Set(keptOps.map((o) => o.opIndex));
+    const missingNotes = Object.keys(OP_DROPPED_MENTIONS)
+      .map(Number)
+      .filter((i) => keptIndices.has(i) && !keptOps.find((o) => o.opIndex === i)?.testerNote);
+    check(
+      "variant-morrisons-keptops-no-orphaned-mention-without-testernote",
+      missingNotes.length === 0,
+      `kept ops with a dropped-component mention but no testerNote: ${JSON.stringify(missingNotes)}`
+    );
+
+    // Coherence check 2: no DROPPED op is the sole source of a component a
+    // KEPT op (or the coverage audit) still needs — i.e. every kept yield
+    // component is produced by at least one op that actually stayed kept.
+    const keptYieldComponents = Object.entries(yieldKept)
+      .filter(([, v]) => v)
+      .map(([c]) => c);
+    const strandedComponents = keptYieldComponents.filter(
+      (c) => !prepA.ops.some((op, i) => keptIndices.has(i) && Array.isArray(OP_COMPONENTS[i]) && OP_COMPONENTS[i].includes(c))
+    );
+    check(
+      "variant-morrisons-keptops-no-dropped-op-dependency",
+      strandedComponents.length === 0,
+      `kept yield components with no kept op producing them: ${JSON.stringify(strandedComponents)}`
+    );
+
+    // Coherence check 3: the chickpea-tin contention itself — every op that
+    // touches the tester's single chickpea tin for the (dropped) jerk-
+    // chickpea batch is either fully dropped or, if kept for an unrelated
+    // reason, carries a testerNote telling the user to skip that part.
+    const chickpeaOpIndices = [0, 1, 6, 8];
+    const chickpeaOk = chickpeaOpIndices.every((i) => !keptIndices.has(i) || Boolean(keptOps.find((o) => o.opIndex === i)?.testerNote));
+    check(
+      "variant-morrisons-chickpea-tin-not-contended",
+      chickpeaOk,
+      "every kept op touching the jerk-chickpea tray either carries a testerNote or was dropped — Monday's a-d1l chickpea need is never put at risk by the Sunday session"
+    );
+  }
+  check("variant-morrisons-keptops-nonempty", keptOps.length > 0 && keptOps.length < (prepA?.ops.length ?? 1), `${keptOps.length} of ${prepA?.ops.length ?? 0} prep-a ops kept`);
+
+  const prepOut = {
+    sessionBase: "prep-a",
+    keptOps,
+    note: "Ops whose yield(s) feed no kept meal are dropped (Turkey bolognese/Efo riro base/Jerk chickpeas/Boiled eggs/Jollof — all Wednesday or the Tue/Wed snacks, none of which survive the tester); grams stay as authored. Kept ops that still touch a dropped component (op0/op1/op6's jerk-chickpea thread, op12's suya, op13's bolognese mention) carry their own testerNote rather than being dropped outright — dropping op6 or op12 would strand a-d1l's own roast-chicken/white-sauce prep, and op1's Tray B specifically would otherwise consume the tester's single 240g chickpea tin that Monday's a-d1l lunch also needs straight from the tin. Anomaly: prep-a's op1 body reads '600 g chicken breast' but the Morrisons basket buys a 630 g pack (the smallest pack that clears the 575 g whole-Week-A need at a lower total cost than the 1 kg pack) — the op text was never re-derived from the pack size, it states the batch's own working figure.",
+  };
+
+  // --- 7. Economics (verbatim from the source's own LCD header, cross-
+  //     checked against the computed basket total). ---
+  check("variant-morrisons-economics-total-matches-basket", totalP === 6983, `basket totalP=${totalP}, header claims £69.83`);
+  const economics = { total: "£69.83", meals: 10, perMeal: "£6.98 (both covers)" };
+
+  // --- 8. Anomalies: parser-level anomalies (should be none — see
+  //     morrisons.js's own summary), this section's own `va` findings, plus
+  //     the two provenance notes docs/VARIANT-SPEC.md explicitly calls for
+  //     (menu prose is a summary of the OLD tool's methods and must not be
+  //     imported; menu kcal figures are pre-seasoning legacy numbers). ---
+  const legacyKcalDrift = (() => {
+    let count = 0;
+    for (const day of morrisons.menu.days) {
+      for (const menuMeal of day.meals) {
+        const m = meals.find((x) => x.week === "A" && x.day === DAY_CODE_TO_NUM[day.code] && x.slot === menuMeal.slot);
+        if (!m) continue;
+        if (m.macros.w.kcal !== menuMeal.macros.w?.kcal || m.macros.m.kcal !== menuMeal.macros.m?.kcal) count++;
+      }
+    }
+    return count;
+  })();
+
+  const anomalies = [
+    ...morrisons.anomalies,
+    ...va,
+    {
+      type: "menu-prose-provenance-whey",
+      detail:
+        "FD5-Menu-Morrisons.html's protein-pancakes method prose (Tuesday breakfast, a-d2b) still reads 'Oats blitzed to flour with the whey, egg and half the skyr...' — a leftover mention from the old tool. The app's approved rev-B covers for a-d2b (oats, egg, blueberries, raspberries, peanut_butter, rapeseed_oil, skyr) carry NO whey ingredient at all, and no 'whey' id exists anywhere in ingredients.json. Per docs/VARIANT-SPEC.md, the rev-B covers are the truth; this menu-prose mention is recorded here as provenance, not imported or treated as a missing ingredient.",
+    },
+    {
+      type: "menu-prose-provenance-legacy-kcal",
+      detail: `FD5-Menu-Morrisons.html's per-meal kcal figures are the OLD tool's pre-seasoning numbers, not the app's rev-B recompute. ${legacyKcalDrift} of the 10 kept meals now differ from the menu's published kcal (a-d1l, a-d2l, a-d2d, a-d5l, a-d5d all run slightly higher post-seasoning; the LCD header's own "4,753/6,141 kcal total" sums the menu's legacy per-meal figures exactly, not the rev-B totals used to compute this variant's own targets band). The app's recomputed macros win, per spec.`,
+    },
+  ];
+
+  return {
+    id: "morrisons-tester",
+    label: "morrisons starter · 10 meals",
+    week: "A",
+    slots,
+    targets,
+    basket,
+    coverage,
+    defrost,
+    prep: prepOut,
+    economics,
+    anomalies,
+    _decisionIds: { coverageDecision: coverageDecision.id },
+  };
+})();
+
+check(
+  "variant-morrisons-shape-ok",
+  Array.isArray(variantMorrisons.slots.kept) &&
+    variantMorrisons.slots.kept.length === 10 &&
+    variantMorrisons.slots.cut.length === 10 &&
+    variantMorrisons.basket.lines.length === 39 &&
+    variantMorrisons.basket.totalP === 6983,
+  "variant-morrisons.json top-level shape sanity"
+);
+
 fs.mkdirSync(OUT, { recursive: true });
 function write(name, data) {
   fs.writeFileSync(path.join(OUT, name), JSON.stringify(data, null, 2) + "\n");
@@ -1982,6 +2742,7 @@ write("calendar.json", calendar);
 write("plan.json", plan);
 write("decisions-queue.json", decisions);
 write("validation.json", validation);
+write("variant-morrisons.json", variantMorrisons);
 
 const anyFail = validation.some((v) => !v.pass);
 console.log(`\n${validation.length} checksums run, ${validation.filter((v) => v.pass).length} passed, ${validation.filter((v) => !v.pass).length} failed.`);

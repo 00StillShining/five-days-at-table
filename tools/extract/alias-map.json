@@ -1,5 +1,6 @@
 {
-  "_comment": "HAND-AUTHORED. Maps each of the 55 FD5-Shopping-List.html short row names (data/raw/shoppinglist.json rows[].name, domIndex 0-54) to the ingredient id(s) it buys. Values are always arrays: length 1 for a normal row, length 2 for the two verified shared-SKU rows (one shopping line, two logical ingredients: Greek yoghurt+skyr, and the discovered raspberries+blueberries case - both confirmed by the row's own note text). Three rows (Sweetheart cabbage, Frozen sliced peppers, Rapeseed oil) map to ids that do not exist in fd5.json and are created fresh in join.js (addedInExtraction: true) because PLAN.md/task brief confirms 'no ingredient anywhere' for these three. Every mapping below was hand-verified against data/raw/fd5.json spec[id][0] display names, data/raw/shoppinglist.json productString/note text, and (for the two known traps) the task brief's explicit trap list. ZERO fuzzy matches.",
+  "_comment": "HAND-AUTHORED. Maps each of the 49 FD5-Shopping-List.html short row names (data/raw/shoppinglist.json rows[].name, current 49-row revision) to the ingredient id(s) it buys. Values are always arrays: length 1 for a normal row, length 2 for the two verified shared-SKU rows (one shopping line, two logical ingredients: Greek yoghurt+skyr, and the discovered raspberries+blueberries case - both confirmed by the row's own note text). Three rows (Sweetheart cabbage, Frozen sliced peppers, Rapeseed oil) map to ids that do not exist in fd5.json and are created fresh in join.js (addedInExtraction: true) because PLAN.md/task brief confirms 'no ingredient anywhere' for these three. Every mapping below was hand-verified against data/raw/fd5.json spec[id][0] display names, data/raw/shoppinglist.json productString/note text, and (for the two known traps) the task brief's explicit trap list. ZERO fuzzy matches.",
+  "_comment_2026_08_11_revision": "Owner-ruled canonical revision (2026-08-11): the basket dropped from 55 to 49 rows (6 lines removed: Cottage cheese, Apples, Bananas, Chia seeds, Pumpkin seeds, Desiccated coconut) and 22 remaining lines were re-verified with updated prices. The 6 removed rows' keys were deleted from this map (not left dangling) so 'alias-map-covers-49-short-names' stays a live, checkable invariant against the CURRENT shoppinglist.json rather than a stale historical one; their ingredient ids (cottage, apple, banana, chia, pumpkin_seeds, coconut_des) still exist in ingredients.json, now flagged pantryOptional:true with sku:null (join.js's existing shortName->shopRow->sku chain already yields null automatically once a row's alias-map entry is gone — no separate code path needed). See data/decisions-queue.json for the full old/new numbers and the 22 re-verified SKUs.",
   "Chicken breast": ["chicken"],
   "Eggs": ["egg"],
   "Beef mince, 5%": ["beef_mince"],
@@ -17,7 +18,6 @@
   "Panko breadcrumbs": ["panko"],
   "Salmon fillets": ["salmon"],
   "Fat-free Greek yoghurt": ["greek_yog", "skyr"],
-  "Cottage cheese": ["cottage"],
   "Red peppers": ["peppers"],
   "Avocados": ["avocado"],
   "Salad tomatoes": ["tomato"],
@@ -26,8 +26,6 @@
   "Red onions": ["red_onion"],
   "Carrots": ["carrot"],
   "Courgettes": ["courgette"],
-  "Apples": ["apple"],
-  "Bananas": ["banana"],
   "Chestnut mushrooms": ["mushrooms"],
   "Red cabbage": ["red_cabbage"],
   "Cucumber": ["cucumber"],
@@ -50,9 +48,6 @@
   "Tomato salsa": ["salsa"],
   "Extra virgin olive oil": ["olive_oil"],
   "Rapeseed oil": ["rapeseed_oil"],
-  "Chia seeds": ["chia"],
-  "Pumpkin seeds": ["pumpkin_seeds"],
-  "Desiccated coconut": ["coconut_des"],
   "Plantain": ["plantain"],
   "Egusi": ["egusi"]
 }

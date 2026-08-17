@@ -13,7 +13,7 @@
 import type { CSSProperties } from "react";
 import type { Band, Cover, Week } from "../../data/types";
 import type { Swaps } from "../../state/types";
-import { MACRO_GROUPS, MACRO_LABEL, MACRO_UNIT, describeArc, fmtMacro, gaugeAngle, gaugeDisplayRange, polarToCartesian, weekBand, weekTotals, type MacroGroup } from "./helpers";
+import { FULL_VARIANT, MACRO_GROUPS, MACRO_LABEL, MACRO_UNIT, describeArc, fmtMacro, gaugeAngle, gaugeDisplayRange, polarToCartesian, weekBand, weekTotals, type ActiveVariant, type MacroGroup } from "./helpers";
 
 const DAYS_PER_WEEK = 5; // Mon-Fri plated days (PLAN §1) — weekends carry duties, not banded plates.
 
@@ -28,6 +28,7 @@ export interface AdherenceGaugeProps {
   week: Week;
   cover: Cover;
   swaps: Swaps;
+  variant?: ActiveVariant;
 }
 
 interface DialProps {
@@ -115,9 +116,9 @@ function Dial({ group, value, band }: DialProps) {
   );
 }
 
-export function AdherenceGauge({ week, cover, swaps }: AdherenceGaugeProps) {
-  const totals = weekTotals(week, cover, swaps, DAYS_PER_WEEK);
-  const weekBands = weekBand(week, cover, DAYS_PER_WEEK);
+export function AdherenceGauge({ week, cover, swaps, variant = FULL_VARIANT }: AdherenceGaugeProps) {
+  const totals = weekTotals(week, cover, swaps, DAYS_PER_WEEK, variant);
+  const weekBands = weekBand(week, cover, DAYS_PER_WEEK, variant);
 
   return (
     <section className="scr-plan-hero" aria-label={`week ${week} adherence`}>

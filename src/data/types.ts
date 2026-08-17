@@ -75,8 +75,24 @@ export interface Ingredient {
   addedInExtraction?: boolean;
   storage: IngredientStorage;
   /** null for a handful of freebie seasonings never separately purchased (soy sauce,
-   * mirin, honey, sugar, suya spice) or made at home (vinegar). */
+   * mirin, honey, sugar, suya spice) or made at home (vinegar) — AND for
+   * `pantryOptional` ingredients (D0-035, below): both classes are legitimately
+   * unpriced, so every `sku`-dependent code path must already tolerate null
+   * regardless of which reason applies. */
   sku: IngredientSku | null;
+  /** D0-035 (owner ruling): true for a small set of ingredients (cottage
+   * cheese, apple, banana, chia, pumpkin seeds, desiccated coconut) assumed
+   * to already be on hand rather than bought in the canonical basket —
+   * distinct from `freebie` (spice-shelf staples, never separately costed at
+   * all): a pantryOptional ingredient still has real per100g macros and a
+   * household-unit hint, it simply carries no `sku` (no shopping-list line,
+   * no purchase price) because the owner doesn't buy it as part of the
+   * weekly shop. `tripBuild` (state/selectors.ts) already excludes every
+   * `sku: null` ingredient from trip lines via its existing `!ing.sku`
+   * guard — this flag exists for callers that want to distinguish "why" (a
+   * genuine freebie vs. a pantry staple) rather than to gate new logic.
+   * Optional or absent on ingredients from before this field existed. */
+  pantryOptional?: boolean;
 }
 
 // ---- meals.json ------------------------------------------------------------

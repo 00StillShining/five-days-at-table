@@ -256,6 +256,30 @@
 }
 
 /* ---------------------------------------------------------------------- */
+/* Off-state (docs/VARIANT-SPEC.md: a fully-cut tester day, e.g. Wednesday) */
+/* Flat-functional per the VARIANT RUNTIME style law — no new hero, matches */
+/* the onboarding card's own plain border+panel treatment above.           */
+/* ---------------------------------------------------------------------- */
+
+.scr-today-offstate {
+  border: 1px dashed var(--sol-border);
+  background: var(--sol-panel);
+  padding: 0.75rem 1rem;
+}
+
+.scr-today-offstate-title {
+  margin: 0 0 0.25rem;
+  font-weight: 700;
+  text-transform: lowercase;
+}
+
+.scr-today-offstate-body {
+  margin: 0;
+  color: var(--sol-text-muted);
+  font-size: var(--sol-text-label);
+}
+
+/* ---------------------------------------------------------------------- */
 /* Ticks row                                                              */
 /* ---------------------------------------------------------------------- */
 
@@ -298,6 +322,21 @@
 
 .scr-today-tick-label {
   font-size: var(--sol-text-label);
+}
+
+/* Cut cell (docs/VARIANT-SPEC.md PLAN/TODAY: "quiet 'cut · reason' cell,
+   non-color second cue") — dashed border + text label are the second cue
+   (not just a muted color), so it reads correctly under forced-colors too. */
+.scr-today-tick--cut {
+  border: 1px dashed var(--sol-border);
+  color: var(--sol-text-muted);
+  cursor: default;
+}
+
+.scr-today-tick-cut-reason {
+  font-size: 0.6875rem;
+  line-height: 1.2;
+  text-align: center;
 }
 
 /* ---------------------------------------------------------------------- */

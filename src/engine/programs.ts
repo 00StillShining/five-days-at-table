@@ -21,6 +21,7 @@
 import type { Meal, MethodStep, PrepOp, PrepSession } from "../data/types";
 import { getMeal } from "../data/meals";
 import { prepSessionById, prepSessionId, parseClock } from "../data/prep";
+import type { ActiveVariant } from "../data/variant";
 
 export interface ProgramStep {
   n: number;
@@ -31,6 +32,14 @@ export interface ProgramStep {
   station: string | null;
   clockStart: number | null;
   untimed: boolean;
+  /** Fable review FIX round: only ever set by `compilePrepProgramFiltered`
+   * (the tester's reduced Sunday session) — full-mode compiles
+   * (`compileMealProgram`/`compilePrepProgram`) never touch this field, so
+   * it stays `undefined` there, identical to before this field existed. A
+   * short, human, op-specific note ("skip tray B — jerk chickpeas aren't in
+   * the starter; the tin is Monday's lunch") COOK renders quietly next to
+   * this step, sourced from docs/VARIANT-SPEC.md's per-op `testerNote`. */
+  testerNote?: string;
 }
 
 export interface ProgramTrack {
@@ -136,4 +145,58 @@ export function getProgram(id: string): Program | null {
   const meal = getMeal(id);
   if (meal) return compileMealProgram(meal);
   return null;
+}
+
+/** Suffix appended to a base prep session id ("prep-a") to make the tester's
+ * reduced program id ("prep-a-tester") — used both by
+ * `compilePrepProgramFiltered` (below) and COOK's picker (which offers this
+ * id instead of the full session's when the tester variant is active). */
+export const TESTER_PROGRAM_SUFFIX = "-tester";
+
+/**
+ * docs/VARIANT-SPEC.md's `prep.keptOps`: compiles a Sunday session down to
+ * only the ops that feed a kept meal — "the reduced 'starter Sunday
+ * session'" COOK shows in tester mode, reusing the exact same program
+ * compiler (`compilePrepOp`/`buildTracks`/`criticalPathMinutes`) so its
+ * timing math can't drift from the full session's. Steps are renumbered
+ * 1..N in filtered order (not the original ops' indices) — `n` only needs to
+ * be a stable, sequential identity for THIS compiled program's own
+ * doneSteps bookkeeping (engine/timers.ts), not a pointer back into the
+ * original session.
+ */
+export function compilePrepProgramFiltered(
+  session: PrepSession,
+  keptOps: readonly { opIndex: number; testerNote?: string }[]
+): Program {
+  const noteByOpIndex = new Map(keptOps.map((k) => [k.opIndex, k.testerNote]));
+  const keptIndices = new Set(keptOps.map((k) => k.opIndex));
+  const filtered = session.ops.map((op, i) => ({ op, i })).filter(({ i }) => keptIndices.has(i));
+  const steps = filtered.map(({ op, i }, n) => {
+    const step = compilePrepOp(op, n + 1);
+    const testerNote = noteByOpIndex.get(i);
+    return testerNote ? { ...step, testerNote } : step;
+  });
+  return {
+    id: `${prepSessionId(session)}${TESTER_PROGRAM_SUFFIX}`,
+    kind: "prep",
+    title: `${session.sessionName} — starter`,
+    totalMinutes: criticalPathMinutes(steps),
+    steps,
+    tracks: buildTracks(steps),
+  };
+}
+
+/**
+ * Variant-aware program resolver: COOK's `useProgram()` (engine/timers.ts)
+ * calls this instead of `getProgram` directly, so a tester-mode-only id
+ * (`"prep-a-tester"`) resolves to the filtered program while every other id
+ * — including in full mode, where this branch never taps — falls straight
+ * through to `getProgram`, byte-identical to before this function existed.
+ */
+export function getVariantProgram(id: string, variant: ActiveVariant): Program | null {
+  if (variant.isTester && variant.prep && id === `${variant.prep.sessionBase}${TESTER_PROGRAM_SUFFIX}`) {
+    const session = prepSessionById(variant.prep.sessionBase);
+    if (session) return compilePrepProgramFiltered(session, variant.prep.keptOps);
+  }
+  return getProgram(id);
 }
