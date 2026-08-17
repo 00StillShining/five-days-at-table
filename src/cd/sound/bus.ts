@@ -40,10 +40,29 @@ function audioCtor(): WebAudioCtor | null {
   return w.AudioContext ?? w.webkitAudioContext ?? null;
 }
 
+/**
+ * OWNER RULING, 2026-08-17: the dev server is silent by default.
+ *
+ * With HMR running and builders driving live timers, the warning cue fires on
+ * every reload of a screen that has a running program — so the owner's own
+ * machine was making noise continuously while agents worked. In DEV the bus
+ * therefore starts MUTED unless the key is explicitly set to "0".
+ *
+ * Production behaviour is UNCHANGED: absent key means audible, exactly as
+ * II.5 specifies. This is a development-environment courtesy, not a change to
+ * the product's sound doctrine — and muting is already doctrinally free:
+ * "A muted instrument is a complete instrument. Every motion and every warning
+ * LAMP proceeds identically with the gain at zero."
+ *
+ * To hear cues while building or running a sound audit:
+ *     localStorage.setItem("fd5.v1.cdMuted", "0")
+ */
 function readMute(): boolean {
   if (typeof localStorage === "undefined") return false;
   try {
-    return localStorage.getItem(MUTE_STORAGE_KEY) === "1";
+    const raw = localStorage.getItem(MUTE_STORAGE_KEY);
+    if (raw === null) return import.meta.env.DEV; // dev: silent until asked
+    return raw === "1";
   } catch {
     return false; // private mode / storage disabled — audio simply stays available
   }
