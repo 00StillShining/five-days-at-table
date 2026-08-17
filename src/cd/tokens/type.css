@@ -1,0 +1,242 @@
+/*
+  src/cd/tokens/type.css — hardware type.
+
+  CORRECTIONARY 5.8: "Typography behaves like hardware type. Engraved,
+  silkscreened, printed, backlit, or segment-formed — belonging to a surface,
+  with tabular figures wherever digits change. Never floating UI text that
+  belongs to no material."
+
+  Three registers, from II.6.7 / II.6.8 / II.6.9:
+    engraved   — permanent text: glyph DARKER than its plate, plus the dual
+                 shadow the one light casts. Tick labels, escutcheons, plates.
+    silkscreen — flat paint coat. No shadow, no gradient. Tracking widens as
+                 size falls. Anything that instructs rather than reports.
+    printed    — the finish of the live layer: values, timestamps, state tokens.
+                 Flat ink, no shadow, because ink is not light.
+
+  The scale is CLOSED at seven steps (II.6.19). A size not on this ladder does
+  not exist in this product.
+
+  Two voices only (II.6.2), both already in the bundle — no new dependency:
+    Space Grotesk  the UI grotesk, for words
+    JetBrains Mono the data voice, for anything that changes
+*/
+
+@layer cd.type {
+  html {
+    /* ===== the two voices (II.6.2, hired by classification per II.6.3) === */
+    --cd-font-ui: "Space Grotesk", system-ui, sans-serif;
+    --cd-font-data: "JetBrains Mono", ui-monospace, monospace;
+
+    /* ===== the closed 7-step scale (II.6.19) ============================= */
+    --cd-size-1: 0.8125rem; /* 13px — label floor (II.6.10) */
+    --cd-size-2: 0.875rem; /* 14px — the floor for ANY numeral a task reads */
+    --cd-size-3: 1rem; /* 16px — prose */
+    --cd-size-4: 1.25rem; /* 20px — panel readout floor */
+    --cd-size-5: 1.75rem; /* 28px */
+    --cd-size-6: 2.75rem; /* 44px — the data-card hero value (II.3.32) */
+    --cd-size-7: 4.25rem; /* 68px — RESERVED: one numeral per screen (II.6.20) */
+
+    /* II.6.11 — below 0.6875rem type is texture, never information */
+    --cd-micro-ceiling: 0.6875rem;
+    --cd-micro-alpha: 0.4;
+
+    /* ===== unit grammar (II.6.6) ========================================= */
+    --cd-unit-scale: 0.4; /* unit trails the value at 40% of its size */
+
+    /* ===== tracking — widens as size falls (II.6.8) ====================== */
+    --cd-track-micro: 0.14em;
+    --cd-track-label: 0.12em;
+    --cd-track-body: 0.02em;
+    --cd-track-hero: 0em;
+
+    /* ===== line heights ================================================== */
+    --cd-leading-tight: 1; /* readouts and single-line labels */
+    --cd-leading-prose: 1.5;
+    --cd-prose-measure: 60ch; /* II.6.23 — prose wraps here, labels never wrap */
+
+    /* ===== density bands (II.6.13) — a list keeps ONE ==================== */
+    --cd-row-dense: 2rem;
+    --cd-row-standard: 2.75rem; /* also the Floor's 44px target */
+    --cd-row-comfortable: 3.5rem;
+
+    /* ===== print-and-cool (II.6.1, II.3.32) ============================== */
+    --cd-print-cool: 600ms; /* a fresh value prints hot, cools over this, linear */
+  }
+
+  /*
+    II.6.4 — Tabular lining, always. Every numeral that can change is tabular,
+    lining, slashed-zero. This is the one rule with no exception anywhere in the
+    product, so it is set on the data voice itself rather than per component.
+  */
+  .cd-data,
+  .cd-value,
+  .cd-readout {
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-feature-settings:
+      "tnum" 1,
+      "lnum" 1,
+      "zero" 1;
+    line-height: var(--cd-leading-tight);
+  }
+
+  /*
+    II.6.5 — Reserve the width. A value box is sized for its maximum legal
+    rendering and right-aligned, so an arriving digit never resizes its
+    neighbours. Set --cd-value-ch to the widest legal character count.
+  */
+  .cd-value {
+    display: inline-block;
+    min-inline-size: calc(var(--cd-value-ch, 4) * 1ch);
+    text-align: right;
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+  }
+
+  /* II.6.6 — the unit follows the value on the baseline, dim ink, 40% */
+  .cd-unit {
+    font-family: var(--cd-font-data);
+    font-size: calc(1em * var(--cd-unit-scale));
+    color: var(--cd-muted-ink);
+    margin-inline-start: 0.25em;
+  }
+
+  /*
+    II.6.7 — ENGRAVED. The glyph is cut into its plate: darker than the plate,
+    with the dual shadow of the one light — a dark shoulder where the cut turns
+    away and a lit shoulder where it catches. Permanent text only.
+  */
+  .cd-engraved {
+    font-family: var(--cd-font-ui);
+    font-weight: 600;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    color: var(--cd-ink);
+    text-shadow:
+      0 -1px 0 #00000059, /* the cut's shadowed shoulder — light comes from above */
+      0 1px 0 #ffffff26; /* the thrown edge below it, catching the same sun */
+  }
+
+  /*
+    II.6.8 — SILKSCREEN. Flat paint on the surface. No shadow, no gradient.
+    Tracking widens as size falls, which is why the token, not a literal, is used.
+  */
+  .cd-silkscreen {
+    font-family: var(--cd-font-ui);
+    font-weight: 500;
+    letter-spacing: var(--cd-track-label);
+    color: var(--cd-muted-ink);
+    text-shadow: none;
+  }
+
+  .cd-silkscreen[data-cd-size="micro"] {
+    font-size: var(--cd-micro-ceiling);
+    letter-spacing: var(--cd-track-micro);
+    opacity: var(--cd-micro-alpha);
+  }
+
+  /*
+    II.6.9 — PRINTED. The finish of the live layer: values, timestamps, state
+    tokens. Flat ink, no shadow, because this layer only exists while it is true.
+  */
+  .cd-printed {
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-weight: 400;
+    letter-spacing: var(--cd-track-body);
+    color: var(--cd-ink);
+    text-shadow: none;
+  }
+
+  /*
+    II.6.1 — a fresh value prints hot and cools. The temperature may trail the
+    commit; the CONTENT never does. 600ms linear, per II.3.32.
+  */
+  .cd-printed[data-cd-fresh="true"] {
+    animation: cd-print-cool var(--cd-print-cool) linear both;
+  }
+
+  @keyframes cd-print-cool {
+    from {
+      color: var(--cd-print-flash, #f2f1ed);
+    }
+    to {
+      color: var(--cd-ink);
+    }
+  }
+
+  /*
+    II.6.20 — the top step is reserved to ONE numeral per screen.
+    Note on CORRECTIONARY 3.1: that clause revokes stripping elements down to
+    plain competence, and this product carries four to six hero-grade
+    instruments per screen as its normal condition. It does not ask for six
+    numerals at the same size — the heroes differ by INSTRUMENT FORM (needle,
+    drum, reel, LED bar, odometer), each at full material treatment, and exactly
+    one of them prints its figure at the top step. All eight language chapters
+    state this rule independently; it survives.
+  */
+  .cd-hero-value {
+    font-family: var(--cd-font-data);
+    font-size: var(--cd-size-7);
+    line-height: var(--cd-leading-tight);
+    letter-spacing: var(--cd-track-hero);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+  }
+
+  /*
+    II.6.24 — confess the overflow. Every clip states its remainder as a number.
+    No fade curtains. CD-BRIEF R7 leans on this for the grouped accordion: the
+    hidden remainder of a 65-row register prints as a figure.
+  */
+  .cd-overflow-count {
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+  }
+
+  /* II.6.23 — labels never wrap; prose wraps at the measure; data never wraps */
+  .cd-label {
+    white-space: nowrap;
+  }
+
+  .cd-prose {
+    font-family: var(--cd-font-ui);
+    font-size: var(--cd-size-3);
+    line-height: var(--cd-leading-prose);
+    max-inline-size: var(--cd-prose-measure);
+  }
+
+  .cd-data,
+  .cd-value,
+  .cd-readout {
+    white-space: nowrap;
+  }
+
+  /*
+    CD-BRIEF ruling 5 — THE INK-PLATE LAW. Text never renders raw over carbon
+    weave or brushed grain; it sits on a cream face, an anthracite panel, or an
+    engraved billet plate. Text-on-carbon is a hard fail by rule, not by
+    measured ratio. This is the plate that law requires, so no screen has to
+    build one.
+  */
+  .cd-plate {
+    /*
+      --cd-plate is declared by EVERY language scope in world.css, so this
+      resolves on all eight worlds. The literal is a last-resort backstop for an
+      element that has escaped its language fence: a plate that resolves to
+      nothing is a transparent plate, and a transparent plate is text-on-carbon
+      wearing a plate's class name — the exact hard fail ruling 5 names.
+    */
+    background: var(--cd-plate, #1b1d21);
+    color: var(--cd-plate-ink, var(--cd-ink, #d6d4ce));
+    border-radius: calc(var(--cd-module) / 2);
+    padding: calc(var(--cd-module) / 2) var(--cd-module);
+    box-shadow: var(--cd-shadow-well);
+  }
+
+  .cd-plate[data-cd-surface="data"] {
+    /* the reading eye gets bare field — II.2.21's surviving half */
+    background-image: none;
+  }
+}

@@ -1,0 +1,105 @@
+/*
+  src/cd/freshness/stale.css — the honesty row's own geometry.
+
+  Joins the cd.type layer (declared in ../tokens/index.css), because everything
+  here is ink discipline: what prints, at what weight, in which reserved slot.
+
+  The one structural rule: EVERY SLOT IS RESERVED. The state word and the
+  recovery action occupy their columns whether or not the reading is currently
+  stale, so a value crossing its threshold never reflows the row under a hand
+  already reaching for the control.
+*/
+
+@layer cd.type {
+  .cd-stale {
+    display: inline-grid;
+    grid-template-columns: auto auto auto auto;
+    align-items: baseline;
+    column-gap: var(--cd-module);
+  }
+
+  /* The reading itself. Held, at full size and full position, always. */
+  .cd-stale-value {
+    transition: opacity var(--cd-reduced-fade) linear;
+  }
+
+  /* The age. Printed at the label step, and deliberately NOT dimmed: when a
+     reading is stale its age is the most load-bearing thing on the row. */
+  .cd-stale-age {
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+  }
+
+  /* The state word. Reserved to its own column so the row keeps its width. */
+  .cd-stale-word {
+    font-size: var(--cd-size-1);
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    min-inline-size: 9ch; /* the longest declared word, UNCOUNTED */
+    color: var(--cd-role-warning-ink-dark);
+  }
+
+  /* On a light face the warning ink flips to its cream-face value: #8D5E1E
+     measures 4.50:1 on cream, where #DAA254 measures 1.68:1. */
+  [data-cd-language="exposed-works"] .cd-plate .cd-stale-word,
+  [data-cd-language="restomod"] .cd-stale-word,
+  [data-cd-language="clear-lid"] .cd-stale-word {
+    color: var(--cd-role-warning-ink-light);
+  }
+
+  /* IRREDUCIBLE spends no hue on warning at all — its own section 2 law. The
+     word carries in weight against the field, at 6.70:1. */
+  [data-cd-language="irreducible"] .cd-stale-word {
+    color: var(--cd-alert-ink);
+    font-weight: 700;
+  }
+
+  /* The recovery action, at a FIXED position. The slot exists either way. */
+  .cd-stale-action {
+    min-inline-size: var(--cd-target-min);
+    min-block-size: var(--cd-target-min);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* The stale lamp. Unlit it is STILL A LAMP (II.3.24): lens and well visible,
+     because a vanishing indicator is indistinguishable from a missing one. */
+  .cd-stale-lamp {
+    inline-size: 0.625rem;
+    block-size: 0.625rem;
+    border-radius: 50%;
+    background: var(--cd-lamp-off);
+    box-shadow: var(--cd-lamp-well);
+    transition: box-shadow var(--cd-lamp-decay) var(--cd-ease-settle);
+  }
+
+  .cd-stale-lamp[data-lit="true"] {
+    background: radial-gradient(
+      closest-side,
+      var(--cd-role-warning-ink-dark) 0%,
+      var(--cd-role-warning) 55%,
+      var(--cd-role-warning-zone-light) 100%
+    );
+    box-shadow:
+      0 0 var(--cd-bloom-r) #c4832acc, /* shell 1 — r, 80% */
+      0 0 var(--cd-bloom-4r) #c4832a66, /* shell 2 — 4r, 40% */
+      0 0 var(--cd-bloom-12r) #c4832a29; /* shell 3 — 12r, 16% */
+    transition-duration: var(--cd-lamp-rise);
+  }
+
+  /* The lamp is never the only channel. Under forced colours the bloom is
+     discarded by the OS, so the word and the age carry alone — which they
+     already do, by construction. */
+  @media (forced-colors: active) {
+    .cd-stale-lamp[data-lit="true"] {
+      forced-color-adjust: none;
+      background: Highlight;
+      box-shadow: none;
+    }
+
+    .cd-stale-word {
+      color: CanvasText;
+    }
+  }
+}

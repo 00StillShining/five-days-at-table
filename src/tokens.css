@@ -19,7 +19,25 @@
   Screen builders: this file is chassis + shared primitives ONLY. Colocate your own
   screen CSS scoped by `.scr-<name>` per PHASE2-CONTRACT conventions — do not append
   screen-specific rules here.
+
+  ---------------------------------------------------------------------------
+  COUNCIL DEFIANCE FOUNDATION (added by the CD foundation pass)
+
+  The import below pulls in src/cd/tokens/index.css, which declares the layer
+  order `cd.world, cd.material, cd.type, cd.motion, cd.screen` before anything
+  else is parsed. It must stay the FIRST statement in this file: CSS requires
+  @import to precede every rule.
+
+  That declaration retires the load-bearing import-order hack documented at the
+  top of src/main.tsx. A screen rule inside `@layer cd.screen` now beats a
+  foundation rule at any specificity, regardless of which import a bundler
+  hoists first. The unlayered rules in THIS file still beat all five layers —
+  which is deliberate, and is what keeps the six not-yet-rebuilt screens
+  rendering unchanged in shape while section 8 below re-points their colour.
+  ---------------------------------------------------------------------------
 */
+
+@import "./cd/tokens/index.css";
 
 /* ---------------------------------------------------------------------- */
 /* 1. Page-level reset                                                     */
@@ -877,5 +895,178 @@ body {
 @media (forced-colors: active) {
   .fd5-brand {
     text-shadow: none;
+  }
+}
+
+/* ---------------------------------------------------------------------- */
+/* 8. THE CD BRIDGE — temporary                                           */
+/* ---------------------------------------------------------------------- */
+/*
+  Every --sol-* name in this file is re-pointed at its --cd-* equivalent. The
+  six not-yet-rebuilt screens (TODAY, PLAN, MEAL, COOK, STORES, SHOP, LIST)
+  keep rendering unchanged in LAYOUT — nothing here touches a size, a target,
+  a state or an ARIA contract — while their colour, type and motion move onto
+  the Council Defiance foundation in src/cd/tokens/**. The app stays deployable
+  at this commit; it is live.
+
+  This block is scaffolding with a demolition date. Each screen deletes its own
+  --sol-* usages as it is rebuilt against a `data-cd-language` scope of its own,
+  and when the last one lands this whole section goes with it.
+
+  WHICH WORLD EACH SCOPE BRIDGES TO, and why:
+
+    data-language="playful"              -> 10 CLEAR LID   (cream painted steel)
+    data-language="precision-industrial" -> 02 REEL LOGIC  (chassis black)
+
+  Polarity is preserved on purpose: a light scope bridges to the light-field
+  world, a dark scope to the dark-field one, so `color-scheme` stays true and no
+  screen inverts under the bridge. The two language registries themselves live
+  in src/cd/tokens/world.css and are reached through the temporary bridge
+  SELECTORS declared there — so there is exactly one copy of every hex, and the
+  measurements below can be trusted to still describe what renders.
+
+  Two --sol-* names have no honest one-to-one CD equivalent and are noted where
+  they appear: --sol-accent / --sol-accent-fill (the arbiter's act-now slot,
+  which is not one of the five reserved semantic roles and therefore may not
+  spend a reserved hue).
+
+  MEASURED, with the WCAG 2.x formula, at the two grounds each scope renders on:
+
+    playful   ground --sol-bg #DCD4C4   panel --sol-panel #EDE8DE
+      text        #3A362E   8.16 : 9.84
+      text-muted  #5F5A50   4.65 : 5.61
+      border      #7C7768   3.04 : 3.66      (3:1 control floor)
+      accent      #7A551C   4.54 : 5.47
+      warning     #7D541B   4.52 : 5.45
+      danger      #A83128   4.55 : 5.49
+      success     #266840   4.55 : 5.48
+
+    precision-industrial   ground --sol-bg #121213   panel --sol-panel #1B1B1D
+      text        #F2F1EA  16.53 : 15.19
+      text-muted  #8A8D93   5.63 : 5.17
+      border      #6A6D73   3.61 : 3.31      (3:1 control floor)
+      accent      #C9CACB  11.41 : 10.48
+      warning     #DAA254   8.27 : 7.60
+      danger      #E59992   8.29 : 7.62
+      success     #53C17E   8.29 : 7.61
+*/
+
+.fd5 {
+  /* voices and scale — II.6.2, II.6.19's closed seven steps */
+  --sol-font-ui: var(--cd-font-ui);
+  --sol-font-data: var(--cd-font-data);
+  --sol-text-body: var(--cd-size-3); /* 1rem */
+  --sol-text-label: var(--cd-size-1); /* 0.8125rem — II.6.10's label floor */
+
+  /* the Floor — 44px both axes, unchanged in value, now sourced once */
+  --sol-target-min-size: var(--cd-target-min);
+  --sol-focus-width: var(--cd-focus-width);
+
+  /* motion — II.4.2's registry, replacing two free-floating durations */
+  --sol-motion-snap: var(--cd-detent-seat-min); /* 80ms — the detent seat floor */
+  --sol-motion-state: var(--cd-focus-shift); /* 160ms — one focus, one journey */
+}
+
+/*
+  --sol-focus is re-pointed inside EACH language block below, not here.
+  Section 2's two scope blocks are `.fd5[data-language="..."]` (0,2,0) and this
+  one is `.fd5` (0,1,0), so a shared-block override loses to them on specificity
+  and the legacy #0057B8 / #75BFFF would survive — measured and caught in the
+  render. Custom properties obey the cascade like any other declaration.
+*/
+
+.fd5[data-language="playful"] {
+  --sol-bg: var(--cd-field); /* CLEAR LID recess well  #DCD4C4 */
+  --sol-panel: var(--cd-face); /* cream painted steel    #EDE8DE */
+  --sol-text: var(--cd-ink); /* printed ink            #3A362E */
+  --sol-text-muted: var(--cd-muted-ink); /*                        #5F5A50 */
+  --sol-border: var(--cd-border); /*                        #7C7768 */
+
+  /*
+    The arbiter's act-now slot. NOT one of the five reserved roles, so it may
+    not spend one: it takes CLEAR LID's own amber lamp instead — the single
+    documented light source that hardware carries — with the text-safe darkened
+    variant for the accent as TYPE and the lit lamp as the fill.
+  */
+  --sol-accent: var(--cd-lamp-ink); /* #7A551C — 4.54:1 on the well */
+  --sol-accent-fill: var(--cd-lamp-lit); /* #E8A23A — the lamp lit */
+  --sol-on-accent-fill: var(--cd-ink); /* #3A362E on #E8A23A — 5.24:1 */
+
+  --sol-focus: var(--cd-role-focus); /* #4C8FD1 — with the keyline rule below */
+
+  /* role inks at the DEEP step, because a legacy screen may print a role word
+     on the recess well rather than on a face; the face values are brighter and
+     would measure 3.7-3.8:1 there */
+  --sol-warning: var(--cd-role-warning-ink-deep);
+  --sol-danger: var(--cd-role-danger-ink-deep);
+  --sol-success: var(--cd-role-success-ink-deep);
+}
+
+.fd5[data-language="precision-industrial"] {
+  --sol-bg: var(--cd-well); /* REEL LOGIC chassis well #121213 */
+  --sol-panel: var(--cd-field); /* chassis black           #1B1B1D */
+  --sol-text: var(--cd-ink); /* dot-matrix ink lit      #F2F1EA */
+  --sol-text-muted: var(--cd-muted-ink); /*                         #8A8D93 */
+  --sol-border: var(--cd-border); /*                         #6A6D73 */
+
+  /*
+    REEL LOGIC has no non-reserved saturated hue at all: its whole palette is
+    chassis black, chrome, and the record lamp — and the lamp IS the live role.
+    So the arbiter takes CHROME, the material that chapter gives its reel and
+    every machined bezel, rendered through the hard-mirror recipe in
+    src/cd/material/specular.ts rather than as a flat fill.
+  */
+  --sol-accent: var(--cd-mirror); /* #C9CACB — 11.41:1 on the well */
+  --sol-accent-fill: var(--cd-mirror);
+  --sol-on-accent-fill: var(--cd-field); /* #1B1B1D on #C9CACB — 10.48:1 */
+
+  --sol-focus: var(--cd-role-focus); /* #4C8FD1 — with the keyline rule below */
+  --sol-warning: var(--cd-role-warning-ink-dark);
+  --sol-danger: var(--cd-role-danger-ink-dark);
+  --sol-success: var(--cd-role-success-ink-dark);
+}
+
+/*
+  The macro channels, re-pointed at CD-BRIEF repair 2's measured sets.
+  "Channel-coloured text renders only on cream faces" — so the -text tokens
+  keep their cream-face values, and the fill tokens keep the 3:1 non-text set.
+*/
+.fd5 {
+  --fd-ch-protein-text: var(--cd-ch-protein-ink); /* #AD3400 — 5.17:1 on cream */
+  --fd-ch-fat-text: var(--cd-ch-fat-ink); /* #715900 — 5.39:1 */
+  --fd-ch-carb-text: var(--cd-ch-carb-ink); /* #004DE7 — 5.25:1 */
+  --fd-ch-fibre-text: var(--cd-ch-fibre-ink); /* #006B3A — 5.34:1 */
+}
+
+.fd5[data-language="precision-industrial"] {
+  /* on carbon/anthracite the channel inks measure 1.69-2.30:1, so the lifted
+     set stands in — CD-BRIEF repair 2's own remedy */
+  --fd-ch-protein-text: var(--cd-ch-protein-lift); /* #FF7F47 */
+  --fd-ch-fat-text: var(--cd-ch-fat-lift); /* #C99F00 */
+  --fd-ch-carb-text: var(--cd-ch-carb-lift); /* #75A3FF */
+  --fd-ch-fibre-text: var(--cd-ch-fibre-lift); /* #00BD66 */
+}
+
+/*
+  THE TWO-TONE FOCUS RING (CD-BRIEF repair 3), replacing the single-hue outline
+  the shared control primitive shipped with. "No single focus hue clears 3:1 on
+  satin billet." Restated here at the same specificity as the rule in section 2
+  so it wins by source order inside the unlayered block, and repeated under
+  forced-colors so the OS palette keeps both edges.
+*/
+.fd5-control:focus-visible {
+  outline: var(--cd-focus-width) solid var(--cd-role-focus);
+  outline-offset: var(--cd-focus-offset);
+  box-shadow: 0 0 0
+    calc(var(--cd-focus-offset) + var(--cd-focus-width) + var(--cd-focus-keyline-width))
+    var(--cd-focus-keyline);
+}
+
+@media (forced-colors: active) {
+  .fd5-control:focus-visible {
+    outline-color: Highlight;
+    box-shadow: 0 0 0
+      calc(var(--cd-focus-offset) + var(--cd-focus-width) + var(--cd-focus-keyline-width))
+      ButtonText;
   }
 }

@@ -1,0 +1,33 @@
+/*
+  src/cd/tokens/index.css — the Council Defiance cascade root.
+
+  This file exists to do ONE thing before any other CD stylesheet is parsed:
+  declare the layer order. Everything downstream lands inside a named layer, so
+  cascade position is decided here, once, by declaration order — not by which
+  `import` a bundler happened to hoist.
+
+  This RETIRES the load-bearing import-order hack documented at the top of
+  src/main.tsx ("CSS import order is load-bearing (INT-1)"). That comment
+  described a real fragility: tokens.css had to enter the bundle before every
+  screen's own stylesheet so that equal-specificity screen overrides won the
+  cascade. With `@layer cd.screen` declared LAST below, a screen rule beats a
+  foundation rule regardless of import order, at any specificity, forever.
+
+  Layer order (weakest -> strongest):
+    cd.world     per-language committed hexes (the eight scopes)
+    cd.material  gradient + shadow-stack + specular recipes
+    cd.type      the three type registers and the closed 7-step scale
+    cd.motion    the four eases, the primitive durations, the slew rate
+    cd.screen    RESERVED — every screen's own stylesheet claims this layer
+
+  A rule outside every layer still beats all of them (unlayered wins in CSS).
+  That is deliberate: the six not-yet-rebuilt screens' existing unlayered rules
+  keep working untouched while they wait their turn.
+*/
+
+@layer cd.world, cd.material, cd.type, cd.motion, cd.screen;
+
+@import "./world.css";
+@import "./material.css";
+@import "./type.css";
+@import "./motion.css";

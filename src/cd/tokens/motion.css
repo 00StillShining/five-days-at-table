@@ -1,0 +1,151 @@
+/*
+  src/cd/tokens/motion.css — time.
+
+  Sources: II.4.2 (nine primitives, no tenth) for the four eases and every
+  primitive band; II.1.2 / II.1.5 for the mass-class settle pairs and the seven
+  mechanical defaults; II.4.8 for sweep-is-a-rate; CD-BRIEF product ruling 1 for
+  the project-wide 720 deg/s slew (ch.05's declared delta, NOT the doctrine's
+  540 deg/s); II.4.24 for the stagger arithmetic; II.4.26 for the reduced-motion
+  translation.
+
+  Every duration below is in ms and names the clause it came from. A duration
+  that exists only as a feeling is a craft defect.
+
+  Selector note: product-wide tokens mount on `html` (specificity 0,0,1) so that
+  the per-language `[data-cd-language]` scopes in world.css (0,1,0) override
+  them deterministically, by specificity rather than by file order.
+*/
+
+@layer cd.motion {
+  html {
+    /* ---- the four eases (II.4.2) --------------------------------------- */
+    --cd-ease-settle: cubic-bezier(0.16, 1, 0.3, 1); /* decisive arrival, no bounce */
+    --cd-ease-heavy: cubic-bezier(0.32, 0, 0.12, 1); /* mass felt at the start */
+    --cd-ease-snap: cubic-bezier(0.6, 0, 0.1, 1); /* detent: late, sharp commit */
+    --cd-ease-glide: cubic-bezier(0.24, 0.4, 0.16, 1); /* frictional coast */
+    --cd-ease-pulse: cubic-bezier(0.45, 0, 0.55, 1); /* sinusoid — II.4.11 */
+
+    /* ---- mass-class settle pairs (II.1.2) ------------------------------ */
+    --cd-settle-light: 180ms; /* spring(0.7, 420, 25)  zeta 0.73 */
+    --cd-settle-standard: 240ms; /* spring(1, 320, 26)    zeta 0.73 */
+    --cd-settle-weighted: 300ms; /* spring(1.4, 260, 30)  zeta 0.79 */
+    --cd-settle-anchored: 320ms; /* spring(1.2, 300, 38)  zeta 1.00, 0% overshoot */
+    --cd-settle-panel: 340ms; /* spring(1.6, 240, 30)  chassis scale */
+
+    /* ---- the seven mechanical defaults (II.1.5) ------------------------ */
+    --cd-ack: 16ms; /* <=1 rendered frame — input acknowledgment */
+    --cd-contact-down: 20ms; /* down-stroke: one frame, linear (II.4.3) */
+    --cd-contact-release: 80ms; /* release band 60-100ms */
+    --cd-detent-seat: 120ms; /* seat band 80-160ms */
+    --cd-detent-seat-min: 80ms;
+    --cd-detent-seat-max: 160ms;
+
+    /* ---- primitive durations (II.4.2 registry) -------------------------- */
+    --cd-latch: 180ms; /* travel then seat, pull-back is final 30% (II.4.5) */
+    --cd-glide-cap: 480ms; /* coast ceiling (II.4.7) */
+    --cd-reveal: 260ms; /* structure discloses, 200-320ms band (II.4.9) */
+    --cd-focus-shift: 160ms; /* one ring, one journey, 140-200ms (II.4.10) */
+    --cd-pulse-cycle: 2000ms; /* 0.5Hz breath — the ONLY idle motion (II.4.11) */
+
+    /* ---- sweep is a rate, never a duration (II.4.8 + CD-BRIEF ruling 1) -- */
+    --cd-slew-deg-per-s: 720; /* PROJECT-WIDE. Full 270deg arc = 375ms. */
+    --cd-slew-floor: 80ms; /* smallest correction still registers */
+
+    /* ---- the six transitions (II.4.23) ---------------------------------- */
+    --cd-peer-in: 280ms;
+    --cd-peer-out: 240ms;
+    --cd-peer-travel: 32px; /* lateral, never full-viewport (II.4.19) */
+    --cd-drill-in: 300ms;
+    --cd-drill-out: 240ms;
+    --cd-tray-open: 280ms;
+    --cd-tray-close: 220ms;
+    --cd-mode-hold: 60ms;
+    --cd-mode-change: 380ms;
+
+    /* ---- choreography (II.4.24, II.4.25) -------------------------------- */
+    --cd-stagger-step: 24ms; /* delay(i) = min(i * 24ms, 168ms) */
+    --cd-stagger-cap: 168ms;
+    --cd-wave-structure: 0ms;
+    --cd-wave-data: 80ms;
+    --cd-wave-ornament: 160ms;
+    --cd-entrance-cap: 560ms; /* total entrance never exceeds this */
+
+    /* ---- reduced motion (II.4.26) — a translation, never a deletion ----- */
+    --cd-reduced-fade: 120ms; /* the fixed pair: cuts, or 120ms fades */
+    --cd-reduced-position: 80ms; /* position that carries meaning still MOVES */
+  }
+
+  /*
+    II.4.12 — the shed ladder as declared state. src/cd/shed/useFrameBudget.ts
+    writes data-cd-shed on <html>; these rules are what each stage actually
+    costs. Contact, detent, sweep and warning are NEVER shed, and therefore
+    appear in none of these blocks.
+  */
+  html[data-cd-shed="1"] .cd-pulse,
+  html[data-cd-shed="2"] .cd-pulse,
+  html[data-cd-shed="3"] .cd-pulse {
+    animation-play-state: paused;
+  }
+
+  html[data-cd-shed="2"],
+  html[data-cd-shed="3"] {
+    --cd-stagger-step: 0ms;
+    --cd-stagger-cap: 0ms;
+  }
+
+  html[data-cd-shed="3"] {
+    --cd-peer-in: 100ms;
+    --cd-peer-out: 100ms;
+    --cd-peer-travel: 0px;
+    --cd-drill-in: 100ms;
+    --cd-drill-out: 100ms;
+    --cd-tray-open: 100ms;
+    --cd-tray-close: 100ms;
+  }
+
+  /*
+    II.4.26 — "Translate, never delete." Same events, different dialect.
+    Travel, rotation and overshoot go; opacity survives at 120ms flat; position
+    that carries meaning still changes, over 80ms linear, because position is
+    semantic and the semantic layer is not negotiable. Never a 0ms flash.
+  */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      --cd-settle-light: var(--cd-reduced-fade);
+      --cd-settle-standard: var(--cd-reduced-fade);
+      --cd-settle-weighted: var(--cd-reduced-fade);
+      --cd-settle-anchored: var(--cd-reduced-fade);
+      --cd-settle-panel: var(--cd-reduced-fade);
+      --cd-reveal: var(--cd-reduced-fade);
+      --cd-focus-shift: var(--cd-reduced-fade);
+      --cd-peer-in: var(--cd-reduced-fade);
+      --cd-peer-out: var(--cd-reduced-fade);
+      --cd-peer-travel: 0px;
+      --cd-drill-in: var(--cd-reduced-fade);
+      --cd-drill-out: var(--cd-reduced-fade);
+      --cd-tray-open: var(--cd-reduced-fade);
+      --cd-tray-close: var(--cd-reduced-fade);
+      --cd-glide-cap: 0ms; /* inherited momentum is travel — it goes */
+      --cd-stagger-step: 0ms;
+      --cd-stagger-cap: 0ms;
+
+      /* position that carries meaning: 80ms LINEAR, not deleted */
+      --cd-detent-seat: var(--cd-reduced-position);
+      --cd-latch: var(--cd-reduced-position);
+      --cd-ease-settle: linear;
+      --cd-ease-heavy: linear;
+      --cd-ease-snap: linear;
+      --cd-ease-glide: linear;
+
+      /* contact keeps its acknowledgment; only its travel is dropped */
+      --cd-contact-down: var(--cd-ack);
+      --cd-contact-release: var(--cd-reduced-position);
+    }
+
+    /* II.4.26: pulse becomes a static lamp plus its printed state token. */
+    .cd-pulse {
+      animation: none;
+      opacity: 1;
+    }
+  }
+}

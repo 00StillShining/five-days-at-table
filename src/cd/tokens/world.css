@@ -1,0 +1,482 @@
+/*
+  src/cd/tokens/world.css — the eight worlds, plus the roles that outrank them.
+
+  Two kinds of value live here and they obey opposite rules:
+
+  1. PRODUCT-WIDE, on `html` — the one sun, the module, the Floor's target size,
+     and the five reserved semantic roles. CD-BRIEF product ruling 3: "The five
+     reserved roles are one hex each product-wide ... Semantic colour is
+     engineering (CORRECTIONARY 3.2), not taste." No language scope may
+     redefine these; a language that declared its own focus/live/warning/
+     danger/success hex in its chapter has had it superseded here, and the
+     supersession is recorded inline where it happens.
+
+  2. PER-LANGUAGE, on `[data-cd-language="<slug>"]` — every committed hex from
+     that chapter's section 2 registry table, verbatim. CD-BRIEF: "Zone fence
+     ... No element may read tokens from two language scopes."
+
+  Specificity is the fence: `html` is (0,0,1), `[data-cd-language]` is (0,1,0),
+  so a language always wins its own world and never has to rely on file order.
+
+  ---------------------------------------------------------------------------
+  DECLARED DEPARTURE (CORRECTIONARY 6.5 — no silent downgrades)
+
+  CD-BRIEF ruling 3 says "one hex each". One hex per role cannot clear the
+  Floor. Measured, with the WCAG formula, over every ground this product
+  actually renders on:
+
+      warning #C4832A  on cream #EDE6D6      2.55:1   (the brief's own repair 1)
+      warning #8D5E1E  on carbon #26282B     2.64:1   fails 4.5:1 as text
+      danger  #C2392E  on carbon #26282B     2.76:1   fails 3:1 as a keyline
+      success #3FAE6B  on cream #EDE6D6      2.26:1   fails 3:1 as a fill
+
+  So each role ships ONE HUE product-wide, at TWO committed values: an ink for
+  cream faces and an ink for dark fields, plus the zone/fill value where the
+  role is spent as area rather than as type. Hue and saturation are held
+  identical between the two (II.7.5 — "the hue itself never bends"); only
+  lightness travels. This is the same two-value pattern CD-BRIEF repair 1
+  already establishes for warning (#C4832A zone / #8D5E1E text), generalised to
+  all five so no screen has to invent one later.
+  ---------------------------------------------------------------------------
+*/
+
+@layer cd.world {
+  html {
+    /* ===== the one sun (CD-BRIEF ruling 2; II.2.3) ======================= */
+    --cd-light-axis: 138deg; /* upper-left, inside II.2.3's 135deg +/-15deg */
+    --cd-shadow-x: 1px; /* recess-well cast, horizontal */
+    --cd-shadow-y: 2px; /* ALWAYS 2x — the 1:2 ratio, every screen */
+    --cd-rim: #ffffff40; /* rim light — top/left edges only */
+    --cd-lip: #00000052; /* lip — bottom/right, the edge turning away */
+
+    /* ===== geometry (II.3.2) and the Floor =============================== */
+    --cd-module: 0.5rem; /* every diameter, throw and gap is a multiple */
+    --cd-target-min: 2.75rem; /* 44px, BOTH axes — non-negotiable */
+
+    /* ===== reserved role 1 · FOCUS ======================================= */
+    /*
+      CD-BRIEF repair 3: "No single focus hue clears 3:1 on satin billet. Focus
+      ring is two-tone: 2px #4C8FD1 + 1px #141414 keyline, offset 3px."
+      Measured, best-of-pair per ground:
+        smoked #1B1B1B 5.05 · carbon #26282B 4.33 · anthracite #3A3A3C 3.33
+        gunmetal #3E4148 3.00 · gunmetal well #2B2D31 4.04 · reel #1B1B1D 5.04
+        inset #161514 5.35 · rosewood #4A2C22 3.68 · cream #EDE6D6 14.82
+        ivory #F0E6D2 14.87 · cream steel #EDE8DE 15.09 · brushed alu #C6C7C8 10.88
+        epoxy #9B9C9E 6.70
+      The two tones measure 5.40:1 against EACH OTHER, so the ring always
+      presents one edge above 3:1 whatever it lands on. Gunmetal #3E4148 is the
+      one ground where the pair only reaches the 3:1 Floor exactly, with no
+      margin — FACETED VOLUME therefore seats every focusable control in its own
+      well #2B2D31 (that chapter's own section 2 requirement), where the blue
+      measures 4.04:1.
+    */
+    --cd-role-focus: #4c8fd1; /* ring, 2px */
+    --cd-focus-keyline: #141414; /* keyline, 1px, immediately outside the ring */
+    --cd-focus-width: 2px;
+    --cd-focus-keyline-width: 1px;
+    --cd-focus-offset: 3px;
+
+    /* ===== reserved role 2 · LIVE ======================================== */
+    /*
+      CD-BRIEF ruling 3: live = #FF2B1A (REEL LOGIC's red); the chassis rec-dot
+      uses the same hex, so "a cook program is running" is one claim made once.
+      A lamp is not judged against the field it sits near but against its OWN
+      well (II.2.17 "off: a dark well behind glass", II.3.24 "unlit, it is still
+      a lamp"). --cd-live-well is that well, product-wide, so the 5.00:1 holds
+      on every screen regardless of the surface around it.
+      SUPERSEDED: IRREDUCIBLE's own live #005BBB, TANGENT HORIZON's index red
+      #C8272B (fenced to SHOP, means "a position that has stopped", never live),
+      RESTOMOD's OLED #5EE6A8.
+    */
+    --cd-role-live: #ff2b1a; /* the lamp lit */
+    --cd-role-live-dim: #76211c; /* idle-armed undertone under the lens */
+    --cd-role-live-hot: #ff756a; /* in-flight bloom core, never a resting fill */
+    --cd-live-well: #121213; /* the lens well — live measures 5.00:1 in it */
+    --cd-role-live-ink-light: #d00f00; /* live AS TEXT on a cream face: 4.50:1 */
+    --cd-role-live-ink-dark: #ff8b82; /* live AS TEXT on a dark field: 4.51:1 */
+
+    /* ===== reserved role 3 · WARNING ===================================== */
+    /* Hue H35 S65% held across all four values. CD-BRIEF repair 1 pins the
+       first two; the dark-field pair is solved to the same Floor. */
+    --cd-role-warning: #c4832a; /* printed zone band on a DARK field: 3.23:1 worst */
+    --cd-role-warning-zone-light: #a26d23; /* printed zone band on a cream face: 3.00:1 worst */
+    --cd-role-warning-ink-light: #8d5e1e; /* text on cream 4.50 / ivory 4.52 / steel 4.58 */
+    --cd-role-warning-ink-dark: #daa254; /* text on dark fields: 4.52:1 worst (gunmetal) */
+    --cd-role-warning-ink-deep: #7d541b; /* one step deeper, for a role word printed on a
+                                  RECESS WELL rather than a face: 4.52:1 on
+                                  #DCD4C4, 5.45:1 on cream steel. The ink-plate
+                                  law puts text on faces, so this exists for the
+                                  bridge below and for wells that carry a word. */
+
+    /* ===== reserved role 4 · DANGER ====================================== */
+    /* Hue H4.5 S62% held. Base #C2392E — REEL LOGIC's danger, chosen because it
+       sits in the same chapter as live and focus and is already drawn distinct
+       from live #FF2B1A there (a printed zone versus a lit lamp). */
+    --cd-role-danger: #c2392e; /* zone / keyline on a cream face: 4.31:1 worst */
+    --cd-role-danger-zone-dark: #d96a61; /* zone / keyline on a dark field: 3.01:1 worst */
+    --cd-role-danger-ink-light: #bd372d; /* text on cream 4.51 / ivory 4.52 / steel 4.59 */
+    --cd-role-danger-ink-dark: #e59992; /* text on dark fields: 4.53:1 worst */
+    --cd-role-danger-ink-deep: #a83128; /* on a recess well: 4.55:1 on #DCD4C4 */
+
+    /* ===== reserved role 5 · SUCCESS ===================================== */
+    /* Hue H144 S47% held. Base #3FAE6B — committed identically by BOTH
+       REEL LOGIC and FACETED VOLUME, so two chapters already agree on it. */
+    --cd-role-success: #3fae6b; /* fill on a dark field: 3.64:1 worst */
+    --cd-role-success-fill-light: #318753; /* fill on a cream face: 3.01:1 worst */
+    --cd-role-success-ink-light: #2b7548; /* text on cream 4.52 / ivory 4.53 / steel 4.60 */
+    --cd-role-success-ink-dark: #53c17e; /* text on dark fields: 4.53:1 worst */
+    --cd-role-success-ink-deep: #266840; /* on a recess well: 4.55:1 on #DCD4C4 */
+    --cd-success-hold: 1800ms; /* II.7.13 — success is an event: lands, holds... */
+    --cd-success-decay: 900ms; /* ...then decays to ink */
+
+    /* ===== macro channels (CD-BRIEF repair 2) ============================ */
+    /*
+      "Macro channel text is 5.17-5.39:1 on cream but 1.69-2.30:1 on carbon/
+      anthracite. Channel-coloured text renders only on cream faces. Elsewhere
+      channel identity = position + engraved label + segment fill."
+    */
+    --cd-ch-protein-ink: #ad3400; /* cream 5.17:1 — CREAM FACES ONLY */
+    --cd-ch-fat-ink: #715900; /* cream 5.39:1 */
+    --cd-ch-carb-ink: #004de7; /* cream 5.25:1 */
+    --cd-ch-fibre-ink: #006b3a; /* cream 5.34:1 */
+    /* the lifted set, where a channel is unavoidably set on anthracite */
+    --cd-ch-protein-lift: #ff7f47; /* anthracite 4.53 · carbon 5.90 */
+    --cd-ch-fat-lift: #c99f00; /* anthracite 4.56 · carbon 5.94 */
+    --cd-ch-carb-lift: #75a3ff; /* anthracite 4.56 · carbon 5.94 */
+    --cd-ch-fibre-lift: #00bd66; /* anthracite 4.58 · carbon 5.96 */
+
+    /* ===== bloom shell radii (II.2.17: r / 4r / 12r at 80% / 40% / 16%) === */
+    --cd-bloom-r: 2px;
+    --cd-bloom-4r: 8px;
+    --cd-bloom-12r: 24px;
+  }
+
+  /* =====================================================================
+     13 BACK CHANNEL — chassis / rail
+     Chapter: languages/13-glyph-matrix.md section 2
+     Model: EMISSIVE dominant, pigment surround (II.7.9)
+     ===================================================================== */
+  [data-cd-language="back-channel"] {
+    --cd-field: #1b1b1b; /* smoked glass field — faceplate, chassis, rear panel */
+    --cd-well: #121212; /* the matrix window's own recess, tray backing */
+    --cd-rim-catch: #2c2c2d; /* the single top-left edge highlight (II.2.3) */
+    --cd-substrate: #46484b; /* the still coil/ribbon glimpsed beneath the glass */
+    --cd-glyph-off: #8a8a8a; /* every unaddressed cell — the field's ghost print */
+    --cd-glyph-dim: #c7c9c9; /* a cell charged at low duty */
+    --cd-glyph-lit: #f5f7f8; /* the signature intensity — 16.03:1 on the field */
+    --cd-glyph-hot: #ffffff; /* bloom core mid-transition, never a resting fill */
+    --cd-label-ink: #828486; /* micro-cap type beside the field — 4.59:1 on the
+                                  field, 4.99:1 on the well. ORCHESTRATOR REPAIR:
+                                  #7C7E80 measured 4.23:1, under the 4.5:1 text
+                                  floor. Hue 210.0° and saturation 1.6% held
+                                  exactly; lightness alone travelled (II.7.5). */
+    --cd-ink: var(--cd-glyph-lit);
+    --cd-muted-ink: var(--cd-label-ink);
+    /* THE INK PLATE (CD-BRIEF ruling 5). Every world declares one, because
+       "text never renders raw over carbon weave or brushed grain" is a hard
+       fail BY RULE. Here it is the field's own recess: glyph-lit on the well
+       measures 17.44:1, and the well shadow gives the plate its edge. */
+    --cd-plate: var(--cd-well);
+    --cd-plate-ink: var(--cd-glyph-lit);
+    --cd-polarity: dark;
+    /* signature is LIGHT, not a hue: one white at four duty steps (II.7.5). */
+    /* Rec dot #5A2420/#E1352B/#F2776D superseded by --cd-role-live. */
+  }
+
+  /* =====================================================================
+     05 EXPOSED WORKS — TODAY
+     Chapter: languages/05-pagani-utopia.md section 2
+     Model: PIGMENT (II.7.9)
+     ===================================================================== */
+  [data-cd-language="exposed-works"] {
+    --cd-field: #26282b; /* carbon weave ground — chassis, screen ground, wells */
+    --cd-billet: #c9ccce; /* satin billet aluminium — bezels, rails, knob caps */
+    --cd-mirror: #e3e5e7; /* mirror-polished aluminium — brightwork edges only */
+    --cd-face: #ede6d6; /* cream instrument face — gauge faces, engraved plates */
+    --cd-cognac: #a6713f; /* cognac leather — grips, linings, selected-row wash */
+    --cd-panel: #3a3a3c; /* anthracite secondary ground — recess wells */
+    --cd-ink: #221f1c; /* engraved ink cut into cream faces — 13.19:1 on face */
+    --cd-muted-ink: #70665c; /* DERIVED: engraved-ink hue held, lifted to the
+                                  4.5:1 floor on the cream face — 4.51:1. The
+                                  chapter declares no muted ink; #786F60
+                                  (RESTOMOD's) measures 3.98:1 here and cannot
+                                  carry text. */
+    --cd-ink-panel: #ede6d6; /* text on the anthracite panel — 9.13:1 */
+    --cd-muted-ink-panel: #b0aaa0; /* muted on anthracite 4.92 · carbon 6.41 */
+    --cd-well: #1b1d21;
+    --cd-plate: var(--cd-face); /* the cream instrument face — 13.19:1 */
+    --cd-plate-ink: var(--cd-ink);
+    --cd-polarity: dark;
+    --cd-porthole: 1.25rem; /* the aperture every hero face carries */
+    /* Redline #B23A2E / warning #C4832A / focus #5289B1 / verdigris #5A7462
+       superseded by the product-wide reserved roles above. */
+  }
+
+  /* =====================================================================
+     17 RESTOMOD — PLAN
+     Chapter: languages/17-singer-911.md section 2
+     Model: PIGMENT with one licensed emissive inset (II.7.9)
+     ===================================================================== */
+  [data-cd-language="restomod"] {
+    --cd-face: #f0e6d2; /* ivory dial face — gauge faces, engraved plates */
+    --cd-field: #1b1b1b; /* crackle black — chassis, bezel undercarriage */
+    --cd-gold: #c9a46a; /* champagne gold — case ring, bezel boss caps */
+    --cd-nickel: #c7c8ca; /* nickel satin — secondary bezels, trim, toggle caps */
+    --cd-needle: #e8590c; /* needle orange — GAUGE NEEDLES ONLY, never a fill */
+    --cd-needle-keyline: #1b1b1b; /* 1px along the needle's own length. The pinned
+                                  livery orange measures 2.89:1 on ivory — below
+                                  the 3:1 graphical floor — so the needle reads
+                                  by its keyline (13.91:1 on ivory, 4.81:1
+                                  against the orange). Chapter-true: section 2
+                                  already gives the needle a 1px catch-light
+                                  down its body. */
+    --cd-green-dim: #1d3529; /* markings on a non-hero dial — 10.64:1 on ivory */
+    --cd-green-lit: #1f5c3d; /* the signature hue — 6.38:1 on ivory */
+    --cd-green-hot: #143c28; /* the hero gauge's markings under full emphasis.
+                                  DEPARTURE: the chapter's #6F9683 mixes 35%
+                                  toward WHITE and measures 2.66:1 on this
+                                  world's own ivory dial. RESTOMOD is an
+                                  ink-content world on a light field (II.7.10),
+                                  so hot is MORE ink, not more light: lit mixed
+                                  35% toward black, hue held — 9.93:1. */
+    --cd-oled-white: #e9f6ec; /* the inset's secondary digit stroke */
+    --cd-ink: var(--cd-green-lit);
+    --cd-muted-ink: #6f6659; /* units, timestamps on ivory — 4.56:1.
+                                  ORCHESTRATOR REPAIR: the chapter's #786F60
+                                  measured 4.00:1 on this world's own ivory face,
+                                  under the 4.5:1 text floor. This was the only
+                                  muted ink in the set the builder did not derive
+                                  — every other scope was lifted, this one was
+                                  inherited and went un-audited. Darkened, not
+                                  lifted: RESTOMOD is an ink-content world on a
+                                  light field, so muted is LESS ink, never more
+                                  light. Hue 37.5° → 35.5° (8-bit quantisation at
+                                  11% saturation), saturation held. */
+    --cd-well: #121212;
+    --cd-plate: var(--cd-face); /* the ivory dial face — green lit reads 6.38:1 */
+    --cd-plate-ink: var(--cd-green-lit);
+    --cd-polarity: light; /* the ivory dial leads; crackle black is the case */
+    /* Column split, measured off the real five-case row 115/100/100/80/80mm: */
+    --cd-dial-1: 24.2%;
+    --cd-dial-2: 21.1%;
+    --cd-dial-3: 21.1%;
+    --cd-dial-4: 16.8%;
+    --cd-dial-5: 16.8%;
+    /* Live #5EE6A8 / warning #C68A3C / danger #8C2A1C / success #2F8C5C /
+       focus #4E86B8 superseded by the product-wide reserved roles. */
+  }
+
+  /* =====================================================================
+     16 FACETED VOLUME — MEAL (tray)
+     Chapter: languages/16-ak-sp3000.md section 2
+     Model: PIGMENT with one emissive exception, the format ring (II.7.9)
+     ===================================================================== */
+  [data-cd-language="faceted-volume"] {
+    --cd-field: #3e4148; /* gunmetal — faceplate base, panel body */
+    --cd-well: #2b2d31; /* gunmetal well — wheel recess, card recess */
+    --cd-seam: #4a4d54; /* facet seam — the hairline between chamfered planes */
+    --cd-mirror: #c7cbcd; /* mirror body — wheel, machined trim */
+    --cd-mirror-hot: #edefef; /* second hard-mirror stop, specular peak only */
+    --cd-black-edition: #1b1b1d; /* deep well fill, card shadow floor */
+    --cd-ink: #edeeec; /* printed ink — 8.78:1 on the gunmetal field */
+    --cd-muted-ink: #aaadb0; /* DERIVED: the chapter's #8B8E93 measures 3.11:1 on
+                                  its own gunmetal field and cannot carry text at
+                                  any size. Hue held, lifted to the floor —
+                                  4.53:1 on the field, 6.12:1 in the well. */
+    --cd-hairline: #8b8e93; /* the chapter's #8B8E93, kept for NON-TEXT rules,
+                                  seams and tick hairlines only */
+    /*
+      The format ring. Every lamp carries a 1px lens rim at its own hot value,
+      because four of the five cores sit under the 3:1 graphical floor against
+      the well they mount in (#2B2D31): 16-bit 2.97, 24-bit 4.09, 32-bit 3.42,
+      DSD 2.35. The rims measure 5.00 / 6.57 / 5.89 / 4.73. The ring also prints
+      its format string, so colour never travels alone (II.7.7).
+    */
+    --cd-fmt-16: #d8382b; /* format ring, PCM 16-bit lock only */
+    --cd-fmt-16-rim: #e67e75;
+    --cd-fmt-24: #4e9c5c; /* format ring, PCM 24-bit lock only */
+    --cd-fmt-24-rim: #8cbf95;
+    --cd-fmt-32: #3e7fd6; /* format ring, PCM 32-bit / hi-res lock only */
+    --cd-fmt-32-rim: #82ace4;
+    --cd-fmt-dsd-dim: #4a2e56; /* DSD idling under the wheel, unlit undertone */
+    --cd-fmt-dsd: #8e44ad; /* the signature hue — DSD lock, and only DSD lock */
+    --cd-fmt-dsd-rim: #b685ca;
+    --cd-fmt-dsd-hot: #b673d1; /* in-flight bloom core on a fresh DSD lock */
+    --cd-chamfer: 0.25rem; /* half the module — the Transport Key's own cut */
+    --cd-chamfer-card: 0.75rem; /* three half-steps, the Jewel Card's corner */
+    --cd-plate: var(--cd-well); /* the recessed card well — ink reads 11.92:1 */
+    --cd-plate-ink: var(--cd-ink);
+    --cd-polarity: dark;
+    /*
+      Focus targets in this world mount in --cd-well (#2B2D31), never on the
+      bare faceplate: the focus pair measures 4.04:1 in the well against
+      3.00:1 on the field — the Floor exactly, with no margin.
+      Warning #C9862E / danger #7A2E22 / success #3FAE6B / focus #5C9FE0
+      superseded by the product-wide reserved roles.
+    */
+  }
+
+  /* =====================================================================
+     02 REEL LOGIC — COOK
+     Chapter: languages/02-tp7.md section 2
+     Model: PIGMENT, the record lamp its one licensed emissive (II.7.9)
+     ===================================================================== */
+  [data-cd-language="reel-logic"],
+  .fd5[data-language="precision-industrial"] {
+    /*
+      TEMPORARY BRIDGE SELECTOR. The six not-yet-rebuilt screens carry the old
+      `data-language` attribute and no `data-cd-language`. Rather than duplicate
+      this registry into src/tokens.css, the legacy dark scope simply IS a REEL
+      LOGIC scope until each screen is rebuilt and claims its own language.
+      Delete this selector — not the block — when the last screen lands.
+    */
+    --cd-field: #1b1b1d; /* chassis black — faceplate, every non-signal surface */
+    --cd-well: #121213; /* chassis well — bezel interiors, key sockets */
+    --cd-rim-catch: #2c2d30; /* the single top-left edge highlight, chassis seams */
+    --cd-mirror: #c9cacb; /* chrome reel body, machined bezels, key caps */
+    --cd-mirror-hot: #e2e3e4; /* reel specular band only, the hard-mirror stop */
+    --cd-mirror-floor: #161719; /* the darkened low stop of this world's mirror */
+    --cd-ink: #f2f1ea; /* dot-matrix ink lit, tape-counter digits — 15.19:1 */
+    --cd-ink-unlit: #1c1c1d; /* unlit dot cells, the ghost print (+4%, II.3.21) */
+    --cd-muted-ink: #8a8d93; /* units, timestamps, secondary labels — 5.17:1 */
+    --cd-border: #6a6d73; /* DERIVED: muted-ink hue held, darkened to the 3:1
+                                  control floor — 3.61:1 on the well, 3.31:1 on
+                                  the chassis */
+    --cd-plate: var(--cd-well); /* the bezel interior — dot ink reads 16.53:1 */
+    --cd-plate-ink: var(--cd-ink);
+    --cd-polarity: dark;
+    --cd-chamfer: 0.25rem; /* control corners — half the module */
+    --cd-chamfer-card: 0.75rem; /* panels and cards — three times that unit */
+    /* Live red IS this chapter's signature hue and IS the product's live role —
+       #FF2B1A, already committed product-wide above. Warning #D98A2E, danger
+       #C2392E, success #3FAE6B and focus #4C8FD1 are the hexes the product-wide
+       roles were keyed from, so this world alone has nothing superseded. */
+  }
+
+  /* =====================================================================
+     10 CLEAR LID — STORES
+     Chapter: languages/10-braun-sk4.md section 2
+     Model: PIGMENT, only the tuning lamp shines (II.7.9)
+     ===================================================================== */
+  [data-cd-language="clear-lid"],
+  .fd5[data-language="playful"] {
+    /* TEMPORARY BRIDGE SELECTOR — see the note on the REEL LOGIC block above.
+       The legacy light scope IS a CLEAR LID scope until its screens rebuild. */
+    --cd-face: #ede8de; /* cream painted steel — chassis field, faceplate ground */
+    --cd-field: #dcd4c4; /* recess well — the ground a faceplate sits on */
+    --cd-elm: #d8bd8e; /* pale elm veneer — rails, tray linings, warm trim */
+    --cd-control: #b7b7ae; /* grey control — knob caps, button faces, plates */
+    --cd-ink: #3a362e; /* printed ink — 9.84:1 on the face, 8.16:1 on the well */
+    --cd-muted-ink: #5f5a50; /* DERIVED: printed-ink hue held, lifted to the
+                                  4.5:1 floor — 5.61:1 on face, 4.65:1 on well.
+                                  This chapter declares no muted ink. */
+    --cd-border: #7c7768; /* DERIVED: printed-ink hue held, lifted to the 3:1
+                                  control floor — 3.66:1 face, 3.04:1 well */
+    /* the acrylic — one hue angle, three opacities (II.7.5) */
+    --cd-acrylic-glance: #c8ccc64c; /* resting tint over any un-operated value */
+    --cd-acrylic-reveal: #c8ccc685; /* mid-lift, the lid in motion */
+    --cd-acrylic-showcase: #c8ccc6e0; /* Trophy Mode's own specular pass */
+    /* amber — the one documented light source this hardware carries */
+    --cd-lamp-dim: #8c6220;
+    --cd-lamp-lit: #e8a23a;
+    --cd-lamp-hot: #ffc868;
+    --cd-lamp-ink: #7a551c; /* DERIVED: lamp hue held, darkened to 4.5:1 as TEXT
+                                  — 5.47:1 on the face, 4.54:1 on the well */
+    --cd-plate: var(--cd-face); /* cream painted steel — printed ink 9.84:1 */
+    --cd-plate-ink: var(--cd-ink);
+    --cd-polarity: light;
+    --cd-radius-panel: 0.75rem; /* the specimen-case geometry */
+    --cd-radius-cap: 0.25rem;
+    /* Confirm #5E6B4A and alert #A8461F superseded by the reserved roles. */
+  }
+
+  /* =====================================================================
+     11 TANGENT HORIZON — SHOP
+     Chapter: languages/11-beogram-4000.md section 2
+     Model: PIGMENT, the index window its one emissive (II.7.9)
+     ===================================================================== */
+  [data-cd-language="tangent-horizon"] {
+    --cd-horizon: #c6c7c8; /* brushed aluminium — the control band's full width */
+    --cd-rosewood: #4a2c22; /* rosewood mass — plinth body, tray linings, floor */
+    --cd-field: #161514; /* inset control black — the recessed track, readout
+                              grounds. TEXT PRINTS HERE, never on the brushed
+                              band: strobe white measures 14.58:1 on it. */
+    --cd-teak: #8b5a2b; /* optional secondary plinth dress, rare */
+    --cd-champagne: #cbb088; /* Signature-rung anniversary dress finish, rare */
+    --cd-oak: #d2b48c; /* Signature-rung frame accent, rare */
+    --cd-ink: #e8e6dd; /* strobe scale white — calibration ticks, fine rings */
+    --cd-muted-ink: #9b9a92; /* DERIVED: strobe-white hue held, dropped to the
+                                  4.5:1 floor on the inset field — 6.45:1
+                                  (the comment previously claimed 6.86:1; the
+                                  hex is correct, the recorded figure was not) */
+    --cd-index-red: #c8272b; /* FENCED TO SHOP. Means "a position that has
+                                  stopped". NEVER live (CD-BRIEF ruling 3). */
+    --cd-index-red-dim: #5d1c1d;
+    --cd-index-red-hot: #db7375;
+    --cd-platter-ink: #2c2d2f; /* the fine radial line pattern on a platter */
+    --cd-plate: var(--cd-field); /* the inset control black IS this world's plate:
+                                  its own section 2 puts every readout inside the
+                                  recessed track. Strobe white reads 14.58:1. */
+    --cd-plate-ink: var(--cd-ink);
+    --cd-polarity: dark; /* the inset black carries the reading, not the band */
+    --cd-contact-points: 3; /* every panel rests on THREE shadow contacts */
+    /* Resistance amber #8B6B3D superseded by --cd-role-warning. */
+  }
+
+  /* =====================================================================
+     20 IRREDUCIBLE — LIST
+     Chapter: languages/20-presto-dl400.md section 2
+     Model: PIGMENT. Hue count ZERO except live (that chapter's own law).
+     ===================================================================== */
+  [data-cd-language="irreducible"] {
+    --cd-void: #7a7b7d; /* chassis void — background field, the mount */
+    --cd-field: #9b9c9e; /* epoxy body — column card, faceplate, every surface */
+    --cd-catch: #b7b8b9; /* epoxy catch — the domed crown's highlight */
+    --cd-mirror: #c7cbcd; /* nickel-chrome — bezels, collars, the dial body */
+    --cd-mirror-hot: #ececea; /* the hard-mirror stop pair only */
+    --cd-ink: #333435; /* DERIVED: the chapter's stamped ink #3A3B3C measures
+                                  4.09:1 on its own epoxy body — under the text
+                                  floor. Hue held, darkened two steps — 4.54:1. */
+    --cd-muted-ink: #333435; /* THE SAME HEX, deliberately. This world spends its
+                                  roles "in weight, never in hue" (its own
+                                  section 2), and the chapter's #6B6C6E measures
+                                  1.91:1 on epoxy — unusable as text. Muted here
+                                  is font-weight 400 against the ink's 700 plus
+                                  the tracked-caps register, not a paler hex. */
+    --cd-alert-ink: #1a1a1a; /* EVERY reserved role but live, spent in WEIGHT:
+                                  focus ring, warning and danger keylines, the
+                                  success glyph. Hue count zero, by that
+                                  chapter's own section 2 law. 6.33:1 on epoxy.
+                                  (Previously recorded as 6.70:1 — that is the
+                                  focus keyline #141414's figure, borrowed by
+                                  mistake. The hex is right; the number was not.)
+
+                                  THE EPOXY CEILING — orchestrator law, measured.
+                                  Epoxy #9B9C9E has luminance 0.3321, so the
+                                  BEST ratio anything can reach on it is 2.75:1
+                                  against pure white and 7.64:1 against pure
+                                  black. No coloured ink reaches 4.5:1 here at
+                                  any lightness that still carries its hue:
+                                  every --cd-role-*-ink-light measures 2.04:1 on
+                                  epoxy and every -ink-dark measures 1.21:1.
+                                  Therefore: NEVER put a --cd-role-*-ink on this
+                                  world's body. Roles are spent in weight through
+                                  this token, and live is a LAMP IN ITS WELL
+                                  (--cd-live-well, 5.00:1), never a printed word
+                                  on epoxy. This is not a hex that wants
+                                  improving — it is a property of the ground. */
+    --cd-reg-6: #9b9c9e; /* regulator triad — installer tray only */
+    --cd-reg-8: #e4e4e0;
+    --cd-reg-10: #d9a61b;
+    --cd-plate: var(--cd-field); /* the epoxy body IS the plate — stamped ink is
+                                  engraved INTO it, 4.54:1 */
+    --cd-plate-ink: var(--cd-ink);
+    --cd-polarity: light;
+    --cd-chamfer-foot: 0.5rem; /* the column card's taper: tight at the mount... */
+    --cd-chamfer-head: 1.5rem; /* ...open at the head */
+    /* Live #005BBB superseded by --cd-role-live #FF2B1A (CD-BRIEF ruling 3:
+       one hex product-wide). The flow-gauge fill height keeps its job as the
+       second, non-colour channel (II.7.7), so a column still reads its state
+       with the hue stripped out entirely. */
+  }
+}

@@ -1,0 +1,299 @@
+/*
+  src/cd/tokens/material.css — what the instrument is made of, under one sun.
+
+  Every recipe below is II.2 executed as written, with two standing amendments
+  from the CORRECTIONARY, both applied here rather than left to each screen:
+
+  * CORRECTIONARY 3.1 revokes "exactly one tier-3 hero per screen". The four
+    depth tiers survive as CONSTRUCTION SETS — pick the stack that matches what
+    the object is — never as a budget that strips elements down. Four to six
+    tier-3 instruments on one screen is the normal condition here.
+  * CORRECTIONARY 3.3 revokes the 1-3% microtexture cap. --cd-grain-strength
+    ships at 0.06, three times the bible's 2% default, because the only test is
+    "does this read as the material it claims to be?" The one clause that
+    SURVIVES is II.2.21's other half: grain never renders behind data.
+
+  Shadow-stack layers are one per line, each with its role, per the reporting
+  requirement. Layer order in every stack: rim light, lip, contact, core,
+  ambient — the fixed roles of II.2.3 / II.2.5.
+*/
+
+@layer cd.material {
+  html {
+    /* ===== the four-layer stack, per depth tier (II.2.5) ================= */
+
+    /* tier 0 — flat information: numerals, labels, plots, tick rings */
+    --cd-shadow-t0: none;
+
+    /* tier 1 — quiet chassis: faceplates, rails, trays, escutcheons */
+    --cd-shadow-t1:
+      inset 0 1px 0 #ffffff14, /* rim light — the machined top edge */
+      0 1px 0 #00000038; /* contact — glues the plate to the field */
+
+    /* tier 2 — tactile control: anything a hand operates */
+    --cd-shadow-t2:
+      inset 0 1px 0 #ffffff40, /* rim light — top/left catch */
+      inset 0 -1px 0 #00000052, /* lip — bottom/right turns from the light */
+      0 1px 0 #00000066, /* contact — glues the control to the faceplate */
+      0 3px 6px #0000003d, /* core — the control's own mass */
+      0 10px 24px #00000021; /* ambient — the room */
+
+    /* tier 2 pressed (II.2.6): 1px of travel, core and ambient tighten,
+       the contact line NEVER moves, no box dimension changes */
+    --cd-shadow-t2-press:
+      inset 0 1px 0 #ffffff2e, /* rim light, compressed */
+      inset 0 -1px 0 #00000052, /* lip — unchanged */
+      0 1px 0 #00000066, /* contact — unchanged, by law */
+      0 1px 2px #0000003d, /* core — halved, the surface nears the panel */
+      0 4px 10px #00000021; /* ambient — tightened */
+
+    /* tier 3 — resolved hero: full stack, deepest ambient. NOT rationed. */
+    --cd-shadow-t3:
+      inset 0 1px 0 #ffffff4d, /* rim light — the hero's brighter catch */
+      inset 0 -1px 0 #00000047, /* lip */
+      0 1px 0 #00000066, /* contact */
+      0 4px 8px #00000040, /* core — the hero's own mass */
+      0 24px 56px #00000029; /* ambient — the deepest throw on the panel */
+
+    /* recess / well (II.2.3): the pair INVERTS — shadow enters high, lit lip
+       closes low — and this is the one place the full 1:2 cast vector is spent */
+    --cd-shadow-well:
+      inset var(--cd-shadow-x) var(--cd-shadow-y) 4px #00000047, /* the well itself */
+      inset 0 -1px 0 #ffffff1f; /* lip — the cut edge catching light */
+
+    /* neighbour occlusion (II.2.23): 6% multiply, capped at 10%, layered ON TOP
+       of the neighbour's own rest shadow, never substituted for it */
+    --cd-occlusion: #00000029;
+    --cd-occlusion-cap: #0000001a;
+
+    /* ===== gradient recipes ============================================== */
+
+    /* brushed metal (II.2.7): grain across, one anisotropic band with it.
+       Grain pitch 3px at +/-4% luminance; band brightest stop at 47%. */
+    --cd-grad-brushed:
+      repeating-linear-gradient(
+        90deg,
+        #ffffff00 0px,
+        #ffffff0f 1px,
+        #0000000f 2px,
+        #ffffff00 3px
+      ),
+      linear-gradient(
+        160deg,
+        #8e9298 0%,
+        #b4b8bd 34%,
+        #d6d9dd 47%,
+        #a8acb2 60%,
+        #7f838a 100%
+      );
+
+    /* hard mirror / chrome (II.2.8): reflects, never shades.
+       TWO hard stop pairs, at 47%/48% and 62%/63%. Nothing soft between. */
+    --cd-grad-chrome: linear-gradient(
+      178deg,
+      #f2f4f7 0%,
+      #c6cbd1 34%,
+      #6a6f76 47%,
+      #23262b 48%,
+      #3c4046 62%,
+      #969ba2 63%,
+      #dfe2e6 100%
+    );
+    --cd-rim-chrome: #ffffffa6; /* the hardest rim on the panel */
+
+    /* anodized (II.2.9): colour lives IN the metal, value travel <=8% */
+    --cd-grad-anodized: linear-gradient(
+      var(--cd-light-axis),
+      #4c5566 0%,
+      #414a5a 52%,
+      #39414f 100%
+    );
+    --cd-rim-anodized: #ffffff29; /* satin, not polish */
+    --cd-chamfer-ring: #ffffff12; /* bare metal where the anodize thins at a cut */
+
+    /* glass / acrylic (II.2.10): edge-light filament + wall ring + base density */
+    --cd-grad-glass: linear-gradient(160deg, #ffffff17 0%, #ffffff05 38%, #ffffff0d 100%);
+    --cd-glass-blur: 14px;
+    --cd-shadow-glass:
+      inset 0 1px 0 #ffffff66, /* edge-light — the polished top edge */
+      inset 0 0 0 1px #ffffff1a, /* wall — the slab's own thickness */
+      inset 0 -6px 12px -8px #00000059, /* inner shadow — density pools at the base */
+      0 1px 0 #00000047, /* contact */
+      0 10px 28px #00000038; /* ambient */
+
+    /* rubber / soft-touch (II.2.11): one broad diffuse lobe, NO specular point */
+    --cd-grad-rubber: radial-gradient(120% 90% at 32% 18%, #3b3c40 0%, #2e2f33 56%, #242529 100%);
+    --cd-grad-rubber-press: radial-gradient(
+      150% 115% at 34% 22%,
+      #35363a 0%,
+      #2a2b2f 58%,
+      #212226 100%
+    );
+
+    /* lacquer / enamel (II.2.12): near-flat body, the whole story in one
+       hard reflection ellipse at 8%/7%, sized 34% x 26% */
+    --cd-lacquer-window: radial-gradient(
+      closest-side,
+      #ffffff59 0%,
+      #ffffff21 55%,
+      #ffffff00 100%
+    );
+    --cd-lacquer-window-x: 8%;
+    --cd-lacquer-window-y: 7%;
+    --cd-lacquer-window-w: 34%;
+    --cd-lacquer-window-h: 26%;
+
+    /* ceramic (II.2.13): near-white body, one wide soft lobe, hairline shadows */
+    --cd-grad-ceramic:
+      radial-gradient(90% 70% at 30% 16%, #ffffff80 0%, #ffffff00 52%),
+      linear-gradient(var(--cd-light-axis), #f4f5f4 0%, #e3e5e4 100%);
+
+    /* carbon weave (II.2.15): 45deg twill, two crossing gradients, 8px cell.
+       EXPOSED WORKS raises the aliasing floor to a 32px cell at working
+       density; below that the twill reads as noise, so it never dresses a
+       small control. */
+    --cd-grad-carbon:
+      repeating-linear-gradient(45deg, #ffffff08 0px, #ffffff08 4px, #00000000 4px, #00000000 8px),
+      repeating-linear-gradient(
+        -45deg,
+        #ffffff05 0px,
+        #ffffff05 4px,
+        #0000000a 4px,
+        #0000000a 8px
+      ),
+      linear-gradient(var(--cd-light-axis), #22252b 0%, #191b20 100%);
+    --cd-carbon-cell-floor: 32px;
+    --cd-rim-resin: #ffffff1f; /* the resin coat catching the rim */
+
+    /* wood (II.2.16): grain with IRREGULAR stops — never metronomic.
+       Band spacing 2 / 9 / 21px inside one 24px period, +/-8% luminance. */
+    --cd-grad-wood:
+      repeating-linear-gradient(
+        93deg,
+        #00000000 0px,
+        #00000024 2px,
+        #00000000 3px,
+        #00000000 9px,
+        #0000001a 11px,
+        #00000000 12px,
+        #00000000 21px,
+        #00000029 22px,
+        #00000000 24px
+      ),
+      linear-gradient(var(--cd-light-axis), #674934 0%, #5e4230 46%, #52392a 100%);
+    --cd-rim-oiled: #ffffff1f; /* oiled sheen, never varnish glare */
+
+    /* ===== the emissive family =========================================== */
+
+    /* II.2.17 — three bloom shells at r / 4r / 12r, alpha 80% / 40% / 16%,
+       hue held constant across all three. Only the core may shift to white. */
+    --cd-bloom-alpha-1: 0.8;
+    --cd-bloom-alpha-2: 0.4;
+    --cd-bloom-alpha-3: 0.16;
+    --cd-lamp-off: radial-gradient(closest-side, #38100c 0%, #1e0907 78%, #140605 100%);
+    --cd-lamp-well:
+      inset 0 1px 2px #000000a6, /* well — the lamp sits IN the panel */
+      inset 0 -1px 0 #ffffff14; /* lip */
+    --cd-lamp-rise: 120ms; /* bloom rise on ignition (II.3.24) */
+    --cd-lamp-decay: 140ms; /* bloom decay on unlit */
+
+    /* II.2.18 — lume charges in 120ms, decays over 6000ms to a 34% floor */
+    --cd-lume-charge: 120ms;
+    --cd-lume-decay: 6000ms;
+    --cd-lume-floor: 0.34;
+
+    /* II.2.19 — edge-light: enters one edge, dead by 26% of the panel */
+    --cd-edgelight-filament: #f2f6f8a6;
+    --cd-edgelight-throw: inset 0 2px 6px -2px #f2f6f866;
+    --cd-edgelight-falloff: 26%;
+
+    /* II.2.20 — VFD bloom is LAYERED, never blurred: sharp core plus 3 shells,
+       and a standing 8% wash on the glass so the tube reads as lit between
+       digits. Off-segments ghost at 6% (II.3.20, II.3.22 agree). */
+    --cd-vfd-ghost: 0.06;
+
+    /*
+      II.2.4 — TEXTURE ROTATES, LIGHT HOLDS. The single most load-bearing split
+      in the whole material chapter: "grip knurl, indicator and engraving rotate
+      with the control's angle; the specular lobe, rim-light and all shadows
+      stay FIXED to the environment ... This one split carries most of the
+      illusion of a real part."
+
+      src/cd/material/textures.ts paints the GRIP only. Without the plate below
+      over it, a knurled cap renders as a flat disc of teeth with no sun on it —
+      a texture swatch, not a machined part. So the plate ships as a token, and
+      a rotary is grip-tile PLUS this, never a tile alone.
+    */
+    --cd-rotary-light: linear-gradient(
+      var(--cd-light-axis),
+      #ffffff38 0%,
+      #ffffff0a 34%,
+      #00000000 50%,
+      #00000045 100%
+    );
+    --cd-rotary-light-shadow:
+      inset 0 1px 0 #ffffff4d, /* rim light — the machined top edge */
+      0 1px 0 #00000066, /* contact — glues the cap to its well */
+      0 4px 8px #00000040, /* core — the cap's own mass */
+      0 14px 32px #00000026; /* ambient — the recessed well */
+
+    /* ===== microtexture (II.2.21, cap revoked by CORRECTIONARY 3.3) ====== */
+    --cd-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+    --cd-grain-strength: 0.06; /* 3x the bible's 2% default — 3.3 removed the cap */
+  }
+
+  /*
+    The grain layer. II.2.21's SURVIVING clause: it vanishes behind data.
+    Mark any read surface with data-cd-surface="data" and the layer is removed,
+    not merely faded — no grain under numerals, plots or any read face.
+  */
+  .cd-grain {
+    position: relative;
+  }
+
+  .cd-grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: var(--cd-noise);
+    opacity: var(--cd-grain-strength);
+    mix-blend-mode: overlay;
+    border-radius: inherit;
+  }
+
+  .cd-grain[data-cd-surface="data"]::after {
+    content: none;
+  }
+
+  /*
+    The two-tone focus ring (CD-BRIEF repair 3). The keyline sits immediately
+    OUTSIDE the ring so the pair always presents an edge to whatever it lands
+    on: on a cream face the near-black keyline carries (14.8:1); on carbon or
+    chassis black the blue carries (4.33-5.35:1); on the one mid-tone ground,
+    gunmetal, the two tones carry each other at 5.40:1.
+  */
+  .cd-focusable:focus-visible {
+    outline: var(--cd-focus-width) solid var(--cd-role-focus);
+    outline-offset: var(--cd-focus-offset);
+    box-shadow: 0 0 0 calc(var(--cd-focus-offset) + var(--cd-focus-width) + var(--cd-focus-keyline-width))
+      var(--cd-focus-keyline);
+  }
+
+  /*
+    Forced colours: the whole material argument is decoration the OS is entitled
+    to discard, but the ring must survive it. Restated at matched specificity so
+    it wins inside this layer.
+  */
+  @media (forced-colors: active) {
+    .cd-focusable:focus-visible {
+      outline-color: Highlight;
+      box-shadow: 0 0 0 calc(var(--cd-focus-offset) + var(--cd-focus-width) + var(--cd-focus-keyline-width))
+        ButtonText;
+    }
+
+    .cd-grain::after {
+      content: none;
+    }
+  }
+}
