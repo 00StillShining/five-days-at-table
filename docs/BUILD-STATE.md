@@ -44,3 +44,5 @@
 
 - Live URL: https://cool-sfogliatella-404a77.netlify.app (Netlify, team JustMereMortals, site id 9c35af8e-1863-4b59-a694-51495c407e05; SSO protection disabled 2026-08-04)
 - Redeploy: `npm run build && $HOME/.local/fd5-netlify/node_modules/.bin/netlify deploy --prod --dir dist` (folder is linked)
+
+- **Morrisons Starter variant shipped 2026-08-05** (commit 8d9cc4e + deploy): plan · full | starter switch in settings drawer; canonical list revision adopted (owner-ruled D0-035: 49 lines £172.57/£6.93, 22 SKUs verifiedOn 11 Aug, 6 pantryOptional); variant reviewed PASS after coherence+band fix cycle (chickpea-tin-not-contended checksum, unrounded bands both modes). 358/358 tests.
