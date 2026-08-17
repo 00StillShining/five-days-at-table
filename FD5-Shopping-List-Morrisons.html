@@ -1,0 +1,128 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FD-5 Morrisons Starter Shop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{--chassis:#c9c6bf;--panel:#f6f4ef;--panel2:#e6e2d9;--line:#d6d2c8;
+ --ink:#17171a;--ink2:#6f6c66;--ink3:#9b968d;--lcd:#101012;--lcdtx:#e9e6df;
+ --or:#ff4d00;--ye:#ffc400;--bl:#1160ff;--gr:#00a35c;--rd:#e0301e;--r:10px}
+html{-webkit-text-size-adjust:100%}
+body{background:#8f8b83;background-image:radial-gradient(circle at 30% -10%,#ada89f,#7b776f 72%);
+ font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;color:var(--ink);
+ font-size:16px;line-height:1.45;padding:22px 12px 70px}
+.mono{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums}
+.device{max-width:820px;margin:0 auto;background:var(--chassis);border-radius:20px;padding:13px;
+ box-shadow:0 1px 0 rgba(255,255,255,.55) inset,0 26px 60px rgba(0,0,0,.4)}
+.lcd{background:var(--lcd);color:var(--lcdtx);border-radius:var(--r);padding:22px 22px 18px;
+ box-shadow:0 2px 5px rgba(0,0,0,.45) inset}
+.lcd h1{font-size:38px;letter-spacing:-.035em;font-weight:800;line-height:.95}
+.lcd h1 em{font-style:normal;color:var(--or)}
+.lcd .sub{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;
+ text-transform:uppercase;color:#8e8b85;margin-top:9px}
+.tot{display:flex;gap:20px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid #2a2a2d}
+.tot div span{display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;
+ text-transform:uppercase;color:#7f7c76;margin-top:4px}
+.tot div b{font-family:'JetBrains Mono',monospace;font-size:24px;color:var(--ye);letter-spacing:-.03em}
+.hint{margin-top:14px;font-size:13px;color:#b7b3ac;line-height:1.5}
+
+.shop{margin-top:18px;background:var(--panel);border-radius:var(--r);overflow:hidden;
+ box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 2px 6px rgba(0,0,0,.18)}
+.shophead{display:flex;align-items:baseline;gap:11px;padding:15px 18px 13px;flex-wrap:wrap;
+ background:linear-gradient(180deg,#fdfcf9,var(--panel));border-bottom:1px solid var(--panel2)}
+.shophead .code{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#fff;
+ background:var(--ink);padding:5px 9px 4px;border-radius:5px}
+.shophead h2{font-size:21px;letter-spacing:-.025em;font-weight:760}
+.shophead .note{font-size:13px;color:var(--ink2);font-style:italic}
+.shophead .amt{margin-left:auto;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:19px}
+
+.aisle{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;
+ text-transform:uppercase;color:var(--ink3);font-weight:600;padding:15px 18px 7px;
+ background:#eeebe4;border-bottom:1px solid var(--panel2)}
+.row{display:flex;align-items:flex-start;gap:13px;padding:12px 18px;border-bottom:1px solid var(--panel2);
+ cursor:pointer;transition:background .12s}
+.row:hover{background:#efece5}
+.row.done{opacity:.42}
+.row.done .name,.row.done .prod{text-decoration:line-through}
+.box{flex:none;width:24px;height:24px;border-radius:6px;border:2px solid var(--ink3);
+ background:#fff;display:flex;align-items:center;justify-content:center;margin-top:1px;
+ font-size:15px;font-weight:800;color:#fff}
+.row.done .box{background:var(--gr);border-color:var(--gr)}
+.mid{flex:1;min-width:0}
+.name{font-weight:700;font-size:16px;letter-spacing:-.01em}
+.prod{font-size:13.5px;color:var(--ink2);margin-top:1px}
+.note{font-size:12.5px;color:#7a766e;margin-top:5px;line-height:1.42;
+ border-left:2px solid var(--line);padding-left:9px}
+.right{flex:none;text-align:right;min-width:96px}
+.qty{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:16px;white-space:nowrap}
+.cost{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--ink2);margin-top:2px}
+.tag{display:inline-block;margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:9px;
+ letter-spacing:.1em;text-transform:uppercase;padding:3px 7px 2px;border-radius:20px;font-weight:600}
+.t-gr{background:#d7e8dc;color:#1d6b40}.t-bl{background:#d6e2f7;color:#17458f}
+.t-ye{background:#f6e6b8;color:#7d631a}.t-or{background:#f8ddd0;color:#a8390f}
+.sum{display:flex;padding:14px 18px;font-weight:700;font-size:16px;background:#eeebe4}
+.sum .amt{margin-left:auto;font-family:'JetBrains Mono',monospace}
+
+.card{margin-top:18px;background:var(--lcd);color:var(--lcdtx);border-radius:var(--r);padding:18px 20px;
+ box-shadow:0 2px 5px rgba(0,0,0,.4) inset}
+.card h3{font-size:19px;letter-spacing:-.02em;margin-bottom:3px}
+.card .s{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;
+ text-transform:uppercase;color:#7f7c76}
+.card ul{list-style:none;margin-top:13px}
+.card li{padding:8px 0;border-top:1px solid #232326;display:flex;gap:12px;font-size:14px}
+.card li b{flex:1}
+.card li i{font-style:normal;color:#8e8b85;font-size:12.5px;flex:1}
+.card li span{font-family:'JetBrains Mono',monospace;color:var(--ye);white-space:nowrap}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--lcd);color:var(--lcdtx);
+ padding:12px 18px;display:flex;gap:16px;align-items:center;font-family:'JetBrains Mono',monospace;
+ font-size:13px;box-shadow:0 -4px 18px rgba(0,0,0,.35);z-index:9}
+.bar b{color:var(--ye);font-size:17px}
+.bar .r{margin-left:auto;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:#8e8b85}
+@media print{body{background:#fff;padding:0}.device{box-shadow:none;background:#fff;padding:0}
+ .bar{display:none}.row{break-inside:avoid}}
+</style></head><body><div class='device'><div class="lcd">
+<h1>Morrisons <em>Starter</em></h1>
+<div class="sub">FD-5 &middot; Week A &middot; 10 of 15 meals &middot; One retailer, one order &middot; 39 lines</div>
+<div class="tot">
+ <div><b>£69.83</b><span>Whole order</span></div>
+ <div><b>10</b><span>Meals covered</span></div>
+ <div><b>£6.98</b><span>Per meal, both of you</span></div>
+</div>
+<p class="hint">Everything here comes from one Morrisons order — no second shop, no market run.
+<b>5 meals are cut</b>, cleanly, because Morrisons doesn't stock what they need: all of
+Wednesday (egg sauce, efo riro, pepper soup) and Friday's breakfast (callaloo &amp; egg skillet)
+need plantain — Morrisons' plantain search turns up only plantain crisps. Wednesday's lunch also
+needs egusi, which returns zero results. Thursday's lunch needs edamame spaghetti and turkey
+breast mince — neither is stocked (turkey mince here is thigh, not breast). Everything else
+survives untouched, at real Morrisons prices, verified 11 Aug. This is meant as the on-ramp:
+fewer meals, one shop, lower total spend, so cooking from the plan is a small commitment rather
+than a big one.</p></div><div class="shop"><div class="shophead"><span class="code">M</span><h2>Morrisons</h2><span class="note">Everything — one order, one delivery slot</span><span class="amt">£69.83</span></div><div class="aisle">Meat, fish &amp; eggs</div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Chicken breast</div><div class="prod">Morrisons British Chicken Breast Fillets, 630 g</div><div class="note">Verified 11 Aug: £7.70/kg — the 630 g pack costs less in total than rounding up to the 1 kg pack (£6.99) for a 575 g need.</div><span class="tag t-bl">Freeze on arrival</span></div><div class="right"><div class="qty">1 × 630 g</div><div class="cost">£4.85</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Beef mince, 5%</div><div class="prod">Morrisons Scotch Steak Mince 5% Fat, 500 g</div><div class="note">Verified 11 Aug: £10.38/kg.</div><span class="tag t-bl">Freeze on arrival</span></div><div class="right"><div class="qty">1 × 500 g</div><div class="cost">£5.19</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Sirloin steak</div><div class="prod">Morrisons British Sirloin Steak, 200 g</div><div class="note">Tuesday&#x27;s breakfast sandwich. Verified 11 Aug: £20.00/kg — the cheapest sirloin on the site, under the frying-steak heading.</div><span class="tag t-bl">Freeze on arrival</span></div><div class="right"><div class="qty">1 × 200 g</div><div class="cost">£4.00</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Chicken breast mince</div><div class="prod">Morrisons British Chicken Mince 5% Fat, 500 g, Price Match</div><div class="note">Monday&#x27;s pizza. Verified 11 Aug: £5.18/kg.</div><span class="tag t-bl">Freeze on arrival</span></div><div class="right"><div class="qty">1 × 500 g</div><div class="cost">£2.59</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Salmon fillets</div><div class="prod">Morrisons 2 Salmon Fillets, 220 g</div><div class="note">Friday&#x27;s dish. Verified 11 Aug: £19.77/kg.</div><span class="tag t-bl">Freeze on arrival</span></div><div class="right"><div class="qty">1 × 220 g</div><div class="cost">£4.35</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Eggs</div><div class="prod">Morrisons Large Free Range Eggs, 12 pack</div><div class="note">Verified 11 Aug: unchanged at £3.30.</div><span class="tag t-gr">Store normally</span></div><div class="right"><div class="qty">1 × 600 g</div><div class="cost">£3.30</div></div></div><div class="aisle">Dairy &amp; chilled</div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Reduced-fat cheddar</div><div class="prod">Cathedral City Lighter Mature Cheddar Slices, 5 x 20 g</div><div class="note">Verified 11 Aug: £15.00/kg, but it&#x27;s one small pack either way for a 76 g need — this beats the 400 g block (£2.95) on total cost.</div><span class="tag t-gr">Store normally</span></div><div class="right"><div class="qty">1 × 100 g</div><div class="cost">£1.50</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Mozzarella</div><div class="prod">Morrisons Savers Mozzarella, 100 g</div><div class="note">Monday&#x27;s pizza, used once. Verified 11 Aug: £5.50/kg — the Savers bag is a third of the price of the branded grated bags for the same job.</div><span class="tag t-gr">Store normally</span></div><div class="right"><div class="qty">1 × 100 g</div><div class="cost">£0.55</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Parmesan</div><div class="prod">Loyd Grossman Italian Grated Cheese, 80 g</div><div class="note">Verified 11 Aug: £20.63/kg — cheapest grated Italian hard cheese on the site; a 27 g need doesn&#x27;t justify true Parmigiano Reggiano at £28/kg.</div><span class="tag t-gr">Store normally</span></div><div class="right"><div class="qty">1 × 80 g</div><div class="cost">£1.65</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Fat-free Greek yoghurt</div><div class="prod">Morrisons Fat Free Greek Style Yoghurt, 1 kg</div><div class="note">ONE tub covers both the yoghurt and the skyr lines. Verified 11 Aug: unchanged at £2.10.</div><span class="tag t-gr">Store normally</span></div><div class="right"><div class="qty">1 × 1,000 g</div><div class="cost">£2.10</div></div></div><div class="aisle">Fruit &amp; veg</div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Avocados</div><div class="prod">Morrisons Ripen At Home Avocados, 4 pack</div><div class="note">Buy hard, ripen on the counter.</div><span class="tag t-ye">Mixed ripeness</span></div><div class="right"><div class="qty">1 × 560 g</div><div class="cost">£1.50</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Salad tomatoes</div><div class="prod">Morrisons Salad Tomatoes, 750 g</div><div class="note">Counter, not fridge. Verified 11 Aug: £2.39/kg.</div><span class="tag t-gr">Store normally</span></div><div class="right"><div class="qty">1 × 750 g</div><div class="cost">£1.79</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Little gem lettuce</div><div class="prod">British Little Gem Lettuce, 2 pack</div><div class="note">The raw-salad share of the need — whole heads, never bagged leaves.</div><span class="tag t-gr">Store normally</span></div><div class="right"><div class="qty">1 × 250 g</div><div class="cost">£0.77</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Sweetheart cabbage</div><div class="prod">British Sweetheart Cabbage, each ~500 g</div><div class="note">The shredded/slaw share — a cheaper stand-in than buying more little gem for the same job.</div><span class="tag t-gr">Store normally</span></div><div class="right"><div class="qty">1 × 500 g</div><div class="cost">£0.75</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Red onions</div><div class="prod">British Red Onions, 1 kg</div><div class="note">Loose bag, not the 3-pack.</div><span class="tag t-gr">Store normally</span></div><div class="right"><div class="qty">1 × 1,000 g</div><div class="cost">£0.95</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Carrots</div><div class="prod">British Carrots, 1 kg</div><span class="tag t-gr">Store normally</span></div><div class="right"><div class="qty">1 × 1,000 g</div><div class="cost">£0.69</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Chestnut mushrooms</div><div class="prod">British Closed Cup Mushrooms, 465 g, Price Match</div><div class="note">Out of the plastic, into a paper bag. Verified 11 Aug: £3.23/kg.</div><span class="tag t-gr">Store normally</span></div><div class="right"><div class="qty">1 × 465 g</div><div class="cost">£1.50</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Red cabbage</div><div class="prod">Red Cabbage, each ~700 g</div><div class="note">Whole, not shredded — best keeper in the fridge.</div><span class="tag t-gr">Store normally</span></div><div class="right"><div class="qty">1 × 700 g</div><div class="cost">£0.85</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Cucumber</div><div class="prod">Whole Cucumber ~300 g</div><span class="tag t-gr">Store normally</span></div><div class="right"><div class="qty">1 × 300 g</div><div class="cost">£0.99</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Spring onions</div><div class="prod">Salad Onions, min 100 g</div><div class="note">Stand them in a glass of water and they&#x27;ll keep.</div><span class="tag t-gr">Store normally</span></div><div class="right"><div class="qty">1 × 100 g</div><div class="cost">£0.69</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Pineapple chunks</div><div class="prod">Pineapple Chunks in Juice, 425 g tin (260 g drained)</div><span class="tag t-gr">Store normally</span></div><div class="right"><div class="qty">1 × 260 g</div><div class="cost">£1.10</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Red peppers</div><div class="prod">Savers Mixed Peppers, 3 pack</div><div class="note">Raw — no frozen split needed for a single small shop.</div><span class="tag t-gr">Store normally</span></div><div class="right"><div class="qty">1 × 450 g</div><div class="cost">£1.79</div></div></div><div class="aisle">Freezer</div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Frozen leaf spinach</div><div class="prod">Whole Leaf Spinach, 950 g</div><div class="note">Every use here is cooked, so frozen changes nothing.</div><span class="tag t-bl">Freezer aisle</span></div><div class="right"><div class="qty">1 × 950 g</div><div class="cost">£1.50</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Frozen cauliflower florets</div><div class="prod">Cauliflower Florets, 1 kg</div><div class="note">Blitz from frozen — cheaper than ready-riced.</div><span class="tag t-bl">Freezer aisle</span></div><div class="right"><div class="qty">2 × 1,000 g</div><div class="cost">£3.00</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Frozen broccoli florets</div><div class="prod">Broccoli Florets, 900 g</div><span class="tag t-bl">Freezer aisle</span></div><div class="right"><div class="qty">1 × 900 g</div><div class="cost">£1.50</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Frozen mixed berries</div><div class="prod">Wonky Berries Mix, 1 kg</div><div class="note">One bag replaces both the raspberries and the blueberries.</div><span class="tag t-bl">Freezer aisle</span></div><div class="right"><div class="qty">1 × 1,000 g</div><div class="cost">£2.99</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Frozen sweetcorn</div><div class="prod">Morrisons Supersweet Sweetcorn, 800 g</div><div class="note">Verified 11 Aug: £1.88/kg.</div><span class="tag t-bl">Freezer aisle</span></div><div class="right"><div class="qty">1 × 800 g</div><div class="cost">£1.50</div></div></div><div class="aisle">Cupboard</div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Brown rice</div><div class="prod">Brown Basmati Rice, 1 kg</div><span class="tag t-gr">Store normally</span></div><div class="right"><div class="qty">1 × 1,000 g</div><div class="cost">£1.85</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Passata</div><div class="prod">Passata, 500 g</div><span class="tag t-gr">Store normally</span></div><div class="right"><div class="qty">1 × 500 g</div><div class="cost">£0.45</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Black beans</div><div class="prod">Black Beans in Water, 400 g tin (240 g drained)</div><span class="tag t-gr">Store normally</span></div><div class="right"><div class="qty">1 × 240 g</div><div class="cost">£0.50</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Red kidney beans</div><div class="prod">Morrisons Red Kidney Beans, 400 g tin (240 g drained), Price Match</div><div class="note">Verified 11 Aug: £1.54/kg.</div><span class="tag t-gr">Store normally</span></div><div class="right"><div class="qty">1 × 240 g</div><div class="cost">£0.37</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Chickpeas</div><div class="prod">Morrisons Chickpeas in Water, 400 g tin (240 g drained), Price Match</div><div class="note">Verified 11 Aug: £1.54/kg.</div><span class="tag t-gr">Store normally</span></div><div class="right"><div class="qty">1 × 240 g</div><div class="cost">£0.37</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Porridge oats</div><div class="prod">Morrisons Savers Porridge Oats, 1 kg, Price Match</div><span class="tag t-gr">Store normally</span></div><div class="right"><div class="qty">1 × 1,000 g</div><div class="cost">£0.85</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Peanut butter</div><div class="prod">Morrisons 100% Smooth Peanut Butter, 340 g</div><div class="note">The small jar, deliberately — a 19 g need doesn&#x27;t justify the 1 kg tub (£3.99) this shop would otherwise carry as pure stock.</div><span class="tag t-gr">Store normally</span></div><div class="right"><div class="qty">1 × 340 g</div><div class="cost">£1.80</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Tomato salsa</div><div class="prod">Mild Salsa Dip, 300 g</div><span class="tag t-gr">Store normally</span></div><div class="right"><div class="qty">1 × 300 g</div><div class="cost">£1.50</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Extra virgin olive oil</div><div class="prod">Morrisons Extra Virgin Olive Oil, 250 ml</div><div class="note">Smallest bottle on the site — no reason to carry a full litre for one shop&#x27;s 178 g of dressing use.</div><span class="tag t-gr">Store normally</span></div><div class="right"><div class="qty">1 × 230 g</div><div class="cost">£3.40</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Seeded low-carb loaf</div><div class="prod">Morrisons The Best Thick Cut Soya &amp; Linseed Loaf, 800 g</div><div class="note">Toast from frozen. Verified 11 Aug: £2.19/kg.</div><span class="tag t-bl">Freeze on arrival</span></div><div class="right"><div class="qty">1 × 800 g</div><div class="cost">£1.75</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Low-carb wraps</div><div class="prod">Mission Carb Balance Original Wraps x4, 200 g</div><div class="note">Verified 11 Aug: £1.50, on offer from £1.80.</div><span class="tag t-gr">Store normally</span></div><div class="right"><div class="qty">1 × 200 g</div><div class="cost">£1.50</div></div></div><div class="row" onclick="t(this)"><div class="box">✓</div><div class="mid"><div class="name">Panko breadcrumbs</div><div class="prod">Yutaka Panko Japanese Style Breadcrumbs, 180 g</div><div class="note">Verified 11 Aug: £8.61/kg — cheaper than the own-brand tub.</div><span class="tag t-gr">Store normally</span></div><div class="right"><div class="qty">1 × 180 g</div><div class="cost">£1.55</div></div></div><div class="sum">Morrisons — 39 lines<span class="amt">£69.83</span></div></div><div class="card"><h3>What's on the plate</h3>
+<div class="s">Kept vs cut, by day — Week A</div><ul>
+<li><b>Mon</b><i>Egg & cheese, chicken over rice, chicken-crust pizza</i><span>Kept</span></li>
+<li><b>Tue</b><i>Protein pancakes, burrito bowl, chicken katsu curry</i><span>Kept</span></li>
+<li><b>Wed</b><i>Egg sauce, efo riro, pepper soup — plantain &amp; egusi</i><span>Cut</span></li>
+<li><b>Thu</b><i>Steak &amp; egg sandwich, smash burger — lunch needs edamame</i><span>2 of 3 kept</span></li>
+<li><b>Fri</b><i>Chicken shawarma, jerk salmon — breakfast needs plantain</i><span>2 of 3 kept, breakfast cut</span></li>
+</ul></div><div class="card"><h3>The moment you get home</h3>
+<div class="s">Five minutes that decide whether the week works</div><ul>
+<li><b>Bag and label the meat</b><i>By the day it's wanted, not by type</i><span>Freezer</span></li>
+<li><b>Salmon and steak in too</b><i>Not needed until Thu/Fri</i><span>Freezer</span></li>
+<li><b>Loaf and wraps in</b><i>Toast the bread straight from frozen</i><span>Freezer</span></li>
+<li><b>Tomatoes on the counter</b><i>Cold kills the flavour</i><span>Counter</span></li>
+<li><b>Avocados out</b><i>Fridge each one the day it softens</i><span>Counter</span></li>
+<li><b>Mushrooms into paper</b><i>Straight out of the plastic</i><span>Fridge</span></li>
+</ul></div><div class="bar"><span>Left to buy</span><b id="rem">£69.83</b>
+<span id="cnt">0 / 39</span><span class="r">tap to tick</span></div></div><script>
+const COSTS=[4.85,5.19,4.0,2.59,4.35,3.3,1.5,0.55,1.65,2.1,1.5,1.79,0.77,0.75,0.95,0.69,1.5,0.85,0.99,0.69,1.1,1.79,1.5,3.0,1.5,2.99,1.5,1.85,0.45,0.5,0.37,0.37,0.85,1.8,1.5,3.4,1.75,1.5,1.55];
+const TOTAL=69.83; let done=new Set();
+function t(el){
+  const rows=[...document.querySelectorAll('.row')]; const i=rows.indexOf(el);
+  el.classList.toggle('done');
+  if(el.classList.contains('done')) done.add(i); else done.delete(i);
+  let spent=0; done.forEach(j=>spent+=COSTS[j]);
+  document.getElementById('rem').textContent='£'+(TOTAL-spent).toFixed(2);
+  document.getElementById('cnt').textContent=done.size+' / '+rows.length;
+}
+</script></body></html>
