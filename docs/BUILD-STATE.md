@@ -51,13 +51,41 @@ page-length scrolling — grouped accordion, one section open at a time.
   scope: epoxy `#9B9C9E` tops out at 2.75:1 vs white / 7.64:1 vs black, so **no
   coloured role ink can ever be legal on that body** — roles spend in weight, live is a
   lamp in its well.
-- **Pilot IN FLIGHT** (2 Opus agents, non-overlapping folders): the **chassis**
-  (BACK CHANNEL + shared enclosure vocabulary + R5/R6/R7 primitives; owns `src/app/**`,
-  `src/cd/foundry/**`, `src/cd/chassis/**`, `src/components/**`) and the **STORES perf
-  spike** (owns `src/cd/spike/**` only — a GATE whose numbers decide wave 2's shape).
-- **Next after pilot stage A lands:** TODAY (EXPOSED WORKS) + COOK (REEL LOGIC) in
-  parallel against the proven chassis. Then **wave 2 in risk order**: STORES → LIST →
-  PLAN → MEAL → SHOP. Then deploy, then the single Fable review.
+- **STORES perf spike COMPLETE** (`f192758`) — **the gate is passed and risk 1 is
+  dead.** Full material at 65 rows costs **under 1ms of style+layout per frame at 20×
+  CPU throttle** (0.9% of the frame); zero long frames at the mobile baseline in every
+  configuration, including a naive 828-shadow-layer translation. **Richness is
+  affordable — spend it.** 97% of the frame is React reconciliation, so the law is
+  *budget renders, not layers*. Seven binding rules now in CD-BRIEF's **Measured
+  performance law** section (`fd93528`), led by: **a React `dispatch` does not satisfy
+  the 16ms ack** — commit synchronously at input. The spike also found the shed ladder's
+  trigger measuring frame *intervals* as if they were *costs*, escalating to stage 3 on
+  any idle page in ~3s; repaired with tests at `fe6a23e`.
+- **Chassis COMPLETE** (`3ad2bc4`) — BACK CHANNEL rail, the language-agnostic foundry
+  (`Enclosure`/`Plate`/`Lamp`/`PressKey`/`GuardedKey`/`Tray`/`Register`), and R5/R6/R7
+  proven live. **The rail seam was the finding that mattered:** a `#121212` rail reads
+  15.34:1 on cream but **1.09:1 on REEL LOGIC's chassis black** — the one object holding
+  the product together would have vanished on four of seven screens. Repaired as a
+  two-tone edge (`#C7C9C9` filament + `#121212` keyline), worst best-of-pair **6.15:1**
+  across all eleven grounds the rail can border. 18 findings over four halt-and-repair
+  rounds. **One gotcha hits every screen builder:** `.cd-focusable:focus-visible` is in
+  `@layer cd.material`, so a control's own `box-shadow` in `cd.screen` silently
+  overwrites the focus keyline — compose via `--cd-stack`. Ladder artifact at
+  `docs/ladder/chassis-ladder.html`.
+- **TODAY (EXPOSED WORKS) + COOK (REEL LOGIC) IN FLIGHT** — 2 Opus agents, strict folder
+  ownership (`src/screens/today/**` and `src/screens/cook/**`).
+- **Next:** **wave 2 in risk order** — STORES → LIST → PLAN → MEAL → SHOP. Then deploy,
+  then the single Fable review, whose findings are **planned and not built**.
+
+### Carried defects — fix when the owning screen is rebuilt
+
+- **PLAN — `.scr-plan-card-name` fails the 44px Floor on the block axis.** Measured
+  199.6 × **24** px. It is a bare inline anchor in `src/screens/plan/plan.css:275` with no
+  `min-block-size`, no padding and no `display` change. **This is pre-existing in the
+  shipped Sol app**, not introduced by this phase — the chassis builder found it while
+  auditing targets and reported it rather than reaching outside its scope, which was
+  correct. Not repaired in place because PLAN is rebuilt from Simple in wave 2 and the
+  fix would be thrown away. **The PLAN builder must clear it.**
 
 ### Open verification gaps (carry these to the end; do not let them pass as verified)
 
