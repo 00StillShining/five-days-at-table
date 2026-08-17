@@ -1,5 +1,83 @@
 # BUILD-STATE — resume point
-*Updated 2026-08-04 (mid session 2). Read this + `git log --oneline` to resume cold.*
+*Updated 2026-08-17 (session 3, CD redesign). Read this + `git log --oneline` to resume cold.*
+
+## SESSION 3 — Council Defiance redesign (CURRENT PHASE, supersedes everything below)
+
+The Sol build shipped and was owner-approved at 92/100. **The owner's own design
+authority judges that outcome a failure** — THE CORRECTIONARY: *"Boring correctness is
+failure. Accurate + accessible + honest + forgettable = has not met the bar."* This
+phase rebuilds the **presentation layer only** as instrument-grade hardware. The
+functional spine does not move.
+
+**Read before any styling code, in this order:**
+1. `docs/CD-BRIEF.md` — the binding contract (project-local).
+2. `/Users/stillshining/correctionary/CORRECTIONARY.md` — the CONTROLLING AUTHORITY,
+   beats Council Defiance always. **It is NOT on the skill's path**, so invoking the
+   council-defiance skill normally returns the revoked doctrine with no signal that it
+   is revoked. This is the single most likely cause of silent failure on this phase.
+3. The approved plan: `~/.claude/plans/okay-now-lets-design-stateful-thompson.md`.
+
+**Execution model for this phase (supersedes PLAN §7 / D12):** builders are **Opus**
+agents, one per surface, each self-critiquing with the mandatory five-pass protocol
+before handoff. **No intermediate design reviews.** Exactly **one Fable review after
+everything is built**, walking screen-to-screen as a whole product — and **its findings
+are planned, never applied**. What to build from that plan is a separate owner decision.
+The orchestrator verifies mechanical facts at every landing; a failure there is a build
+defect returned immediately, not a review finding.
+
+**Eight surfaces, one language each** (chassis = 13 BACK CHANNEL · TODAY = 05 EXPOSED
+WORKS · PLAN = 17 RESTOMOD · MEAL = 16 FACETED VOLUME · COOK = 02 REEL LOGIC · STORES =
+10 CLEAR LID · SHOP = 11 TANGENT HORIZON · LIST = 20 IRREDUCIBLE). 28 pairs checked
+against every chapter's never-pair list; **one collision** (FACETED VOLUME × REEL LOGIC,
+physics class), fenced at screen level.
+
+**Owner rulings this phase — R5/R6/R7:** R5 no cage anywhere, COOK's lid-closed mode
+DROPPED (D6 superseded), rail present on every screen. R6 open panels survive
+navigation and reset on reload — scenes unmount on nav, so this lives in a
+**chassis-level context above the scene**, in memory, no frozen-state change. R7 no
+page-length scrolling — grouped accordion, one section open at a time.
+
+### Progress
+
+- **Foundation COMPLETE and committed** (`a85e57e`): `src/cd/**`, 28 files / 5,251
+  lines. Eight language scopes with a bridge keeping the live app deployable; cached
+  procedural material factory; ONE shared 120Hz integrator; five-cue sound bus at
+  −18dBFS; shed ladder; freshness layer. Builder's own five-pass critique found and
+  repaired 9 defects, 7 of which only rendering revealed.
+  **Orchestrator repairs at landing** (three measured Floor failures the builder
+  missed, found by sweeping every ink against every ground in every scope):
+  back-channel `--cd-label-ink` 4.23→4.59:1, restomod `--cd-muted-ink` 4.00→4.56:1,
+  plus two stale recorded figures. **THE EPOXY CEILING** is now law in the IRREDUCIBLE
+  scope: epoxy `#9B9C9E` tops out at 2.75:1 vs white / 7.64:1 vs black, so **no
+  coloured role ink can ever be legal on that body** — roles spend in weight, live is a
+  lamp in its well.
+- **Pilot IN FLIGHT** (2 Opus agents, non-overlapping folders): the **chassis**
+  (BACK CHANNEL + shared enclosure vocabulary + R5/R6/R7 primitives; owns `src/app/**`,
+  `src/cd/foundry/**`, `src/cd/chassis/**`, `src/components/**`) and the **STORES perf
+  spike** (owns `src/cd/spike/**` only — a GATE whose numbers decide wave 2's shape).
+- **Next after pilot stage A lands:** TODAY (EXPOSED WORKS) + COOK (REEL LOGIC) in
+  parallel against the proven chassis. Then **wave 2 in risk order**: STORES → LIST →
+  PLAN → MEAL → SHOP. Then deploy, then the single Fable review.
+
+### Standing law for this phase
+
+- Frozen: `src/state/**`, `src/engine/**`, `src/data/**`, `tools/**`, `data/**`.
+- **The app is live and must stay deployable at every commit** — token migration is
+  bridge-then-burn, per screen.
+- Procedural materials only. **No image assets. WebGL banned.** Amber line **2.0 MB**
+  (currently 1.25 MB).
+- **Text never renders raw over carbon weave or brushed grain** — hard fail by rule,
+  not by ratio. Every scope declares `--cd-plate` / `--cd-plate-ink` for this.
+- Gates at every landing: tsc clean · **466/466** tests · build under amber ·
+  **measured** contrast (4.5:1 text, 3:1 controls) · 44px both axes · keyboard ·
+  reduced-motion translating not deleting · 60fps · 16ms ack.
+- Ornament-without-function rule: portholes and rocker arms attach only to values whose
+  change is **user-caused or clock-continuous**. A daily stock level gets a needle and a
+  printed zone, not a spinning disc.
+
+---
+
+## Session-2 and earlier (the Sol build — historical)
 
 ## Session-2 progress (supersedes the "Next actions" list below where they conflict)
 
