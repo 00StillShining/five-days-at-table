@@ -1,0 +1,608 @@
+/*
+  src/cd/foundry/foundry.css — the enclosure vocabulary.
+
+  CORRECTIONARY 5.1: "Build enclosures, not cards. Bezels, faceplates, wells,
+  escutcheons, rails, pods, clusters, housings. If any container is a rounded
+  rectangle with padding, a border, and a soft shadow — remake it as machined
+  housing before continuing."
+
+  CD-BRIEF: "The data card (II.3.32) is RETIRED in favour of enclosures."
+  So this file has no card in it. It has six housings, and every one of them
+  is built from II.2's own recipes rather than from a border and a radius:
+
+    faceplate    tier 1 — the ground a cluster is mounted to
+    well         a recess cut INTO a faceplate (II.2.3's inverted pair)
+    pod          tier 2 — a raised housing a hand may operate
+    bezel        a ring of machined trim around an instrument
+    escutcheon   an engraved naming plate, screwed to a faceplate
+    tray         II.3.30 — travels its own size, NO scrim
+
+  LANGUAGE-AGNOSTIC BY CONSTRUCTION. Not one hex is written here. Every value
+  resolves from the `[data-cd-language]` scope the element happens to sit
+  inside (src/cd/tokens/world.css), so the same housing renders in smoked
+  glass on the chassis, cream painted steel on STORES and gunmetal on MEAL,
+  and no element ever reads tokens from two scopes (CD-BRIEF zone fence).
+
+  CASCADE. Everything lands in `@layer cd.screen` at single-class specificity,
+  so a screen's own stylesheet — same layer, imported after this one — wins any
+  overlap at equal specificity without an !important anywhere.
+*/
+
+@layer cd.screen {
+  /* ===================================================================== */
+  /* 1 · THE HOUSINGS                                                       */
+  /* ===================================================================== */
+
+  .cd-encl {
+    position: relative;
+    /* II.3.2 — every radius is a multiple of the module, never a taste value */
+    border-radius: var(--cd-module);
+    /* the sun is declared once, product-wide; a housing never re-lights itself */
+    --cd-encl-axis: var(--cd-light-axis);
+  }
+
+  /* --- faceplate: tier 1, the ground a cluster mounts to (II.2.5) -------- */
+  .cd-encl[data-cd-encl="faceplate"] {
+    background:
+      linear-gradient(
+        var(--cd-encl-axis),
+        color-mix(in srgb, #ffffff 6%, var(--cd-field)) 0%,
+        var(--cd-field) 58%,
+        color-mix(in srgb, #000000 8%, var(--cd-field)) 100%
+      );
+    box-shadow: var(--cd-shadow-t1);
+  }
+
+  /* --- well: a recess CUT INTO a faceplate ------------------------------ */
+  /* II.2.3: "Recesses invert the pair: well shadow enters at the top, lit lip
+     closes the bottom", and the well is the ONE place the full 1:2 cast
+     vector is spent. */
+  .cd-encl[data-cd-encl="well"] {
+    background: var(--cd-well, var(--cd-field));
+    box-shadow: var(--cd-shadow-well);
+  }
+
+  /* --- pod: tier 2, a raised housing a hand may operate ----------------- */
+  .cd-encl[data-cd-encl="pod"] {
+    background: linear-gradient(
+      var(--cd-encl-axis),
+      color-mix(in srgb, #ffffff 11%, var(--cd-field)) 0%,
+      var(--cd-field) 58%,
+      color-mix(in srgb, #000000 10%, var(--cd-field)) 100%
+    );
+    box-shadow: var(--cd-shadow-t2);
+  }
+
+  /* --- hero: tier 3. NOT rationed to one per screen (CORRECTIONARY 3.1) -- */
+  .cd-encl[data-cd-encl="hero"] {
+    background: linear-gradient(
+      var(--cd-encl-axis),
+      color-mix(in srgb, #ffffff 14%, var(--cd-field)) 0%,
+      var(--cd-field) 58%,
+      color-mix(in srgb, #000000 12%, var(--cd-field)) 100%
+    );
+    box-shadow: var(--cd-shadow-t3);
+  }
+
+  /* --- bezel: a ring of machined trim AROUND an instrument (II.2.8) ----- */
+  /* Chrome does not shade, it reflects. The two hard stop pairs at 47/48 and
+     62/63 are the recipe; nothing soft sits between them. */
+  .cd-encl[data-cd-encl="bezel"] {
+    border-radius: 50%;
+    padding: var(--cd-bezel-width, 0.25rem);
+    background: var(--cd-grad-chrome);
+    box-shadow:
+      inset 0 1px 0 var(--cd-rim-chrome), /* rim — the hardest on the panel */
+      inset 0 -1px 0 #00000059, /* lip */
+      0 1px 0 #00000066, /* contact */
+      0 4px 10px #00000040; /* core */
+  }
+
+  /* a bezel that is not a circle: same mirror, module radius */
+  .cd-encl[data-cd-encl="bezel"][data-cd-shape="rect"] {
+    border-radius: var(--cd-module);
+  }
+
+  /* ===================================================================== */
+  /* 2 · THE INK PLATE (CD-BRIEF ruling 5 — a HARD fail by rule)            */
+  /* ===================================================================== */
+  /*
+    "Text never renders raw over carbon weave or brushed grain. It sits on a
+    cream face, an anthracite panel, or an engraved billet plate."
+
+    tokens/type.css already ships `.cd-plate`. This is its structural half:
+    a plate is SCREWED to the faceplate under it, so it carries a contact
+    shadow of its own and a lit lower lip where the cut edge catches the sun.
+  */
+  .cd-plate-mount {
+    position: relative;
+    background: var(--cd-plate);
+    color: var(--cd-plate-ink);
+    border-radius: calc(var(--cd-module) / 2);
+    box-shadow:
+      inset 0 -1px 0 #ffffff1f, /* lip — the plate's cut edge catching light */
+      0 1px 0 #00000059, /* contact — the plate is screwed down, not floating */
+      0 2px 5px #0000002e; /* core */
+  }
+
+  /* ===================================================================== */
+  /* 3 · ESCUTCHEON — the engraved naming plate                            */
+  /* ===================================================================== */
+  /*
+    II.6.7 — the glyph is CUT INTO its plate: darker than the plate, carrying
+    the dual shadow of the one light. `.cd-engraved` in tokens/type.css is the
+    type half; this is the plate the type is cut into.
+  */
+  .cd-escutcheon {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--cd-module) / 2);
+    padding: calc(var(--cd-module) / 4) calc(var(--cd-module) * 0.75);
+    border-radius: calc(var(--cd-module) / 2);
+    background: var(--cd-plate);
+    color: var(--cd-plate-ink);
+    font-family: var(--cd-font-ui);
+    font-size: var(--cd-size-1);
+    font-weight: 600;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    white-space: nowrap;
+    box-shadow:
+      inset 0 1px 0 #ffffff14, /* rim light — the machined top edge catching the sun */
+      inset 0 -1px 0 #00000038, /* lip — the edge turning away from the light */
+      0 1px 0 #00000047; /* contact — glues the piece to what it is mounted on */
+  }
+
+  /* ===================================================================== */
+  /* 4 · LAMP — II.2.17, emissive is additive                              */
+  /* ===================================================================== */
+  /*
+    "off: a dark well behind glass — never invisible." II.3.24: "unlit, it is
+    still a lamp." The lens keeps its well and its rim in both states, so an
+    unlit lamp is never indistinguishable from a missing one.
+
+    MEASURED (this build, WCAG 2.x): lit #FF2B1A on the lens well #121213 =
+    5.00:1; lit vs the II.2.17 off-well's own mid stop #1E0907 = 5.11:1; the
+    lens rim #FFFFFF66 composited over the off well = 3.67:1 against a #121212
+    spine, so the DARK lamp is still a perceivable object.
+    --cd-role-live-dim (#76211C) is deliberately NOT used as the off fill: it
+    measures 2.80:1 against lit, under the 3:1 graphical floor.
+  */
+  .cd-lamp {
+    position: relative;
+    display: inline-block;
+    inline-size: var(--cd-lamp-size, 0.875rem);
+    block-size: var(--cd-lamp-size, 0.875rem);
+    border-radius: 50%;
+    background: var(--cd-lamp-off);
+    box-shadow: var(--cd-lamp-well);
+    transition:
+      background var(--cd-lamp-decay) var(--cd-ease-settle),
+      box-shadow var(--cd-lamp-decay) var(--cd-ease-settle);
+  }
+
+  .cd-lamp[data-cd-lit="true"] {
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, #ffffff 45%, var(--cd-lamp-hue, var(--cd-role-live))) 0%,
+      var(--cd-lamp-hue, var(--cd-role-live)) 34%,
+      color-mix(in srgb, #000000 22%, var(--cd-lamp-hue, var(--cd-role-live))) 100%
+    );
+    /* three shells at r / 4r / 12r, alpha 80% / 40% / 16%, hue held (II.2.17) */
+    box-shadow:
+      inset 0 1px 1px #00000059, /* the well survives ignition */
+      0 0 var(--cd-bloom-r) color-mix(in srgb, var(--cd-lamp-hue, var(--cd-role-live)) 80%, transparent),
+      0 0 var(--cd-bloom-4r) color-mix(in srgb, var(--cd-lamp-hue, var(--cd-role-live)) 40%, transparent),
+      0 0 var(--cd-bloom-12r) color-mix(in srgb, var(--cd-lamp-hue, var(--cd-role-live)) 16%, transparent);
+    transition:
+      background var(--cd-lamp-rise) var(--cd-ease-settle),
+      box-shadow var(--cd-lamp-rise) var(--cd-ease-settle);
+  }
+
+  /* The lens ring. Present in BOTH states — this is what makes an unlit lamp
+     still a lamp, and it is the pair's measured 3:1 channel. */
+  .cd-lamp::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    box-shadow: inset 0 0 0 1px #ffffff66;
+  }
+
+  /* II.7.7 — colour never travels alone. The lamp's word is the second
+     channel and the one that survives desaturation and forced-colours. */
+  .cd-lamp-word {
+    font-family: var(--cd-font-ui);
+    font-size: var(--cd-size-1);
+    font-weight: 600;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    color: var(--cd-muted-ink);
+  }
+
+  /* ===================================================================== */
+  /* 5 · PRESS KEY — a control that looks operable (CORRECTIONARY 5.7)      */
+  /* ===================================================================== */
+  /*
+    II.3.13 — Standard mass, commits on RELEASE inside bounds.
+    II.2.6 / II.4.3 — down-stroke lands within one rendered frame, 20ms
+    linear, no easing; release runs 80ms on the settle curve. Travel lives on
+    transform; NO box dimension changes, because layout is untouchable.
+
+    The Floor: 44px on BOTH axes, always, at every viewport.
+  */
+  .cd-key {
+    /*
+      --cd-stack is this control's own shadow list, published as a property so
+      the focus ring can COMPOSE with it instead of replacing it. See the
+      focus block at the foot of this file for why that is necessary.
+    */
+    --cd-stack: var(--cd-shadow-t2);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: calc(var(--cd-module) / 2);
+    min-inline-size: var(--cd-target-min);
+    min-block-size: var(--cd-target-min);
+    padding: calc(var(--cd-module) / 2) var(--cd-module);
+    border: 0;
+    border-radius: var(--cd-chamfer, 0.25rem);
+    background: linear-gradient(
+      var(--cd-light-axis),
+      color-mix(in srgb, #ffffff 11%, var(--cd-field)) 0%,
+      var(--cd-field) 58%,
+      color-mix(in srgb, #000000 10%, var(--cd-field)) 100%
+    );
+    color: var(--cd-ink);
+    font-family: var(--cd-font-ui);
+    font-size: var(--cd-size-2);
+    letter-spacing: var(--cd-track-body);
+    box-shadow: var(--cd-stack);
+    cursor: pointer;
+    /* release: 80ms on the settle curve (II.4.3's 60-100ms band) */
+    transition:
+      transform var(--cd-contact-release) var(--cd-ease-settle),
+      box-shadow var(--cd-contact-release) var(--cd-ease-settle);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .cd-key[data-cd-pressed="true"] {
+    /* down-stroke: ONE frame, linear, no easing (II.4.3) */
+    --cd-stack: var(--cd-shadow-t2-press);
+    transition-duration: var(--cd-contact-down);
+    transition-timing-function: linear;
+    transform: translateY(1px); /* travel on transform — layout untouched */
+  }
+
+  .cd-key[disabled] {
+    /* A disabled control is still a control: it keeps its housing and its
+       rim, and loses only its readiness. Never a vanishing target. */
+    --cd-stack: var(--cd-shadow-t1);
+    cursor: default;
+    color: var(--cd-muted-ink);
+  }
+
+  .cd-key-cap {
+    /* the cap's own engraved word */
+    font-weight: 600;
+    letter-spacing: var(--cd-track-label);
+  }
+
+  /* ===================================================================== */
+  /* 6 · TRAY — II.3.30, and it travels its OWN size with NO scrim          */
+  /* ===================================================================== */
+  /*
+    CD-BRIEF: "Trays travel their own size with no scrim — the workspace
+    beneath stays live and touchable." So there is no backdrop element in this
+    file at all, and the tray is NOT a <dialog>: a modal dialog makes the
+    workspace inert, which is the exact behaviour this ruling forbids.
+  */
+  .cd-tray {
+    position: fixed;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    max-block-size: 100dvh;
+    background: var(--cd-field);
+    color: var(--cd-ink);
+    /* tier 2 housing plus the deepest ambient — a tray is a drawer pulled out
+       of the chassis, and it casts onto the workspace it slid over (II.2.23) */
+    box-shadow:
+      inset 0 1px 0 #ffffff29, /* rim light — the machined top edge catching the sun */
+      0 0 0 1px #00000066, /* keyline — the tray's cut edge against the live workspace */
+      0 4px 8px #00000040, /* core — the hero's own mass */
+      0 24px 56px #00000029; /* ambient — the deepest throw on the panel */
+    /* II.4.23's committed tray pair, at Panel mass (spring(1.6,240,30)) */
+    transition:
+      transform var(--cd-tray-close) var(--cd-ease-settle),
+      visibility 0s linear var(--cd-tray-close);
+    visibility: hidden;
+    overscroll-behavior: contain;
+  }
+
+  .cd-tray[data-cd-open="true"] {
+    visibility: visible;
+    transition:
+      transform var(--cd-tray-open) var(--cd-ease-settle),
+      visibility 0s linear 0s;
+  }
+
+  /*
+    TRAVELLING ITS OWN SIZE, from the edge it belongs to.
+
+    --cd-tray-offset is how far the tray's own edge is held OFF the viewport
+    edge, and it exists for one reason: the owner ruling says "the rail always
+    available to leave entirely". A tray flush to the inline-start edge would
+    paint straight over the rail at a higher z-index and take the exit away.
+    The offset moves both the resting inset AND the closed transform, so a
+    closed tray is still entirely off screen rather than parked behind the rail.
+
+    The width caps at (100vw - 3rem) rather than 100vw so a strip of the live
+    workspace is visible at EVERY viewport: a tray that covers the whole screen
+    is a scrim made of opaque tray, and II.3.30's whole point is that there
+    isn't one.
+  */
+  .cd-tray[data-cd-edge="inline-start"] {
+    inset-block: var(--cd-tray-inset-block, 0) var(--cd-tray-inset-block-end, 0);
+    inset-inline-start: var(--cd-tray-offset, 0px);
+    inline-size: min(26rem, calc(100vw - 3rem));
+    transform: translateX(calc(-100% - var(--cd-tray-offset, 0px)));
+  }
+  .cd-tray[data-cd-edge="inline-end"] {
+    inset-block: var(--cd-tray-inset-block, 0) var(--cd-tray-inset-block-end, 0);
+    inset-inline-end: var(--cd-tray-offset, 0px);
+    inline-size: min(26rem, calc(100vw - 3rem));
+    transform: translateX(calc(100% + var(--cd-tray-offset, 0px)));
+  }
+  .cd-tray[data-cd-edge="block-end"] {
+    inset-inline: 0;
+    inset-block-end: var(--cd-tray-offset, 0px);
+    block-size: min(34rem, calc(92dvh - var(--cd-tray-offset, 0px)));
+    transform: translateY(calc(100% + var(--cd-tray-offset, 0px)));
+  }
+
+  :where([dir="rtl"]) .cd-tray[data-cd-edge="inline-start"] {
+    transform: translateX(calc(100% + var(--cd-tray-offset, 0px)));
+  }
+  :where([dir="rtl"]) .cd-tray[data-cd-edge="inline-end"] {
+    transform: translateX(calc(-100% - var(--cd-tray-offset, 0px)));
+  }
+
+  /*
+    The open state, declared AFTER the edge block and at (0,3,0) rather than
+    (0,2,0). The first build put it before them at equal specificity and the
+    edge rule's closed transform won: the tray reported open, was visible, and
+    sat 416px off screen. Specificity, not source order, is what makes this
+    hold when a bundler reorders anything.
+  */
+  .cd-tray[data-cd-edge][data-cd-open="true"] {
+    transform: none;
+  }
+
+  .cd-tray-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cd-module);
+    padding: var(--cd-module);
+    background: var(--cd-well, var(--cd-field));
+    box-shadow: var(--cd-shadow-well);
+  }
+
+  .cd-tray-body {
+    flex: 1;
+    min-block-size: 0;
+    overflow-y: auto;
+    padding: var(--cd-module);
+    display: flex;
+    flex-direction: column;
+    gap: var(--cd-module);
+  }
+
+  /* ===================================================================== */
+  /* 7 · REGISTER — CD-BRIEF R7, the grouped accordion                     */
+  /* ===================================================================== */
+  /*
+    "No page-length scrolling. Long registers become a grouped accordion, ONE
+    SECTION OPEN AT A TIME, with the hidden remainder printed as a number
+    (CD's own 'confess the overflow'). Only one group renders at full material
+    at a time."
+
+    II.6.24 supplies the confession itself; `.cd-overflow-count` in
+    tokens/type.css is the type. This is the mechanism.
+  */
+  .cd-register {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--cd-module) / 2);
+    /* the register never grows a page-length scroll of its own: it is a
+       column of headers, and exactly one of them is holding rows */
+  }
+
+  .cd-register-group {
+    border-radius: var(--cd-module);
+    background: var(--cd-well, var(--cd-field));
+    box-shadow: var(--cd-shadow-well);
+  }
+
+  /* CLOSED: the group is a plain machined lid — tier 1, chassis only. */
+  .cd-register-head {
+    --cd-stack: var(--cd-shadow-t1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cd-module);
+    inline-size: 100%;
+    min-block-size: var(--cd-target-min);
+    padding: calc(var(--cd-module) / 2) var(--cd-module);
+    border: 0;
+    border-radius: var(--cd-module);
+    background: linear-gradient(
+      var(--cd-light-axis),
+      color-mix(in srgb, #ffffff 8%, var(--cd-field)) 0%,
+      var(--cd-field) 100%
+    );
+    color: var(--cd-ink);
+    font-family: var(--cd-font-ui);
+    font-size: var(--cd-size-2);
+    font-weight: 600;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    text-align: start;
+    cursor: pointer;
+    box-shadow: var(--cd-stack);
+    transition:
+      transform var(--cd-contact-release) var(--cd-ease-settle),
+      box-shadow var(--cd-contact-release) var(--cd-ease-settle);
+  }
+
+  .cd-register-head[data-cd-pressed="true"] {
+    transition-duration: var(--cd-contact-down);
+    transition-timing-function: linear;
+    transform: translateY(1px);
+  }
+
+  /* OPEN: the one group at full material — tier 2, the drawer pulled out. */
+  .cd-register-group[data-cd-open="true"] > .cd-register-head {
+    --cd-stack: var(--cd-shadow-t2);
+    background: linear-gradient(
+      var(--cd-light-axis),
+      color-mix(in srgb, #ffffff 14%, var(--cd-field)) 0%,
+      var(--cd-field) 58%,
+      color-mix(in srgb, #000000 10%, var(--cd-field)) 100%
+    );
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+  }
+
+  .cd-register-rows {
+    padding: calc(var(--cd-module) / 2);
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--cd-module) / 4);
+    /* II.4.9 — structure discloses in 260ms, inside the 200-320ms band */
+    animation: cd-register-reveal var(--cd-reveal) var(--cd-ease-settle) both;
+  }
+
+  @keyframes cd-register-reveal {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .cd-register-count {
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+    letter-spacing: var(--cd-track-body);
+  }
+
+  /* the confession, at the foot of an open group */
+  .cd-register-overflow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cd-module);
+    min-block-size: var(--cd-target-min);
+    padding: calc(var(--cd-module) / 2) var(--cd-module);
+  }
+
+  /* ===================================================================== */
+  /* 7b · THE FOCUS RING, COMPOSED RATHER THAN REPLACED                     */
+  /* ===================================================================== */
+  /*
+    CD-BRIEF repair 3 commits a TWO-TONE ring — "2px #4C8FD1 + 1px #141414
+    keyline, offset 3px" — because no single focus hue clears 3:1 on every
+    ground this product paints. The blue is an `outline` and survives anywhere.
+    The KEYLINE is a box-shadow, and `.cd-focusable:focus-visible` lives in
+    @layer cd.material, which every machined control's own box-shadow (declared
+    here, in the later @layer cd.screen) silently overwrites in full.
+
+    MEASURED in the live page before this rule existed: a focused station key
+    rendered `outline: 2px solid rgb(76,143,209)` with the correct 3px offset
+    and NO keyline ring at all.
+
+    So each control publishes --cd-stack and this rule composes the keyline in
+    front of it. Screen builders: give any machined control you build a
+    --cd-stack and it inherits the whole ring for free.
+  */
+  .cd-focusable:focus-visible {
+    box-shadow:
+      0 0 0 calc(var(--cd-focus-offset) + var(--cd-focus-width) + var(--cd-focus-keyline-width))
+        var(--cd-focus-keyline),
+      var(--cd-stack, none);
+  }
+
+  @media (forced-colors: active) {
+    .cd-focusable:focus-visible {
+      outline-color: Highlight;
+      box-shadow: 0 0 0
+        calc(var(--cd-focus-offset) + var(--cd-focus-width) + var(--cd-focus-keyline-width))
+        ButtonText;
+    }
+  }
+
+  /* ===================================================================== */
+  /* 8 · REDUCED MOTION — II.4.26, translate, never delete                  */
+  /* ===================================================================== */
+  @media (prefers-reduced-motion: reduce) {
+    .cd-register-rows {
+      animation-duration: var(--cd-reduced-fade);
+    }
+    /* the tray's POSITION carries meaning — which edge it belongs to — so it
+       still travels, at 80ms linear rather than vanishing to a 0ms flash */
+    .cd-tray {
+      transition-timing-function: linear;
+    }
+  }
+
+  /* ===================================================================== */
+  /* 9 · FORCED COLOURS — the material argument is the OS's to discard      */
+  /* ===================================================================== */
+  @media (forced-colors: active) {
+    .cd-encl,
+    .cd-key,
+    .cd-register-head,
+    .cd-register-group,
+    .cd-tray,
+    .cd-escutcheon,
+    .cd-plate-mount {
+      /* every gradient and shadow above is decoration; the OS palette owns
+         the surface now. What must survive is the BOUNDARY of each housing. */
+      background: Canvas;
+      color: CanvasText;
+      box-shadow: none;
+      border: 1px solid CanvasText;
+    }
+
+    .cd-key,
+    .cd-register-head {
+    --cd-stack: var(--cd-shadow-t1);
+      border-color: ButtonText;
+      color: ButtonText;
+      background: ButtonFace;
+      forced-color-adjust: none;
+    }
+
+    .cd-lamp {
+      background: Canvas;
+      border: 1px solid CanvasText;
+      box-shadow: none;
+    }
+
+    .cd-lamp[data-cd-lit="true"] {
+      background: Highlight;
+    }
+
+    .cd-lamp::after {
+      box-shadow: none;
+    }
+  }
+}

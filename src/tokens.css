@@ -194,14 +194,16 @@ body {
   --fd-target-list: 3.5rem;
 
   /*
-    Mobile loop-rail footprint: LoopRail is fixed-bottom at <=700px on every
-    screen (even non-rail screens like LIST/MEAL) — 64px keys + rail-keys
-    padding + border, headroom-rounded, plus safe-area. Shared here so any
-    screen needing to stack its own fixed UI above the rail (e.g. LIST's
-    thumb bar, src/screens/list/list.css) uses the same one value instead of
-    duplicating the calc().
+    Mobile rail footprint. The CD Station Rail (src/cd/chassis/chassis.css) is
+    fixed to the block-end edge below 48rem on EVERY screen, at the chapter's
+    own LOWER committed footprint: 3.5rem — one 2.75rem key row plus its own
+    block padding — measured 56px in the browser, plus the safe area.
+    Kept under the original name because LIST's thumb bar
+    (src/screens/list/list.css) stacks itself above the rail off this one
+    value, and the chassis's own `.cd-workspace` reads it too — one number,
+    one place, so the two can never disagree about where the rail ends.
   */
-  --fd5-rail-footprint: calc(6rem + env(safe-area-inset-bottom, 0px));
+  --fd5-rail-footprint: calc(3.5rem + env(safe-area-inset-bottom, 0px));
 }
 
 /*
@@ -232,244 +234,26 @@ body {
 }
 
 /* ---------------------------------------------------------------------- */
-/* 4. Chassis layout                                                      */
+/* 4. Scene mount                                                          */
 /* ---------------------------------------------------------------------- */
+/*
+  R5 (owner ruling, this phase) removed COOK's lid-closed mode outright: the
+  `data-lidclosed` attribute, its two `.fd5-frame[data-lidclosed]` rules, the
+  `.fd5-rail--lidclosed` rail replacement and the `.fd5-exit-tab` it produced
+  are all gone, along with the exit tab itself. There is no cage anywhere; the
+  rail is present on every screen.
 
-.fd5-frame {
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  padding-left: env(safe-area-inset-left, 0px);
-  padding-right: env(safe-area-inset-right, 0px);
-}
-
-.fd5-topbar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding: max(0.75rem, env(safe-area-inset-top)) 1rem 0.75rem;
-  border-bottom: 1px solid var(--sol-border);
-  background: var(--sol-panel);
-}
-
-.fd5-masthead {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  min-width: 0;
-}
-
-.fd5-brand {
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  text-transform: lowercase;
-}
-
-.fd5-date {
-  font-family: var(--sol-font-data);
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-  text-transform: lowercase;
-  white-space: nowrap;
-}
-
-.fd5-status {
-  font-family: var(--sol-font-data);
-  font-size: var(--sol-text-label);
-  color: var(--sol-accent);
-  min-height: 1em; /* reserve space so it appearing/disappearing doesn't jump layout */
-}
-
-.fd5-gear {
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
-  line-height: 1;
-}
-
-.fd5-topbar-controls {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-
-.fd5-paddles {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
+  The frame, topbar, masthead, loop rail and cycle cursor that lived here are
+  gone with them — the chassis is now 13 BACK CHANNEL's Station Rail
+  (src/cd/chassis/**), which carries all of it inside ONE edge. What survives
+  here is the scene mount itself, which every not-yet-rebuilt screen still
+  renders into.
+*/
 
 .fd5-scene {
   flex: 1;
   padding: 1rem;
   min-width: 0;
-}
-
-/*
-  COOK lid-closed: the scene must be an edge-to-edge dark panel below the exit rail,
-  at every viewport. Drop the chassis's own padding and let the mounted scene's root
-  (its only direct child) stretch to fill all remaining vertical space itself.
-*/
-.fd5-frame[data-lidclosed] .fd5-scene {
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.fd5-frame[data-lidclosed] .fd5-scene > * {
-  flex: 1;
-}
-
-
-/* --- Loop rail: desktop = top row, ~48px keys --- */
-
-.fd5-rail {
-  border-bottom: 1px solid var(--sol-border);
-  background: var(--sol-panel);
-}
-
-.fd5-rail-keys {
-  list-style: none;
-  margin: 0;
-  padding: 0.5rem 1rem;
-  display: flex;
-  gap: 0.5rem;
-}
-
-.fd5-rail-cell {
-  flex: 1 1 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.25rem;
-  min-width: 0;
-}
-
-.fd5-key {
-  position: relative;
-  width: 100%;
-  min-block-size: 3rem; /* 48px desktop */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.375rem;
-  /* PHASE 3 polish (item 5): "a finer key-face material" — one very subtle
-     top-light layer, not a full gradient across every surface (Sol §4.6
-     anti-pattern: "material gradients on every surface, creating luxury
-     soup" — this is the one place on the rail it appears, restrained to a
-     narrow band near the top edge rather than the whole face). Auto-strips
-     under forced-colors (background is on the forced list; no
-     forced-color-adjust set on .fd5-key). */
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0) 45%), var(--sol-panel);
-}
-
-.fd5-key-label {
-  text-transform: lowercase;
-}
-
-.fd5-key-hotkey {
-  font-family: var(--sol-font-data);
-  font-size: 0.625rem; /* 10px — nonessential engraving band (9-11px) */
-  color: var(--sol-text-muted);
-}
-
-.fd5-key[aria-current="page"] {
-  box-shadow:
-    inset 0 2px 4px rgba(0, 0, 0, 0.35),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.06);
-}
-
-.fd5-key[aria-current="page"] .fd5-key-label {
-  font-weight: 700;
-}
-
-.fd5-key-pulse {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--sol-accent-fill);
-  animation: fd5-pulse 1.4s ease-in-out infinite;
-}
-
-@keyframes fd5-pulse {
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.35;
-    transform: scale(0.7);
-  }
-}
-
-.fd5-cycle-cursor-slot {
-  display: flex;
-  justify-content: center;
-  min-height: 10px;
-}
-
-.fd5-cycle-cursor-wrap {
-  display: inline-flex;
-}
-
-.fd5-cycle-cursor {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--sol-focus);
-}
-
-/*
-  COOK lid-closed: rail replaced by one exit tab. Kept in normal document flow
-  (right-aligned, in the rail's usual row) rather than fixed/floating so it can never
-  overlap the topbar's paddles or gear button at any viewport size.
-*/
-
-.fd5-rail--lidclosed {
-  display: flex;
-  justify-content: flex-end;
-  padding: 0.5rem 1rem;
-}
-
-.fd5-exit-tab {
-  /* THE cook control (wet hands) — PLAN §6.1 requires >=56px here, not the 44px house default. */
-  min-block-size: var(--fd-target-list);
-  padding-inline: 1.5rem;
-}
-
-/* --- Mobile: rail moves to bottom, full-width, 64px keys, safe-area padding --- */
-
-@media (max-width: 700px) {
-  .fd5-rail:not(.fd5-rail--lidclosed) {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 20;
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-    padding-left: env(safe-area-inset-left, 0px);
-    padding-right: env(safe-area-inset-right, 0px);
-  }
-
-  .fd5-rail:not(.fd5-rail--lidclosed) .fd5-key {
-    min-block-size: 4rem; /* 64px mobile */
-  }
-
-  .fd5-scene {
-    padding-bottom: var(--fd5-rail-footprint);
-  }
-
-  /* [data-lidclosed] .fd5-scene { padding: 0 } above already wins here (higher
-     specificity than this media query's plain .fd5-scene rule) — no override needed. */
 }
 
 /* ---------------------------------------------------------------------- */
@@ -692,44 +476,6 @@ body {
   overflow-y: auto;
 }
 
-.fd5-field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  margin-bottom: 1rem;
-}
-
-.fd5-field-label {
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-  text-transform: lowercase;
-}
-
-.fd5-settings-io {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem;
-  border-top: 1px solid var(--sol-border);
-  padding-top: 1rem;
-}
-
-.fd5-note {
-  flex-basis: 100%;
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-  margin: 0;
-}
-
-/* Cycle-start snap confirmation (SettingsDrawer) — sits inside the
-   flex-column `.fd5-field`, not the flex-row `.fd5-settings-io`, so
-   `.fd5-note`'s flex-basis:100% (meant to force a row-wrap there) is reset
-   here; only the shared typography is kept. */
-.fd5-settings-confirm {
-  flex-basis: auto;
-  margin-top: 0.25rem;
-}
-
 @media (max-width: 700px) {
   .fd5-sheet {
     position: fixed;
@@ -789,11 +535,6 @@ body {
 }
 
 @media (forced-colors: active) {
-  .fd5-key[aria-current="page"] {
-    box-shadow: none;
-    outline: 2px solid ButtonText;
-    outline-offset: -2px;
-  }
   .fd5-paddle-track::before {
     background: Highlight;
     forced-color-adjust: none;
@@ -810,14 +551,6 @@ body {
   .fd5-arbiter {
     border: 2px solid ButtonText;
   }
-  /* Fill-only dots vanish when forced-colors strips background-color — give them an
-     explicit system-color fill + outline so they stay visible. */
-  .fd5-cycle-cursor,
-  .fd5-key-pulse {
-    background: Highlight;
-    border: 1px solid ButtonText;
-    forced-color-adjust: none;
-  }
 }
 
 /*
@@ -829,15 +562,16 @@ body {
   else on the page prints around it with an empty chrome-shaped gap.
 */
 @media print {
-  .fd5-topbar,
-  .fd5-rail,
+  .cd-rail,
+  .cd-tray,
   .fd5-arbiter {
     display: none;
   }
 
-  .fd5-frame {
+  .cd-chassis,
+  .cd-workspace {
+    min-block-size: 0;
     padding: 0;
-    min-height: 0;
   }
 
   .fd5-scene {
@@ -886,16 +620,6 @@ body {
      masthead is the only place this token reaches a dark-scoped element,
      since every screen with its own section-head opt-in is playful-only). */
   --fd5-engrave: 0 0.5px 0 rgba(0, 0, 0, 0.65);
-}
-
-.fd5-brand {
-  text-shadow: var(--fd5-engrave);
-}
-
-@media (forced-colors: active) {
-  .fd5-brand {
-    text-shadow: none;
-  }
 }
 
 /* ---------------------------------------------------------------------- */

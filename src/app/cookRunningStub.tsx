@@ -81,6 +81,43 @@ function formatElapsed(elapsedMs: number): string {
  * is scoped to COOK's own scene rather than re-rendering the whole app.
  */
 export function useCookElapsedLabel(): string | null {
+  return useCookProgress()?.label ?? null;
+}
+
+export interface CookProgress {
+  /** "MM:SS" elapsed, pause-aware. The EXACT figure, never a rounded one. */
+  label: string;
+  /**
+   * Elapsed / the program's own totalMinutes, clamped to 0-1. Real progress
+   * against a real declared total — never a synthetic curve. When a program
+   * runs past its own total the fraction sits at 1 and the label keeps
+   * counting, because the clock is the truth and the arc has simply closed.
+   */
+  fraction: number;
+  /** The program's declared length in whole minutes, for the printed figure. */
+  totalMin: number;
+  /**
+   * Epoch ms at which this reading was computed. CORRECTIONARY 4: "every live
+   * reading shows its exact figure AND ITS AGE." Without this the chassis
+   * cannot tell a running arc from a frozen one, and a frozen arc that keeps
+   * its confident face is exactly the "silently going wrong" the honesty rule
+   * forbids. src/cd/freshness/classes.ts already declares the threshold for
+   * this class of reading: FRESHNESS.timer, 2000ms, the word NO SIGNAL.
+   */
+  takenAt: number;
+}
+
+/**
+ * The chassis's own live reading: elapsed, and elapsed as a fraction of the
+ * program's declared total. `null` when nothing is running — the chassis then
+ * has nothing to report and says nothing, which is the whole point of a
+ * language whose field "never asks for attention and never withholds a fact".
+ *
+ * Same isolation rule as the label it replaced: this hook owns a 1Hz interval,
+ * so it is called ONLY from a small leaf (the rail's Cycle Cap). React scopes
+ * the per-second re-render to that leaf; the chassis around it never ticks.
+ */
+export function useCookProgress(): CookProgress | null {
   const { state } = useStore();
   const { programId, startedAt, pausedAt, doneSteps } = state.timers;
   const running = useMemo(
@@ -97,5 +134,10 @@ export function useCookElapsedLabel(): string | null {
   }, [running]);
 
   if (!running) return null;
-  return formatElapsed(virtualElapsedMs(state.timers, nowMs));
+  const elapsedMs = virtualElapsedMs(state.timers, nowMs);
+  const program = programId != null ? getProgram(programId) : null;
+  const totalMin = program?.totalMinutes ?? 0;
+  const totalMs = totalMin * 60_000;
+  const fraction = totalMs > 0 ? Math.min(1, Math.max(0, elapsedMs / totalMs)) : 0;
+  return { label: formatElapsed(elapsedMs), fraction, totalMin, takenAt: nowMs };
 }

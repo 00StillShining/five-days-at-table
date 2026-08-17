@@ -1,0 +1,1135 @@
+/*
+  src/cd/chassis/chassis.css — 13 BACK CHANNEL, as the persistent frame.
+
+  THE ESSENCE THIS FILE IS ANSWERING TO
+  -------------------------------------
+  "This is a language for a listener, not a speaker — the murmur a good
+  listener supplies without taking the floor." The chassis must be recognisably
+  the same object on all seven screens WHILE COMPETING WITH NONE OF THEM. Every
+  decision below is that sentence, spent.
+
+  COMMITTED VALUES, all from the chapter's own section 2 registry unless a
+  supersession is noted inline:
+
+    smoked glass field   #1B1B1B   --cd-field
+    field well           #121212   --cd-well       (the rail's own spine)
+    panel rim catch      #2C2C2D   --cd-rim-catch
+    substrate ribbon     #46484B   --cd-substrate  (still coil under the glass)
+    glyph off            #8A8A8A   --cd-glyph-off
+    glyph dim            #C7C9C9   --cd-glyph-dim
+    glyph lit            #F5F7F8   --cd-glyph-lit
+    glyph hot            #FFFFFF   --cd-glyph-hot
+    label ink            #828486   --cd-label-ink  (repaired from #7C7E80)
+    live lamp            #FF2B1A   --cd-role-live  (supersedes rec dot #E1352B)
+
+  MEASURED, WCAG 2.x, over the grounds this chassis actually paints on:
+    label ink on the spine #121212 ................. 4.99 : 1   text floor 4.5
+    label ink on the field #1B1B1B ................. 4.59 : 1
+    glyph lit on the spine ......................... 17.43 : 1
+    glyph off cell on the spine ....................  5.43 : 1   graphic floor 3
+    glyph dim cell on the spine .................... 11.26 : 1
+    live lamp lit in its lens well #121213 .........  5.00 : 1
+    focus ring #4C8FD1 on the spine ................  5.49 : 1
+    key filament #FFFFFF66 over the field,
+      composited #767676, against the spine ........  4.12 : 1
+    LABEL INK ON THE RIM CATCH #2C2C2D .............  3.72 : 1  <-- FAILS
+      so no text is ever set on the rim catch; it is an EDGE, never a face.
+
+  THE FOUR MASS CLASSES, mapped to the chapter's own named springs (section 5)
+  and consumed through the foundation's shared tokens rather than redeclared:
+    --cd-glyph-spring-step   Standard  spring(1,   320, 26)  -> --cd-settle-standard 240ms
+    --cd-glyph-spring-bloom  Light     spring(0.7, 420, 25)  -> --cd-settle-light    180ms
+    --cd-glyph-spring-field  Weighted  spring(1.4, 260, 30)  -> --cd-settle-weighted 300ms
+    --cd-glyph-spring-commit Anchored  spring(1.2, 300, 38)  -> --cd-settle-anchored 320ms
+  Section 5 is absolute about the rest: "the Cycle Ring NEVER COASTS — no drag
+  axis, no coast to earn; inertia here is not merely unearned, it is
+  STRUCTURALLY IMPOSSIBLE." There is no coast physics anywhere in this file,
+  and that is precisely what lets seven other languages sit beside it safely.
+*/
+
+@layer cd.screen {
+  /* ===================================================================== */
+  /* 1 · THE CHASSIS GROUND                                                */
+  /* ===================================================================== */
+  /*
+    CORRECTIONARY 5.4: "The ground is a material ... A flat hex-color page
+    background is the enemy's ground." The chassis ground is smoked glass over
+    an aluminium frame, with the still substrate ribbon glimpsed through it —
+    the chapter's own material, and the reason it is STILL is section 2's:
+    "what it shows beneath it never moves on its own."
+  */
+  .cd-chassis {
+    --cd-rail-footprint: 4.5rem; /* the committed footprint; see section 3 */
+    --cd-rail-inner: calc(var(--cd-rail-footprint) - var(--cd-module));
+    min-block-size: 100dvh;
+    background: var(--cd-well);
+    color: var(--cd-ink);
+    font-family: var(--cd-font-ui);
+  }
+
+  .cd-chassis *,
+  .cd-chassis *::before,
+  .cd-chassis *::after {
+    box-sizing: border-box;
+  }
+
+  /* The workspace. The scene's own language scope lives inside it, untouched. */
+  .cd-workspace {
+    min-block-size: 100dvh;
+    padding-inline-start: var(--cd-rail-footprint);
+    padding-inline-end: env(safe-area-inset-right, 0px);
+  }
+
+  /* ===================================================================== */
+  /* 2 · THE RAIL — one edge, and one edge only                            */
+  /* ===================================================================== */
+  /*
+    THE SINGLE-EDGE FENCE (owner ruling, and the chapter's own terms).
+    This rail is EMISSIVE against seven mostly-pigment screens. A dark
+    emissive strip on two or more edges of a light field IS a frame around the
+    content, and a frame around the content is the cage failure R5 exists to
+    delete. So the masthead, the paddles, the settings summons and the live
+    lamp all live INSIDE this one strip. There is no top bar.
+  */
+  .cd-rail {
+    position: fixed;
+    z-index: 25;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: calc(var(--cd-module) / 2);
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: var(--cd-rail-footprint);
+    padding-block: calc(var(--cd-module) / 2 + env(safe-area-inset-top, 0px))
+      calc(var(--cd-module) / 2 + env(safe-area-inset-bottom, 0px));
+    padding-inline: calc(var(--cd-module) / 2);
+
+    /*
+      THE MATERIAL: smoked glass, a still substrate ribbon, an aluminium frame.
+
+      REPAIR (round 1, defect 3). The first build painted the ribbon at 26% alpha
+      on a 9px period — a 0.9% luminance excursion, invisible at 1x and gone at
+      8px blur. CORRECTIONARY 3.3 revoked the intensity cap outright: "visible,
+      felt texture ... The only test is 'does this read as the material it claims
+      to be?' — never 'is it quiet enough?'". So the ribbon runs at the full
+      committed --cd-substrate #46484B at 55% alpha on a 2px/10px period. It is
+      still 1.88:1 against the field and therefore still carries no reading,
+      exactly as section 2 requires of it: "a STILL ribbon of substrate, not a
+      mechanism caught in motion."
+    */
+    background:
+      /* the rim catch — ONE top-left edge highlight, per II.2.3's single sun */
+      linear-gradient(var(--cd-light-axis), var(--cd-rim-catch) 0%, #00000000 16%),
+      /* the coil traces, read THROUGH the glass */
+      repeating-linear-gradient(
+        90deg,
+        #00000000 0px,
+        color-mix(in srgb, var(--cd-substrate) 55%, transparent) 1px,
+        color-mix(in srgb, var(--cd-substrate) 55%, transparent) 2px,
+        #00000000 3px,
+        #00000000 10px
+      ),
+      /* their own shadow, half a pitch over, so the traces sit UNDER the slab */
+      repeating-linear-gradient(
+        90deg,
+        #00000000 0px,
+        #00000059 3px,
+        #00000059 4px,
+        #00000000 5px,
+        #00000000 10px
+      ),
+      var(--cd-grad-glass),
+      var(--cd-well);
+
+    /*
+      THE SEAM — two-tone, and the construction is the focus ring's own.
+      No single value clears 3:1 against every scene ground this rail borders:
+      #121212 reaches 15.34:1 on cream painted steel but 1.09:1 on REEL LOGIC's
+      chassis black. So the seam presents BOTH an edge that carries on light
+      grounds and one that carries on dark. MEASURED best-of-pair across all
+      eleven grounds the rail can touch — worst case gunmetal #3E4148 at
+      6.15:1, and the two tones read 11.26:1 against each other.
+    */
+    box-shadow:
+      /* II.2.10's glass: the slab's own wall, and density pooling at its base */
+      inset 0 0 0 1px #ffffff1a, /* wall — the slab has thickness */
+      inset 0 1px 0 #ffffff66, /* edge-light filament on the polished top */
+      inset -6px 0 12px -8px #00000059, /* inner shadow — base density */
+      1px 0 0 0 var(--cd-glyph-dim), /* filament — carries on dark grounds  */
+      2px 0 0 0 var(--cd-well), /* keyline  — carries on light grounds */
+      4px 0 12px #00000047; /* the rail's own ambient onto the scene */
+  }
+
+  .cd-rail-stations {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--cd-module) / 2);
+    inline-size: 100%;
+    /*
+      REPAIR (round 1, defect 4). The column is a CHANNEL MILLED INTO the rail
+      and the keys stand proud of it — II.2.3's recess pair, shadow entering
+      high and the lit lip closing low, which is the one place the full 1:2 cast
+      vector is spent. Without it the five keys read as a list of words rather
+      than as a column of keys.
+    */
+    padding: calc(var(--cd-module) / 4);
+    border-radius: 0.25rem;
+    background: color-mix(in srgb, #000000 34%, var(--cd-well));
+    box-shadow: var(--cd-shadow-well);
+    /*
+      A short viewport scrolls the STATION COLUMN, never the page. R7's "no
+      page-length scrolling" is about the workspace; a rail that could not
+      reach its last station on a 480px-tall window would be a cage of a
+      different kind.
+    */
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+  }
+
+  .cd-rail-stations::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* ===================================================================== */
+  /* 3 · THE STATION KEY — direct access, not a step cycle                 */
+  /* ===================================================================== */
+  /*
+    DECLARED DEPARTURE from section 3's Cycle Ring. The chapter's rotary steps
+    one station forward per press and wraps; this rail addresses every station
+    DIRECTLY. A five-room product where reaching STORES from TODAY costs three
+    presses is a cage made of latency, and R5 forbids cages. What survives from
+    the Cycle Ring is its READOUT: the ring's points, straightened into a
+    column, one lit at the seated station.
+
+    THE FLOOR: 2.75rem (44px) minimum on BOTH axes. At the committed 4.5rem
+    footprint the key measures 64 x 44 CSS px at rest and never shrinks.
+
+    IDENTIFICATION, measured rather than assumed. The chapter's own Answer Key
+    is "one flush button giving no sign it is a button until touched" — a face
+    at #1B1B1B on a field at #1B1B1B, which is 1.00:1 and cannot clear the 3:1
+    Floor at any size. Two channels carry it instead, and both were measured:
+      the engraved word ...... #828486 on the spine ...... 4.99 : 1
+      the glass filament ..... #FFFFFF66 composited ...... 4.12 : 1
+    The key's own gradient is material; it is not asked to carry the report.
+  */
+  .cd-station {
+    /*
+      REPAIR (round 1, defect 1). The first build ran seat point, word and
+      hotkey digit across one horizontal grid inside a 4.5rem rail; measured,
+      "STORES" overflowed by 13px and its digit landed 9px outside the rail.
+      The seat point and the digit are now off the run — the point sits at the
+      leading edge like an indicator beside a legend, and the digit sits in the
+      keycap's top corner, which is where a real key's secondary legend is
+      printed. The word gets the whole 56px run and the widest of them measures
+      48.5px at --cd-track-body.
+    */
+    position: relative;
+    display: flex;
+    align-items: center;
+    inline-size: 100%;
+    min-block-size: var(--cd-target-min);
+    /* 0.625rem clears the seat point at inset-inline-start 0.25rem; the 48px
+       text run that leaves is measured against the widest real label. */
+    padding-inline: 0.625rem 0.125rem;
+    padding-block: calc(var(--cd-module) / 4);
+    border: 0;
+    border-radius: 0.25rem; /* II.3.2 — half the module */
+    background: linear-gradient(
+      var(--cd-light-axis),
+      color-mix(in srgb, #ffffff 7%, var(--cd-field)) 0%,
+      var(--cd-field) 62%,
+      color-mix(in srgb, #000000 22%, var(--cd-field)) 100%
+    );
+    color: var(--cd-label-ink);
+    text-align: start;
+    cursor: pointer;
+    --cd-stack:
+      inset 0 1px 0 #ffffff66, /* the glass filament — the measured 4.12:1 */
+      inset 0 0 0 1px #ffffff12, /* chamfer — bare metal where the cut thins (II.2.9) */
+      inset 0 -1px 0 #00000066, /* lip — the edge turning from the light */
+      0 1px 0 #00000066, /* contact — the key is seated in the channel */
+      0 2px 5px #0000003d, /* core — the key's own mass */
+      0 8px 18px #00000021; /* ambient — the channel it stands in */
+    box-shadow: var(--cd-stack);
+    transition:
+      transform var(--cd-contact-release) var(--cd-ease-settle),
+      box-shadow var(--cd-contact-release) var(--cd-ease-settle),
+      background var(--cd-detent-seat) var(--cd-ease-snap);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* II.4.3 — the down-stroke lands in one frame, linear, no easing. */
+  .cd-station[data-cd-pressed="true"] {
+    transition-duration: var(--cd-contact-down);
+    transition-timing-function: linear;
+    transform: translateY(1px);
+    --cd-stack:
+      inset 0 1px 0 #ffffff4d, /* rim light — the machined top edge catching the sun */
+      inset 0 0 0 1px #ffffff12, /* chamfer — bare metal where the anodize thins at a cut (II.2.9) */
+      inset 0 -1px 0 #00000066, /* lip — the edge turning away from the light */
+      0 1px 0 #00000066, /* contact NEVER moves — II.2.6, by law */
+      0 1px 2px #0000003d, /* core halves — the surface nears the panel */
+      0 3px 8px #00000021; /* ambient tightens */
+  }
+
+  /*
+    THE SEATED STATION. Section 3's detent seat lands inside the canonical
+    80-160ms window; --cd-detent-seat is 120ms on --cd-ease-snap ("late,
+    sharp, committed"). The seated key sits DOWN in its well and stays there —
+    a latch holding the pressed grammar as the state readout (II.2.6).
+  */
+  .cd-station[aria-current="page"] {
+    background: linear-gradient(
+      var(--cd-light-axis),
+      color-mix(in srgb, #000000 26%, var(--cd-field)) 0%,
+      var(--cd-field) 100%
+    );
+    --cd-stack:
+      inset 0 2px 4px #000000a6, /* the key is held down in its socket */
+      inset 0 0 0 1px #ffffff12, /* the chamfer survives the press */
+      inset 0 -1px 0 #ffffff29, /* the socket's own lit lower lip */
+      0 1px 0 #00000066; /* contact — glues the piece to what it is mounted on */
+    color: var(--cd-glyph-lit); /* 16.03:1 on the field */
+  }
+
+  .cd-station-label {
+    font-family: var(--cd-font-ui);
+    font-size: var(--cd-size-1); /* 13px — II.6.10's label floor */
+    font-weight: 600;
+    /*
+      DECLARED DEPARTURE from II.6.8 ("tracking widening as size falls").
+      Measured: at 0.06em the widest word overflowed the committed 4.5rem rail
+      by 13px; at --cd-track-body (0.02em) it still clipped by 1px once the
+      station channel's own milled padding was added. At 0 it measures 46.9px
+      inside a 48px run. A clipped word carries no information at any tracking,
+      and the rail's footprint is committed, so the tracking is what gives.
+    */
+    letter-spacing: 0;
+    text-transform: uppercase;
+    white-space: nowrap;
+    /* II.6.7 — engraved: the dual shoulder the one light casts on a cut */
+    text-shadow:
+      0 -1px 0 #00000059,
+      0 1px 0 #ffffff1a;
+  }
+
+  /* the keycap's secondary legend, printed in its own corner */
+  .cd-station-digit {
+    position: absolute;
+    inset-block-start: 2px;
+    inset-inline-end: 3px;
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-size: var(--cd-micro-ceiling); /* 11px — II.6.11's nonessential band */
+    line-height: 1;
+    color: var(--cd-label-ink); /* 4.59:1 on the field */
+  }
+
+  .cd-station[aria-current="page"] .cd-station-digit {
+    color: var(--cd-glyph-dim);
+  }
+
+  /* ---- the seat point: the Cycle Ring's own light, straightened --------- */
+  /*
+    Section 2: "escalation is spent as AREA AND DUTY CYCLE, never as a second
+    hue." Three duty steps of one white, and nothing here bends toward another
+    colour to mean something else:
+      off        #8A8A8A   4.99:1 on the key face — a station that is neither
+      suggested  #C7C9C9  10.36:1 — the weekday's own cursor, advisory only
+      seated     #F5F7F8  16.03:1 — where the operator actually is
+    The suggested and seated steps measure 1.55:1 against each other, which is
+    why NEITHER travels alone: the seated key also sits down in its socket, and
+    the suggested station also prints its suggestion for assistive tech.
+  */
+  .cd-station-seat {
+    position: absolute;
+    inset-inline-start: 0.25rem;
+    inset-block-start: 50%;
+    translate: 0 -50%;
+    inline-size: 0.375rem;
+    block-size: 0.375rem;
+    border-radius: 50%;
+    background: var(--cd-glyph-off);
+    /* Light mass — spring(0.7, 420, 25) — "a cell's own rise, the fastest
+       catch here: a report lagging its own pattern lies about when the thing
+       happened." */
+    transition:
+      background var(--cd-settle-light) var(--cd-ease-settle),
+      box-shadow var(--cd-settle-light) var(--cd-ease-settle);
+  }
+
+  .cd-station[data-cd-suggested="true"] .cd-station-seat {
+    background: var(--cd-glyph-dim);
+  }
+
+  .cd-station[aria-current="page"] .cd-station-seat {
+    background: var(--cd-glyph-lit);
+    /* three shells at r / 4r / 12r, alpha 80/40/16, hue held (II.2.17) */
+    box-shadow:
+      /* II.2.17 — three shells at r / 4r / 12r, alpha 80% / 40% / 16%,
+         hue held constant across all three */
+      0 0 var(--cd-bloom-r) color-mix(in srgb, var(--cd-glyph-lit) 80%, transparent),
+      0 0 var(--cd-bloom-4r) color-mix(in srgb, var(--cd-glyph-lit) 40%, transparent),
+      0 0 var(--cd-bloom-12r) color-mix(in srgb, var(--cd-glyph-lit) 16%, transparent);
+  }
+
+  /* ===================================================================== */
+  /* 4 · THE GLYPH FIELD                                                   */
+  /* ===================================================================== */
+  .cd-glyphset {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: calc(var(--cd-module) / 4);
+  }
+
+  .cd-glyphfield {
+    display: grid;
+    grid-template-columns: repeat(var(--cd-glyph-n), 1fr);
+    gap: calc(var(--cd-glyph-size) / var(--cd-glyph-n) * var(--cd-glyph-gap-ratio));
+    inline-size: var(--cd-glyph-size);
+    block-size: var(--cd-glyph-size);
+    padding: calc(var(--cd-module) / 4);
+    border-radius: 50%;
+    background: radial-gradient(closest-side, #16161600 62%, #000000a6 100%), var(--cd-well);
+    /* the dome: a glass slab over the lattice (II.2.10's wall + base density) */
+    box-shadow:
+      inset 0 1px 0 #ffffff66, /* edge-light filament on the polished top edge */
+      inset 0 0 0 1px #ffffff1a, /* wall — the slab's own thickness */
+      inset 0 -6px 12px -8px #00000059, /* inner shadow — density at the base */
+      0 1px 0 #00000047, /* contact — glues the piece to what it is mounted on */
+      0 4px 10px #00000047; /* core — the dome's own mass */
+  }
+
+  /*
+    THE FIELD'S OWN BLOOM. II.2.24 scales per-lamp shells down when emissive
+    elements crowd; at a 6.9px cell pitch a per-cell 12r shell would collapse
+    to 0.29px and vanish. So the bloom is carried by the FIELD, which is what
+    a diffuser over an LED matrix actually does — and it is bound to a live
+    condition (at least one lit cell), never ambient. Section 9's "ambient
+    bloom" failure is a field that glows with nothing behind it.
+  */
+  .cd-glyphfield[data-cd-lit="true"] {
+    box-shadow:
+      inset 0 1px 0 #ffffff66, /* rim light — the machined top edge catching the sun */
+      inset 0 0 0 1px #ffffff1a, /* wall — the glass slab's own thickness (II.2.10) */
+      inset 0 -6px 12px -8px #00000059, /* inner shadow — density pools at the slab's base (II.2.10) */
+      0 1px 0 #00000047, /* contact — glues the piece to what it is mounted on */
+      /* II.2.17 — three shells at r / 4r / 12r, alpha 80% / 40% / 16%,
+         hue held constant across all three */
+      0 0 var(--cd-bloom-r) color-mix(in srgb, var(--cd-glyph-lit) 80%, transparent),
+      0 0 var(--cd-bloom-4r) color-mix(in srgb, var(--cd-glyph-lit) 40%, transparent),
+      0 0 var(--cd-bloom-12r) color-mix(in srgb, var(--cd-glyph-lit) 16%, transparent);
+  }
+
+  .cd-glyphcell {
+    aspect-ratio: 1;
+    border-radius: 22%;
+    background: var(--cd-glyph-off);
+    /* Light mass again — the report rises at the fastest spring in the set. */
+    transition: background var(--cd-settle-light) var(--cd-ease-settle);
+  }
+
+  .cd-glyphcell[data-cd-cell="dead"] {
+    background: transparent;
+  }
+  .cd-glyphcell[data-cd-cell="dim"] {
+    background: var(--cd-glyph-dim);
+  }
+  .cd-glyphcell[data-cd-cell="lit"] {
+    background: var(--cd-glyph-lit);
+  }
+  .cd-glyphcell[data-cd-cell="hot"] {
+    background: var(--cd-glyph-hot);
+  }
+
+  /* the exact figure, on the world's own ink plate */
+  .cd-glyphfigure {
+    display: block;
+    inline-size: fit-content;
+    margin-inline: auto;
+    padding: 1px calc(var(--cd-module) / 2);
+    font-size: var(--cd-size-4); /* 20px */
+    line-height: var(--cd-leading-tight);
+    letter-spacing: 0;
+    text-align: center;
+  }
+
+  /* ===================================================================== */
+  /* 5 · THE CYCLE CAP AND THE LIVE LAMP                                   */
+  /* ===================================================================== */
+  /*
+    THE CYCLE CAP — the Answer Key. A real <button>, so it carries the whole
+    press grammar: the ≤1-frame down-stroke bloom, the 60-100ms release settle,
+    the paired haptic, and keyboard operation. Section 3 retires the AUDIBLE
+    half of contact for this key and this key alone stands for the rest of the
+    chassis: it answers "in the two channels every platform actually grants —
+    a same-frame bloom on its own face and haptic wherever the hardware carries
+    it, neither one standing alone."
+  */
+  .cd-cap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: calc(var(--cd-module) / 4);
+    inline-size: 100%;
+    min-block-size: var(--cd-target-min);
+    padding: calc(var(--cd-module) / 2) calc(var(--cd-module) / 4);
+    border: 0;
+    border-radius: 0.25rem;
+    background: linear-gradient(
+      var(--cd-light-axis),
+      color-mix(in srgb, #ffffff 7%, var(--cd-field)) 0%,
+      var(--cd-field) 62%,
+      color-mix(in srgb, #000000 22%, var(--cd-field)) 100%
+    );
+    color: var(--cd-label-ink);
+    cursor: pointer;
+    --cd-stack:
+      inset 0 1px 0 #ffffff66, /* the glass filament — measured 4.12:1 */
+      inset 0 0 0 1px #ffffff12, /* chamfer — bare metal at the cut (II.2.9) */
+      inset 0 -1px 0 #00000066, /* lip */
+      0 1px 0 #00000066, /* contact */
+      0 2px 5px #0000003d, /* core */
+      0 8px 18px #00000021; /* ambient */
+    box-shadow: var(--cd-stack);
+    transition:
+      transform var(--cd-contact-release) var(--cd-ease-settle),
+      box-shadow var(--cd-contact-release) var(--cd-ease-settle);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .cd-cap[data-cd-pressed="true"] {
+    transition-duration: var(--cd-contact-down);
+    transition-timing-function: linear;
+    transform: translateY(1px);
+    --cd-stack:
+      inset 0 1px 0 #ffffff4d, /* rim light — the machined top edge catching the sun */
+      inset 0 0 0 1px #ffffff12, /* chamfer — bare metal where the anodize thins at a cut (II.2.9) */
+      inset 0 -1px 0 #00000066, /* lip — the edge turning away from the light */
+      0 1px 0 #00000066, /* contact NEVER moves — II.2.6 */
+      0 1px 2px #0000003d, /* core — halved, the surface has neared the panel */
+      0 3px 8px #00000021; /* ambient — tightened under the press */
+  }
+
+  .cd-cap[aria-expanded="true"] {
+    background: linear-gradient(
+      var(--cd-light-axis),
+      color-mix(in srgb, #000000 26%, var(--cd-field)) 0%,
+      var(--cd-field) 100%
+    );
+    --cd-stack:
+      inset 0 2px 4px #000000a6, /* well — the control held down in its socket */
+      inset 0 0 0 1px #ffffff12, /* chamfer — bare metal where the anodize thins at a cut (II.2.9) */
+      inset 0 -1px 0 #ffffff29, /* lip — the edge turning away from the light */
+      0 1px 0 #00000066; /* contact — glues the piece to what it is mounted on */
+  }
+
+  .cd-cap-mark {
+    font-family: var(--cd-font-ui);
+    font-size: var(--cd-size-1);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cd-label-ink); /* 4.99:1 on the spine */
+    text-shadow:
+      0 -1px 0 #00000059,
+      0 1px 0 #ffffff1a;
+  }
+
+  /*
+    REPAIR (round 1, defect 2). "mon 17 aug" measured 78px inside a 72px rail
+    and its last glyph was cut. The date now prints on two lines — weekday, then
+    day and month — so nothing is clipped at the committed footprint. Widest
+    line measures 44px inside the 56px run.
+  */
+  .cd-cap-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-size: var(--cd-size-1);
+    line-height: 1.15;
+    color: var(--cd-label-ink);
+    white-space: nowrap;
+  }
+
+  .cd-lamp-set {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--cd-module) / 2);
+  }
+
+  .cd-rail .cd-lamp-set {
+    inline-size: 100%;
+    justify-content: center;
+    min-block-size: 1.25rem;
+  }
+
+  .cd-rail .cd-lamp {
+    --cd-lamp-size: 0.75rem;
+    /* the lens well is the live role's OWN well, so 5.00:1 holds regardless
+       of what surface the lamp happens to be mounted near (world.css) */
+    background: var(--cd-lamp-off);
+  }
+
+  .cd-rail .cd-lamp-word {
+    font-size: var(--cd-micro-ceiling);
+    letter-spacing: var(--cd-track-micro);
+    color: var(--cd-label-ink);
+  }
+
+  /* ===================================================================== */
+  /* 6 · THE STATION TRAY                                                  */
+  /* ===================================================================== */
+  /*
+    Section 4's Tool Menu archetype: "A long-press past 350ms with no active
+    station selected opens a Foundry tray from the Answer Key's own position,
+    holding the daily/weekly/rare tiers." The settings surface goes HERE, in
+    this language, rather than becoming a ninth language of its own.
+
+    Reach, per screencraft/02: DAILY on the faceplate (the five stations, one
+    press each, on the rail itself) - WEEKLY one disclosure away (week, cover,
+    plan variant, serve time, cycle start, sound: this tray) - RARE behind an
+    explicit summons of its own (the danger tier at the foot, guarded).
+  */
+  /*
+    THE STATION TRAY'S OWN GEOMETRY. It is held off the inline-start edge by
+    exactly the rail's footprint, so the rail stays exposed and operable for the
+    whole time the tray is up — "the rail always available to leave entirely".
+  */
+  .cd-station-tray {
+    --cd-tray-offset: var(--cd-rail-footprint);
+  }
+
+  .cd-tray-title {
+    margin: 0;
+    font-size: var(--cd-size-2);
+    color: var(--cd-glyph-lit);
+    letter-spacing: var(--cd-track-label);
+  }
+
+  .cd-tray-close-read {
+    display: flex;
+    justify-content: center;
+    padding-block: var(--cd-module);
+  }
+
+  .cd-field-row {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--cd-module) / 2);
+    padding: var(--cd-module);
+    border-radius: var(--cd-module);
+    background: var(--cd-well);
+    box-shadow: var(--cd-shadow-well);
+  }
+
+  .cd-field-label {
+    font-family: var(--cd-font-ui);
+    font-size: var(--cd-size-1);
+    font-weight: 600;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    color: var(--cd-label-ink); /* 4.99:1 on the well */
+  }
+
+  .cd-field-note {
+    margin: 0;
+    font-family: var(--cd-font-data);
+    font-size: var(--cd-size-1);
+    color: var(--cd-label-ink);
+    line-height: 1.4;
+  }
+
+  .cd-text-input {
+    min-block-size: var(--cd-target-min);
+    inline-size: 100%;
+    padding: 0 var(--cd-module);
+    border: 0;
+    border-radius: 0.25rem;
+    background: var(--cd-field);
+    color: var(--cd-glyph-lit); /* 16.03:1 */
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-size: var(--cd-size-3);
+    --cd-stack: var(--cd-shadow-well);
+    box-shadow: var(--cd-stack);
+  }
+
+  /* ---- the seat selector: two stations, addressed by press ------------- */
+  /*
+    A two-position control in a language whose "grammar is total in its
+    restriction: a short press advances one step ... and nothing else exists".
+    So it is not a slider and not a switch that travels — it is a two-station
+    Cycle Ring with an Answer Key, and the seat point says which is seated.
+    role="switch" keeps the platform semantics honest for assistive tech while
+    the visible grammar stays this language's own.
+  */
+  .cd-seats {
+    display: flex;
+    gap: calc(var(--cd-module) / 2);
+    inline-size: 100%;
+  }
+
+  .cd-seat {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: calc(var(--cd-module) / 4);
+    min-block-size: var(--cd-target-min);
+    min-inline-size: var(--cd-target-min);
+    padding: calc(var(--cd-module) / 2);
+    border: 0;
+    border-radius: 0.25rem;
+    background: linear-gradient(
+      var(--cd-light-axis),
+      color-mix(in srgb, #ffffff 7%, var(--cd-field)) 0%,
+      var(--cd-field) 62%,
+      color-mix(in srgb, #000000 22%, var(--cd-field)) 100%
+    );
+    color: var(--cd-label-ink);
+    font-family: var(--cd-font-ui);
+    font-size: var(--cd-size-1);
+    font-weight: 600;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    cursor: pointer;
+    --cd-stack:
+      inset 0 1px 0 #ffffff66, /* rim light — the machined top edge catching the sun */
+      inset 0 -1px 0 #00000066, /* lip — the edge turning away from the light */
+      0 1px 0 #00000066, /* contact — glues the piece to what it is mounted on */
+      0 2px 5px #0000003d; /* core — the piece's own mass */
+    box-shadow: var(--cd-stack);
+    transition:
+      transform var(--cd-contact-release) var(--cd-ease-settle),
+      box-shadow var(--cd-detent-seat) var(--cd-ease-snap),
+      background var(--cd-detent-seat) var(--cd-ease-snap);
+  }
+
+  .cd-seat[data-cd-seated="true"] {
+    background: linear-gradient(
+      var(--cd-light-axis),
+      color-mix(in srgb, #000000 26%, var(--cd-field)) 0%,
+      var(--cd-field) 100%
+    );
+    color: var(--cd-glyph-lit);
+    --cd-stack:
+      inset 0 2px 4px #000000a6, /* well — the control held down in its socket */
+      inset 0 -1px 0 #ffffff29, /* lip — the edge turning away from the light */
+      0 1px 0 #00000066; /* contact — glues the piece to what it is mounted on */
+  }
+
+  .cd-seat-point {
+    inline-size: 0.375rem;
+    block-size: 0.375rem;
+    border-radius: 50%;
+    background: var(--cd-glyph-off);
+    transition: background var(--cd-settle-light) var(--cd-ease-settle);
+  }
+
+  .cd-seat[data-cd-seated="true"] .cd-seat-point {
+    background: var(--cd-glyph-lit);
+    box-shadow:
+      /* II.2.17 — three shells at r / 4r / 12r, alpha 80% / 40% / 16%,
+         hue held constant across all three */
+      0 0 var(--cd-bloom-r) color-mix(in srgb, var(--cd-glyph-lit) 80%, transparent),
+      0 0 var(--cd-bloom-4r) color-mix(in srgb, var(--cd-glyph-lit) 40%, transparent),
+      0 0 var(--cd-bloom-12r) color-mix(in srgb, var(--cd-glyph-lit) 16%, transparent);
+  }
+
+  /* ---- the danger tier (screencraft/02: "Group by consequence") -------- */
+  .cd-danger-zone {
+    padding-block-start: calc(var(--cd-module) / 2);
+    /* "sits below a rule line of its own, keyed in the danger role" —
+       #D96A61 measures 3.01:1 worst case on a dark field, the graphical floor */
+    border-block-start: 1px solid var(--cd-role-danger-zone-dark);
+  }
+
+  /* the irreversible group's lid keeps the danger word even when closed, so
+     the tier is never identified by position alone */
+  .cd-register-group:has(.cd-danger-zone) > .cd-register-head,
+  .cd-register-head:has(.cd-danger-word) {
+    border-inline-start: 2px solid var(--cd-role-danger-zone-dark);
+  }
+
+  .cd-tray .cd-register {
+    gap: calc(var(--cd-module) / 2);
+  }
+
+  .cd-tray .cd-register-rows {
+    gap: calc(var(--cd-module) / 2);
+  }
+
+  .cd-danger-word {
+    font-family: var(--cd-font-ui);
+    font-size: var(--cd-size-1);
+    font-weight: 700;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    color: var(--cd-role-danger-ink-dark); /* 7.63:1 on the field */
+  }
+
+  /*
+    THE GUARDED SWITCH (II.3.17 / CORRECTIONARY 4). "Hold-to-arm with a VISIBLE
+    LINEAR FILL for anything consequential", Anchored mass, 0% overshoot. The
+    fill below is the arm progress itself — driven by a real elapsed clock, not
+    a CSS animation pretending to be one, so releasing early leaves it exactly
+    where the hand left it rather than completing out of habit (II.4.15).
+  */
+  .cd-guard {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .cd-guard-fill {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: calc(var(--cd-guard-progress, 0) * 100%);
+    background: var(--cd-role-danger-zone-dark);
+    opacity: 0.45;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  /* ===================================================================== */
+  /* 7 · MOBILE — the rail moves to ONE OTHER edge, never to a second      */
+  /* ===================================================================== */
+  @media (max-width: 47.99rem) {
+    .cd-rail {
+      inset-block: auto 0;
+      inset-inline: 0;
+      inline-size: auto;
+      block-size: auto;
+      flex-direction: row;
+      align-items: stretch;
+      gap: calc(var(--cd-module) / 2);
+      padding-block: calc(var(--cd-module) / 2)
+        calc(var(--cd-module) / 2 + env(safe-area-inset-bottom, 0px));
+      padding-inline: calc(var(--cd-module) / 2 + env(safe-area-inset-left, 0px))
+        calc(var(--cd-module) / 2 + env(safe-area-inset-right, 0px));
+      /* the seam moves with the rail — still exactly one edge */
+      box-shadow:
+        0 -1px 0 0 var(--cd-glyph-dim),
+        0 -2px 0 0 var(--cd-well),
+        0 -4px 12px #00000047; /* ambient — the rail's own throw onto the scene */
+    }
+
+    .cd-workspace {
+      padding-inline-start: env(safe-area-inset-left, 0px);
+      padding-block-end: var(--fd5-rail-footprint);
+    }
+
+    .cd-rail-stations {
+      flex-direction: row;
+      flex: 1 1 auto;
+      gap: calc(var(--cd-module) / 4);
+      overflow: visible;
+      padding: calc(var(--cd-module) / 8);
+    }
+
+    /*
+      The station key turns 90 degrees: the seat point sits OVER the word
+      rather than beside it. Measured at 375px, the desktop arrangement put
+      the point's right edge at x=10 and the label's left edge at x=2 — an 8px
+      overlap that read as a clipped first letter.
+    */
+    .cd-station {
+      flex-direction: column;
+      justify-content: center;
+      gap: 2px;
+      padding-inline: calc(var(--cd-module) / 4);
+    }
+
+    .cd-station-seat {
+      position: static;
+      translate: none;
+      flex: 0 0 auto;
+    }
+
+    .cd-station-digit {
+      display: none; /* the hotkeys are a desktop affordance; nothing is lost */
+    }
+
+    /* the cap prints its figure beside the field rather than beneath it, and
+       stops claiming the rail's full width */
+    .cd-cap {
+      flex-direction: row;
+      align-items: center;
+      gap: calc(var(--cd-module) / 4);
+      inline-size: auto;
+      flex: 0 0 auto;
+      padding-inline: calc(var(--cd-module) / 2);
+    }
+
+    /* the field shrinks with the row it now shares; the FIGURE does not, and
+       the figure is the exact reading (II.6.20 / "analog without the figure is
+       decoration") */
+    .cd-rail .cd-glyphfield {
+      --cd-glyph-size: 1.75rem;
+      inline-size: 1.75rem;
+      block-size: 1.75rem;
+    }
+
+    .cd-cap-date,
+    .cd-cap-mark {
+      display: none; /* the date is the scene's own; the rail keeps the figure */
+    }
+
+    /* SCOPED TO THE RAIL. The first build wrote this unscoped and it leaked
+       into the Station Tray's Close Read, putting a 44px figure beside a 16rem
+       lattice instead of beneath it. */
+    .cd-rail .cd-glyphset {
+      flex-direction: row;
+      gap: calc(var(--cd-module) / 4);
+    }
+
+    .cd-rail .cd-lamp-set {
+      inline-size: auto;
+    }
+
+    .cd-rail .cd-lamp-word {
+      display: none; /* the lamp keeps its aria-label; the word returns at width */
+    }
+
+    /* the rail has moved to block-end, so the tray stops short of it there
+       instead of being held off the inline-start edge */
+    .cd-station-tray {
+      --cd-tray-offset: 0px;
+      --cd-tray-inset-block-end: var(--fd5-rail-footprint);
+    }
+  }
+
+  /*
+    One more step down. Below 22rem (352px — narrower than any iPhone in
+    portrait, but reachable at 200% zoom) five keys plus the cap cannot hold
+    both the 13px word and the seat point. The WORD is what identifies the
+    control, so the seat point folds into the key's own face instead: the
+    seated key is already sitting down in its socket with its label at
+    #F5F7F8, and both of those survive.
+  */
+  @media (max-width: 21.99rem) {
+    .cd-station {
+      padding-inline: calc(var(--cd-module) / 4);
+      justify-content: center;
+    }
+    .cd-station-seat {
+      inset-inline-start: 50%;
+      inset-block-start: 2px;
+      translate: -50% 0;
+    }
+    .cd-station-label {
+      font-size: var(--cd-micro-ceiling);
+    }
+  }
+
+  /* ===================================================================== */
+  /* 8 · REDUCED MOTION — II.4.26, translate, never delete                 */
+  /* ===================================================================== */
+  @media (prefers-reduced-motion: reduce) {
+    /*
+      The tokens already re-time every settle to a 120ms fade and every
+      position-carrying move to 80ms linear. What is left to say here is what
+      must NOT be deleted: a seat point's duty step IS the report, so it still
+      changes; the key still travels its 1px, because contact keeps its
+      acknowledgment and only its easing is dropped.
+    */
+    .cd-station,
+    .cd-cap,
+    .cd-seat,
+    .cd-station-seat,
+    .cd-seat-point,
+    .cd-glyphcell {
+      transition-timing-function: linear;
+    }
+  }
+
+  /* ===================================================================== */
+  /* 9 · FORCED COLOURS                                                    */
+  /* ===================================================================== */
+  @media (forced-colors: active) {
+    .cd-chassis,
+    .cd-rail {
+      background: Canvas;
+      box-shadow: none;
+      border-inline-end: 1px solid CanvasText;
+    }
+
+    .cd-station,
+    .cd-cap,
+    .cd-seat {
+      background: ButtonFace;
+      color: ButtonText;
+      border: 1px solid ButtonText;
+      box-shadow: none;
+    }
+
+    .cd-station[aria-current="page"],
+    .cd-cap[aria-expanded="true"],
+    .cd-seat[data-cd-seated="true"] {
+      background: Highlight;
+      color: HighlightText;
+      border-color: HighlightText;
+    }
+
+    .cd-station-label,
+    .cd-station-digit,
+    .cd-cap-mark {
+      text-shadow: none;
+    }
+
+    /* the lattice re-keys to the OS palette rather than going dark */
+    .cd-glyphfield {
+      background: Canvas;
+      border: 1px solid CanvasText;
+      box-shadow: none;
+    }
+
+    .cd-glyphcell {
+      background: GrayText;
+    }
+    .cd-glyphcell[data-cd-cell="dead"] {
+      background: transparent;
+    }
+    .cd-glyphcell[data-cd-cell="lit"],
+    .cd-glyphcell[data-cd-cell="hot"] {
+      background: Highlight;
+    }
+
+    .cd-text-input {
+      background: Field;
+      color: FieldText;
+      border: 1px solid FieldText;
+      box-shadow: none;
+    }
+
+    .cd-guard-fill {
+      background: Highlight;
+      opacity: 1;
+    }
+
+    .cd-danger-zone {
+      border-block-start-color: CanvasText;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    @media (forced-colors: active) {
+      .cd-rail {
+        border-inline-end: 0;
+        border-block-start: 1px solid CanvasText;
+      }
+    }
+  }
+}
+
+/*
+  The visually-hidden utility, in the chassis's own namespace. The legacy
+  `.fd5-visually-hidden` lives in src/tokens.css and is scoped to the legacy
+  `.fd5` subtree; chassis elements sit OUTSIDE that subtree, so they need their
+  own. Same clip-rect construction, and deliberately not `display:none`: a
+  hidden element that is removed from the accessibility tree has not been
+  hidden, it has been deleted.
+*/
+@layer cd.screen {
+  .cd-visually-hidden {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* the tray's exit key never shrinks below the Floor, whatever the head does */
+  .cd-tray-exit {
+    flex: 0 0 auto;
+  }
+
+  .cd-guard-set {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--cd-module) / 4);
+  }
+}
+
+@layer cd.screen {
+  /*
+    THE STALE DIALECT (II.3.18 / CORRECTIONARY 4 / section 3's Signature).
+    "A value that stops updating declares itself stale instead of silently
+    going wrong." Three channels, and not one of them is colour:
+
+      1. THE PATTERN HOLDS. Nothing here re-renders the arc — the field keeps
+         the last real reading exactly where it was. "The needle never invents
+         motion."
+      2. THE LIGHT DECAYS. Lit cells fall to the dim floor #C7C9C9, which is
+         still 11.26:1 on the well and therefore still a legible report. This
+         is 13 BACK CHANNEL's own Signature idiom: freshness read "in the same
+         light the pattern itself is made from, never in a second printed fact".
+      3. THE WORD PRINTS. FRESHNESS.timer's declared word — NO SIGNAL — with
+         the reading's exact age beside it, because II.7.7 will not let a state
+         travel in one channel and the word is what survives a squint, a
+         desaturation and forced-colours.
+  */
+  .cd-glyphfield[data-cd-stale="true"] .cd-glyphcell[data-cd-cell="lit"],
+  .cd-glyphfield[data-cd-stale="true"] .cd-glyphcell[data-cd-cell="hot"] {
+    background: var(--cd-glyph-dim);
+  }
+
+  /* the bloom goes with the light it came from — a stale field does not glow */
+  .cd-glyphfield[data-cd-stale="true"] {
+    box-shadow:
+      inset 0 1px 0 #ffffff66, /* rim light — the machined top edge catching the sun */
+      inset 0 0 0 1px #ffffff1a, /* wall — the glass slab's own thickness (II.2.10) */
+      inset 0 -6px 12px -8px #00000059, /* inner shadow — density pools at the slab's base (II.2.10) */
+      0 1px 0 #00000047, /* contact — glues the piece to what it is mounted on */
+      0 4px 10px #00000047; /* core — the dome's own mass */
+  }
+
+  .cd-glyphstale {
+    display: block;
+    font-size: var(--cd-micro-ceiling);
+    letter-spacing: var(--cd-track-micro);
+    line-height: 1.2;
+    text-align: center;
+    /* the warning role's dark-field ink — 7.61:1 on the smoked glass field */
+    color: var(--cd-role-warning-ink-dark);
+  }
+
+  .cd-glyphage {
+    color: var(--cd-label-ink); /* 4.59:1 on the field */
+  }
+
+  @media (forced-colors: active) {
+    .cd-glyphfield[data-cd-stale="true"] .cd-glyphcell[data-cd-cell="lit"],
+    .cd-glyphfield[data-cd-stale="true"] .cd-glyphcell[data-cd-cell="hot"] {
+      background: GrayText;
+    }
+  }
+}
+
+@layer cd.screen {
+  /*
+    Section 5's two masses, kept distinct. An ordinary cell rise is Light —
+    spring(0.7, 420, 25), --cd-settle-light 180ms, "the fastest catch here". A
+    whole field re-composing from one coded shape to another is Weighted —
+    spring(1.4, 260, 30), --cd-settle-weighted 300ms, "a bigger change earns a
+    bigger settle". Before this rule both ran at 180ms and a single cell and an
+    entire pattern swap were indistinguishable in time.
+  */
+  .cd-glyphfield[data-cd-recompose="true"] .cd-glyphcell {
+    transition-duration: var(--cd-settle-weighted);
+  }
+}

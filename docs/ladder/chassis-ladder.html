@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FD-5 chassis — the escalation ladder</title>
+<!--
+  docs/ladder/chassis-ladder.html — the four rungs, kept as an artifact.
+
+  Every rung on this page RUNS. Nothing here is a picture of a rung: the state
+  selector on the Simple rung really drives it, the Pushed studies really
+  animate, and the Refined and Signature rungs are the same markup the chassis
+  ships. "Code that 'should look right' is worthless testimony."
+
+  Real data throughout, taken from the running app on 2026-08-17:
+    fortnight position .... day 3 of 14 (cycleStartSaturday 2026-08-01)
+    stations .............. today · plan · cook · stores · shop
+    date .................. mon 17 aug, Europe/London
+    a running program ..... chicken-crust pizza, 12:40 of 34 min
+    the longest label ..... "stores", the width the rail is dimensioned to
+  No image assets, no WebGL, no network. Open it in a browser.
+-->
+<style>
+  :root {
+    color-scheme: dark;
+    --ui: "Space Grotesk", system-ui, sans-serif;
+    --data: "JetBrains Mono", ui-monospace, monospace;
+    /* the Simple rung's whole palette: a grayscale ramp, nothing else */
+    --g0:#141414; --g1:#222; --g2:#333; --g3:#555; --g4:#777; --g5:#9a9a9a;
+    --g6:#c2c2c2; --g7:#e2e2e2; --g8:#F2F2F2;
+    /* the chassis's own committed values, for the rungs above Simple */
+    --field:#1B1B1B; --well:#121212; --rim:#2C2C2D; --substrate:#46484B;
+    --off:#8A8A8A; --dim:#C7C9C9; --lit:#F5F7F8; --hot:#FFFFFF;
+    --label:#828486; --live:#FF2B1A; --focus:#4C8FD1; --keyline:#141414;
+    --axis:138deg; --module:.5rem;
+    --settle:cubic-bezier(.16,1,.30,1); --snap:cubic-bezier(.60,0,.10,1);
+  }
+  * { box-sizing:border-box }
+  body { margin:0; background:#0c0c0c; color:var(--g7); font-family:var(--ui); line-height:1.5 }
+  main { max-width:74rem; margin:0 auto; padding:2rem 1.25rem 6rem }
+  h1 { font-size:1.5rem; letter-spacing:.02em; margin:0 0 .25rem }
+  h2 { font-size:1.05rem; letter-spacing:.12em; text-transform:uppercase; margin:3rem 0 .25rem; color:var(--g8) }
+  h3 { font-size:.8125rem; letter-spacing:.12em; text-transform:uppercase; margin:1.25rem 0 .5rem; color:var(--g5) }
+  p  { max-width:60ch; color:var(--g6); font-size:.9375rem }
+  .claim { border-left:2px solid var(--g4); padding-left:.75rem; font-size:.875rem; color:var(--g7) }
+  .vs { font-family:var(--data); font-size:.8125rem; color:var(--g5); margin:.35rem 0 0; max-width:60ch }
+  .bench { display:flex; gap:1.25rem; flex-wrap:wrap; align-items:flex-start; margin-top:1rem }
+  .plinth { background:#101010; border:1px solid var(--g2); border-radius:.5rem; padding:1rem; }
+  .plinth > figcaption { font-family:var(--data); font-size:.75rem; color:var(--g5); margin-bottom:.75rem }
+  table { border-collapse:collapse; font-size:.8125rem; margin-top:.75rem }
+  td,th { border:1px solid var(--g2); padding:.35rem .6rem; text-align:left; vertical-align:top }
+  th { color:var(--g8); font-weight:600 }
+  td.k { color:#9ec98a } td.x { color:#d98f88 }
+  code { font-family:var(--data); font-size:.8125rem; color:var(--g6) }
+
+  /* ================= RUNG 1 · SIMPLE ================= */
+  /* Grayscale ramp only. No gradient, no shadow stack, no bloom, no texture.
+     The task must complete: read the status, choose a room, see it change. */
+  .s-rail { width:9rem; background:var(--g1); border:1px solid var(--g3); padding:.5rem; display:flex; flex-direction:column; gap:.25rem }
+  .s-status { font-family:var(--data); font-size:.8125rem; color:var(--g7); border:1px solid var(--g3); padding:.4rem; margin-bottom:.5rem; min-height:3.9rem }
+  .s-status b { color:var(--g8); font-weight:700 }
+  .s-key { font:inherit; font-size:.8125rem; text-transform:uppercase; letter-spacing:.02em;
+           min-height:2.75rem; background:var(--g2); color:var(--g6); border:1px solid var(--g3); cursor:pointer; text-align:left; padding:0 .5rem }
+  .s-key[aria-current="page"] { background:var(--g5); color:var(--g0); font-weight:700 }
+  .s-key:disabled { color:var(--g3); cursor:default }
+  .s-key:focus-visible { outline:2px solid var(--g8); outline-offset:2px }
+  .s-note { font-family:var(--data); font-size:.6875rem; color:var(--g4); margin-top:.5rem }
+  .states { display:flex; flex-wrap:wrap; gap:.35rem; margin:.75rem 0 0 }
+  .states button { font:inherit; font-size:.75rem; padding:.3rem .6rem; min-height:2.75rem; min-width:2.75rem;
+                   background:var(--g1); color:var(--g6); border:1px solid var(--g3); cursor:pointer }
+  .states button[aria-pressed="true"] { background:var(--g6); color:var(--g0) }
+
+  /* ================= RUNG 2 · PUSHED (three studies) ================= */
+  .p-rail { width:4.5rem; padding:.5rem .25rem; display:flex; flex-direction:column; align-items:center; gap:.25rem;
+            background:var(--well); border-radius:.25rem }
+  .p-key { width:100%; min-height:2.75rem; border:0; border-radius:.25rem; background:var(--field); color:var(--label);
+           font:600 .8125rem/1 var(--ui); letter-spacing:.02em; text-transform:uppercase; cursor:pointer;
+           display:flex; align-items:center; padding-left:.75rem; position:relative }
+  .p-key[aria-current="page"] { color:var(--lit) }
+
+  /* STUDY A — GEOMETRY exaggerated */
+  .A .p-key { border-radius:0; clip-path:polygon(0 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%); min-height:3.4rem }
+  .A .p-rail { border-radius:0; clip-path:polygon(0 0,100% 0,100% calc(100% - 22px),calc(100% - 22px) 100%,0 100%) }
+  .A .lat { border-radius:0 }
+
+  /* STUDY B — MATERIAL exaggerated */
+  .B .p-rail { background:
+      linear-gradient(var(--axis), var(--rim) 0%, #0000 16%),
+      repeating-linear-gradient(90deg,#0000 0px,#46484Bcc 1px,#46484Bcc 2px,#0000 3px,#0000 10px),
+      repeating-linear-gradient(90deg,#0000 0px,#000000aa 3px,#000000aa 4px,#0000 5px,#0000 10px),
+      linear-gradient(160deg,#ffffff17 0%,#ffffff05 38%,#ffffff0d 100%), var(--well);
+    box-shadow: inset 0 0 0 1px #ffffff1a, inset 0 1px 0 #ffffff66, inset -6px 0 12px -8px #00000059 }
+  .B .p-key { background:linear-gradient(var(--axis),#2a2a2a 0%,var(--field) 62%,#0d0d0d 100%);
+    box-shadow: inset 0 1px 0 #ffffff66, inset 0 0 0 1px #ffffff12, inset 0 -1px 0 #00000066,
+                0 1px 0 #00000066, 0 2px 5px #0000003d, 0 8px 18px #00000021 }
+
+  /* STUDY C — MOTION exaggerated */
+  .C .p-key { transition:transform 420ms var(--snap), background 420ms var(--snap) }
+  .C .p-key:active { transform:translateY(4px) scale(.96) }
+  .C .lat i { transition:background 900ms var(--settle) }
+
+  /* the lattice, shared by every rung above Simple */
+  .lat { display:grid; gap:calc(var(--sz)/var(--n)*.15); width:var(--sz); height:var(--sz); padding:2px;
+         border-radius:50%; background:radial-gradient(closest-side,#16161600 62%,#000000a6 100%), var(--well) }
+  .lat i { aspect-ratio:1; border-radius:22%; background:var(--off); transition:background 180ms var(--settle) }
+  .lat i[data-c="dead"] { background:transparent }
+  .lat i[data-c="lit"] { background:var(--lit) }
+  .lat i[data-c="hot"] { background:var(--hot) }
+  .lat i[data-c="dim"] { background:var(--dim) }
+  .fig { font-family:var(--data); font-variant-numeric:tabular-nums slashed-zero; font-size:1.25rem;
+         background:var(--well); color:var(--lit); padding:1px .5rem; border-radius:.25rem; width:fit-content; margin:.25rem auto 0 }
+  .seat { position:absolute; left:.25rem; top:50%; translate:0 -50%; width:.375rem; height:.375rem; border-radius:50%; background:var(--off) }
+  .p-key[aria-current="page"] .seat { background:var(--lit); box-shadow:0 0 2px #f5f7f8cc,0 0 8px #f5f7f866,0 0 24px #f5f7f829 }
+  .p-key[data-suggested] .seat { background:var(--dim) }
+
+  /* ================= RUNG 3 · REFINED + RUNG 4 · SIGNATURE ============ */
+  .R .p-rail, .S .p-rail { background:
+      linear-gradient(var(--axis), var(--rim) 0%, #0000 16%),
+      repeating-linear-gradient(90deg,#0000 0px,#46484B8c 1px,#46484B8c 2px,#0000 3px,#0000 10px),
+      repeating-linear-gradient(90deg,#0000 0px,#00000059 3px,#00000059 4px,#0000 5px,#0000 10px),
+      linear-gradient(160deg,#ffffff17 0%,#ffffff05 38%,#ffffff0d 100%), var(--well);
+    box-shadow: inset 0 0 0 1px #ffffff1a, inset 0 1px 0 #ffffff66, inset -6px 0 12px -8px #00000059,
+                1px 0 0 0 var(--dim), 2px 0 0 0 var(--well), 4px 0 12px #00000047 }
+  .R .p-key, .S .p-key { background:linear-gradient(var(--axis),#252525 0%,var(--field) 62%,#101010 100%);
+    box-shadow: inset 0 1px 0 #ffffff66, inset 0 0 0 1px #ffffff12, inset 0 -1px 0 #00000066,
+                0 1px 0 #00000066, 0 2px 5px #0000003d, 0 8px 18px #00000021;
+    transition:transform 80ms var(--settle), box-shadow 80ms var(--settle), background 120ms var(--snap) }
+  .R .p-key[aria-current="page"], .S .p-key[aria-current="page"] {
+    background:linear-gradient(var(--axis),#0f0f0f 0%,var(--field) 100%);
+    box-shadow: inset 0 2px 4px #000000a6, inset 0 0 0 1px #ffffff12, inset 0 -1px 0 #ffffff29, 0 1px 0 #00000066 }
+  .R .chan, .S .chan { width:100%; padding:2px; border-radius:.25rem; background:#0b0b0b;
+    box-shadow: inset 1px 2px 4px #00000047, inset 0 -1px 0 #ffffff1f; display:flex; flex-direction:column; gap:.25rem }
+  .lamp { width:.75rem; height:.75rem; border-radius:50%;
+          background:radial-gradient(closest-side,#38100C 0%,#1E0907 78%,#140605 100%);
+          box-shadow: inset 0 1px 2px #000000a6, inset 0 -1px 0 #ffffff14, inset 0 0 0 1px #ffffff66 }
+  .lamp[data-lit="true"] { background:radial-gradient(closest-side,#ffb0a8 0%,var(--live) 34%,#c72115 100%);
+          box-shadow: inset 0 1px 1px #00000059, inset 0 0 0 1px #ffffff66,
+                      0 0 2px #ff2b1acc, 0 0 8px #ff2b1a66, 0 0 24px #ff2b1a29 }
+  .lampword { font:600 .6875rem/1 var(--ui); letter-spacing:.14em; text-transform:uppercase; color:var(--label) }
+  /* Signature: the field's own dim floor carries freshness, and the mark goes */
+  .S .lat[data-fresh="stale"] i[data-c="lit"] { background:var(--dim) }
+</style>
+</head>
+<body>
+<main>
+<h1>FD-5 chassis — the escalation ladder</h1>
+<p><strong>13 BACK CHANNEL</strong>, climbed across four rungs. Every rung on this page runs;
+none of them is a picture of a rung. Real data throughout — day 3 of 14, the five room names,
+a real 12:40 elapsed against a 34-minute program.</p>
+
+<!-- ============================ SIMPLE ============================ -->
+<h2>1 · Simple</h2>
+<p class="claim">A grayscale ramp (<code>#141414</code> → <code>#F2F2F2</code>), real data, and every
+state the chassis can actually be in. No lattice, no gradient, no shadow stack, no bloom, no
+texture, no sound, no haptic. <strong>The task must still complete: read the status, choose a room,
+see it change.</strong> If it does not complete here, nothing above this rung will save it.</p>
+
+<div class="bench">
+  <figure class="plinth" style="margin:0">
+    <figcaption>the chassis, at zero</figcaption>
+    <div style="display:flex; gap:1rem; align-items:flex-start">
+      <div>
+        <div class="s-status" id="sStatus" role="status" aria-live="polite"></div>
+        <nav class="s-rail" id="sRail" aria-label="rooms"></nav>
+        <p class="s-note" id="sNote"></p>
+      </div>
+    </div>
+  </figure>
+  <figure class="plinth" style="margin:0; flex:1 1 22rem">
+    <figcaption>every state, driven — click one and the rung above really changes</figcaption>
+    <div class="states" id="sStates"></div>
+    <p class="vs" id="sWhy"></p>
+  </figure>
+</div>
+
+<!-- ============================ PUSHED ============================ -->
+<h2>2 · Pushed — three studies, one exaggerated axis each</h2>
+<p>Each study is compared against <strong>Simple</strong>, never against the other two. Each carries
+a written claim and pushes exactly one axis past where it will finally sit.</p>
+
+<div class="bench">
+  <figure class="plinth A" style="margin:0">
+    <figcaption>STUDY A · axis: GEOMETRY</figcaption>
+    <div class="p-rail" data-rail></div>
+    <p class="claim" style="max-width:17rem; margin-top:.75rem">The chassis is a <em>cut</em> object,
+    not a drawn one: every corner is chamfered off the 0.5rem module and the rail's own foot is
+    mitred. Keys grow to 3.4rem so the chamfer has something to cut.</p>
+    <p class="vs">vs Simple: the silhouette alone now says "milled". Simple's rectangle says
+    "container". <strong>Kept, at one quarter strength</strong> — 0.25rem radii, no mitre. At full
+    strength the chamfers fight seven other languages' own corner grammar.</p>
+  </figure>
+
+  <figure class="plinth B" style="margin:0">
+    <figcaption>STUDY B · axis: MATERIAL</figcaption>
+    <div class="p-rail" data-rail></div>
+    <p class="claim" style="max-width:17rem; margin-top:.75rem">Smoked glass over an aluminium
+    frame with the substrate coil read <em>through</em> the slab: ribbon at 80% alpha on a 2px/10px
+    period, its own shadow half a pitch over, plus II.2.10's wall ring and base density.</p>
+    <p class="vs">vs Simple: Simple is a grey box; this is a slab you could put a thumbprint on.
+    <strong>Kept, at 55% alpha</strong> — the shipped value. 80% turned the traces into stripes
+    that competed with the station labels for the eye.</p>
+  </figure>
+
+  <figure class="plinth C" style="margin:0">
+    <figcaption>STUDY C · axis: MOTION</figcaption>
+    <div class="p-rail" data-rail></div>
+    <p class="claim" style="max-width:17rem; margin-top:.75rem">Every step is felt: 420ms seats on
+    the snap curve, keys travel 4px and compress to 0.96, cells cross-fade over 900ms. Press one.</p>
+    <p class="vs">vs Simple: Simple commits instantly and says nothing. This says a great deal and
+    <strong>fails the hundredth-use test outright</strong> — 420ms × 40 navigations a day is
+    waiting. <strong>Killed.</strong> Shipped: 20ms down-stroke, 80ms release, 120ms seat, 180ms
+    cell bloom. The report may never lag the thing it reports.</p>
+  </figure>
+</div>
+
+<!-- ============================ REFINED ============================ -->
+<h2>3 · Refined — subtract jobless elements, keep every survivor at full strength</h2>
+<p class="claim">CD's stock Refined rung ("one hierarchy; plain competence below") is <strong>revoked
+by CORRECTIONARY §3.1</strong> and re-authored by CD-BRIEF ruling 4. This rung subtracts elements
+that do no job. It does <em>not</em> strip the survivors down. The ledger asks
+<em>"does it state a value, or let the hand do something?"</em> — never <em>"is it the hero?"</em></p>
+
+<div class="bench">
+  <figure class="plinth R" style="margin:0">
+    <figcaption>the rail, after subtraction</figcaption>
+    <div class="p-rail" data-rail data-refined></div>
+  </figure>
+  <figure class="plinth" style="margin:0; flex:1 1 28rem">
+    <figcaption>the keep / kill ledger — this rides with the release</figcaption>
+    <table>
+      <tr><th>element</th><th>does it state a value, or let the hand do something?</th><th></th></tr>
+      <tr><td>Cycle Cap field</td><td>states the fortnight's position, and a running program's arc</td><td class="k">KEEP</td></tr>
+      <tr><td>the cap's printed figure</td><td>states it exactly — analog without the figure is decoration</td><td class="k">KEEP</td></tr>
+      <tr><td>the cap as a button</td><td>lets the hand open the Station Tray</td><td class="k">KEEP</td></tr>
+      <tr><td>live lamp + its word</td><td>states one reserved fact, in two channels</td><td class="k">KEEP</td></tr>
+      <tr><td>five station keys</td><td>let the hand change rooms</td><td class="k">KEEP</td></tr>
+      <tr><td>seat points</td><td>state where the hand is, and where the day suggests</td><td class="k">KEEP</td></tr>
+      <tr><td>engraved words</td><td>state which room each key is — the identification channel</td><td class="k">KEEP</td></tr>
+      <tr><td>hotkey legends</td><td>state a real shortcut that really fires</td><td class="k">KEEP</td></tr>
+      <tr><td>separate <code>set</code> key</td><td>only acted; the cap only stated — merged into one control</td><td class="x">KILL</td></tr>
+      <tr><td>top bar</td><td>a second edge; its contents all fit inside the one rail</td><td class="x">KILL</td></tr>
+      <tr><td>COOK lid-closed + exit tab</td><td>a cage (R5). Nothing it did was a value or a reach</td><td class="x">KILL</td></tr>
+      <tr><td>per-station coded fields</td><td>would have stated numbers the chassis cannot honestly source</td><td class="x">KILL</td></tr>
+      <tr><td>the stepped-bar shape</td><td>no chassis reading is a live level; a renderer with nothing behind it</td><td class="x">KILL</td></tr>
+      <tr><td>rail widening on live</td><td>relaid the whole app out to say what the lamp already said</td><td class="x">KILL</td></tr>
+    </table>
+    <p class="vs">Exit condition: <strong>four hero-grade instruments survive</strong>, each with a
+    job in one sentence — the Cycle Cap (states the cycle, opens the tray), the Station Column
+    (changes rooms, states where you are), the Live Lamp (states one reserved fact), the Station
+    Tray with its Close Read (promotes the same field, holds every weekly value).</p>
+  </figure>
+</div>
+
+<!-- ============================ SIGNATURE ============================ -->
+<h2>4 · Signature — the one move only FD-5 would make</h2>
+<p class="claim"><strong>The chassis's hero instrument is also its only control, and its freshness
+is read in the same light the report is made from.</strong> Press the cap: the field it carries is
+promoted, unchanged, to 25×25 in the tray — one object with two homes. And when the reading goes
+stale the field does not print a second fact about it; its lit cells decay toward the dim floor, so
+staleness is read in the light the pattern is already made of.</p>
+<p>Section 3's own Signature rung for the Field Card: <em>"drops the footer's own age label and lets
+the field's own dim floor carry it instead — a fresher card sits closer to lit at rest, a staler one
+fades toward off, so freshness reads in the same light the pattern itself is made from, never in a
+second printed fact."</em></p>
+
+<div class="bench S">
+  <figure class="plinth" style="margin:0">
+    <figcaption>fresh — lit at #F5F7F8</figcaption>
+    <div class="lat" id="sigFresh" data-fresh="fresh" style="--sz:9rem;--n:7"></div>
+    <div class="fig">3/14</div>
+  </figure>
+  <figure class="plinth" style="margin:0">
+    <figcaption>stale — the same pattern, decayed to the dim floor #C7C9C9</figcaption>
+    <div class="lat" id="sigStale" data-fresh="stale" style="--sz:9rem;--n:7"></div>
+    <div class="fig">3/14</div>
+  </figure>
+  <figure class="plinth" style="margin:0; flex:1 1 18rem">
+    <figcaption>and the one control that is also the readout</figcaption>
+    <div class="p-rail" data-rail data-refined style="--sz:2.5rem"></div>
+    <p class="vs">Not shipped from this rung: section 3's Signature also strips every word from the
+    screen. <strong>Declined, and stated rather than quietly dropped.</strong> The rail's engraved
+    room names are the measured 4.99:1 identification channel for its controls; removing them to
+    reach a purer rung would fail the Floor. The rung is taken where it does not cost the Floor —
+    the merged control, and freshness read from the field's own light — and refused where it does.</p>
+  </figure>
+</div>
+
+</main>
+<script>
+"use strict";
+/* ---------------------------------------------------------------- data --- */
+const ROOMS = ["today","plan","cook","stores","shop"];
+const REAL = { day: 3, of: 14, date: "mon 17 aug", program: "chicken-crust pizza",
+               elapsed: "12:40", totalMin: 34, suggested: "today" };
+
+/* --------------------------------------------------- the nine states ----- */
+/* Each state is a real condition the chassis can be in, with the reading it
+   would actually show. Nothing here is invented: "loading" is the frame before
+   the store has hydrated; "error" is a stored cycle-start that failed to parse. */
+const STATES = {
+  "first-run":  { status:"no cycle start set", figure:"—", note:"open settings to anchor the fortnight", rooms:ROOMS, active:"today", disabled:[] },
+  "empty":      { status:"anchored · nothing logged today", figure:"3/14", note:"0 of 4 slots ticked", rooms:ROOMS, active:"today", disabled:[] },
+  "loading":    { status:"reading stored state", figure:"—", note:"the frame before hydrate", rooms:ROOMS, active:"today", disabled:ROOMS },
+  "partial":    { status:"anchored · 2 of 4 slots", figure:"3/14", note:"breakfast and lunch ticked", rooms:ROOMS, active:"today", disabled:[] },
+  "full":       { status:"anchored · 4 of 4 slots", figure:"3/14", note:"day complete", rooms:ROOMS, active:"today", disabled:[] },
+  "overflowing":{ status:"cooking · " + REAL.elapsed, figure:REAL.elapsed, note:"past the 34 min total — the arc has closed, the clock has not", rooms:ROOMS, active:"cook", disabled:[] },
+  "stale":      { status:"cooking · " + REAL.elapsed + " · NO SIGNAL", figure:REAL.elapsed, note:"no tick for 2000ms — the value holds, the ink drops to 55%", rooms:ROOMS, active:"cook", disabled:[] },
+  "error":      { status:"stored cycle start unreadable", figure:"—", note:"the reading is absent, not zero", rooms:ROOMS, active:"today", disabled:[] },
+  "disabled":   { status:"anchored · day 3", figure:"3/14", note:"cook disabled — no program compiled for today", rooms:ROOMS, active:"today", disabled:["cook"] },
+};
+let state = "partial", room = "today";
+
+/* --------------------------------------------------- SIMPLE, running ----- */
+const sRail = document.getElementById("sRail"), sStatus = document.getElementById("sStatus");
+const sNote = document.getElementById("sNote"), sStates = document.getElementById("sStates");
+const sWhy = document.getElementById("sWhy");
+function drawSimple() {
+  const s = STATES[state];
+  sStatus.innerHTML = "<b>" + s.figure + "</b><br>" + s.status;
+  sNote.textContent = s.note;
+  sRail.innerHTML = "";
+  for (const r of s.rooms) {
+    const b = document.createElement("button");
+    b.className = "s-key"; b.textContent = r; b.type = "button";
+    if (r === room) b.setAttribute("aria-current","page");
+    if (s.disabled.includes(r)) b.disabled = true;
+    b.addEventListener("click", () => { room = r; drawSimple(); });
+    sRail.appendChild(b);
+  }
+  sWhy.textContent = 'state "' + state + '" — ' + s.note +
+    ". The task still completes at this rung: the status is readable, the rooms are reachable, and a press really changes the current room.";
+}
+for (const k of Object.keys(STATES)) {
+  const b = document.createElement("button"); b.type = "button"; b.textContent = k;
+  b.setAttribute("aria-pressed", String(k === state));
+  b.addEventListener("click", () => {
+    state = k;
+    for (const n of sStates.children) n.setAttribute("aria-pressed", String(n.textContent === k));
+    if (STATES[k].active) room = STATES[k].active;
+    drawSimple();
+  });
+  sStates.appendChild(b);
+}
+drawSimple();
+
+/* ------------------------------------------------- the lattice, shared --- */
+function isLive(n, radius, col, row) {
+  const c = (n - 1) / 2, dx = col - c, dy = row - c;
+  return Math.sqrt(dx*dx + dy*dy) <= radius;
+}
+function fill(el, n, radius, fraction) {
+  el.style.setProperty("--n", n);
+  el.style.gridTemplateColumns = "repeat(" + n + ",1fr)";
+  el.innerHTML = "";
+  const litRows = Math.round(fraction * n), boundary = n - litRows;
+  for (let row = 0; row < n; row++) for (let col = 0; col < n; col++) {
+    const i = document.createElement("i");
+    if (!isLive(n, radius, col, row)) i.dataset.c = "dead";
+    else if (row >= boundary) i.dataset.c = "lit";
+    else i.dataset.c = "off";
+    el.appendChild(i);
+  }
+}
+fill(document.getElementById("sigFresh"), 7, 3.5, REAL.day / REAL.of);
+fill(document.getElementById("sigStale"), 7, 3.5, REAL.day / REAL.of);
+
+/* ------------------------------------- PUSHED / REFINED / SIGNATURE rails - */
+for (const rail of document.querySelectorAll("[data-rail]")) {
+  const refined = rail.hasAttribute("data-refined");
+  const size = rail.style.getPropertyValue("--sz") || "2.5rem";
+
+  const cap = document.createElement("div");
+  cap.style.cssText = "display:flex;flex-direction:column;align-items:center;gap:.25rem;width:100%";
+  const lat = document.createElement("div");
+  lat.className = "lat"; lat.style.setProperty("--sz", size);
+  fill(lat, 7, 3.5, REAL.day / REAL.of);
+  cap.appendChild(lat);
+  const fig = document.createElement("div"); fig.className = "fig";
+  fig.style.fontSize = ".8125rem"; fig.textContent = REAL.day + "/" + REAL.of;
+  cap.appendChild(fig);
+  rail.appendChild(cap);
+
+  if (refined) {
+    const set = document.createElement("div");
+    set.style.cssText = "display:flex;align-items:center;gap:.35rem;padding:.25rem 0";
+    const lamp = document.createElement("span"); lamp.className = "lamp"; lamp.dataset.lit = "false";
+    const word = document.createElement("span"); word.className = "lampword"; word.textContent = "idle";
+    set.append(lamp, word); rail.appendChild(set);
+    // the lamp really answers the one condition it exists for
+    setInterval(() => {
+      const lit = lamp.dataset.lit !== "true";
+      lamp.dataset.lit = String(lit);
+      word.textContent = lit ? "live" : "idle";
+    }, 3000);
+  }
+
+  const chan = document.createElement("div");
+  chan.className = refined ? "chan" : "";
+  if (!refined) chan.style.cssText = "display:flex;flex-direction:column;gap:.25rem;width:100%";
+  for (const r of ROOMS) {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "p-key";
+    if (r === room) b.setAttribute("aria-current","page");
+    if (r === REAL.suggested && r !== room) b.dataset.suggested = "true";
+    const seat = document.createElement("span"); seat.className = "seat";
+    const lbl = document.createElement("span"); lbl.textContent = r;
+    b.append(seat, lbl);
+    b.addEventListener("click", () => {
+      for (const sib of chan.children) sib.removeAttribute("aria-current");
+      b.setAttribute("aria-current","page");
+      navigator.vibrate && navigator.vibrate(12);
+    });
+    chan.appendChild(b);
+  }
+  rail.appendChild(chan);
+}
+</script>
+</body>
+</html>
