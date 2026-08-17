@@ -1,971 +1,1695 @@
 /*
-  COOK — tape timeline + reel (PLAN §6.6). Scoped under .scr-cook per
-  docs/PHASE2-CONTRACT.md conventions; nothing here touches tokens.css or any
-  other screen's classes. This is the app's ONE precision-industrial screen
-  (PLAN §6.0): engraved CAPS labels (uppercase, tracked letter-spacing) on
-  every label/engraving, honest depth via flat recess/edge borders — never a
-  metal/brushed gradient anywhere (Phase 2 flat law; Phase 3 machines the
-  reel). Instructional/content text (the NOW line's step text, meal names,
-  the alarm/tally prose) stays natural sentence case — "engraved caps" means
-  labels, not body copy, and forcing a whole sentence to caps would fight the
-  "legible at 2m" requirement on the NOW line specifically.
+  src/screens/cook/cook.css — 02 REEL LOGIC, built.
 
-  Colour discipline: through Phase 2 this screen deliberately never painted
-  --sol-danger on the reel itself — due/paused/running read purely through
-  motion (spin/stopped) + shape (dashed vs solid rim) + a neutral glyph swap.
-  Phase 3 polish amendment (PLAN §6.6 hero brief: "rim glow in danger tone
-  ONLY when due"): the due-state rim now additionally gets a subtle
-  --sol-danger `filter: drop-shadow` glow. This is still never a standalone
-  cue — "exactly ONE red element" for the step-due alarm (Sol §5.1) remains
-  the single .scr-cook-alarm banner (its dot + text count as one composite
-  unit, same idea as the shared .fd5-arbiter's chevron+text+badge being one
-  unit), which is always rendered alongside the reel whenever dueNow is true;
-  the glow is a redundant reinforcement layered on top of the pre-existing
-  shape + glyph + banner cues, not a replacement for any of them.
+  EVERY VALUE BELOW NAMES THE CLAUSE IT CAME FROM. A duration that exists only
+  as a feeling is a craft defect (CD-BRIEF's craft pass), and so is a hex with
+  no row in a registry table.
+
+  SCOPE. Everything is inside `.ck`, which carries data-cd-language="reel-logic"
+  on the scene root, so every token resolves from that one world scope in
+  src/cd/tokens/world.css and no element on this screen ever reads a token from
+  two languages (CD-BRIEF's zone fence). The legacy `.fd5[data-language=
+  "precision-industrial"]` bridge that used to dress this screen is not used
+  here at all — COOK has claimed its own scope, which is the condition for
+  deleting that bridge selector once the last screen lands.
+
+  CASCADE. @layer cd.screen is declared LAST in src/cd/tokens/index.css, so
+  these rules beat the foundation's at any specificity. That cuts both ways and
+  is the reason the shed-ladder and reduced-motion rules from tokens/motion.css
+  are RESTATED at the foot of this file: a shorthand `animation:` written here
+  resets the `animation-play-state: paused` that motion.css's shed rules set,
+  and the ladder would silently stop working on this screen.
+
+  THE PALETTE, all from 02 REEL LOGIC section 2's registry table:
+    chassis black   #1B1B1D   --cd-field       faceplate, every non-signal face
+    chassis well    #121213   --cd-well        bezel interiors, key sockets
+    panel rim catch #2C2D30   --cd-rim-catch   the one top-left edge highlight
+    chrome body     #C9CACB   --cd-mirror      the reel disc, collar, key caps
+    chrome hot      #E2E3E4   --cd-mirror-hot  the specular band only
+    mirror floor    #161719   --cd-mirror-floor the darkened low stop
+    dot ink lit     #F2F1EA   --cd-ink
+    dot ink unlit   #1C1C1D   --cd-ink-unlit
+    muted ink       #8A8D93   --cd-muted-ink
+    live red        #FF2B1A   --cd-role-live   THE LAMP, and nowhere else
+  Cognac #A6713F is fenced out of this screen entirely and appears nowhere in
+  this file. No EXPOSED WORKS rotary renders here.
 */
 
-.scr-cook {
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
-  position: relative;
-  background: var(--sol-bg);
-  color: var(--sol-text);
-}
+@layer cd.screen {
+  /* ===================================================================== */
+  /* 0 · THE WORLD'S OWN SURFACE RECIPES                                    */
+  /* ===================================================================== */
+  .ck {
+    /*
+      II.2.9 anodized, with 02 REEL LOGIC's declared delta: "travel tightened to
+      6% rather than the recipe's 8% ceiling, because a near-black plate shows
+      banding sooner than a mid-tone one, with the mandatory 2% microtexture
+      holding the grain." +3% white to -3% black is the 6%.
+    */
+    --ck-anodized: linear-gradient(
+      var(--cd-light-axis),
+      color-mix(in srgb, #ffffff 3%, var(--cd-field)) 0%,
+      var(--cd-field) 52%,
+      color-mix(in srgb, #000000 3%, var(--cd-field)) 100%
+    );
 
-.scr-cook-eyebrow {
-  margin: 0;
-  font-size: var(--sol-text-label);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--sol-text-muted);
-}
+    /*
+      II.2.8 hard mirror, with the chapter's delta: "two hard stop pairs, UNMOVED
+      from the base recipe's 47%/48% and 62%/63% positions, but the value range
+      darkens at both ends — #161719 to #E2E3E4 — so the reflection reads
+      against THIS chassis instead of the recipe's neutral one."
+    */
+    --ck-chrome: linear-gradient(
+      178deg,
+      var(--cd-mirror-hot) 0%,
+      var(--cd-mirror) 34%,
+      #6a6d70 47%,
+      var(--cd-mirror-floor) 48%,
+      #34373a 62%,
+      #9a9c9e 63%,
+      var(--cd-mirror-hot) 100%
+    );
 
-.scr-cook-h {
-  margin: 0 0 0.5rem;
-  font-size: var(--sol-text-label);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--sol-text-muted);
-}
+    /*
+      DERIVED, and declared (CORRECTIONARY 6.5). --cd-muted-ink #8A8D93 measures
+      4.16:1 against the key cap's LIGHTEST gradient stop (#343436), under the
+      4.5:1 text floor, so a disabled cap legend would fail there. Hue 220 and
+      saturation 4.0% held exactly; lightness alone travelled (II.7.5). 4.62:1.
+    */
+    --ck-disabled-ink: #9b9ea3;
 
-/* ---------------------------------------------------------------------- */
-/* Standby picker                                                         */
-/* ---------------------------------------------------------------------- */
+    /* the reel's committed diameters — 02 REEL LOGIC section 4, Hero Screen */
+    --ck-reel: 18rem; /* desktop */
+    --ck-dm-pitch: 0.625rem; /* II.3.21 — cell pitch */
+    --ck-dm-dot: 0.5rem; /* 80% of pitch */
 
-.scr-cook-picker {
-  flex: 1;
-  width: 100%;
-  max-width: 36rem;
-  margin: 0 auto;
-  padding: 1.25rem 1rem calc(2rem + env(safe-area-inset-bottom, 0px));
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  overflow-y: auto;
-}
+    /* Trophy figures — the owner ruling's own numbers */
+    --ck-trophy-figure: 1.75rem;
+    --ck-trophy-age: 1.21875rem;
 
-.scr-cook-picker-title {
-  margin: 0.25rem 0 0;
-  font-size: 1.4rem;
-}
-
-.scr-cook-picker-sub {
-  margin: 0.25rem 0 0;
-  color: var(--sol-text-muted);
-}
-
-.scr-cook-picker-tonight {
-  width: 100%;
-  min-height: var(--fd-target-list);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.25rem;
-  padding: 0.625rem 1rem;
-  text-align: left;
-  background: var(--sol-panel);
-  border: 1px solid var(--sol-border);
-}
-
-.scr-cook-picker-tonight-name {
-  font-weight: 700;
-  font-size: 1.1rem;
-}
-
-.scr-cook-picker-tonight-meta {
-  font-family: var(--sol-font-data);
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-}
-
-.scr-cook-picker-session-list,
-.scr-cook-picker-meal-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.scr-cook-picker-session {
-  width: 100%;
-  min-height: var(--fd-target-list);
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding-block: 0.625rem;
-  padding-inline: 1rem;
-  text-align: left;
-  background: var(--sol-panel);
-  border: 1px solid var(--sol-border);
-}
-
-.scr-cook-picker-session-text {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.125rem;
-}
-
-.scr-cook-picker-session-name {
-  font-weight: 700;
-}
-
-.scr-cook-picker-session-desc {
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-}
-
-.scr-cook-picker-session-meta {
-  font-family: var(--sol-font-data);
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-  white-space: nowrap;
-}
-
-.scr-cook-picker-groups {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.scr-cook-picker-week {
-  border: 1px solid var(--sol-border);
-  background: var(--sol-panel);
-}
-
-.scr-cook-picker-week-summary {
-  list-style: none;
-  cursor: pointer;
-  min-height: var(--fd-target-list);
-  display: flex;
-  align-items: center;
-  padding-inline: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: 700;
-}
-
-.scr-cook-picker-week-summary::-webkit-details-marker {
-  display: none;
-}
-
-.scr-cook-picker-week-body {
-  padding: 0 1rem 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  border-top: 1px solid var(--sol-border);
-}
-
-.scr-cook-picker-day-label {
-  margin: 0.75rem 0 0.375rem;
-  font-family: var(--sol-font-data);
-  font-size: var(--sol-text-label);
-  text-transform: uppercase;
-  color: var(--sol-text-muted);
-}
-
-.scr-cook-picker-meal {
-  width: 100%;
-  min-height: var(--fd-target-list);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding-inline: 0.75rem;
-  text-align: left;
-  background: var(--sol-bg);
-  border: 1px solid var(--sol-border);
-}
-
-.scr-cook-picker-meal-slot {
-  font-family: var(--sol-font-data);
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  color: var(--sol-text-muted);
-  flex: 0 0 4.25rem;
-}
-
-.scr-cook-picker-meal-name {
-  flex: 1;
-  min-width: 0;
-}
-
-.scr-cook-picker-meal-meta {
-  font-family: var(--sol-font-data);
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-  white-space: nowrap;
-}
-
-/* ---------------------------------------------------------------------- */
-/* Loaded scene body (standby / running / paused)                         */
-/* ---------------------------------------------------------------------- */
-
-.scr-cook-body {
-  flex: 1;
-  width: 100%;
-  max-width: 30rem;
-  margin: 0 auto;
-  padding: 1rem 1rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  overflow-y: auto;
-}
-
-.scr-cook-preview-banner {
-  margin: 0;
-  padding: 0.5rem 0.75rem;
-  border: 1px dashed var(--sol-focus);
-  color: var(--sol-text);
-  font-size: var(--sol-text-label);
-}
-
-/* --- Hero: the reel --- */
-
-.scr-cook-hero {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.625rem;
-  padding-top: 0.25rem;
-}
-
-.scr-cook-reel {
-  position: relative;
-  width: 8.5rem;
-  height: 8.5rem;
-  /* Local polish tokens (Phase 3, this file only — never tokens.css). The
-     "black platter" (TP-7 quote, D14): a lit centre falling to a near-black
-     vignette at the rim, so the machined --sol-border stroke reads as a
-     bright edge against it. */
-  --ck-platter-hi: #34383c;
-  --ck-platter-lo: #121315;
-  --ck-hub-lo: #0c0d0e;
-}
-
-.scr-cook-reel-svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-/* Dims as one unit when paused (see .scr-cook-reel--paused below) — the
-   index dot and brake mark are deliberately siblings of this group, not
-   children, so they stay at full contrast as state indicators. */
-.scr-cook-reel-platter {
-  transition: opacity var(--sol-motion-state) ease;
-}
-
-.scr-cook-reel-rim {
-  /* Paint-server first, flat panel colour as the fallback (used if the
-     gradient reference ever fails to resolve) — forced-colors overrides
-     `fill` outright further down, same pattern as the knob's dot gradient. */
-  fill: url(#ck-platter-grad) var(--sol-panel);
-  stroke: var(--sol-border);
-  stroke-width: 1.5;
-}
-
-.scr-cook-reel-spoke {
-  stroke: var(--sol-border);
-  stroke-width: 1.25;
-}
-
-/* Machined spoke shadow: a darker, offset duplicate drawn underneath the
-   real spokes (same rotating group, see Reel.tsx) — depth without a filter
-   per spoke. */
-.scr-cook-reel-spoke-shadow {
-  stroke: rgba(0, 0, 0, 0.55);
-  stroke-width: 1.25;
-}
-
-.scr-cook-reel-hub {
-  fill: url(#ck-hub-grad) var(--sol-bg);
-  stroke: var(--sol-border);
-  stroke-width: 1.5;
-  /* Honest recess depth (Sol §1B "depth follows structure"): the gradient
-     alone reads as a dish because it is genuinely darker toward the centre,
-     not a decorative bevel — see the radialGradient stops in Reel.tsx. */
-}
-
-/* Rotational light play: a CSS conic sheen layered over the SVG, sized to
-   exactly the rim's r=47 (of a 100-unit viewBox => 94% diameter => 3% inset
-   each side). Spins WITH the platter using the identical `scr-cook-spin`
-   keyframe (see .scr-cook-reel-sheen-spin below) — same animation, richer
-   face, never an independent motion cue. mix-blend-mode makes it read as a
-   highlight sweeping the dark platter rather than a flat overlay. */
-.scr-cook-reel-sheen {
-  position: absolute;
-  inset: 3%;
-  border-radius: 50%;
-  background: conic-gradient(
-    from 40deg,
-    transparent 0deg,
-    rgba(255, 255, 255, 0.28) 30deg,
-    transparent 70deg,
-    transparent 180deg,
-    rgba(255, 255, 255, 0.16) 210deg,
-    transparent 250deg,
-    transparent 360deg
-  );
-  mix-blend-mode: screen;
-  pointer-events: none;
-}
-
-.scr-cook-reel-sheen-spin {
-  animation: scr-cook-spin 3s linear infinite;
-}
-
-/* Visible brake (Phase 3 polish, paused state): hidden by default, shown
-   only via .scr-cook-reel--paused below — see the forced-colors block for
-   its system-colour override. */
-.scr-cook-reel-brake {
-  fill: var(--sol-text-muted);
-  opacity: 0;
-}
-
-.scr-cook-reel-index {
-  fill: var(--sol-accent);
-}
-
-.scr-cook-reel-index--due {
-  stroke: var(--sol-text);
-  stroke-width: 1.5;
-}
-
-.scr-cook-reel-glyph {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.4rem;
-  color: var(--sol-text-muted);
-  pointer-events: none;
-}
-
-.scr-cook-reel-spin {
-  animation: scr-cook-spin 3s linear infinite;
-  transform-origin: 50px 50px;
-}
-
-@keyframes scr-cook-spin {
-  to {
-    transform: rotate(360deg);
+    /*
+      FULL BLEED. `main.fd5-scene` still carries the legacy `padding: 1rem` and
+      the workspace under it is cream (the chassis's own bridge scope). Left
+      alone, this screen renders as a dark panel inside a pale border — a frame
+      around the content, which is the exact cage failure R5 exists to delete.
+      The negative margin cancels that padding from inside the scene rather than
+      by reaching into src/app or src/tokens.css, neither of which is mine.
+    */
+    margin: -1rem;
+    min-block-size: 100dvh;
+    color: var(--cd-ink);
+    font-family: var(--cd-font-ui);
+    /* CORRECTIONARY 5.4 — the ground is a MATERIAL under a real light, never a
+       flat hex page background. Anodized aluminium at the one sun, 138deg. */
+    background: var(--ck-anodized);
+    padding: calc(var(--cd-module) * 2);
   }
-}
 
-/* Shape-only cues (never colour ALONE — see the due-glow addition below,
-   always paired with the rim's own thickness + the always-present alarm
-   banner) for due/paused — the reel's rim goes from a plain solid ring to
-   dashed (paused) or double-weight (due). */
-.scr-cook-reel--paused .scr-cook-reel-rim {
-  stroke-dasharray: 4 3;
-}
+  /* the microtexture that holds the anodize's grain (II.2.9 + CORRECTIONARY 3.3) */
+  .ck::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: var(--cd-noise);
+    opacity: var(--cd-grain-strength);
+    mix-blend-mode: overlay;
+    z-index: 0;
+  }
+  .ck {
+    position: relative;
+    isolation: isolate;
+  }
+  .ck > * {
+    position: relative;
+    z-index: 1;
+  }
 
-.scr-cook-reel--paused .scr-cook-reel-platter {
-  opacity: 0.55;
-}
+  /* ===================================================================== */
+  /* 1 · THE FACE — II.4/IV.1's unequal thirds, 62fr hero / 38fr evidence   */
+  /* ===================================================================== */
+  /*
+    CORRECTIONARY 5.5 — "Density is confidence. Fill the panel the way a cockpit
+    is filled. Empty space is a deliberate framing device used sparingly, not a
+    default politeness applied everywhere." The first render left about 180px of
+    bare field under the preview pod because the column was `align-items: start`
+    and the stage only stood as tall as its contents. The faceplate now runs the
+    full height of the deck and the reel is centred IN it, which is where a reel
+    sits on a real machine.
+  */
+  .ck .ck-face {
+    display: grid;
+    grid-template-columns: 62fr 38fr;
+    gap: calc(var(--cd-module) * 3);
+    align-items: stretch;
+    min-block-size: calc(100dvh - var(--cd-module) * 4);
+  }
 
-.scr-cook-reel--paused .scr-cook-reel-brake {
-  opacity: 1;
-}
+  .ck .ck-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: calc(var(--cd-module) * 2);
+    min-inline-size: 0;
+  }
 
-.scr-cook-reel--due .scr-cook-reel-rim {
-  stroke-width: 3;
-  filter: drop-shadow(0 0 5px var(--sol-danger)) drop-shadow(0 0 1px var(--sol-danger));
-}
+  .ck .ck-stage .ck-reel-mount {
+    flex: 1;
+    align-content: center;
+  }
 
-.scr-cook-hero-readout {
-  text-align: center;
-}
+  .ck .ck-evidence {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--cd-module) * 1.5);
+    min-inline-size: 0;
+  }
 
-.scr-cook-hero-title {
-  margin: 0;
-  font-weight: 700;
-  font-size: 1.05rem;
-}
+  /* ===================================================================== */
+  /* 2 · THE REEL                                                          */
+  /* ===================================================================== */
+  .ck .ck-reel-mount {
+    display: grid;
+    justify-items: center;
+    padding: calc(var(--cd-module) * 2) calc(var(--cd-module) * 2) calc(var(--cd-module) * 4);
+    border-radius: var(--cd-chamfer-card); /* 0.75rem — panels, section 2 */
+    inline-size: 100%;
+  }
 
-.scr-cook-hero-subtitle {
-  margin: 0.125rem 0 0;
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-}
+  .ck .ck-reel {
+    position: relative;
+    inline-size: var(--ck-reel);
+    block-size: var(--ck-reel);
+  }
 
-.scr-cook-hero-clock {
-  margin: 0.125rem 0 0;
-  font-family: var(--sol-font-data);
-  font-variant-numeric: tabular-nums;
-  color: var(--sol-text-muted);
-}
+  /* --- the rim-printed arc: II.3.18's committed 270deg, in dot cells ---- */
+  /*
+    "Arc: 270 degree sweep ... minimum at 7 o'clock, maximum at 5 o'clock" with
+    a 90 degree dead zone at the bottom — which is exactly where the primary key
+    sits. 60 cells at 4.5 degrees; one cell is one sixtieth of the program.
+  */
+  .ck .ck-arc {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .ck .ck-arc-cell,
+  .ck .ck-arc-major {
+    position: absolute;
+    inset-inline-start: 50%;
+    inset-block-start: 50%;
+    transform: rotate(var(--ck-a)) translateY(calc(var(--ck-reel) * -0.468));
+    transform-origin: 0 0;
+  }
+  .ck .ck-arc-cell {
+    /*
+      MEASURED at 390px: at 0.1875rem x 0.5rem the printed arc read as a fine
+      serration on the collar's edge rather than as a counter — the lit/unlit
+      pair was 12.15:1 and still not legible, because 3px of it is not enough
+      cell to carry a reading at arm's length, let alone at two metres. The cell
+      is now 0.25rem x 0.75rem and the ring sits further off the collar.
+    */
+    inline-size: 0.25rem;
+    block-size: 0.75rem;
+    margin-inline-start: -0.125rem;
+    margin-block-start: -0.375rem;
+    border-radius: 0.125rem;
+    /*
+      DECLARED DEPARTURE (CORRECTIONARY 3.3, 6.5). II.3.21 prints off-dots "4%
+      in luminance above the field". Measured, #1C1C1D over #1B1B1D is a 1.03:1
+      excursion — an off-grid nobody can see is not "readable as hardware", it
+      is an absent grid. Raised to this world's OWN committed rim-catch hex
+      #2C2D30, which reads 1.25:1 against the field (texture, carrying no
+      reading) while lit-vs-unlit measures 12.15:1, well past the 3:1 graphical
+      floor the two STATES have to clear against each other.
+    */
+    background: var(--cd-rim-catch);
+  }
+  .ck .ck-arc-cell[data-on="true"] {
+    /* flat fill, never a glow: the strip is a phosphor pretending to be print,
+       and this world grants ONE bulb — the record lamp (section 2) */
+    background: var(--cd-ink);
+  }
+  .ck .ck-arc-cell[data-over="true"] {
+    /* the program has run past its own declared total. II.7's zone band. */
+    background: var(--cd-role-warning);
+  }
+  .ck .ck-arc-major {
+    inline-size: 0.125rem;
+    block-size: 1.25rem;
+    margin-inline-start: -0.0625rem;
+    margin-block-start: -0.625rem;
+    background: var(--cd-mirror);
+  }
 
-/* --- Scrub control (role="slider") --- */
+  /* --- the collar: machined chrome, and what the keys are seated in ----- */
+  .ck .ck-collar {
+    position: absolute;
+    inset: 8.34%;
+    border-radius: 50%;
+    background: var(--ck-chrome);
+    box-shadow:
+      inset 0 1px 0 #ffffffa6, /* rim light — the hardest catch on the panel */
+      inset 0 -1px 0 #00000059, /* lip */
+      0 1px 0 #00000066, /* contact */
+      0 4px 10px #00000040, /* core */
+      0 24px 56px #00000029; /* ambient — the hero's own deepest throw */
+  }
 
-.scr-cook-scrub {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
+  /* --- the disc ---------------------------------------------------------- */
+  /*
+    THE FLANGE lives on `.ck-disc`, which does not turn. A real reel's outer
+    flange is a smooth machined ring — you cannot read rotation off it, only off
+    the spoke field inside it — so putting it on the untransformed parent is
+    both the honest construction and II.2.4's own split. Without it the disc
+    rendered as a six-blade fan: measured on the first render, the spoke field
+    ran edge to edge and there was nothing for the collar's chrome to meet.
+  */
+  .ck .ck-disc {
+    position: absolute;
+    inset: 16.67%;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--ck-chrome);
+  }
 
-.scr-cook-scrub:focus-visible {
-  outline: var(--sol-focus-width) solid var(--sol-focus);
-  outline-offset: 3px;
-}
+  /*
+    `.ck-grip` TURNS. `.ck-light` is its SIBLING and never turns, so paint order
+    alone keeps the sun fixed to the room while the machined part rotates under
+    it (II.2.4 — "the single most load-bearing split in the whole material
+    chapter", and 02 REEL LOGIC section 3's own fence).
+  */
+  .ck .ck-grip {
+    position: absolute;
+    inset: 9%; /* the spoke field, inside the flange */
+    border-radius: 50%;
+    background: conic-gradient(
+      #c9cacb 0deg 18deg,
+      #1b1b1d 18deg 60deg,
+      #c9cacb 60deg 78deg,
+      #1b1b1d 78deg 120deg,
+      #c9cacb 120deg 138deg,
+      #1b1b1d 138deg 180deg,
+      #c9cacb 180deg 198deg,
+      #1b1b1d 198deg 240deg,
+      #c9cacb 240deg 258deg,
+      #1b1b1d 258deg 300deg,
+      #c9cacb 300deg 318deg,
+      #1b1b1d 318deg 360deg
+    );
+    /*
+      RATE, NOT DURATION. One revolution per 10 seconds of program time —
+      0.1 rev/s, 36 deg/s — constant, because a cook program runs at 1x real
+      time and any other rate would be "faster for drama, slower for calm"
+      (section 1). Zero script per frame: CD-BRIEF's measured performance law,
+      rule 6. The PHASE is seeded once from real elapsed time in Reel.tsx.
+    */
+    animation: ck-reel-spin 10s linear infinite;
+    animation-play-state: paused;
+  }
 
-.scr-cook-scrub-step {
-  width: var(--fd-target-list);
-  height: var(--fd-target-list);
-  padding: 0;
-  border-radius: 50%;
-  background: var(--sol-panel);
-}
+  .ck .ck-reel[data-ck-spin="true"] .ck-grip {
+    animation-play-state: running;
+  }
 
-.scr-cook-scrub-readout {
-  min-width: 4.5rem;
-  text-align: center;
-  font-family: var(--sol-font-data);
-  font-variant-numeric: tabular-nums;
-  color: var(--sol-text-muted);
-}
+  @keyframes ck-reel-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
 
-.scr-cook-scrub-reset {
-  min-height: var(--fd-target-list);
-  padding-inline: 0.75rem;
-  text-transform: uppercase;
-  font-size: var(--sol-text-label);
-  letter-spacing: 0.04em;
-}
+  /* the room's light, fixed. II.2.8's hard-mirror catch plus the four-layer
+     stack the chapter's own fence writes on this element. */
+  .ck .ck-light {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    background:
+      /*
+        THE HUB BOSS. The chapter's conic spoke field is angular, so its wedges
+        converge to a point at the centre — with nothing there the disc reads as
+        a six-blade fan rather than as a reel. MEASURED at Trophy's 2x scale,
+        where the counter window is off and the centre is bare: that is exactly
+        what it read as. The boss is where a spool actually mounts.
+      */
+      radial-gradient(closest-side, #d4d5d6 0%, #9a9c9e 13%, #34373a 17%, #00000000 18%),
+      /* the shadow the flange throws down onto the spoke field it overhangs */
+      radial-gradient(closest-side, #00000000 88%, #00000080 91%, #00000000 93%),
+      linear-gradient(var(--cd-light-axis), #ffffff1f 0%, #ffffff08 30%, #00000000 52%, #00000059 100%),
+      radial-gradient(120% 90% at 30% 18%, #e2e3e429 0%, #e2e3e400 46%);
+    box-shadow:
+      inset 0 1px 0 #e2e3e4a6, /* rim — hard mirror catch, fixed to the light */
+      inset 0 -1px 0 #00000066, /* lip */
+      inset 0 0 0 2px #00000073, /* the disc's seat inside the collar */
+      inset 0 0 22px 6px #00000047, /* the well the disc sits down inside */
+      0 1px 0 #00000066, /* contact */
+      0 4px 10px #00000040; /* core */
+  }
 
-/* --- Step-due alarm banner: the ONE red element --- */
+  /* --- the hub counter window, bolted across the disc's centre ---------- */
+  .ck .ck-hub {
+    position: absolute;
+    inset-inline-start: 50%;
+    inset-block-start: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    justify-items: center;
+    gap: 0.125rem;
+    padding: calc(var(--cd-module) / 2) var(--cd-module);
+    border-radius: var(--cd-chamfer); /* 0.25rem — controls, section 2 */
+    min-inline-size: 52%;
+    text-align: center;
+  }
+  .ck .ck-hub-total {
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+    letter-spacing: var(--cd-track-body);
+  }
 
-.scr-cook-alarm {
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  min-height: var(--fd-target-list);
-  padding: 0.625rem 0.875rem;
-  background: var(--sol-panel);
-  border: 2px solid var(--sol-danger);
-  color: var(--sol-text);
-  font-weight: 600;
-}
+  /* --- the crown escutcheon at 12 o'clock: the one licensed emissive ---- */
+  .ck .ck-crown {
+    position: absolute;
+    inset-inline-start: 50%;
+    inset-block-start: 5.5%;
+    transform: translateX(-50%);
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--cd-module) / 2);
+    padding: 0.1875rem calc(var(--cd-module) * 0.75);
+    border-radius: var(--cd-chamfer);
+    background: var(--cd-well);
+    box-shadow:
+      inset 0 1px 0 #ffffff14,
+      inset 0 -1px 0 #00000038,
+      0 1px 0 #00000047;
+  }
+  .ck .ck-crown-word {
+    font-size: var(--cd-size-1);
+    color: var(--cd-ink);
+  }
+  /* II.4.11 — the pulse, and ONLY for a process actually running. Armed but
+     not running holds the lamp lit and steady (section 6). */
+  .ck .ck-lamp.cd-pulse {
+    display: inline-flex;
+    animation: ck-pulse var(--cd-pulse-cycle) var(--cd-ease-pulse) infinite;
+  }
+  @keyframes ck-pulse {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.8;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 
-.scr-cook-alarm-dot {
-  flex: 0 0 auto;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--sol-danger);
-}
+  /* --- the transport, seated in the collar ------------------------------ */
+  /*
+    THE SIGNATURE. There is no transport key ROW on this screen: the three keys
+    are part of the reel assembly, seated in its own machined ring at 9, 6 and
+    3 o'clock. See the header comment in Reel.tsx for why the chapter's grab-
+    based gesture grammar could not be built and what was built instead.
+  */
+  .ck .ck-key {
+    position: absolute;
+    --cd-stack:
+      inset 0 1px 0 #ffffff59, /* rim light — a chrome-seated cap catches harder */
+      inset 0 -1px 0 #00000059, /* lip */
+      0 1px 0 #00000073, /* contact */
+      0 3px 6px #0000004d, /* core */
+      0 10px 24px #00000029; /* ambient */
+    background: linear-gradient(
+      var(--cd-light-axis),
+      color-mix(in srgb, #ffffff 12%, var(--cd-field)) 0%,
+      var(--cd-field) 58%,
+      color-mix(in srgb, #000000 12%, var(--cd-field)) 100%
+    );
+    border-radius: var(--cd-chamfer);
+    /*
+      NO `box-shadow` HERE. This is the gotcha the foundry documents and this
+      build walked straight into: `.cd-focusable:focus-visible` lives in
+      @layer cd.material and composes the ring's dark keyline as
+      `box-shadow: 0 0 0 6px keyline, var(--cd-stack)`. Both it and this rule
+      measure (0,2,0), so a `box-shadow` written here wins on source order and
+      silently deletes the keyline.
 
-.scr-cook-wakelock-note {
-  margin: 0;
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-}
+      MEASURED, before this repair, on a real Tab walk: every control on this
+      screen rendered `outline: 2px solid rgb(76,143,209)` at the correct 3px
+      offset and NO keyline at all — the blue alone, on chassis black. The
+      control publishes --cd-stack and `.cd-key` (0,1,0) paints it; the ring
+      beats that cleanly at (0,2,0).
+    */
+    z-index: 3;
+  }
+  .ck .ck-key .cd-key-cap {
+    /* II.6.10's task-read floor, not the label floor: these three caps are read
+       at about two metres by someone whose hands are busy. */
+    font-size: var(--cd-size-2);
+    text-transform: uppercase;
+  }
+  .ck .ck-key[disabled] {
+    color: var(--ck-disabled-ink); /* 4.62:1 on the cap's lightest stop */
+  }
 
-/* --- NOW / next --- */
+  /* 3.5rem = 56px both axes, past the Floor's 44px, because this deck is
+     worked with wet hands at about two metres. */
+  .ck .ck-key--pause,
+  .ck .ck-key--extend {
+    inline-size: 3.5rem;
+    block-size: 3.5rem;
+    min-inline-size: 3.5rem;
+    min-block-size: 3.5rem;
+    inset-block-start: 50%;
+    padding: 0;
+  }
+  .ck .ck-key--pause {
+    inset-inline-start: 12.5%;
+    transform: translate(-50%, -50%);
+  }
+  .ck .ck-key--extend {
+    inset-inline-start: 87.5%;
+    transform: translate(-50%, -50%);
+  }
 
-.scr-cook-nownext {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
+  /*
+    PLAN section 6.6's ergonomic intent survives the Signature: the primary is
+    the widest thing on the assembly and 4.5rem (72px) tall.
+  */
+  /*
+    Seated INTO the collar's bottom, not floating under the assembly: the key's
+    upper edge overlaps the chrome ring so the reel reads as one object with a
+    key in it. The first render placed it clear of the collar and it read as a
+    separate transport key parked below a disc — which is the exact key row the
+    Signature removes, moved down by 2rem.
+  */
+  .ck .ck-key--primary {
+    inset-inline-start: 50%;
+    inset-block-start: 100%;
+    transform: translate(-50%, -78%);
+    inline-size: 12rem;
+    block-size: 4.5rem;
+    min-block-size: 4.5rem;
+    border-radius: calc(var(--cd-chamfer) * 3);
+  }
+  .ck .ck-key--primary .cd-key-cap {
+    font-size: var(--cd-size-4); /* 1.25rem — panel readout floor (II.6.10) */
+  }
 
-.scr-cook-now-label {
-  margin: 0;
-  font-size: var(--sol-text-label);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--sol-text-muted);
-}
+  /* press: II.2.6 / II.4.3 — 1px of travel on transform, core and ambient
+     tighten, the contact line NEVER moves, no box dimension changes */
+  .ck .ck-key--pause[data-cd-pressed="true"],
+  .ck .ck-key--extend[data-cd-pressed="true"] {
+    transform: translate(-50%, -50%) translateY(1px);
+  }
+  .ck .ck-key--primary[data-cd-pressed="true"] {
+    transform: translate(-50%, -78%) translateY(1px);
+  }
+  .ck .ck-key[data-cd-pressed="true"] {
+    --cd-stack:
+      inset 0 1px 0 #ffffff33,
+      inset 0 -1px 0 #00000059,
+      0 1px 0 #00000073, /* contact — unchanged, by law */
+      0 1px 2px #0000004d,
+      0 4px 10px #00000029;
+  }
 
-.scr-cook-now-text {
-  margin: 0;
-  font-weight: 700;
-  line-height: 1.15;
-  /* PLAN §6.6: "verb-first, legible at 2m (clamp ~44-56px, high contrast)". */
-  font-size: clamp(2.75rem, 7vw, 3.5rem);
-}
+  /* ===================================================================== */
+  /* 3 · THE PROGRAM IDENTITY POD                                          */
+  /* ===================================================================== */
+  .ck .ck-ident {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: var(--cd-module);
+    inline-size: 100%;
+    padding: var(--cd-module);
+    border-radius: var(--cd-chamfer-card);
+  }
+  .ck .ck-ident-plate {
+    display: grid;
+    gap: 0.125rem;
+  }
+  .ck .ck-ident-title {
+    margin: 0;
+    font-size: var(--cd-size-4);
+    font-weight: 600;
+    letter-spacing: var(--cd-track-body);
+    color: var(--cd-plate-ink);
+  }
+  .ck .ck-ident-sub {
+    margin: 0;
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+  }
+  .ck .ck-ident-eject {
+    --cd-stack: var(--cd-shadow-t2);
+  }
 
-.scr-cook-next-text {
-  margin: 0;
-  font-family: var(--sol-font-data);
-  font-variant-numeric: tabular-nums;
-  color: var(--sol-text-muted);
-  font-size: var(--sol-text-label);
-}
+  /* ===================================================================== */
+  /* 4 · THE COUNTDOWN — the screen's one reserved numeral (II.6.20)        */
+  /* ===================================================================== */
+  .ck .ck-count {
+    display: grid;
+    gap: calc(var(--cd-module) * 0.75);
+    padding: var(--cd-module);
+    border-radius: var(--cd-chamfer-card);
+  }
+  .ck .ck-count-head,
+  .ck .ck-count-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cd-module);
+    min-block-size: 1.25rem;
+  }
+  .ck .ck-count-age {
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+  }
+  .ck .ck-count-drums {
+    justify-self: center;
+  }
+  .ck .ck-count-word {
+    font-size: var(--cd-size-1);
+  }
+  .ck .ck-count-word[data-ck-overdue="true"] {
+    color: var(--cd-role-danger-ink-dark); /* 4.53:1 worst on a dark field */
+  }
+  /* The recovery slot holds its width in BOTH states, so the control never
+     moves under a hand already reaching for it. */
+  .ck .ck-count-recovery {
+    display: inline-flex;
+    min-inline-size: var(--cd-target-min);
+    justify-content: flex-end;
+    align-items: center;
+  }
 
-/* Fable review FIX round: tester per-op note — quiet secondary text next to
-   "now", not a chip/badge (text-only, no color-only meaning); italic is the
-   ONE extra cue beyond size/weight/position, kept subtle since COOK's dark
-   lean already reserves saturated color for true alarm states only. */
-.scr-cook-now-testernote {
-  margin: 0;
-  font-style: italic;
-  color: var(--sol-text-muted);
-  font-size: var(--sol-text-label);
-  line-height: 1.3;
-}
+  /* II.3.19 — the bar meter. DECLARED RE-ORIENTATION: the casting is vertical
+     (1.25rem x 12rem, 0.5rem segments, 0.125rem gaps). Laid horizontally here
+     because the countdown reads left-to-right beside a circular hero, and the
+     segment/gap pitch is carried across unchanged. */
+  .ck .ck-meter {
+    display: flex;
+    gap: 0.125rem;
+    block-size: 1.25rem;
+    padding: 0.125rem;
+    border-radius: 0.1875rem;
+    background: var(--cd-field);
+    box-shadow: var(--cd-shadow-well);
+  }
+  .ck .ck-meter-seg {
+    flex: 1;
+    border-radius: 0.0625rem;
+    background: var(--cd-rim-catch);
+  }
+  .ck .ck-meter-seg[data-on="true"] {
+    background: var(--cd-ink);
+  }
+  .ck .ck-meter-seg[data-zone="warn"][data-on="true"] {
+    /* the last 15% of any window is a printed zone band, not a colour swap on
+       the whole meter — II.3.19's zones live on the track */
+    background: var(--cd-role-warning);
+  }
+  /* fully spent and past: every segment lights in the danger value */
+  .ck .ck-meter[data-ck-overdue="true"] .ck-meter-seg[data-on="true"] {
+    background: var(--cd-role-danger-zone-dark);
+  }
 
-/* --- Track lanes --- */
+  /* ===================================================================== */
+  /* 5 · THE STATE POD — dot-matrix strip + latching annunciator            */
+  /* ===================================================================== */
+  .ck .ck-state {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cd-module);
+    padding: calc(var(--cd-module) * 0.75);
+    border-radius: var(--cd-chamfer-card);
+  }
+  .ck .ck-state-strip {
+    padding: calc(var(--cd-module) / 2);
+    border-radius: var(--cd-chamfer);
+    background: var(--cd-well);
+    box-shadow: var(--cd-shadow-well);
+  }
 
-.scr-cook-lanes-body {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding-top: 0.125rem;
-}
+  /* --- the dot-matrix itself (II.3.21) ---------------------------------- */
+  .ck .ck-dm {
+    display: inline-flex;
+    align-items: center;
+    /* 0.125rem gap + 0.5rem dot + 0.125rem gap = one full empty column */
+    gap: 0.75rem;
+  }
+  .ck .ck-dm-char {
+    display: grid;
+    grid-template-columns: repeat(5, var(--ck-dm-dot));
+    grid-auto-rows: var(--ck-dm-dot);
+    gap: calc(var(--ck-dm-pitch) - var(--ck-dm-dot));
+  }
+  .ck .ck-dm-dot {
+    inline-size: var(--ck-dm-dot);
+    block-size: var(--ck-dm-dot);
+    border-radius: 50%;
+    background: var(--cd-rim-catch); /* the off-dot grid — see the arc note */
+  }
+  .ck .ck-dm-dot[data-on="true"] {
+    background: var(--cd-ink); /* flat fill, no glow */
+  }
+  .ck .ck-dm[data-ck-held="true"] .ck-dm-dot[data-on="true"] {
+    opacity: 0.55; /* II.3.18 — a frozen reading holds, ink to 55% */
+  }
+  /* the flanking transport glyph — the chapter's own clip-path shapes */
+  .ck .ck-dm-glyph {
+    inline-size: var(--ck-dm-dot);
+    block-size: var(--ck-dm-dot);
+    align-self: center;
+    background: var(--cd-ink);
+  }
+  .ck .ck-dm-glyph[data-ck-glyph="play"] {
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+  }
+  .ck .ck-dm-glyph[data-ck-glyph="pause"] {
+    background:
+      linear-gradient(var(--cd-ink), var(--cd-ink)) 0 0 / 35% 100% no-repeat,
+      linear-gradient(var(--cd-ink), var(--cd-ink)) 65% 0 / 35% 100% no-repeat;
+  }
+  .ck .ck-dm-glyph[data-ck-glyph="stop"] {
+    clip-path: inset(12%);
+  }
+  .ck .ck-dm-glyph[data-ck-glyph="alert"] {
+    background: var(--cd-role-danger-zone-dark);
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  }
 
-.scr-cook-lane {
-  display: grid;
-  grid-template-columns: 4.5rem 1fr auto;
-  align-items: center;
-  gap: 0.5rem;
-  min-width: 0;
-}
+  /* --- the annunciator (II.3.25) ---------------------------------------- */
+  .ck .ck-ann {
+    display: grid;
+    place-items: center;
+    inline-size: 5rem;
+    min-block-size: 2rem;
+    border-radius: 0.1875rem;
+    background: var(--cd-well);
+    border: 1px solid #00000059;
+    box-shadow: inset 0 1px 0 #ffffff14;
+  }
+  .ck .ck-ann-legend {
+    font-family: var(--cd-font-ui);
+    font-size: 0.5625rem;
+    font-weight: 700;
+    letter-spacing: var(--cd-track-micro);
+    text-transform: uppercase;
+    /* dark: engraved in muted ink — "a dark annunciator still announces what it
+       would say". 5.75:1 on the well. */
+    color: var(--cd-muted-ink);
+  }
+  .ck .ck-ann[data-ck-firing="true"] {
+    /* 2Hz, 250ms lit / 250ms dark, SQUARE, no fade — fixed doctrine (II.3.25) */
+    animation: ck-ann-flash 500ms steps(1, end) infinite;
+  }
+  @keyframes ck-ann-flash {
+    0% {
+      background: var(--cd-role-danger); /* #C2392E; ink measures 4.73:1 on it */
+      color: var(--cd-ink);
+    }
+    50% {
+      background: var(--cd-well);
+      color: var(--cd-muted-ink);
+    }
+  }
+  .ck .ck-ann[data-ck-firing="true"] .ck-ann-legend {
+    color: inherit;
+  }
 
-.scr-cook-lane-label {
-  font-family: var(--sol-font-data);
-  font-size: var(--sol-text-label);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--sol-text-muted);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
+  /* ===================================================================== */
+  /* 6 · THE NOW PLATE                                                     */
+  /* ===================================================================== */
+  .ck .ck-now {
+    display: grid;
+    gap: calc(var(--cd-module) * 0.75);
+    padding: var(--cd-module);
+    border-radius: var(--cd-chamfer-card);
+  }
+  .ck .ck-now-head {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--cd-module) / 2);
+    flex-wrap: wrap;
+  }
+  .ck .ck-now-plate {
+    /*
+      REAL DATA. A prep session's step text runs to a full paragraph ("TRAY A:
+      600 g chicken breast ... TRAY C: 160 g red pepper"). The plate is bounded
+      and scrolls INSIDE ITS OWN WINDOW rather than growing the page — R7 bans
+      page-length scrolling, not an instrument window with its own travel.
+    */
+    max-block-size: 9.5rem;
+    /*
+      `scroll`, NOT `auto`. MEASURED on the real 8-op Sunday session: the plate
+      clipped 24px of the step text with clientHeight === offsetHeight — an
+      overlay scrollbar reserved nothing and showed nothing, so the window was
+      indistinguishable from a clip that had swallowed its remainder, which
+      II.6.24 does not allow. An always-present track is a visible mechanism:
+      the operator can see there is more and can see how much.
+    */
+    overflow-y: scroll;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cd-border) var(--cd-well);
+  }
+  /* the travel slot, machined: a cut well with a chrome slider in it */
+  .ck .ck-now-plate::-webkit-scrollbar {
+    inline-size: var(--cd-module);
+  }
+  .ck .ck-now-plate::-webkit-scrollbar-track {
+    background: var(--cd-well);
+    box-shadow: inset 1px 0 2px #00000073;
+    border-radius: 0.125rem;
+  }
+  .ck .ck-now-plate::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, #6a6d70 0%, var(--cd-mirror) 45%, #34373a 100%);
+    border-radius: 0.125rem;
+    box-shadow: inset 0 1px 0 #ffffff59;
+  }
+  .ck .ck-now-text {
+    margin: 0;
+    font-size: var(--cd-size-3);
+    line-height: var(--cd-leading-prose);
+    max-inline-size: var(--cd-prose-measure);
+    color: var(--cd-plate-ink);
+  }
+  .ck .ck-now-note {
+    margin: var(--cd-module) 0 0;
+    font-size: var(--cd-size-1);
+    line-height: var(--cd-leading-prose);
+    color: var(--cd-muted-ink);
+  }
+  .ck .ck-next-plate {
+    display: grid;
+    gap: 0.125rem;
+  }
+  .ck .ck-next-label {
+    font-size: var(--cd-size-1);
+  }
+  .ck .ck-next-text {
+    font-size: var(--cd-size-2);
+    color: var(--cd-plate-ink);
+  }
+  .ck .ck-next-in {
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+  }
 
-.scr-cook-lane-track {
-  position: relative;
-  height: 0.9rem;
-  display: flex;
-  background: var(--sol-bg);
-  border: 1px solid var(--sol-border);
-  overflow: hidden;
-  min-width: 0;
-}
+  /* ===================================================================== */
+  /* 7 · THE SCRUB ROCKER (II.3.14)                                        */
+  /* ===================================================================== */
+  .ck .ck-scrub {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: var(--cd-module);
+    justify-items: center;
+    padding: var(--cd-module);
+    border-radius: var(--cd-chamfer-card);
+    inline-size: 100%;
+  }
+  .ck .ck-scrub-head {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cd-module);
+    inline-size: 100%;
+  }
+  .ck .ck-scrub-read {
+    font-size: var(--cd-size-4);
+    color: var(--cd-ink);
+  }
 
-.scr-cook-lane-before {
-  display: block;
-  height: 100%;
-}
+  .ck .ck-rocker {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: stretch;
+    inline-size: 100%;
+    max-inline-size: 20rem;
+    border-radius: var(--cd-chamfer);
+    background: var(--cd-well);
+    box-shadow: var(--cd-shadow-well);
+    padding: 0.1875rem;
+    gap: 0.1875rem;
+  }
+  .ck .ck-rocker-end {
+    --cd-stack: var(--cd-shadow-t2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.125rem;
+    min-inline-size: 4rem;
+    min-block-size: 2.75rem; /* the Floor, over the casting's 2rem — see note */
+    border: 0;
+    border-radius: var(--cd-chamfer);
+    background: linear-gradient(
+      var(--cd-light-axis),
+      color-mix(in srgb, #ffffff 11%, var(--cd-field)) 0%,
+      var(--cd-field) 58%,
+      color-mix(in srgb, #000000 10%, var(--cd-field)) 100%
+    );
+    color: var(--cd-ink);
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    /* Light mass — spring(0.7, 420, 25), CSS pair 180ms (II.1.2). The bat is
+       never at rest anywhere but centre, so the return runs on the class's own
+       settle rather than on the transport's. */
+    transition:
+      transform var(--cd-settle-light) var(--cd-ease-settle),
+      box-shadow var(--cd-settle-light) var(--cd-ease-settle);
+    transform-style: preserve-3d;
+  }
+  .ck .ck-rocker-end[disabled] {
+    cursor: default;
+    color: var(--ck-disabled-ink);
+    --cd-stack: var(--cd-shadow-t1);
+  }
+  /* the throw: +/-10 degrees about the long axis (II.3.14) */
+  .ck .ck-rocker[data-ck-thrown="down"] .ck-rocker-end:first-of-type,
+  .ck .ck-rocker[data-ck-thrown="up"] .ck-rocker-end:last-of-type {
+    transform: perspective(400px) rotateX(-10deg) translateY(1px);
+    --cd-stack: var(--cd-shadow-t2-press);
+  }
+  .ck .ck-rocker-cap {
+    font-size: var(--cd-size-1);
+  }
+  .ck .ck-rocker-glyph {
+    inline-size: 0.625rem;
+    block-size: 0.375rem;
+    background: var(--cd-mirror);
+  }
+  .ck .ck-rocker-glyph[data-ck-dir="up"] {
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  }
+  .ck .ck-rocker-glyph[data-ck-dir="down"] {
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+  }
+  /* the spine the plate pivots about — knurled, so the eye reads a bearing
+     rather than a gap between two keys (II.3.14's own long axis) */
+  .ck .ck-rocker-pivot {
+    inline-size: 0.5rem;
+    border-radius: 0.125rem;
+    background:
+      repeating-linear-gradient(
+        180deg,
+        #ffffff29 0,
+        #ffffff29 1px,
+        #00000047 1px,
+        #00000047 2px
+      ),
+      var(--ck-chrome);
+    box-shadow:
+      inset 0 1px 0 #ffffff73,
+      inset 0 -1px 0 #00000073,
+      0 0 0 1px #00000059;
+  }
+  .ck .ck-scrub-now {
+    --cd-stack: var(--cd-shadow-t2);
+  }
 
-.scr-cook-lane-active {
-  position: relative;
-  display: block;
-  height: 100%;
-  background: var(--sol-panel);
-}
+  /*
+    The rocker's own shadow painter, deliberately at (0,1,0) rather than under
+    the `.ck ` prefix every other rule in this file carries. It has to lose to
+    `.cd-focusable:focus-visible` (0,2,0) or it deletes the ring's keyline, and
+    the rocker is not a `.cd-key`, so nothing else paints its stack.
+  */
+  .ck-rocker-end,
+  .ck-tally-link {
+    box-shadow: var(--cd-stack);
+  }
 
-.scr-cook-lane-fill {
-  display: block;
-  height: 100%;
-  background: var(--sol-accent);
-}
+  /* ===================================================================== */
+  /* 8 · THE ALARM AND THE PREVIEW BANNER                                  */
+  /* ===================================================================== */
+  /*
+    THE ALARM IS A STATE OF THE NOW PLATE, not a pod beside it. See the note on
+    NowPlateProps.due: the first build printed the step text twice, in two
+    enclosures, and spent 9rem of column height doing it.
 
-.scr-cook-lane-playhead {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: var(--sol-focus);
-  pointer-events: none;
-}
+    The danger keyline is drawn as an OUTLINE rather than an inset box-shadow on
+    purpose: `.cd-encl[data-cd-encl="hero"]` sets `box-shadow` at the same
+    specificity in the same layer, so a shadow written here would be decided by
+    bundler import order. It was, on the first render — measured: the alarm
+    shipped with no keyline at all. An outline cannot collide, and at
+    `outline-offset: -2px` it costs no layout. II.7's redundancy holds: the
+    escutcheon prints TIME IS UP beside it, so the colour never travels alone.
+  */
+  .ck .ck-now[data-ck-due="true"] {
+    outline: 2px solid var(--cd-role-danger-zone-dark);
+    outline-offset: -2px;
+  }
+  .ck .ck-preview {
+    font-size: var(--cd-size-2);
+    line-height: var(--cd-leading-prose);
+  }
 
-.scr-cook-lane-time {
-  font-family: var(--sol-font-data);
-  font-size: var(--sol-text-label);
-  font-variant-numeric: tabular-nums;
-  color: var(--sol-text-muted);
-  white-space: nowrap;
-}
+  /* ===================================================================== */
+  /* 9 · THE TRACK LANES                                                   */
+  /* ===================================================================== */
+  .ck .ck-lanes {
+    display: grid;
+    gap: calc(var(--cd-module) * 0.75);
+    padding: var(--cd-module);
+    border-radius: var(--cd-chamfer-card);
+  }
+  .ck .ck-lanes-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cd-module);
+  }
+  .ck .ck-lanes-count {
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+  }
+  .ck .ck-lanes-body {
+    display: grid;
+    gap: calc(var(--cd-module) / 2);
+  }
+  .ck .ck-lane {
+    display: grid;
+    grid-template-columns: 8.5rem 1fr auto;
+    align-items: center;
+    gap: var(--cd-module);
+    /*
+      II.6.13's DENSE band, 2rem. The Floor's 44px governs interactive TARGETS;
+      a lane is a readout with no hit region of its own, and the deck is denser
+      for it (CORRECTIONARY 5.5).
+    */
+    min-block-size: var(--cd-row-dense);
+  }
+  .ck .ck-lanes-overflow {
+    margin: calc(var(--cd-module) / 4) 0 0;
+    text-align: end;
+  }
+  .ck .ck-lane-label {
+    justify-self: start;
+    max-inline-size: 8.5rem;
+    /* the station name WRAPS rather than truncating: "OVEN · 3 TRA..." is a
+       clip with its remainder swallowed, which II.6.24 does not allow */
+    white-space: normal;
+    line-height: 1.15;
+    font-size: var(--cd-size-1);
+  }
+  .ck .ck-lane-track {
+    position: relative;
+    block-size: 1rem;
+    border-radius: 0.125rem;
+    background: var(--cd-well);
+    box-shadow: var(--cd-shadow-well);
+    overflow: hidden;
+  }
+  .ck .ck-lane-window {
+    position: absolute;
+    inset-block: 0.125rem;
+    border-radius: 0.0625rem;
+    background: var(--cd-rim-catch);
+  }
+  .ck .ck-lane-fill {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    border-radius: 0.0625rem;
+    /* segmented travel, per II.3.19's own construction: the segmentation is a
+       repeating gradient over the fill, so the zone geometry never moves */
+    background:
+      repeating-linear-gradient(
+        90deg,
+        var(--cd-ink) 0,
+        var(--cd-ink) 0.5rem,
+        #00000000 0.5rem,
+        #00000000 0.625rem
+      );
+    /* position carries meaning, so it travels rather than jumping — 80ms
+       linear is the reduced-motion dialect's own figure and it is honest at
+       full motion too, because the model has already committed (II.4.1) */
+    transition: inline-size 80ms linear;
+  }
+  .ck .ck-lane[data-ck-live="true"] .ck-lane-window {
+    box-shadow: inset 0 0 0 1px var(--cd-border);
+  }
+  .ck .ck-lane-playhead {
+    position: absolute;
+    inset-block: -0.125rem;
+    inline-size: 2px;
+    margin-inline-start: -1px;
+    background: var(--cd-mirror-hot);
+  }
+  .ck .ck-lane-time {
+    font-size: var(--cd-size-2);
+    color: var(--cd-ink);
+    text-align: end;
+  }
+  .ck .ck-lane-of {
+    color: var(--cd-muted-ink);
+  }
 
-/* --- Utility row: change program / chime toggle --- */
+  /* ===================================================================== */
+  /* 10 · THE DRUMS (the tape-counter)                                     */
+  /* ===================================================================== */
+  .ck .ck-drums {
+    display: inline-flex;
+    align-items: stretch;
+    gap: 1px;
+    padding: 0.1875rem;
+    border-radius: var(--cd-chamfer);
+    background: var(--cd-well);
+    box-shadow: var(--cd-shadow-well);
+  }
+  .ck .ck-drum-col {
+    position: relative;
+    display: grid;
+    place-items: center;
+    /* fixed-width columns, right-aligned by construction: "never a proportional
+       font pretending to be a wheel" (section 2) */
+    inline-size: calc(var(--ck-drum-size, var(--cd-size-5)) * 0.72);
+    /* the cylinder: light on the crown, the equator, shadow at the base */
+    background: linear-gradient(
+      180deg,
+      #2c2d30 0%,
+      #1c1c1d 42%,
+      #1c1c1d 58%,
+      #121213 100%
+    );
+    box-shadow:
+      inset 0 1px 0 #ffffff1f,
+      inset 0 -1px 0 #00000073;
+  }
+  .ck .ck-drum-face {
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-size: var(--ck-drum-size, var(--cd-size-5));
+    line-height: var(--cd-leading-tight);
+    color: var(--cd-ink);
+  }
+  .ck .ck-drum-sep {
+    display: grid;
+    place-items: center;
+    inline-size: calc(var(--ck-drum-size, var(--cd-size-5)) * 0.34);
+    font-family: var(--cd-font-data);
+    font-size: var(--ck-drum-size, var(--cd-size-5));
+    line-height: var(--cd-leading-tight);
+    color: var(--cd-muted-ink);
+  }
+  .ck .ck-drums[data-ck-held="true"] .ck-drum-face {
+    opacity: 0.55; /* II.3.18 — the value HOLDS; only the ink drops */
+  }
+  .ck .ck-count-drums {
+    --ck-drum-size: var(--cd-size-7); /* 4.25rem — II.6.20's reserved step */
+  }
 
-.scr-cook-utility-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding-top: 0.5rem;
-  border-top: 1px solid var(--sol-border);
-}
+  /* ===================================================================== */
+  /* 11 · THE PICKER                                                       */
+  /* ===================================================================== */
+  .ck .ck-picker {
+    display: grid;
+    gap: calc(var(--cd-module) * 1.5);
+  }
+  .ck .ck-picker-head,
+  .ck .ck-picker-tonight,
+  .ck .ck-picker-sessions,
+  .ck .ck-picker-any {
+    display: grid;
+    gap: var(--cd-module);
+    padding: calc(var(--cd-module) * 1.5);
+    border-radius: var(--cd-chamfer-card);
+    justify-items: start;
+  }
+  .ck .ck-picker-plate {
+    display: grid;
+    gap: calc(var(--cd-module) / 2);
+  }
+  .ck .ck-picker-title {
+    margin: 0;
+    font-size: var(--cd-size-5);
+    font-weight: 600;
+    letter-spacing: var(--cd-track-body);
+    color: var(--cd-plate-ink);
+  }
+  .ck .ck-picker-sub {
+    margin: 0;
+    font-size: var(--cd-size-2);
+    color: var(--cd-muted-ink);
+  }
+  .ck .ck-picker-session-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: var(--cd-module);
+    inline-size: 100%;
+  }
+  .ck .ck-seat {
+    --cd-stack: var(--cd-shadow-t2);
+    display: grid;
+    justify-items: start;
+    gap: 0.125rem;
+    inline-size: 100%;
+    text-align: start;
+    padding: var(--cd-module);
+  }
+  .ck .ck-seat--tonight,
+  .ck .ck-seat--session {
+    min-block-size: 4.5rem;
+  }
+  .ck .ck-seat--meal {
+    grid-template-columns: 7rem 1fr auto;
+    align-items: center;
+    justify-items: start;
+    gap: var(--cd-module);
+  }
+  .ck .ck-seat-slot {
+    font-size: var(--cd-size-1);
+  }
+  .ck .ck-seat-name {
+    font-size: var(--cd-size-3);
+    font-weight: 600;
+    letter-spacing: var(--cd-track-body);
+  }
+  .ck .ck-seat-name--big {
+    font-size: var(--cd-size-5);
+  }
+  .ck .ck-seat-desc,
+  .ck .ck-seat-meta {
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+  }
+  .ck .ck-picker-register {
+    inline-size: 100%;
+  }
 
-.scr-cook-changeprog {
-  min-height: var(--fd-target-list);
-  padding-inline: 1rem;
-  background: transparent;
-  text-transform: uppercase;
-  font-size: var(--sol-text-label);
-  letter-spacing: 0.04em;
-}
+  /* ===================================================================== */
+  /* 12 · THE COMPLETION TALLY                                             */
+  /* ===================================================================== */
+  .ck .ck-tally {
+    display: grid;
+    gap: calc(var(--cd-module) * 1.5);
+    justify-items: start;
+  }
+  .ck .ck-tally-head,
+  .ck .ck-tally-body {
+    display: grid;
+    gap: var(--cd-module);
+    padding: calc(var(--cd-module) * 1.5);
+    border-radius: var(--cd-chamfer-card);
+    justify-items: start;
+    inline-size: 100%;
+  }
+  .ck .ck-tally-head {
+    grid-auto-flow: column;
+    justify-content: start;
+    align-items: center;
+  }
+  .ck .ck-tally-plate {
+    display: grid;
+    gap: calc(var(--cd-module) / 2);
+    inline-size: 100%;
+  }
+  .ck .ck-tally-title {
+    margin: 0;
+    font-size: var(--cd-size-5);
+    font-weight: 600;
+    color: var(--cd-plate-ink);
+  }
+  .ck .ck-tally-subtitle,
+  .ck .ck-tally-line,
+  .ck .ck-tally-macros,
+  .ck .ck-tally-skipped {
+    margin: 0;
+    font-size: var(--cd-size-2);
+    color: var(--cd-muted-ink);
+  }
+  .ck .ck-tally-list {
+    margin: 0;
+    padding-inline-start: 1.25rem;
+    font-size: var(--cd-size-2);
+    line-height: var(--cd-leading-prose);
+    color: var(--cd-plate-ink);
+  }
+  .ck .ck-tally-link {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--cd-target-min);
+    min-inline-size: var(--cd-target-min);
+    padding-inline: var(--cd-module);
+    border-radius: var(--cd-chamfer);
+    font-size: var(--cd-size-2);
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    color: var(--cd-ink);
+    text-decoration: none;
+    --cd-stack: inset 0 0 0 1px var(--cd-border);
+  }
+  .ck .ck-tally-done {
+    --cd-stack: var(--cd-shadow-t2);
+    min-block-size: 3.5rem;
+  }
 
-.scr-cook-chime-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  min-height: var(--fd-target-list);
-  padding-inline: 1rem;
-  cursor: pointer;
-  text-transform: uppercase;
-  font-size: var(--sol-text-label);
-  letter-spacing: 0.04em;
-}
-
-.scr-cook-chime-toggle input {
-  width: 1.25rem;
-  height: 1.25rem;
-}
-
-/* ---------------------------------------------------------------------- */
-/* Hold-to-pause corner control (opposite the done-edge)                  */
-/* ---------------------------------------------------------------------- */
-
-.scr-cook-holdwrap {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  z-index: 5;
-}
-
-.scr-cook-hold {
-  position: relative;
-  width: var(--fd-target-list);
-  height: var(--fd-target-list);
-  border-radius: 50%;
-  overflow: hidden;
-  background: var(--sol-panel);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-}
-
-.scr-cook-hold-progress {
-  position: absolute;
-  inset: 0;
-  background: var(--sol-focus);
-  opacity: 0.35;
-  transform-origin: bottom;
-  transform: scaleY(0);
-}
-
-.scr-cook-hold-glyph {
-  position: relative;
-  z-index: 1;
-  font-size: 1.1rem;
-}
-
-.scr-cook-hold-popover {
-  position: absolute;
-  top: calc(100% + 0.5rem);
-  right: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  background: var(--sol-panel);
-  border: 1px solid var(--sol-border);
-  padding: 0.5rem;
-  min-width: 9rem;
-}
-
-.scr-cook-hold-popover-btn {
-  min-height: var(--fd-target-list);
-  width: 100%;
-  text-transform: uppercase;
-  font-size: var(--sol-text-label);
-  letter-spacing: 0.04em;
-}
-
-/* ---------------------------------------------------------------------- */
-/* Bottom control edge: +1 min / done (>=72px, above the safe-area)       */
-/* ---------------------------------------------------------------------- */
-
-.scr-cook-bottombar {
-  position: sticky;
-  bottom: 0;
-  display: flex;
-  gap: 0;
-  border-top: 1px solid var(--sol-border);
-  background: var(--sol-panel);
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-}
-
-.scr-cook-plusone {
-  flex: 0 0 auto;
-  min-width: 6.5rem;
-  min-height: 4.5rem; /* 72px — matches .scr-cook-done via flex stretch, still clears the 56px floor on its own */
-  background: var(--sol-panel);
-  border: none;
-  border-right: 1px solid var(--sol-border);
-  font-family: var(--sol-font-data);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.scr-cook-done {
-  flex: 1;
-  min-height: 4.5rem; /* 72px, PLAN §6.6 */
-  border: none;
-  background: var(--sol-accent-fill);
-  color: var(--sol-on-accent-fill);
-  font-size: 1.2rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.scr-cook-done:disabled {
-  opacity: 0.5;
-}
-
-/* ---------------------------------------------------------------------- */
-/* Completion tally — the ONE playful touch (PLAN §6.0)                   */
-/* ---------------------------------------------------------------------- */
-
-.scr-cook-tally {
-  flex: 1;
-  width: 100%;
-  max-width: 30rem;
-  margin: 0 auto;
-  padding: 1.5rem 1.25rem calc(2rem + env(safe-area-inset-bottom, 0px));
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  text-align: center;
-  overflow-y: auto;
-}
-
-.scr-cook-tally-scene {
-  width: 4rem;
-  height: 4rem;
-}
-
-.scr-cook-tally-ring {
-  fill: none;
-  stroke: var(--sol-success);
-  stroke-width: 3;
-  transform-origin: 32px 32px;
-  animation: scr-cook-tally-in 420ms ease-out;
-}
-
-.scr-cook-tally-check {
-  fill: none;
-  stroke: var(--sol-success);
-  stroke-width: 4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  animation: scr-cook-tally-in 420ms ease-out 120ms backwards;
-}
-
-@keyframes scr-cook-tally-in {
-  from {
+  /* ===================================================================== */
+  /* 13 · TROPHY MODE                                                      */
+  /* ===================================================================== */
+  /*
+    Owner ruling: idle 90s enters over 420ms, any input exits over 240ms, and
+    BOTH RETARGET IN FLIGHT. That is why this is a transition and not a keyframe
+    animation — an interrupted transition re-aims from the current computed
+    value natively (II.4.15, II.1.17), where a restarted animation would snap to
+    zero and replay the thing the operator just interrupted.
+  */
+  .ck .ck-trophy {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    display: grid;
+    place-items: center;
+    padding: calc(var(--cd-module) * 3);
+    background: var(--ck-anodized);
     opacity: 0;
-    transform: scale(0.7);
+    visibility: hidden;
+    transform: scale(0.985) translate(var(--ck-burn-x, 0), var(--ck-burn-y, 0));
+    transition:
+      opacity 240ms var(--cd-ease-heavy),
+      transform 240ms var(--cd-ease-heavy),
+      visibility 0s linear 240ms;
   }
-  to {
+  .ck .ck-trophy[data-ck-open="true"] {
     opacity: 1;
-    transform: scale(1);
+    visibility: visible;
+    transform: scale(1) translate(var(--ck-burn-x, 0), var(--ck-burn-y, 0));
+    transition:
+      opacity 420ms var(--cd-ease-settle),
+      transform 420ms var(--cd-ease-settle),
+      visibility 0s linear 0s;
   }
-}
 
-.scr-cook-tally-body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.375rem;
-}
-
-.scr-cook-tally-title {
-  margin: 0;
-  font-size: 1.4rem;
-}
-
-.scr-cook-tally-subtitle {
-  margin: 0;
-  color: var(--sol-text-muted);
-  font-size: var(--sol-text-label);
-}
-
-.scr-cook-tally-line {
-  margin: 0;
-  color: var(--sol-text-muted);
-}
-
-.scr-cook-tally-macros {
-  margin: 0;
-  font-family: var(--sol-font-data);
-  font-variant-numeric: tabular-nums;
-  color: var(--sol-text-muted);
-  font-size: var(--sol-text-label);
-}
-
-.scr-cook-tally-skipped {
-  margin: 0;
-  font-size: var(--sol-text-label);
-  color: var(--sol-warning);
-}
-
-.scr-cook-tally-list {
-  margin: 0.25rem 0 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  font-size: var(--sol-text-label);
-  color: var(--sol-text);
-  text-align: left;
-  align-self: stretch;
-  border-top: 1px solid var(--sol-border);
-  padding-top: 0.5rem;
-}
-
-.scr-cook-tally-link {
-  min-height: var(--fd-target-list);
-  display: inline-flex;
-  align-items: center;
-  padding-inline: 1rem;
-  text-decoration: none;
-}
-
-.scr-cook-tally-done {
-  min-height: 4.5rem;
-  width: 100%;
-  background: var(--sol-accent-fill);
-  color: var(--sol-on-accent-fill);
-  border: none;
-  font-size: 1.05rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-top: 0.5rem;
-}
-
-/* ---------------------------------------------------------------------- */
-/* Reduced motion: collapse mechanical motion to instant state swaps.     */
-/* The reel's <g data-motion> spin AND the Phase 3 sheen's [data-motion]   */
-/* spin are both caught by tokens.css's global rule automatically; the    */
-/* tally's entrance keyframes are separately silenced here since they're  */
-/* not tagged data-motion (a one-shot decorative flourish, not a stateful */
-/* control — still honoured, per PLAN §6.1). The platter's paused-state   */
-/* opacity dim uses a `transition` (not an `animation`), which tokens.css's */
-/* [data-motion] rule doesn't reach (that element isn't tagged — the dim  */
-/* is a state swap, not motion, and reduced-motion only needs to remove   */
-/* the tween, not the end state) — silenced directly here instead.       */
-/* ---------------------------------------------------------------------- */
-
-@media (prefers-reduced-motion: reduce) {
-  .scr-cook-tally-ring,
-  .scr-cook-tally-check {
+  /*
+    LUMINANCE 1.00 / 0.55 / 0.20 over 4000ms LINEAR — the owner's three
+    committed stops, spent as a burn-in dim once the face has settled at the
+    wall. The alert overrides it outright: an alarm pierces at wall scale the
+    instant it exists, and a dimmed alarm is an alarm that lost the argument.
+  */
+  .ck .ck-trophy[data-ck-open="true"] .ck-trophy-face {
+    animation: ck-trophy-dim 4000ms linear both;
+  }
+  .ck .ck-trophy[data-ck-alert="true"] .ck-trophy-face {
     animation: none;
-  }
-  .scr-cook-reel-platter {
-    transition: none;
-  }
-}
-
-/* ---------------------------------------------------------------------- */
-/* Forced-colors                                                          */
-/* ---------------------------------------------------------------------- */
-
-@media (forced-colors: active) {
-  .scr-cook-reel-rim,
-  .scr-cook-reel-spoke,
-  .scr-cook-reel-hub {
-    forced-color-adjust: none;
-    stroke: ButtonText;
-  }
-  .scr-cook-reel-rim,
-  .scr-cook-reel-hub {
-    forced-color-adjust: none;
-    fill: Canvas;
-  }
-  .scr-cook-reel-spoke-shadow {
-    display: none;
-  }
-  .scr-cook-reel-sheen {
-    display: none;
-  }
-  .scr-cook-reel--due .scr-cook-reel-rim {
     filter: none;
   }
-  .scr-cook-reel-brake {
-    forced-color-adjust: none;
-    fill: ButtonText;
+  @keyframes ck-trophy-dim {
+    0% {
+      filter: brightness(1);
+    }
+    50% {
+      filter: brightness(0.55);
+    }
+    100% {
+      filter: brightness(0.2);
+    }
   }
-  .scr-cook-reel-index {
-    forced-color-adjust: none;
-    fill: ButtonText;
-  }
-  .scr-cook-alarm {
-    forced-color-adjust: none;
-    border-color: Highlight;
-  }
-  .scr-cook-alarm-dot {
-    forced-color-adjust: none;
-    background: Highlight;
-  }
-  .scr-cook-lane-fill {
-    forced-color-adjust: none;
-    background: Highlight;
-  }
-  .scr-cook-lane-playhead {
-    forced-color-adjust: none;
-    background: Highlight;
-  }
-}
 
-/* ---------------------------------------------------------------------- */
-/* Mobile 390x844: one-hand layout, no horizontal scroll                  */
-/* ---------------------------------------------------------------------- */
+  .ck .ck-trophy-face {
+    display: grid;
+    justify-items: center;
+    gap: calc(var(--cd-module) * 3);
+    inline-size: 100%;
+    max-inline-size: 64rem;
+  }
+  .ck .ck-trophy-reel {
+    display: grid;
+    justify-items: center;
+    gap: var(--cd-module);
+    /* 2x the instrument's own scale — the reel is the one surviving moving
+       part at any distance (02 REEL LOGIC section 4) */
+    --ck-reel: 26rem;
+  }
+  .ck .ck-trophy-lampline {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cd-module);
+  }
+  .ck .ck-trophy-lamp {
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
+    border-radius: 50%;
+    background: var(--cd-lamp-off);
+    box-shadow: var(--cd-lamp-well);
+  }
+  .ck .ck-trophy-lamp[data-cd-lit="true"] {
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, #ffffff 45%, var(--cd-role-live)) 0%,
+      var(--cd-role-live) 34%,
+      color-mix(in srgb, #000000 22%, var(--cd-role-live)) 100%
+    );
+    box-shadow:
+      inset 0 1px 1px #00000059,
+      0 0 var(--cd-bloom-r) color-mix(in srgb, var(--cd-role-live) 80%, transparent),
+      0 0 var(--cd-bloom-4r) color-mix(in srgb, var(--cd-role-live) 40%, transparent),
+      0 0 var(--cd-bloom-12r) color-mix(in srgb, var(--cd-role-live) 16%, transparent);
+  }
+  .ck .ck-trophy-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: calc(var(--cd-module) * 2);
+    inline-size: 100%;
+  }
+  .ck .ck-trophy-pod {
+    display: grid;
+    justify-items: center;
+    gap: calc(var(--cd-module) / 2);
+    padding: var(--cd-module);
+    border-radius: var(--cd-chamfer-card);
+    background: var(--cd-well);
+    box-shadow: var(--cd-shadow-well);
+  }
+  .ck .ck-trophy-age {
+    font-size: var(--ck-trophy-age); /* 1.21875rem — the owner's own figure */
+    color: var(--cd-muted-ink);
+  }
+  .ck .ck-trophy-alert {
+    display: grid;
+    justify-items: center;
+    gap: var(--cd-module);
+    padding: var(--cd-module) calc(var(--cd-module) * 2);
+    border-radius: var(--cd-chamfer-card);
+    background: var(--cd-well);
+    box-shadow:
+      inset 0 0 0 2px var(--cd-role-danger-zone-dark),
+      var(--cd-shadow-t3);
+  }
+  .ck .ck-trophy-alert-text {
+    margin: 0;
+    font-size: var(--cd-size-5);
+    line-height: var(--cd-leading-prose);
+    text-align: center;
+    color: var(--cd-ink);
+    max-inline-size: 40rem;
+  }
+  /* Everything else DISAPPEARS rather than shrinking. */
+  .ck[data-ck-trophy="true"] .ck-face {
+    visibility: hidden;
+  }
 
-@media (max-width: 480px) {
-  .scr-cook-reel {
-    width: 7rem;
-    height: 7rem;
+  /* ===================================================================== */
+  /* 14 · VIEWPORT                                                         */
+  /* ===================================================================== */
+  /*
+    DECLARED DEPARTURE (CORRECTIONARY 6.5). 02 REEL LOGIC section 4 fixes the
+    Hero Screen's reel at "Ø18rem on desktop" — but it fixes that for a screen
+    where the reel is "centered on the chassis field with NOTHING competing
+    above or beside it". This is the Dense Dashboard, where the disc shares the
+    deck with an evidence column, and at 1280px a 288px disc sat in a 714px
+    faceplate looking mounted in a hole. Measured before the change: 557px of
+    faceplate holding 288px of instrument. On a deck wide enough to afford it
+    the disc takes 22rem, which is CORRECTIONARY 4's "floors, scale up only"
+    applied to a diameter rather than to an alpha.
+  */
+  @media (min-width: 80rem) {
+    .ck {
+      --ck-reel: 22rem;
+    }
   }
-  .scr-cook-now-text {
-    font-size: clamp(2.75rem, 11vw, 3.25rem);
-  }
-  .scr-cook-lane {
-    grid-template-columns: 3.75rem 1fr auto;
-  }
-}
 
-/* Desktop: same instrument, scaled — sane max-width instead of stretching
-   the reel/lanes across a wide viewport (both .scr-cook-picker and
-   .scr-cook-body already cap at 36rem/30rem above). */
-@media (min-width: 900px) {
-  .scr-cook-body,
-  .scr-cook-picker {
-    padding-top: 2rem;
+  @media (max-width: 63.99rem) {
+    .ck .ck-face {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    /*
+      MEASURED at 390x844: the deck stood 1254px and the NOW PLATE — the answer
+      to half of this screen's own question — began at 740px, below the fold,
+      because the stage column emptied before the evidence column started. On a
+      handheld the two columns are one column, so the reading order is re-cut to
+      the TASK's order rather than to the desktop grid's: what is turning, how
+      long is left, what am I doing, then the tools and the tracks.
+    */
+    .ck .ck-face {
+      display: flex;
+      flex-direction: column;
+      gap: calc(var(--cd-module) * 1.5);
+      min-block-size: 0;
+    }
+    .ck .ck-stage,
+    .ck .ck-evidence {
+      display: contents;
+    }
+    .ck .ck-ident { order: 1; }
+    .ck .ck-reel-mount { order: 2; }
+    .ck .ck-count { order: 3; }
+    .ck .ck-now { order: 4; }
+    .ck .ck-state { order: 5; }
+    .ck .ck-scrub { order: 6; }
+    .ck .ck-lanes { order: 7; }
+    .ck .ck-preview { order: 0; }
+
+    .ck {
+      /*
+        02 REEL LOGIC section 4 puts the handheld reel at 10rem and floors it at
+        8rem. 13rem is used instead: CORRECTIONARY 4 makes committed intensities
+        FLOORS to scale up from, and this deck is worked with wet hands at about
+        two metres. 13rem (208px) still leaves the three collar keys inside the
+        assembly's own footprint at 390px.
+      */
+      --ck-reel: 13rem;
+      --ck-dm-pitch: 0.40625rem;
+      --ck-dm-dot: 0.325rem;
+    }
+    .ck .ck-hub-drums {
+      --ck-drum-size: var(--cd-size-4);
+    }
+    .ck .ck-count-drums {
+      --ck-drum-size: var(--cd-size-6); /* 2.75rem */
+    }
+    .ck .ck-key--pause,
+    .ck .ck-key--extend {
+      inline-size: 3rem;
+      block-size: 3rem;
+      min-inline-size: 3rem;
+      min-block-size: 3rem;
+    }
+    .ck .ck-key--primary {
+      inline-size: 8.5rem;
+      block-size: 3.5rem;
+      min-block-size: 3.5rem;
+    }
+    .ck .ck-lane {
+      grid-template-columns: 6rem 1fr auto;
+    }
+    .ck .ck-lane-label {
+      max-inline-size: 6rem;
+    }
+    .ck .ck-seat--meal {
+      grid-template-columns: 1fr auto;
+    }
+    .ck .ck-seat--meal .ck-seat-slot {
+      grid-column: 1 / -1;
+    }
+    .ck .ck-trophy-reel {
+      --ck-reel: 13rem;
+    }
+    /*
+      MEASURED at 390x844: the alert plate at 1.75rem pushed all four survivor
+      pods off the wall face, and the owner's ruling is that the exact figure
+      and the age are ALWAYS VISIBLE. At handheld width the alert takes the
+      task-read step instead of the panel step, and it is bounded so the row
+      below it cannot be displaced.
+    */
+    .ck .ck-trophy {
+      padding: var(--cd-module);
+    }
+    .ck .ck-trophy-face {
+      gap: var(--cd-module);
+    }
+    .ck .ck-trophy-alert-text {
+      font-size: var(--cd-size-3);
+      max-block-size: 7rem;
+      overflow-y: auto;
+    }
+    .ck .ck-trophy-row {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--cd-module);
+    }
+  }
+
+  /* ===================================================================== */
+  /* 15 · THE SHED LADDER, RESTATED (II.4.12)                              */
+  /* ===================================================================== */
+  /*
+    tokens/motion.css pauses `.cd-pulse` at every shed stage. This layer is
+    LATER than cd.motion, so the `animation:` shorthand this file writes on
+    `.ck-lamp.cd-pulse` resets play-state to running and would silently defeat
+    the ladder. Restated here, at matched specificity, so stage 1 works on COOK.
+
+    NEVER SHED, at any stage: contact, detent, sweep and warning. The
+    annunciator's flash and the reel's own rate therefore appear in NO block
+    below — the disc is this screen's state report, not its ambient garnish.
+  */
+  html[data-cd-shed="1"] .ck-lamp.cd-pulse,
+  html[data-cd-shed="2"] .ck-lamp.cd-pulse,
+  html[data-cd-shed="3"] .ck-lamp.cd-pulse {
+    animation-play-state: paused;
+  }
+  html[data-cd-shed="3"] .ck-trophy {
+    transition-duration: 100ms;
+  }
+
+  /* ===================================================================== */
+  /* 16 · REDUCED MOTION — II.4.26, translate, never delete                */
+  /* ===================================================================== */
+  @media (prefers-reduced-motion: reduce) {
+    /*
+      The disc's rotation is TRAVEL, and travel goes. Nothing is lost from the
+      report: running / held / due / ready is printed as a word in the dot-matrix
+      strip, lit on the crown lamp, named in the countdown's own state word and
+      spelled out on the annunciator. Static equivalence is the whole test and
+      this screen passes it with the motion frozen.
+    */
+    .ck .ck-grip {
+      animation: none;
+    }
+    .ck .ck-lamp.cd-pulse {
+      animation: none;
+      opacity: 1;
+    }
+    /*
+      II.4.26's Pushed clause — "keep the COLOUR half of every pair: the warning
+      still saturates". The annunciator stops flashing and burns steady in the
+      danger fill, so the alarm keeps both of its channels (colour + the printed
+      word) and loses only the flicker.
+    */
+    .ck .ck-ann[data-ck-firing="true"] {
+      animation: none;
+      background: var(--cd-role-danger);
+      color: var(--cd-ink);
+    }
+    .ck .ck-trophy,
+    .ck .ck-trophy[data-ck-open="true"] {
+      transition-duration: var(--cd-reduced-fade);
+    }
+    .ck .ck-trophy[data-ck-open="true"] .ck-trophy-face {
+      animation: none;
+      filter: brightness(0.55); /* the middle stop, held — the dim is not travel */
+    }
+    /* position carries meaning, so it still MOVES, at 80ms linear */
+    .ck .ck-lane-fill {
+      transition-duration: var(--cd-reduced-position);
+    }
+    .ck .ck-rocker-end {
+      transition-duration: var(--cd-reduced-position);
+      transition-timing-function: linear;
+    }
+  }
+
+  /* ===================================================================== */
+  /* 17 · FORCED COLOURS — the material argument is the OS's to discard     */
+  /* ===================================================================== */
+  @media (forced-colors: active) {
+    .ck,
+    .ck::before {
+      background: Canvas;
+      color: CanvasText;
+    }
+    .ck::before {
+      content: none;
+    }
+    .ck .ck-collar,
+    .ck .ck-grip,
+    .ck .ck-light,
+    .ck .ck-hub,
+    .ck .ck-crown,
+    .ck .ck-count,
+    .ck .ck-state,
+    .ck .ck-state-strip,
+    .ck .ck-now,
+    .ck .ck-scrub,
+    .ck .ck-rocker,
+    .ck .ck-lanes,
+    .ck .ck-alarm,
+    .ck .ck-drums,
+    .ck .ck-drum-col,
+    .ck .ck-trophy,
+    .ck .ck-trophy-pod,
+    .ck .ck-trophy-alert {
+      background: Canvas;
+      box-shadow: none;
+      border: 1px solid CanvasText;
+      forced-color-adjust: none;
+      color: CanvasText;
+    }
+    .ck .ck-key,
+    .ck .ck-rocker-end,
+    .ck .ck-tally-link {
+      background: ButtonFace;
+      color: ButtonText;
+      border: 1px solid ButtonText;
+      box-shadow: none;
+      forced-color-adjust: none;
+    }
+    .ck .ck-key[disabled],
+    .ck .ck-rocker-end[disabled] {
+      color: GrayText;
+      border-color: GrayText;
+    }
+    /* The lit/unlit distinction is the whole report, so it survives as the OS's
+       own pair rather than as this world's hexes. */
+    .ck .ck-arc-cell,
+    .ck .ck-meter-seg,
+    .ck .ck-dm-dot {
+      background: Canvas;
+      border: 1px solid CanvasText;
+      forced-color-adjust: none;
+    }
+    .ck .ck-arc-cell[data-on="true"],
+    .ck .ck-meter-seg[data-on="true"],
+    .ck .ck-dm-dot[data-on="true"] {
+      background: Highlight;
+    }
+    .ck .ck-dm-glyph,
+    .ck .ck-lane-playhead,
+    .ck .ck-lane-fill,
+    .ck .ck-rocker-glyph {
+      background: CanvasText;
+      forced-color-adjust: none;
+    }
+    .ck .ck-lane-window {
+      background: Canvas;
+      border: 1px solid CanvasText;
+    }
+    .ck .ck-ann {
+      background: Canvas;
+      border: 1px solid CanvasText;
+      color: CanvasText;
+    }
+    .ck .ck-ann[data-ck-firing="true"] {
+      animation: none;
+      background: Highlight;
+      color: HighlightText;
+    }
+    .ck .ck-ann[data-ck-firing="true"] .ck-ann-legend {
+      color: HighlightText;
+    }
+    .ck .ck-drum-face,
+    .ck .ck-drum-sep {
+      color: CanvasText;
+      forced-color-adjust: none;
+    }
+    .ck .ck-trophy-lamp {
+      background: Canvas;
+      border: 1px solid CanvasText;
+      box-shadow: none;
+    }
+    .ck .ck-trophy-lamp[data-cd-lit="true"] {
+      background: Highlight;
+    }
   }
 }

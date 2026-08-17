@@ -1,502 +1,2110 @@
 /*
-  TODAY — duty deck (PLAN §6.3). Scoped entirely under .scr-today per
-  docs/PHASE2-CONTRACT.md conventions; nothing here touches tokens.css or any
-  other screen's classes. Silkscreen lowercase labels throughout (the app-wide
-  playful-technical convention already used by the chassis' own Key/Paddle
-  labels); the one engraved precision note is the ladder band-bracket (§6.0).
-  No metals/gradients/glows anywhere (Phase 2 flat law) and no animated fills
-  (reduced-motion requirement) — every state change here is an instant
-  React re-render, never a CSS transition on a meaningful value.
+  src/screens/today/today.css — 05 EXPOSED WORKS, on TODAY.
+
+  ===========================================================================
+  COMMITTED VALUES, every one from ch.05 section 2 or from a CD-BRIEF ruling
+  ===========================================================================
+    carbon weave ground   #26282B  --cd-field      45deg twill, 32px cell
+    satin billet          #C9CCCE  --cd-billet     3px grain, run RADIALLY
+    mirror-polished       #E3E5E7  --cd-mirror     two hard stops, edges only
+    cream instrument face #EDE6D6  --cd-face       lacquer, ONE hard ellipse
+    cognac leather        #A6713F  --cd-cognac     trim + a 12% selected wash
+    anthracite            #3A3A3C  --cd-panel      recess wells, text panels
+    engraved ink          #221F1C  --cd-ink        cut INTO cream faces
+    one sun               138deg   --cd-light-axis shadow ratio 1:2
+    needle slew           720 deg/s               full 270deg arc in 375ms
+    knob pitch            22.5deg                 4 seats, 67.5deg sweep
+    chamfer               3px at 45deg            never a radius (see below)
+    linkage snap          110ms  --cd-ease-snap    rocker 40ms behind the cap
+    tray / panel mass     spring(1.6,240,30)      --cd-settle-panel 340ms
+    needle mass           spring(1.4,260,30)      --cd-ease-heavy, Weighted
+    gate return           spring(1.2,300,38)      --cd-settle-anchored, 0% os
+    confirm hold / decay  1800ms / 900ms          --cd-success-hold/decay
+
+  ===========================================================================
+  MEASURED CONTRAST (WCAG 2.x, computed for this build, not eyeballed)
+  ===========================================================================
+    engraved ink #221F1C on cream #EDE6D6 ............ 13.19 : 1   text
+    muted ink #70665C on cream ........................ 4.51 : 1   text
+    ink #EDE6D6 on anthracite #3A3A3C ................. 9.13 : 1   text
+    muted #B0AAA0 on anthracite ....................... 4.92 : 1   text
+    engraved ink on satin billet #C9CCCE ............. 10.16 : 1   text
+    channel inks on cream ....................... 5.17-5.39 : 1   text
+    channel lifts vs unlit segment #2A2A2C ...... 5.72-5.78 : 1   graphic
+    band zone #A26D23 on cream ........................ 3.56 : 1   graphic
+    redline #C2392E on cream .......................... 4.31 : 1   graphic
+    warning zone #C4832A on carbon .................... 4.66 : 1   graphic
+    satin billet on carbon ............................ 9.16 : 1   graphic
+    cognac #A6713F on carbon .......................... 3.56 : 1   graphic
+    focus pair on cream .... blue 2.74 / keyline 14.82 : 1  (pair passes)
+    focus pair on carbon ... blue 4.33 / keyline  1.25 : 1  (pair passes)
+    focus pair on billet ... blue 2.11 / keyline 11.41 : 1  (pair passes)
+    engraved ink on the cognac 12% wash over cream ... 11.65 : 1   text
+      (muted ink on that same wash measures 3.98:1 and is therefore NEVER
+       set on a selected row — engraved ink only.)
+
+  ===========================================================================
+  DECLARED DEPARTURES (CORRECTIONARY 6.5 — no silent downgrades)
+  ===========================================================================
+  1. HERO DIAL DIAMETER. ch.05's Hero Screen fixes it at 22rem (352px). Two
+     dials at 352px plus the bridge and the deck do not fit an 800px-tall desk
+     screen without the page-length scrolling R7 forbids, and 352px is wider
+     than a 390px phone. The dial is therefore `clamp(9.5rem, 19vw, 15.5rem)`.
+     Every RATIO inside it is ch.05's own: needle tip at 82% of R, tail 18%,
+     hub 12%, ticks ending at 98%, labels at 68%, zone band 6% of R wide at 91%.
+  2. THE CHAMFER AND THE FOCUS RING. "Chamfered 3px at 45deg, never rounded" is
+     honoured with a true 45deg clip on every panel, plate, well and key cap.
+     On a KEY the clip is applied to a ::before that paints the cap, never to
+     the button box itself — `clip-path` clips outline and outer box-shadow
+     alike, and the two-tone focus ring is Floor, which outranks corner
+     geometry. The cap is chamfered; the ring is whole.
+  3. COGNAC. ch.05's "cognac creep" 4% cap is dead by CD-BRIEF ruling, so
+     cognac is a FIELD here (the deck's own lining). Its two surviving fences
+     are kept and are load-bearing: it never lights hot, never takes a
+     specular, and NEVER shares an enclosure edge with a warning band — its hue
+     sits 3.2deg from the warning amber, and that adjacency, not the redline,
+     is the real risk. The deck's cognac lining is fenced off from the
+     chronometer's amber by the full width of the cluster row.
 */
 
-.scr-today {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  max-width: 40rem;
-  margin: 0 auto;
+/*
+  P1 REPAIR — the dial's size driver is REGISTERED, so it interpolates.
+  Measured defect: `transition: inline-size` between two clamp() expressions
+  never lands. Chrome retained the old USED value indefinitely, so leaving
+  Trophy Mode left both hero dials stuck at 409.594px (32vw) while the cascade
+  correctly reported the instrument value of 216px. Registering the property as
+  a <length> makes the clamp compute to one length at computed-value time,
+  which the engine can interpolate; the transition then rides the custom
+  property rather than the box.
+*/
+@property --tdy-dial {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
 }
 
-/* ---------------------------------------------------------------------- */
-/* Header: dateline + day pads                                            */
-/* ---------------------------------------------------------------------- */
+@layer cd.screen {
+  /* ===================================================================== */
+  /* 1 · THE GROUND — carbon, under one sun (CORRECTIONARY 5.4)            */
+  /* ===================================================================== */
+  /*
+    II.2.15's twill, re-keyed to this world's own #26282B and opened to the
+    32px cell ch.05 declares at working density ("the weave is a ground and not
+    a texture to be read"). Strengths are past the bible's, per CORRECTIONARY
+    3.3: the only test is whether it reads as the material it claims to be.
 
-.scr-today-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-}
+    Procedural, per CD-BRIEF ruling 7. Deliberately NOT the canvas factory:
+    `src/cd/material/textures.ts` bakes neutral hexes in and offers no seam to
+    re-key (recorded in CD-BRIEF's own foundation-limits note), and a weave in
+    the wrong grey is worse than a weave built from the recipe in the right one.
+  */
+  .tdy {
+    --tdy-chamfer: 3px;
+    --tdy-cut: polygon(
+      var(--tdy-chamfer) 0,
+      calc(100% - var(--tdy-chamfer)) 0,
+      100% var(--tdy-chamfer),
+      100% calc(100% - var(--tdy-chamfer)),
+      calc(100% - var(--tdy-chamfer)) 100%,
+      var(--tdy-chamfer) 100%,
+      0 calc(100% - var(--tdy-chamfer)),
+      0 var(--tdy-chamfer)
+    );
+    --tdy-dial: clamp(9.5rem, 17vw, 13.5rem);
+    --tdy-mode-ms: 240ms; /* Trophy EXIT, on any input */
+    --tdy-lux: 1;
+    --tdy-seg-off: #2a2a2c; /* the unlit segment; lit lifts measure 5.72-5.78:1 on it */
 
-.scr-today-dateline {
-  margin: 0;
-  font-weight: 700;
-  font-size: 1.05rem;
-  text-transform: lowercase;
-}
-
-.scr-today-pads {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  gap: 0.5rem; /* item-5 fix: widened alongside the inset ring below, belt-and-braces against overlap */
-  overflow-x: auto;
-  max-width: 100%;
-}
-
-.scr-today-pad {
-  flex: 0 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.375rem 0.5rem;
-  min-width: 2.25rem;
-  border: 1px solid var(--sol-border);
-  background: var(--sol-panel);
-}
-
-.scr-today-pad--today {
-  /* item-5 fix (wave-1 design review): a positive outline-offset combined
-     with the pads' tight gap made the ring bleed into the space between
-     pads and read as stray vertical bars rather than a ring around one pad.
-     Inset instead (negative offset draws the ring INSIDE the pad's own
-     border), so it can never touch a neighbour regardless of gap width. */
-  outline: var(--sol-focus-width) solid var(--sol-focus);
-  outline-offset: -3px;
-}
-
-.scr-today-pad-num {
-  font-family: var(--sol-font-data);
-  font-size: 0.8125rem;
-}
-
-.scr-today-pad-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  border: 1px solid var(--sol-border);
-  background: transparent;
-}
-
-.scr-today-pad--done .scr-today-pad-dot {
-  background: var(--sol-success);
-  border-color: var(--sol-success);
-}
-
-@media (max-width: 700px) {
-  .scr-today-pads {
-    scrollbar-width: thin;
+    position: relative;
+    display: block;
+    min-block-size: 100%;
+    padding: calc(var(--cd-module) * 1.5);
+    color: var(--cd-ink-panel);
+    font-family: var(--cd-font-ui);
+    background-color: var(--cd-field);
+    background-image:
+      /* warp — the tow turned toward the sun */
+      repeating-linear-gradient(45deg, #ffffff14 0 16px, #00000000 16px 32px),
+      /* weft — the tow turning away from it */
+      repeating-linear-gradient(-45deg, #ffffff08 0 16px, #0000001f 16px 32px),
+      /* the plate the weave is laid over, lit on the one axis */
+      linear-gradient(var(--cd-light-axis), #2d2f33 0%, var(--cd-field) 58%, #1e2023 100%);
+    box-shadow:
+      inset 0 1px 0 var(--cd-rim-resin, #ffffff1f), /* rim light — the resin coat catching the sun */
+      inset 0 -1px 0 #00000052, /* lip — the panel's lower edge turning away */
+      0 1px 0 #00000066, /* contact — the panel bolted to the chassis */
+      0 24px 56px #00000029; /* ambient — the deepest throw on the panel */
+    clip-path: var(--tdy-cut);
+    /*
+      THE DIAL'S DIAMETER IS NOT TRANSITIONED, AND THAT IS DELIBERATE.
+      Measured: a transition does not advance in a backgrounded tab, so a
+      viewport change that lands while the tab is hidden freezes the driver at
+      its old value and the gauge comes back at the WRONG SIZE — measured at
+      216px on a 390px viewport whose own rule asks for 240px. A gauge that can
+      be caught reporting a stale geometry is worse than one that re-composes
+      in a single frame.
+      II.4.23's 420ms enter and 240ms exit are still carried, by everything
+      that WITHDRAWS across them and by the type steps that travel with it —
+      "what enlarges is the answer; what quiets is the reach". The answer
+      arrives in one frame; the reach takes the full duration to leave.
+    */
   }
-}
 
-/* ---------------------------------------------------------------------- */
-/* Onboarding card (prefs.cycleStartSaturday === null)                    */
-/* ---------------------------------------------------------------------- */
-
-.scr-today-onboard {
-  border: 1px solid var(--sol-border);
-  background: var(--sol-panel);
-  padding: 0.875rem 1rem;
-}
-
-.scr-today-onboard-title {
-  margin: 0 0 0.25rem;
-  font-weight: 700;
-  text-transform: lowercase;
-}
-
-.scr-today-onboard-body {
-  margin: 0 0 0.75rem;
-  color: var(--sol-text-muted);
-  font-size: var(--sol-text-label);
-}
-
-.scr-today-onboard-action {
-  padding-inline: 1rem;
-  text-transform: lowercase;
-}
-
-/* ---------------------------------------------------------------------- */
-/* Sections                                                                */
-/* ---------------------------------------------------------------------- */
-
-.scr-today-section {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.scr-today-h {
-  margin: 0;
-  font-size: var(--sol-text-label);
-  text-transform: lowercase;
-  color: var(--sol-text-muted);
-  letter-spacing: 0.03em;
-  /* PHASE 3 polish (item 5): silkscreen section-head, barely-there engraved
-     — opts into the shared token defined in tokens.css's PHASE 3 POLISH
-     section (same 0.5px highlight offset as the masthead brand). */
-  text-shadow: var(--fd5-engrave);
-}
-
-.scr-today-empty {
-  margin: 0;
-  padding: 0.75rem;
-  border: 1px dashed var(--sol-border);
-  color: var(--sol-text-muted);
-  text-transform: lowercase;
-}
-
-/* ---------------------------------------------------------------------- */
-/* Duty stack rows                                                        */
-/* ---------------------------------------------------------------------- */
-
-.scr-today-duty-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  border: 1px solid var(--sol-border);
-}
-
-.scr-today-row {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  min-height: 2.75rem; /* 44px house target */
-  padding: 0.5rem 0.75rem;
-  background: var(--sol-panel);
-}
-
-.scr-today-row + .scr-today-row {
-  border-top: 1px solid var(--sol-border);
-}
-
-.scr-today-row--danger {
-  border-left: 4px solid var(--sol-danger);
-}
-
-.scr-today-row--warning {
-  border-left: 4px solid var(--sol-warning);
-}
-
-.scr-today-row-text {
-  flex: 1;
-  min-width: 0;
-  text-transform: lowercase;
-}
-
-.scr-today-row-meta {
-  font-family: var(--sol-font-data);
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-  white-space: nowrap;
-}
-
-.scr-today-row-action {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding-inline: 0.75rem;
-  text-decoration: none;
-  text-transform: lowercase;
-  white-space: nowrap;
-}
-
-/* ---------------------------------------------------------------------- */
-/* Tonight card                                                           */
-/* ---------------------------------------------------------------------- */
-
-.scr-today-tonight {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem;
-  border: 1px solid var(--sol-border);
-  background: var(--sol-panel);
-  padding: 0.75rem;
-}
-
-.scr-today-tonight-name {
-  flex: 1 1 auto;
-  min-width: 0;
-  font-weight: 700;
-  text-transform: lowercase;
-}
-
-.scr-today-tonight-time {
-  font-family: var(--sol-font-data);
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-  white-space: nowrap;
-}
-
-.scr-today-tonight-cook {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding-inline: 1rem;
-  text-decoration: none;
-  text-transform: lowercase;
-  white-space: nowrap;
-}
-
-/* ---------------------------------------------------------------------- */
-/* Weekend guidance line                                                  */
-/* ---------------------------------------------------------------------- */
-
-.scr-today-weekend-note {
-  margin: 0;
-  padding: 0.75rem;
-  border: 1px solid var(--sol-border);
-  background: var(--sol-panel);
-  font-weight: 700;
-  text-transform: lowercase;
-}
-
-/* ---------------------------------------------------------------------- */
-/* Off-state (docs/VARIANT-SPEC.md: a fully-cut tester day, e.g. Wednesday) */
-/* Flat-functional per the VARIANT RUNTIME style law — no new hero, matches */
-/* the onboarding card's own plain border+panel treatment above.           */
-/* ---------------------------------------------------------------------- */
-
-.scr-today-offstate {
-  border: 1px dashed var(--sol-border);
-  background: var(--sol-panel);
-  padding: 0.75rem 1rem;
-}
-
-.scr-today-offstate-title {
-  margin: 0 0 0.25rem;
-  font-weight: 700;
-  text-transform: lowercase;
-}
-
-.scr-today-offstate-body {
-  margin: 0;
-  color: var(--sol-text-muted);
-  font-size: var(--sol-text-label);
-}
-
-/* ---------------------------------------------------------------------- */
-/* Ticks row                                                              */
-/* ---------------------------------------------------------------------- */
-
-.scr-today-ticks {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.5rem;
-}
-
-.scr-today-tick {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-  padding: 0.5rem 0.25rem;
-  text-transform: lowercase;
-}
-
-/* Compound selector (not just `.scr-today-tick--on`): tokens.css' shared
-   `.fd5-control` base rule also sets `background` at equal (0,1,0)
-   specificity, and which of the two wins on a tie depends on <style>
-   injection order (Vite HMR has been observed to reorder it) — pairing both
-   classes here (0,2,0) makes the state win deterministically regardless. */
-.scr-today-tick.scr-today-tick--on {
-  background: var(--sol-success);
-  color: #ffffff;
-  border-color: var(--sol-success);
-}
-
-.scr-today-tick-glyph {
-  font-size: 1rem;
-  line-height: 1;
-  min-height: 1em; /* reserve space so the glyph appearing doesn't shift the label */
-}
-
-.scr-today-tick-label {
-  font-size: var(--sol-text-label);
-}
-
-/* Cut cell (docs/VARIANT-SPEC.md PLAN/TODAY: "quiet 'cut · reason' cell,
-   non-color second cue") — dashed border + text label are the second cue
-   (not just a muted color), so it reads correctly under forced-colors too. */
-.scr-today-tick--cut {
-  border: 1px dashed var(--sol-border);
-  color: var(--sol-text-muted);
-  cursor: default;
-}
-
-.scr-today-tick-cut-reason {
-  font-size: 0.6875rem;
-  line-height: 1.2;
-  text-align: center;
-}
-
-/* ---------------------------------------------------------------------- */
-/* Console — the LED meter bridge hero                                    */
-/* ---------------------------------------------------------------------- */
-
-.scr-today-ladders {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem 1.25rem;
-  border: 1px solid var(--sol-border);
-  background: var(--sol-panel);
-  padding: 1rem;
-  /* PHASE 3 polish (item 1): "the bridge sits on a subtly recessed
-     instrument strip" — a soft inset shadow reading the whole console as
-     one recessed panel the LED segments are mounted into. Colors/border
-     untouched; this is a shadow-only addition so it auto-strips under
-     forced-colors (box-shadow is in the forced-colors "computes to none"
-     list whenever forced-color-adjust isn't set to none, which it isn't
-     here) with no explicit override needed. */
-  box-shadow:
-    inset 0 1px 3px rgba(0, 0, 0, 0.14),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.5);
-}
-
-.scr-today-ladder {
-  display: grid;
-  grid-template-columns: 3rem 1fr auto;
-  align-items: center;
-  gap: 0.5rem;
-  min-width: 0;
-}
-
-.scr-today-ladder-label {
-  font-size: var(--sol-text-label);
-  text-transform: lowercase;
-  color: var(--sol-text-muted);
-}
-
-.scr-today-ladder-graphic {
-  display: grid;
-  grid-template-columns: repeat(20, 1fr);
-  grid-template-rows: 1rem 4px;
-  column-gap: 2px;
-  row-gap: 3px;
-  min-width: 0;
-}
-
-.scr-today-seg {
-  grid-row: 1;
-  border: 1px solid var(--sol-border);
-  background: var(--sol-bg);
-  /* PHASE 3 polish (item 1): a hair of lens rounding on every segment cell —
-     shared by on/off/hollow so the three states read as the same physical
-     socket in three different lamp states, not three different shapes. */
-  border-radius: 2px;
-}
-
-.scr-today-seg--on {
-  background: var(--ladder-channel);
-  border-color: var(--ladder-channel);
-  color: var(--ladder-channel); /* feeds the currentColor glow below */
-  /* Soft inner glow + a small hot-spot highlight near the top edge — a lit
-     LED, not a flat color chip. Outer blur uses currentColor so every
-     channel's glow matches its own fill with no per-channel literal here;
-     blur naturally fades the (opaque) color to nothing, so no alpha channel
-     is needed on --ladder-channel itself. box-shadow is on the forced-colors
-     "forced to none" list by default (forced-color-adjust isn't set on this
-     element), so this whole treatment already disappears under
-     forced-colors, falling back to the plain ButtonText fill declared in
-     that media block further down — verified, not left to chance. */
-  box-shadow:
-    0 0 3px 0 currentColor,
-    inset 0 1px 0 rgba(255, 255, 255, 0.45),
-    inset 0 -1px 1px rgba(0, 0, 0, 0.2);
-}
-
-.scr-today-seg--hollow {
-  background: transparent;
-  border: 1px solid var(--ladder-channel);
-  /* Crisp hollow-lens ring: a second, tighter inset ring (not a glow) so an
-     over-band segment reads as an empty lamp housing, not a dim lit one —
-     the shape cue this state exists for (segmentLayout's own doc: "a SHAPE
-     cue for over-band, not a color-only one") stays unambiguous. */
-  box-shadow: inset 0 0 0 1px var(--sol-bg);
-}
-
-.scr-today-seg--off {
-  /* Recessed dark-glass look: an unlit LED reads as a shallow well, not an
-     absence — inset shadow only (no fill/border color change), so it can't
-     be confused with the hollow (over-band) ring's outline-only shape. */
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.22), inset 0 -1px 0 rgba(255, 255, 255, 0.35);
-}
-
-.scr-today-ladder-bracket {
-  /* item-4 fix (wave-1 design review): a flat top-border line, at the width a
-     narrow band (kcal's ~80 kcal band against a >2000 kcal scale) collapses
-     to, read as a smudge rather than a deliberate span marker. End-ticks
-     (left/right borders dropping the bracket into a "⊓" staple shape) plus
-     MacroLadders' own MIN_BRACKET_SPAN floor (guarantees >=2 grid columns)
-     fix it together — the ticks make even the minimum-width case legible. */
-  grid-row: 2;
-  align-self: start;
-  height: 4px;
-  border-top: 2px solid var(--sol-text);
-  border-left: 2px solid var(--sol-text);
-  border-right: 2px solid var(--sol-text);
-  /* PHASE 3 polish (item 1): "genuinely engraved" — the existing 2px hairline
-     (item-4 wave-1 fix, kept exactly as-is: width/ticks are load-bearing for
-     legibility at the narrowest band) gains an inset highlight edge just
-     below/inside it, the light catching the far side of a cut groove. Inset
-     shadow only, no geometry change. */
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), inset 0 -1px 1px rgba(0, 0, 0, 0.2);
-}
-
-.scr-today-ladder-value {
-  font-family: var(--sol-font-data);
-  font-size: var(--sol-text-label);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-@media (max-width: 480px) {
-  .scr-today-ladders {
-    grid-template-columns: 1fr;
+  .tdy[data-tdy-trophy="true"] {
+    --tdy-mode-ms: 420ms; /* enter */
+    --tdy-lux: 0.55; /* Ambient — screencraft/01's second tier */
+    /* the survivors stand at ~2x the instrument dial, inside the widest column
+       the trophy grid can give them (1152 / 3 = 384px at desk width) */
+    --tdy-dial: clamp(14rem, 26vw, 22rem);
   }
-}
 
-/* ---------------------------------------------------------------------- */
-/* Forced-colors: keep segment/bracket state visible without relying on   */
-/* the author palette (Sol §4.2 forced-colors block, chassis convention). */
-/* ---------------------------------------------------------------------- */
+  /* screencraft/01's Night tier. DECLARED AND NEVER ENTERED: no ambient light
+     sensor exists in this environment, and guessing darkness from the clock
+     would be invented data. See src/screens/today/useTrophy.ts. */
+  .tdy[data-tdy-power="night"] {
+    --tdy-lux: 0.2;
+  }
 
-@media (forced-colors: active) {
-  .scr-today-h {
+  /*
+    THE FRAME. Two properties and two only:
+    - `opacity` carries the luminance tier, at screencraft/01's 4000ms linear
+      ("slow enough that a tier change never reads as the 120ms bloom of a
+      colour event; a wall instrument that dims like an alarm has taught the
+      room to distrust its alarms").
+    - `translate` carries the burn-in orbit, moving hero, bridge and deck AS
+      ONE RIGID FRAME so no element can drift against another.
+  */
+  .tdy-frame {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cd-module);
+    opacity: var(--tdy-lux);
+    translate: var(--tdy-orbit-x, 0px) var(--tdy-orbit-y, 0px);
+    transition:
+      opacity 4000ms linear,
+      translate 4000ms linear;
+  }
+
+  /* Trophy withdrawal. "What enlarges is the answer; what quiets is the
+     reach." Controls do not shrink and do not stay in the tab order — they
+     leave, and they come back on the same 240ms any input buys. */
+  .tdy [data-tdy-hidden="true"] {
+    opacity: 0;
+    visibility: hidden;
+    block-size: 0;
+    margin: 0;
+    overflow: hidden;
+    transition:
+      opacity var(--tdy-mode-ms) var(--cd-ease-settle),
+      visibility 0s linear var(--tdy-mode-ms);
+  }
+
+  /* ===================================================================== */
+  /* 2 · CHAMFER + SHADOW: every housing is milled, never rounded          */
+  /* ===================================================================== */
+  /*
+    Applying `clip-path` to a housing kills its OUTER box-shadows, so the
+    four-layer stack is re-expressed: rim light and lip stay as inset shadows
+    (inside the clip, unaffected), and contact / core / ambient become
+    `drop-shadow` filters, which follow the chamfered silhouette exactly rather
+    than the rectangle the element used to be.
+  */
+  .tdy .cd-encl,
+  .tdy .cd-plate-mount,
+  .tdy .cd-escutcheon,
+  .tdy .cd-register-group,
+  .tdy .cd-register-head {
+    border-radius: 0;
+    clip-path: var(--tdy-cut);
+  }
+
+  .tdy .cd-encl[data-cd-encl="faceplate"] {
+    box-shadow:
+      inset 0 1px 0 #ffffff14, /* rim light — the machined top edge */
+      inset 0 -1px 0 #00000038; /* lip */
+    filter: drop-shadow(0 1px 0 #00000038); /* contact */
+  }
+
+  .tdy .cd-encl[data-cd-encl="pod"] {
+    box-shadow:
+      inset 0 1px 0 #ffffff40, /* rim light */
+      inset 0 -1px 0 #00000052; /* lip */
+    filter:
+      drop-shadow(0 1px 0 #00000066) /* contact */
+      drop-shadow(0 3px 6px #0000003d) /* core */
+      drop-shadow(0 10px 24px #00000021); /* ambient */
+  }
+
+  .tdy .cd-encl[data-cd-encl="hero"] {
+    box-shadow:
+      inset 0 1px 0 #ffffff4d, /* rim light — the hero's brighter catch */
+      inset 0 -1px 0 #00000047; /* lip */
+    filter:
+      drop-shadow(0 1px 0 #00000066) /* contact */
+      drop-shadow(0 4px 8px #00000040) /* core — the hero's own mass */
+      drop-shadow(0 24px 56px #00000029); /* ambient — the deepest throw */
+  }
+
+  .tdy .cd-encl[data-cd-encl="well"] {
+    background: var(--cd-panel); /* anthracite — this world's recess ground */
+    box-shadow: var(--cd-shadow-well);
+    filter: none;
+  }
+
+  /* The bezel stays a circle: "a bezel is a circle because a bezel is
+     machined round; a panel is a rectangle with a cut corner." */
+  .tdy .cd-encl[data-cd-encl="bezel"] {
+    clip-path: none;
+    border-radius: 50%;
+  }
+
+  /* ===================================================================== */
+  /* 3 · THE KEYS — chamfered cap, whole focus ring                        */
+  /* ===================================================================== */
+  .tdy .cd-key {
+    --cd-stack: none;
+    position: relative;
+    isolation: auto;
+    background: none;
+    border-radius: 0;
+    color: var(--cd-ink);
+    box-shadow: var(--cd-stack);
+  }
+
+  /* the cap itself — satin billet, radial grain, cut at 45 degrees */
+  .tdy .cd-key::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    clip-path: var(--tdy-cut);
+    background-color: var(--cd-billet);
+    /*
+      II.2.7's brushed metal, LINEAR: "grain pitch 3px at +/-4% luminance" with
+      a specular band across it. ch.05's radial delta is explicitly "earned by
+      the cap's own CIRCULAR form" — run around a rectangle it produces a
+      starburst from the centre, which is not brushed aluminium, so the radial
+      version is fenced to the knob cap and the bezel where the form earns it.
+    */
+    background-image:
+      repeating-linear-gradient(90deg, #ffffff00 0px, #ffffff26 1px, #00000021 2px, #ffffff00 3px),
+      linear-gradient(var(--cd-light-axis), #e0e2e4 0%, var(--cd-billet) 47%, #a9adaf 100%);
+    box-shadow:
+      inset 0 1px 0 #ffffff8c, /* rim light — the machined top edge */
+      inset 0 -1px 0 #00000059; /* lip — the edge turning away */
+    filter:
+      drop-shadow(0 1px 0 #00000066) /* contact */
+      drop-shadow(0 3px 6px #0000003d) /* core */
+      drop-shadow(0 10px 24px #00000021); /* ambient */
+    transition: filter var(--cd-contact-release) var(--cd-ease-settle);
+  }
+
+  /* II.2.6 — press shortens the shadow. The contact line never moves. */
+  .tdy .cd-key[data-cd-pressed="true"]::before {
+    filter:
+      drop-shadow(0 1px 0 #00000066)
+      drop-shadow(0 1px 2px #0000003d)
+      drop-shadow(0 4px 10px #00000021);
+    transition-duration: var(--cd-contact-down);
+    transition-timing-function: linear;
+  }
+
+  .tdy .cd-key[disabled]::before {
+    background-image: linear-gradient(var(--cd-light-axis), #b9bcbe 0%, #a3a6a8 100%);
+    filter: drop-shadow(0 1px 0 #00000038);
+  }
+
+  .tdy .cd-key[disabled] {
+    color: #4f4a44; /* engraved-ink hue, lifted; 4.62:1 on the disabled cap */
+  }
+
+  .tdy .cd-key-cap {
+    font-family: var(--cd-font-ui);
+    font-weight: 600;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    font-size: var(--cd-size-1);
+    /* II.6.7 — the glyph is CUT INTO the cap: a shadowed shoulder above, a
+       thrown edge catching the sun below. */
+    text-shadow:
+      0 -1px 0 #00000040,
+      0 1px 0 #ffffff73;
+  }
+
+  /* ===================================================================== */
+  /* 4 · TYPE ON MATERIAL (CD-BRIEF ruling 5 — a hard fail by rule)         */
+  /* ===================================================================== */
+  /* Text never renders raw over carbon weave or brushed grain. Every string on
+     this screen sits on a cream plate, an anthracite panel or a billet
+     escutcheon. The three classes below are the only text surfaces. */
+  .tdy .cd-plate-mount {
+    background: var(--cd-face);
+    color: var(--cd-ink);
+    box-shadow:
+      inset 0 -1px 0 #ffffff8c, /* lip — the plate's cut edge catching light */
+      inset 0 1px 3px #0000002e; /* well — the plate sits down in its recess */
+    filter: drop-shadow(0 1px 0 #00000059);
+  }
+
+  .tdy .cd-escutcheon {
+    /* T7 REPAIR — a background-color FLOOR under every gradient. The shorthand
+       resets background-color to transparent, so a gradient that fails to
+       paint drops its text onto carbon weave, which is ruling 5's hard fail. */
+    background-color: var(--cd-billet);
+    background-image: linear-gradient(var(--cd-light-axis), #d6d9da 0%, var(--cd-billet) 58%, #b0b3b5 100%);
+    color: var(--cd-ink);
+    font-size: var(--cd-size-1);
+    box-shadow:
+      inset 0 1px 0 #ffffff8c,
+      inset 0 -1px 0 #00000038;
+    filter: drop-shadow(0 1px 0 #00000047);
+  }
+
+  .tdy .cd-engraved {
+    color: var(--cd-ink);
+    text-shadow:
+      0 -1px 0 #00000040,
+      0 1px 0 #ffffff8c;
+  }
+
+  .tdy .cd-silkscreen {
+    color: var(--cd-muted-ink); /* 4.51:1 on the cream face */
+    font-size: var(--cd-size-1);
+  }
+
+  .tdy .cd-printed {
+    color: var(--cd-ink);
+    font-size: var(--cd-size-2);
+  }
+
+  /* T2 REPAIR — II.6.11: "below 0.6875rem type is TEXTURE, never information."
+     --cd-unit-scale 0.4 on a 13-14px base computes to 5.2-5.6px, which is
+     texture wearing a unit's name. The 40% relationship survives wherever it
+     clears the floor; the floor wins where it does not. */
+  .tdy .cd-unit {
+    font-size: max(var(--cd-micro-ceiling), calc(1em * var(--cd-unit-scale)));
+    letter-spacing: var(--cd-track-body);
+  }
+
+  .tdy .cd-prose {
+    color: var(--cd-ink);
+    margin: 0;
+    font-size: var(--cd-size-2);
+  }
+
+  /* T5 REPAIR — a lamp's printed word is text, and text answers to the ground
+     it lands on. Two grounds carry lamps on this screen, so two inks. */
+  .tdy .cd-lamp-word {
+    color: var(--cd-muted-ink-panel); /* 6.41:1 on carbon, 4.92:1 on anthracite */
+    font-size: var(--cd-size-1);
+  }
+
+  .tdy .cd-register-head .cd-lamp-word {
+    color: #5c544b; /* engraved-ink hue, lifted to 4.61:1 on satin billet */
+  }
+
+  .tdy h2 {
+    margin: 0;
+  }
+
+  .tdy p {
+    margin: 0;
+  }
+
+  .tdy ul,
+  .tdy ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* ===================================================================== */
+  /* 5 · THE DIALS — cream lacquer under machined billet                    */
+  /* ===================================================================== */
+  .tdy-dial-mount {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--cd-module);
+    padding-block: calc(var(--cd-module) / 2);
+  }
+
+  .tdy .tdy-dial-bezel {
+    --cd-bezel-width: 0.5rem; /* ch.05: `border: 0.5rem solid var(--bezel)` */
+    flex: 0 0 auto;
+    display: block;
+    /* II.2.8 — chrome REFLECTS, it does not shade: two hard stop pairs at
+       47/48 and 62/63, re-keyed to this world's mirror-polished aluminium and
+       run as a conic so the reflection turns around the ring the way a machined
+       bezel's does. */
+    background: conic-gradient(
+      from 138deg,
+      #f4f5f6 0%,
+      #c9ccce 26%,
+      #8f9294 47%,
+      #4d5052 48%,
+      #6e7173 62%,
+      #b6b9bb 63%,
+      #eceeef 100%
+    );
+    box-shadow:
+      inset 0 1px 0 var(--cd-rim-chrome), /* rim — the hardest on the panel */
+      inset 0 -1px 0 #00000059; /* lip */
+    filter:
+      drop-shadow(0 1px 0 #00000066) /* contact */
+      drop-shadow(0 4px 10px #00000040); /* core */
+  }
+
+  .tdy-dial {
+    position: relative;
+    inline-size: var(--tdy-dial);
+    block-size: var(--tdy-dial);
+    border-radius: 50%;
+    /* II.2.12 — LACQUER: a near-flat body whose whole story is told in one
+       hard reflection ellipse (below, on ::after). */
+    background-color: var(--cd-face);
+    background-image: linear-gradient(var(--cd-light-axis), #f5efe3 0%, var(--cd-face) 52%, #dcd3bf 100%);
+    box-shadow:
+      inset var(--cd-shadow-x) var(--cd-shadow-y) 6px #00000033, /* the recessed dial floor, 1:2 */
+      inset 0 -1px 0 #ffffff8c; /* the lit lip closing the bottom of the recess */
+    /* NO transition here: the box follows --tdy-dial, and the TRANSITION lives
+       on that registered property (see the @property block at the head of this
+       file, and the defect that put it there). */
+  }
+
+  /* the ONE hard reflection ellipse — II.2.12's 8%/7%, 34% x 26%. It sits over
+     the needle because it is on the cover glass, not under it. */
+  .tdy-dial::after {
+    content: "";
+    position: absolute;
+    left: 8%;
+    top: 7%;
+    inline-size: 34%;
+    block-size: 26%;
+    border-radius: 50%;
+    background: var(--cd-lacquer-window);
+    pointer-events: none;
+    z-index: 4;
+  }
+
+  .tdy-face {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  .tdy-ticks line {
+    stroke: var(--cd-ink);
+  }
+
+  /*
+    The numerals are HTML, not svg <text>, and they are here for a measured
+    reason: a <text> inside viewBox="0 0 200 200" is sized in USER UNITS, so at
+    the two-column tablet dial (152px) an 11px numeral rendered at 8.4px —
+    under II.6.11's 0.6875rem information floor. In HTML the size is real px at
+    every dial diameter. The polar placement is unchanged: 68% of R, upright.
+  */
+  .tdy-face-labels {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .tdy-face-label {
+    position: absolute;
+    translate: -50% -50%;
+    font-size: var(--cd-micro-ceiling); /* 11px — the floor, never under it */
+    line-height: 1;
+    color: var(--cd-ink); /* 13.19:1 on the cream face */
+    letter-spacing: 0;
+  }
+
+  /* the scale's own unit, printed on the face the way a real dial prints it */
+  .tdy-face-unit {
+    position: absolute;
+    left: 50%;
+    top: 72%;
+    translate: -50% 0;
+    z-index: 1;
+    font-size: var(--cd-micro-ceiling);
+    letter-spacing: var(--cd-track-micro);
+    text-transform: uppercase;
+    color: var(--cd-muted-ink); /* 4.51:1 on cream */
+    pointer-events: none;
+  }
+
+  /* the printed zones. A ZONE, never a lamp (II.7.8), and never in motion. */
+  .tdy-zone--band {
+    stroke: var(--cd-role-warning-zone-light); /* 3.56:1 on cream — "in band" */
+    opacity: 0.55;
+  }
+
+  .tdy-zone--warn {
+    stroke: var(--cd-role-warning-zone-light); /* the amber margin worth watching */
+  }
+
+  .tdy-zone--redline {
+    stroke: var(--cd-role-danger); /* 4.31:1 on cream — a hard limit */
+  }
+
+  /* --- the needle ------------------------------------------------------- */
+  /*
+    A rate, never a duration: --tdy-sweep-ms is written per move as
+    distance / 720 deg/s, floored at 80ms AS A RATE REDUCTION. --cd-ease-heavy
+    is the Weighted class's CSS pair (spring(1.4,260,30), II.1.20).
+  */
+  .tdy-needle {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    transform-origin: 50% 50%;
+    transform: rotate(var(--tdy-needle-angle, -135deg));
+    transition: transform var(--tdy-sweep-ms, 0ms) var(--cd-ease-heavy);
+    pointer-events: none;
+  }
+
+  .tdy-needle-tip,
+  .tdy-needle-tail {
+    position: absolute;
+    left: 50%;
+    background: linear-gradient(90deg, #0e0c0a 0%, var(--cd-ink) 40%, #6b6459 62%, #17140f 100%);
+  }
+
+  /* tip at 82% of R, i.e. 41% of the dial's diameter, 3px of billet stock */
+  .tdy-needle-tip {
+    bottom: 50%;
+    inline-size: 3px;
+    block-size: 41%;
+    translate: -50% 0;
+    box-shadow: 1px 0 2px #00000066; /* the needle's own cast onto the face */
+  }
+
+  /* counterweight tail at 18% of R */
+  .tdy-needle-tail {
+    top: 50%;
+    inline-size: 4px;
+    block-size: 9%;
+    translate: -50% 0;
+  }
+
+  /*
+    THE HUB. II.3.18 puts it at 12% of R; ch.05 then cuts a 1.25rem PORTHOLE at
+    the same pivot, which is larger than that on any dial under 21rem — so the
+    hub is sized off the aperture it has to ring rather than off the doctrine's
+    percentage, and it is stated here rather than silently widened. Measured
+    defect it repairs: at 24% of the DIAMETER the boss was 58px on a 240px dial
+    and swallowed the counterweight tail whole, so the needle read as a bar
+    with no back end.
+  */
+  .tdy-needle-boss {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    inline-size: calc(var(--cd-porthole) + 0.5rem);
+    block-size: calc(var(--cd-porthole) + 0.5rem);
+    translate: -50% -50%;
+    border-radius: 50%;
+    background: conic-gradient(from 138deg, #f2f4f6, #9a9d9f 35%, #4c4f51 52%, #cfd2d4 78%, #f2f4f6);
+    mask: radial-gradient(circle, #00000000 0 calc(var(--cd-porthole) / 2), #000000 calc(var(--cd-porthole) / 2 + 0.5px));
+    box-shadow: 0 1px 2px #00000073;
+  }
+
+  /* --- the porthole ----------------------------------------------------- */
+  /*
+    ch.05: "a porthole shows the mechanism producing the number, rendered
+    rather than photographed, turning ONLY while the value itself is turning."
+    1.25rem, cut at the pivot, on both heroes — CD-BRIEF: "portholes scatter."
+  */
+  .tdy-porthole {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 2;
+    inline-size: var(--cd-porthole);
+    block-size: var(--cd-porthole);
+    translate: -50% -50%;
+    border-radius: 50%;
+    overflow: hidden;
+    /* the aperture: a cut through the face, so its wall is in shadow */
+    box-shadow:
+      inset 0 2px 3px #000000a6,
+      inset 0 -1px 0 #ffffff29,
+      0 0 0 1px #00000047;
+  }
+
+  .tdy-porthole-disc {
+    position: absolute;
+    inset: -25%;
+    border-radius: 50%;
+    /* one visible tooth per 22.5deg detent: a viewer can count the exact steps
+       the value has taken off the mechanism itself (ch.05's Signature note) */
+    background:
+      repeating-conic-gradient(
+        from 0deg,
+        var(--cd-billet) 0deg 11.25deg,
+        #6f7274 11.25deg 22.5deg
+      );
+    transform: rotate(var(--tdy-porthole-angle, 0deg));
+    /* 110ms snap, 40ms behind the cap — the rocker's own beat */
+    transition: transform 110ms var(--cd-ease-snap) 40ms;
+  }
+
+  /* the escapement: 24 teeth, one consumed per minute, cumulative turn held in
+     dataset and written to --cd-turn-angle by advanceTurn() */
+  .tdy-escapement {
+    background: repeating-conic-gradient(
+      from 0deg,
+      var(--cd-billet) 0deg 7.5deg,
+      #6f7274 7.5deg 15deg
+    );
+    transform: rotate(var(--cd-turn-angle, 0deg));
+    transition: transform var(--tdy-escape-ms, 110ms) var(--cd-ease-snap);
+  }
+
+  /* a parked escapement is STILL, and says so by holding — II.4.16 */
+  .tdy-escapement[data-tdy-running="false"] {
+    filter: grayscale(1) brightness(0.55);
+  }
+
+  .tdy-porthole-glass {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: linear-gradient(var(--cd-light-axis), #ffffff59 0%, #ffffff0a 38%, #00000038 100%);
+    pointer-events: none;
+  }
+
+  /* a parked needle sits on its rest stop, 4 degrees below the minimum tick */
+  .tdy-needle[data-tdy-parked="true"] .tdy-needle-tip {
+    background: linear-gradient(90deg, #4a453e 0%, #6d675c 45%, #3a352f 100%);
+  }
+
+  /* ===================================================================== */
+  /* 6 · THE LINKAGE KNOB (ch.05 section 3)                                 */
+  /* ===================================================================== */
+  /*
+    H2 REPAIR — the linkage takes its own row.
+    Mounted inside `.tdy-dial-mount`, the knob had to share one line with a
+    243px dial and four seat plates: the dial overhung its own housing by 21px
+    and the last seat clipped to "CAR". Here the knob is at the left of a
+    horizontal escutcheon with the seats beside it, so the rocker arm gets its
+    full 22.5deg swing and the hand gets a real target.
+  */
+  .tdy-knob-set {
+    display: flex;
+    align-items: center;
+    gap: var(--cd-module);
+    padding: calc(var(--cd-module) / 2) var(--cd-module);
+    padding-inline-end: 1.75rem; /* room for the rocker arm's own swing */
+    background-color: var(--cd-panel);
+    clip-path: var(--tdy-cut);
+    box-shadow: var(--cd-shadow-well);
+  }
+
+  .tdy-knob {
+    --cd-stack:
+      inset 0 1px 0 #ffffff40, /* rim light */
+      inset 0 -1px 0 #00000052, /* lip */
+      0 1px 0 #00000066, /* contact */
+      0 3px 6px #0000003d, /* core */
+      0 10px 24px #00000021; /* ambient */
+    position: relative;
+    inline-size: 3.5rem; /* the skirt; the cap inside is 3rem (II.3.5) */
+    block-size: 3.5rem;
+    min-inline-size: var(--cd-target-min);
+    min-block-size: var(--cd-target-min);
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 50%, #16181a 0%, #202225 62%, #2c2e31 100%);
+    box-shadow: var(--cd-stack);
+    cursor: grab;
+    touch-action: none;
+  }
+
+  .tdy-knob:active {
+    cursor: grabbing;
+  }
+
+  /* THE CARRIER. It must never grow a transform: cap and rocker are SIBLINGS
+     beneath it and each read --cd-assembly-angle independently, so a mid-throw
+     reversal can never compound 22.5deg into 45deg. Asserted in DEV by
+     src/cd/physics/rotation.ts. */
+  .tdy-knob-carrier {
+    position: absolute;
+    inset: 0;
+  }
+
+  .tdy-knob-cap {
+    position: absolute;
+    inset: 0.25rem;
+    border-radius: 50%;
+    /* II.2.4 — the machined part turns and the ROOM DOES NOT: this layer
+       carries the radial grain and rotates; the fixed lighting plate is the
+       ::after below and never moves. */
+    background:
+      repeating-conic-gradient(from 0deg at 50% 50%, #ffffff00 0deg 1.4deg, #00000021 1.4deg 2.8deg),
+      radial-gradient(circle at 40% 32%, #e2e4e6 0%, var(--cd-billet) 46%, #a6a9ab 100%);
+    border: 2px solid var(--cd-mirror); /* the mirror-polished collar */
+    transform: rotate(var(--cd-assembly-angle, 0deg));
+    transition: transform 110ms var(--cd-ease-snap);
+  }
+
+  /* the fixed lighting plate — anchored to the room, not to the cap */
+  .tdy-knob::after {
+    content: "";
+    position: absolute;
+    inset: 0.25rem;
+    border-radius: 50%;
+    pointer-events: none;
+    background: var(--cd-rotary-light);
+    box-shadow:
+      inset 0 1px 0 #ffffff8c,
+      inset 0 -2px 3px #00000047;
+  }
+
+  /* the pointer bar: 0.1875rem wide, from 8% inside the rim to 40% of R */
+  .tdy-knob-index {
+    position: absolute;
+    left: 50%;
+    top: 8%;
+    inline-size: 0.1875rem;
+    block-size: 34%;
+    translate: -50% 0;
+    border-radius: 1px;
+    background: var(--cd-ink);
+    box-shadow: 0 1px 0 #ffffff73;
+  }
+
+  /* THE ROCKER ARM — 1.5rem of satin billet pinned beside the cap, swinging
+     through the detent's own pitch a beat behind it (Standard mass). */
+  .tdy-knob-rocker {
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    inline-size: 1.5rem;
+    block-size: 0.25rem;
+    transform-origin: 0% 50%;
+    transform: rotate(var(--cd-assembly-angle, 0deg));
+    transition: transform 110ms var(--cd-ease-snap) 40ms;
+    background: linear-gradient(180deg, #e0e2e4 0%, var(--cd-billet) 50%, #909395 100%);
+    box-shadow: 0 1px 2px #00000073;
+  }
+
+  .tdy-knob-rocker::after {
+    content: "";
+    position: absolute;
+    right: -0.1875rem;
+    top: 50%;
+    inline-size: 0.375rem;
+    block-size: 0.375rem;
+    translate: 0 -50%;
+    border-radius: 50%;
+    background: var(--cd-mirror);
+    box-shadow: 0 1px 2px #00000080;
+  }
+
+  .tdy-knob-seats {
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: calc(var(--cd-module) / 4);
+  }
+
+  .tdy-knob-seat {
+    padding: 3px 6px;
+    font-family: var(--cd-font-ui);
+    font-size: var(--cd-micro-ceiling);
+    letter-spacing: var(--cd-track-micro);
+    text-transform: uppercase;
+    color: var(--cd-muted-ink-panel);
+    background: var(--cd-panel);
+    clip-path: var(--tdy-cut);
+  }
+
+  .tdy-knob-seat[data-tdy-seated="true"] {
+    color: var(--cd-ink);
+    background: var(--cd-face);
+    font-weight: 600;
+  }
+
+  /* ===================================================================== */
+  /* 7 · THE CLUSTER SHELLS                                                 */
+  /* ===================================================================== */
+  .tdy-cluster-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.05fr) minmax(0, 0.9fr);
+    gap: var(--cd-module);
+    align-items: stretch;
+  }
+
+  /*
+    H1 REPAIR — the duty deck's lids come above the fold. Measured before: the
+    deck's top edge sat at y=740 in an 800px viewport with a 1083px document,
+    so the one element listing owed actions could not be seen on the screen
+    whose question is "what do I do now". The deck now shares row 2 with the
+    bridge; an OPEN group may still run past the fold, which is precisely what
+    R7's one-section-at-a-time accordion exists to bound.
+  */
+  .tdy-evidence-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: var(--cd-module);
+    align-items: start;
+  }
+
+  .tdy-cluster,
+  .tdy-chrono,
+  .tdy-bank {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--cd-module) / 2);
+    padding: var(--cd-module);
+    min-inline-size: 0;
+  }
+
+  .tdy-cluster-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: calc(var(--cd-module) / 2);
+    flex-wrap: wrap;
+  }
+
+  .tdy-cluster-channel {
+    background-color: var(--cd-face);
+    background-image: linear-gradient(var(--cd-light-axis), #f5efe3 0%, var(--cd-face) 100%);
+  }
+
+  /* --- the readout plates ---------------------------------------------- */
+  .tdy-readout {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: calc(var(--cd-module) / 2) var(--cd-module);
+  }
+
+  .tdy-readout-line {
+    display: flex;
+    align-items: baseline;
+    gap: calc(var(--cd-module) / 2);
+    flex-wrap: wrap;
+  }
+
+  /*
+    H8 REPAIR — the top step is spent on ONE numeral per screen (II.6.20) and it
+    is the CHRONOMETER's, not this one. screencraft/01's three tests decide it:
+    a change in minutes-in-hand changes what the operator does next; a change in
+    eaten-so-far at 0 of 1427 does not.
+  */
+  .tdy-readout-value {
+    color: var(--cd-ink);
+    font-size: var(--cd-size-6); /* 2.75rem — the card hero, never the screen's */
+    letter-spacing: var(--cd-track-hero);
+    transition: font-size var(--tdy-mode-ms) var(--cd-ease-settle);
+  }
+
+  .tdy-readout-unit {
+    color: var(--cd-muted-ink);
+  }
+
+  .tdy-readout-target {
+    color: var(--cd-muted-ink);
+    font-size: var(--cd-size-2);
+  }
+
+  .tdy-readout-band,
+  .tdy-readout-age {
+    display: flex;
+    align-items: baseline;
+    gap: calc(var(--cd-module) / 2);
+    flex-wrap: wrap;
+    font-size: var(--cd-size-1);
+  }
+
+  .tdy-readout-word {
+    font-family: var(--cd-font-ui);
+    font-weight: 600;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+  }
+
+  /* the reserved role inks, on a cream face — the only ground they are legal
+     on (CD-BRIEF repair 2 for channels, repair 1 for warning) */
+  .tdy-readout-word[data-tdy-word="over"],
+  .tdy-readout-word[data-tdy-word="late"] {
+    color: var(--cd-role-danger-ink-light); /* 4.51:1 on cream */
+  }
+
+  .tdy-readout-word[data-tdy-word="under"],
+  .tdy-readout-word[data-tdy-word="watch"],
+  .tdy-readout-word[data-tdy-word="now"] {
+    color: var(--cd-role-warning-ink-light); /* 4.50:1 on cream */
+  }
+
+  .tdy-readout-word[data-tdy-word="in"],
+  .tdy-readout-word[data-tdy-word="in-hand"] {
+    color: var(--cd-role-success-ink-light); /* 4.52:1 on cream */
+  }
+
+  .tdy-readout-word[data-tdy-word="off"] {
+    color: var(--cd-muted-ink);
+  }
+
+  .tdy-age-label,
+  .tdy-age-threshold,
+  .tdy-age-word {
+    font-size: var(--cd-micro-ceiling);
+    letter-spacing: var(--cd-track-micro);
+    text-transform: uppercase;
+  }
+
+  .tdy-age-threshold {
+    margin-inline-start: auto;
+    color: var(--cd-muted-ink);
+  }
+
+  /* II.3.18 / II.3.32 — stale HOLDS the value at 55% ink and prints its word.
+     The age itself is never dimmed: when a reading is stale, its age is the
+     most load-bearing thing on the plate. */
+  .tdy-readout-age[data-tdy-stale="true"] .tdy-age-word {
+    color: var(--cd-role-warning-ink-light);
+    font-weight: 700;
+  }
+
+  /* the screen's one numeral at the top step (II.6.20) */
+  .tdy-chrono-figure {
+    font-size: var(--cd-size-7); /* 4.25rem */
+    letter-spacing: var(--cd-track-hero);
+    color: var(--cd-ink);
+    transition: font-size var(--tdy-mode-ms) var(--cd-ease-settle);
+  }
+
+  .tdy-chrono-meal {
+    font-weight: 600;
+  }
+
+  /* --- the gated commit key (ch.05 section 3) --------------------------- */
+  .tdy-gate {
+    display: flex;
+  }
+
+  .tdy .tdy-gate-key {
+    inline-size: 100%;
+    gap: calc(var(--cd-module) / 2);
+  }
+
+  /* the milled slot the rod runs in */
+  .tdy-gate-slot {
+    position: relative;
+    display: inline-block;
+    inline-size: 0.5rem;
+    block-size: 1.75rem;
+    background: #16181a;
+    box-shadow:
+      inset 1px 2px 3px #000000a6, /* the well, on the 1:2 cast vector */
+      inset 0 -1px 0 #ffffff29;
+  }
+
+  /* the rod itself: overtravels 1px on press, pulled back to centre by the
+     Anchored spring the instant the hand releases (0% overshoot, always) */
+  .tdy-gate-rod {
+    position: absolute;
+    left: 50%;
+    top: 0.125rem;
+    inline-size: 0.25rem;
+    block-size: 1.5rem;
+    translate: -50% var(--tdy-rod-y, 0px);
+    background: linear-gradient(90deg, #8f9294 0%, var(--cd-billet) 45%, #6f7274 100%);
+    transition: translate var(--cd-settle-anchored) var(--cd-ease-settle);
+  }
+
+  .tdy .tdy-gate-key[data-cd-pressed="true"] .tdy-gate-rod {
+    --tdy-rod-y: 1px;
+    transition-duration: var(--cd-contact-down);
+    transition-timing-function: linear;
+  }
+
+  /* ===================================================================== */
+  /* 8 · THE METER BRIDGE                                                   */
+  /* ===================================================================== */
+  .tdy-bridge {
+    padding: var(--cd-module);
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--cd-module) / 2);
+  }
+
+  .tdy-bridge-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cd-module);
+  }
+
+  .tdy-bridge-rows {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: calc(var(--cd-module) / 2);
+  }
+
+  .tdy-ladder {
+    display: grid;
+    grid-template-columns: 4.25rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: calc(var(--cd-module) / 2);
+    padding: 2px;
+  }
+
+  /* the ladder's own key: the SECOND lever on the one linkage.
+     T4 REPAIR — its cap is a CREAM INSTRUMENT FACE, not billet, because
+     CD-BRIEF repair 2 renders channel-coloured text on cream faces and nowhere
+     else: the four inks measure 5.17-5.39:1 on cream and 3.98-4.16:1 on
+     billet. A nameplate is the right object for it anyway — a cream engraved
+     plate is what a real selector's legend is cut into. */
+  .tdy .tdy-ladder-key {
+    min-inline-size: var(--cd-target-min);
+    min-block-size: var(--cd-target-min);
+    inline-size: 100%;
+    padding-inline: calc(var(--cd-module) / 2);
+  }
+
+  .tdy .tdy-ladder-key::before {
+    background-color: var(--cd-face);
+    background-image: linear-gradient(
+      var(--cd-light-axis),
+      #f5efe3 0%,
+      var(--cd-face) 52%,
+      #dcd3bf 100%
+    );
+  }
+
+  /* the cognac wash on the seated selector: 12% opacity, never a border
+     (ch.05 section 4). Restated here because the cap is a cream face now. */
+  .tdy-ladder[data-tdy-seated="true"] .tdy-ladder-key::before {
+    background-image:
+      linear-gradient(0deg, #a6713f1f, #a6713f1f),
+      linear-gradient(var(--cd-light-axis), #f5efe3 0%, var(--cd-face) 52%, #dcd3bf 100%);
+  }
+
+  .tdy-ladder-label {
+    font-family: var(--cd-font-ui);
+    font-weight: 700;
+    font-size: var(--cd-size-1);
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    /* CD-BRIEF repair 2: the channel's ink is legal HERE and only here — on
+       the cap's own cream-billet face, never on carbon or anthracite. */
+    color: var(--tdy-ch, var(--cd-ink));
+    text-shadow:
+      0 -1px 0 #00000026,
+      0 1px 0 #ffffff8c;
+  }
+
+  .tdy-ladder-well {
+    padding: 3px;
+    background: var(--cd-panel);
+    clip-path: var(--tdy-cut);
+    box-shadow: var(--cd-shadow-well);
+  }
+
+  .tdy-ladder-segments {
+    display: grid;
+    grid-template-columns: repeat(20, minmax(0, 1fr));
+    grid-template-rows: auto 3px;
+    gap: 2px;
+    align-items: stretch;
+  }
+
+  .tdy-seg {
+    grid-row: 1;
+    block-size: 0.875rem;
+    background: var(--tdy-seg-off);
+    box-shadow: inset 0 1px 1px #00000073;
+  }
+
+  .tdy-seg[data-tdy-seg="on"] {
+    background: var(--tdy-ch-lit);
+    /* II.2.17 — three bloom shells at r / 4r / 12r, hue held across all three */
+    box-shadow:
+      inset 0 1px 0 #ffffff59,
+      0 0 var(--cd-bloom-r) color-mix(in srgb, var(--tdy-ch-lit) 80%, transparent),
+      0 0 var(--cd-bloom-4r) color-mix(in srgb, var(--tdy-ch-lit) 40%, transparent);
+  }
+
+  /* over-band renders as a SHAPE, not as a hue: an outline instead of a fill,
+     so the state survives desaturation and forced-colours (II.7.7) */
+  .tdy-seg[data-tdy-seg="hollow"] {
+    background: var(--tdy-seg-off);
+    box-shadow: inset 0 0 0 2px var(--tdy-ch-lit);
+  }
+
+  .tdy-ladder-bracket {
+    grid-row: 2;
+    background: var(--cd-mirror);
+    box-shadow: 0 0 0 1px #000000a6;
+  }
+
+  /* T1 REPAIR — this plate carried cream-face inks on an anthracite ground:
+     the eaten figure measured 1.44:1 and was invisible in the rendered page.
+     It is a READOUT, and in this world a readout sits on a cream instrument
+     face: engraved ink 13.19:1, muted ink 4.51:1. */
+  .tdy-ladder-figure {
+    display: flex;
+    align-items: baseline;
+    gap: 1px;
+    font-size: var(--cd-size-1);
+    color: var(--cd-ink);
+    padding-inline: calc(var(--cd-module) / 2);
+    background-color: var(--cd-face);
+    background-image: linear-gradient(var(--cd-light-axis), #f5efe3 0%, var(--cd-face) 100%);
+    clip-path: var(--tdy-cut);
+    min-block-size: 1.5rem;
+    box-shadow:
+      inset 0 -1px 0 #ffffff8c, /* lip — the plate's cut edge catching light */
+      inset 0 1px 3px #0000002e; /* well — the plate sits down in its recess */
+  }
+
+  .tdy-ladder-slash,
+  .tdy-ladder-target {
+    color: var(--cd-muted-ink); /* 4.51:1 on the cream face */
+  }
+
+  .tdy-bridge-note {
+    background-color: var(--cd-billet);
+    background-image: linear-gradient(var(--cd-light-axis), #d6d9da 0%, var(--cd-billet) 100%);
+  }
+
+  /* ===================================================================== */
+  /* 9 · THE PLATE LOG                                                      */
+  /* ===================================================================== */
+  .tdy-bank-tally {
+    display: flex;
+    align-items: baseline;
+    gap: calc(var(--cd-module) / 2);
+  }
+
+  .tdy-tally-figure {
+    font-family: var(--cd-font-data);
+    font-size: var(--cd-size-6);
+    color: var(--cd-ink);
+    line-height: 1;
+    transition: font-size var(--tdy-mode-ms) var(--cd-ease-settle);
+  }
+
+  .tdy-tally-of {
+    font-size: var(--cd-size-2);
+    color: var(--cd-muted-ink);
+  }
+
+  .tdy-tally-cut {
+    margin-inline-start: auto;
+    color: var(--cd-role-warning-ink-light);
+  }
+
+  .tdy-bank-keys {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--cd-module) / 2);
+  }
+
+  .tdy-bank-cell {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--cd-module) / 2);
+  }
+
+  .tdy .tdy-tick-key {
+    flex: 1;
+    justify-content: flex-start;
+    gap: calc(var(--cd-module) / 2);
+    min-block-size: var(--cd-target-min);
+    padding-inline: calc(var(--cd-module) / 2);
+  }
+
+  .tdy-tick-slot {
+    position: relative;
+    display: inline-block;
+    flex: 0 0 auto;
+    inline-size: 0.5rem;
+    block-size: 1.5rem;
+    background: #16181a;
+    box-shadow:
+      inset 1px 2px 3px #000000a6,
+      inset 0 -1px 0 #ffffff29;
+  }
+
+  .tdy-tick-rod {
+    position: absolute;
+    left: 50%;
+    top: 0.125rem;
+    inline-size: 0.25rem;
+    block-size: 0.5rem;
+    translate: -50% var(--tdy-rod-y, 0px);
+    background: linear-gradient(90deg, #8f9294 0%, var(--cd-billet) 45%, #6f7274 100%);
+    /* Anchored: 0% overshoot, always — a logged plate does not bounce back */
+    transition: translate var(--cd-settle-anchored) var(--cd-ease-settle);
+  }
+
+  /* the committed position IS the state readout (II.3.16) */
+  .tdy .tdy-tick-key[data-tdy-on="true"] .tdy-tick-rod {
+    --tdy-rod-y: 0.75rem;
+  }
+
+  .tdy .tdy-tick-key[data-cd-pressed="true"] .tdy-tick-rod {
+    --tdy-rod-y: 1px;
+    transition-duration: var(--cd-contact-down);
+    transition-timing-function: linear;
+  }
+
+  .tdy .tdy-tick-key[data-tdy-on="true"][data-cd-pressed="true"] .tdy-tick-rod {
+    --tdy-rod-y: calc(0.75rem + 1px);
+  }
+
+  /* The logged state is a STANDING WASH: it is true for as long as the tick is
+     true, so it carries no event grammar at all. */
+  .tdy .tdy-tick-key[data-tdy-on="true"]::before {
+    background-image:
+      linear-gradient(0deg, #3fae6b26, #3fae6b26),
+      repeating-linear-gradient(90deg, #ffffff00 0px, #ffffff26 1px, #00000021 2px, #ffffff00 3px),
+      linear-gradient(var(--cd-light-axis), #e0e2e4 0%, var(--cd-billet) 47%, #a9adaf 100%);
+  }
+
+  /* II.7.13 — the confirm EVENT lands, HOLDS 1800ms, then decays over 900ms.
+     ch.05's verdigris, superseded by the product-wide success role. Fired by
+     data-tdy-fresh, which only a commit made in THIS session ever sets: a tick
+     that landed at 08:12 does not get its confirm played again at 23:40. */
+  .tdy .tdy-tick-key[data-tdy-fresh="true"]::before {
+    animation: tdy-confirm calc(var(--cd-success-hold) + var(--cd-success-decay)) linear both;
+  }
+
+  @keyframes tdy-confirm {
+    0% {
+      box-shadow:
+        inset 0 1px 0 #ffffff8c,
+        inset 0 -1px 0 #00000059,
+        inset 0 0 0 2px var(--cd-role-success-fill-light);
+    }
+    69% {
+      box-shadow:
+        inset 0 1px 0 #ffffff8c,
+        inset 0 -1px 0 #00000059,
+        inset 0 0 0 2px var(--cd-role-success-fill-light);
+    }
+    100% {
+      box-shadow:
+        inset 0 1px 0 #ffffff8c,
+        inset 0 -1px 0 #00000059,
+        inset 0 0 0 2px #3fae6b00;
+    }
+  }
+
+  .tdy-tick-label {
+    font-size: var(--cd-size-1);
+  }
+
+  .tdy-tick-state {
+    margin-inline-start: auto;
+    font-size: var(--cd-size-1);
+    /* T6 REPAIR — the tick's exact HH:MM sits on the key's BILLET cap, where
+       --cd-muted-ink measures 3.48:1. Engraved-ink hue, lifted: 4.61:1. */
+    color: #5c544b;
+  }
+
+  .tdy-tick-age {
+    flex: 0 0 4.5rem;
+    text-align: right;
+    font-size: var(--cd-micro-ceiling);
+    letter-spacing: var(--cd-track-micro);
+    text-transform: uppercase;
+    color: var(--cd-muted-ink-panel); /* 6.41:1 on carbon */
+  }
+
+  .tdy-tick-age[data-tdy-stale="true"] {
+    color: var(--cd-role-warning-ink-dark); /* 4.52:1 worst on a dark field */
+  }
+
+  /* a cut slot: the seat is still milled into the panel, and the plate over it
+     is engraved with WHY (docs/VARIANT-SPEC.md — no tick button) */
+  .tdy-blank {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--cd-module) / 2);
+    inline-size: 100%;
+    min-block-size: var(--cd-target-min);
+    padding-inline: calc(var(--cd-module) / 2);
+    clip-path: var(--tdy-cut);
+  }
+
+  /* T3 REPAIR — this well is anthracite and every ink on it was a cream-face
+     ink: the label and the tester's stated reason both measured 1.44:1 and the
+     state word 2.02:1, so a cut slot reported that it was missing but not why.
+     `.tdy .cd-engraved` and `.tdy .cd-printed` are (0,2,0) and were winning
+     over these rules, so both are restated at matched specificity. */
+  .tdy .tdy-blank-label {
+    font-size: var(--cd-size-1);
+    color: var(--cd-ink-panel); /* 9.13:1 on anthracite */
     text-shadow: none;
   }
-  .scr-today-pad--today {
-    outline-color: Highlight;
+
+  .tdy .tdy-blank-word {
+    color: var(--cd-role-warning-ink-dark); /* #DAA254 — 5.01:1 on anthracite */
+    font-size: var(--cd-micro-ceiling);
+    letter-spacing: var(--cd-track-micro);
+    text-transform: uppercase;
+    font-weight: 700;
   }
-  .scr-today-seg,
-  .scr-today-ladder-bracket,
-  .scr-today-row--danger,
-  .scr-today-row--warning {
-    forced-color-adjust: none;
-    border-color: ButtonText;
-    /* PHASE 3 polish additions (glow/recess/groove) are decorative box-shadow
-       only — both these selectors already opt out of the automatic
-       forced-colors stripping (forced-color-adjust: none, above, predates
-       this polish pass), so the new shadows must be zeroed explicitly here
-       or they'd survive into forced-colors as low-contrast decoration on
-       top of the flat system-color fallback below. */
-    box-shadow: none;
+
+  .tdy .tdy-blank-reason {
+    flex: 1 1 12rem;
+    min-inline-size: 0;
+    font-size: var(--cd-size-1);
+    color: var(--cd-ink-panel); /* 9.13:1 on anthracite */
+    text-align: right;
   }
-  .scr-today-seg--on {
-    background: ButtonText;
+
+  .tdy-bank-threshold {
+    background-color: var(--cd-billet);
+    background-image: linear-gradient(var(--cd-light-axis), #d6d9da 0%, var(--cd-billet) 100%);
   }
-  .scr-today-tick.scr-today-tick--on {
-    forced-color-adjust: none;
-    background: Highlight;
-    color: HighlightText;
+
+  /* ===================================================================== */
+  /* 10 · THE DUTY DECK                                                     */
+  /* ===================================================================== */
+  .tdy-deck {
+    padding: var(--cd-module);
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--cd-module) / 2);
+    /* COGNAC AS A FIELD (CD-BRIEF: ch.05's 4% cap dies). It never lights hot
+       and never takes a specular — a strap does not backlight — and it is
+       fenced from every warning band on the screen by the cluster row above. */
+    background:
+      linear-gradient(0deg, #a6713f2e, #a6713f2e),
+      linear-gradient(var(--cd-light-axis), #35383b 0%, var(--cd-field) 58%, #1e2023 100%);
+  }
+
+  .tdy-deck-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cd-module);
+  }
+
+  .tdy-deck-count {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+    font-family: var(--cd-font-data);
+    font-size: var(--cd-size-4);
+  }
+
+  .tdy-deck-empty {
+    display: flex;
+    align-items: baseline;
+    gap: var(--cd-module);
+    flex-wrap: wrap;
+  }
+
+  .tdy-deck-empty-word {
+    font-size: var(--cd-size-2);
+  }
+
+  .tdy-deck-empty-note {
+    color: var(--cd-muted-ink);
+    font-size: var(--cd-size-1);
+  }
+
+  .tdy .cd-register-group {
+    background: var(--cd-panel);
+    box-shadow: var(--cd-shadow-well);
+  }
+
+  .tdy .cd-register-head {
+    background-color: var(--cd-billet);
+    background-image: linear-gradient(var(--cd-light-axis), #d6d9da 0%, var(--cd-billet) 58%, #a9adaf 100%);
+    color: var(--cd-ink);
+    box-shadow:
+      inset 0 1px 0 #ffffff8c,
+      inset 0 -1px 0 #00000052;
+    filter: drop-shadow(0 1px 0 #00000059);
+  }
+
+  .tdy .cd-register-count {
+    color: #5c544b; /* engraved-ink hue, lifted to 4.61:1 on satin billet */
+  }
+
+  /* the lid's "rows" unit sits on the same billet: --cd-muted-ink is 3.48:1 there */
+  .tdy .cd-register-head .cd-unit {
+    color: #5c544b;
+  }
+
+  .tdy .cd-register-rows {
+    padding: calc(var(--cd-module) / 2);
+    gap: calc(var(--cd-module) / 2);
+  }
+
+  .tdy-slip {
+    display: flex;
+    align-items: stretch;
+    gap: calc(var(--cd-module) / 2);
+  }
+
+  .tdy-slip-face {
+    flex: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: 2px calc(var(--cd-module) / 2);
+    padding: calc(var(--cd-module) / 2) var(--cd-module);
+  }
+
+  .tdy-slip-text {
+    font-family: var(--cd-font-ui);
+    font-weight: 600;
+    font-size: var(--cd-size-2);
+  }
+
+  .tdy-slip-figure {
+    text-align: right;
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+  }
+
+  .tdy-slip-figure[data-tdy-word="expired"] {
+    color: var(--cd-role-danger-ink-light); /* 4.51:1 on cream */
+    font-weight: 700;
+  }
+
+  .tdy-slip-figure[data-tdy-word="use"] {
+    color: var(--cd-role-warning-ink-light); /* 4.50:1 on cream */
+    font-weight: 700;
+  }
+
+  .tdy-slip-age {
+    grid-column: 1 / -1;
+    font-size: var(--cd-micro-ceiling);
+    letter-spacing: var(--cd-track-micro);
+    text-transform: uppercase;
+    color: var(--cd-muted-ink);
+  }
+
+  .tdy-slip-age[data-tdy-stale="true"] {
+    color: var(--cd-role-warning-ink-light);
+  }
+
+  /* the urgent slip carries a redline keyline: a printed edge, never a lamp */
+  .tdy-slip[data-tdy-urgent="true"] .tdy-slip-face {
+    box-shadow:
+      inset 0 0 0 2px var(--cd-role-danger), /* 4.31:1 on cream */
+      inset 0 -1px 0 #ffffff8c,
+      inset 0 1px 3px #0000002e;
+  }
+
+  .tdy-slip-guard,
+  .tdy .tdy-slip-key {
+    flex: 0 0 auto;
+    align-self: center;
+  }
+
+  .tdy .cd-guard-set {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    inline-size: 7.5rem;
+  }
+
+  .tdy .cd-field-note {
+    margin: 0;
+    padding: 2px 4px;
+    font-family: var(--cd-font-ui);
+    font-size: var(--cd-micro-ceiling);
+    letter-spacing: var(--cd-track-micro);
+    text-transform: uppercase;
+    color: var(--cd-ink-panel);
+    background: var(--cd-panel);
+    clip-path: var(--tdy-cut);
+    text-align: center;
+  }
+
+  /* the guarded switch's own linear fill — progress is DATA, and data does not
+     ease (II.3.16). The fill is driven from a real clock in GuardedKey.tsx. */
+  .tdy .cd-guard {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tdy .cd-guard-fill {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    block-size: 3px;
+    inline-size: calc(var(--cd-guard-progress, 0) * 100%);
+    background: var(--cd-role-warning);
+  }
+
+  .tdy .cd-register-overflow {
+    justify-content: flex-end;
+    padding-inline: var(--cd-module);
+  }
+
+  .tdy .cd-overflow-count {
+    color: var(--cd-ink-panel);
+  }
+
+  /* ===================================================================== */
+  /* 11 · THE ANNUNCIATOR (II.3.25)                                         */
+  /* ===================================================================== */
+  .tdy-ann {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--cd-module);
+    padding: calc(var(--cd-module) / 2) var(--cd-module);
+  }
+
+  .tdy-ann-tile {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--cd-module) / 2);
+  }
+
+  .tdy-ann-word {
+    font-size: var(--cd-size-1);
+  }
+
+  .tdy-ann-face {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--cd-module);
+    padding: calc(var(--cd-module) / 2) var(--cd-module);
+  }
+
+  .tdy-ann-text {
+    font-family: var(--cd-font-ui);
+    font-weight: 600;
+    font-size: var(--cd-size-3);
+  }
+
+  .tdy-ann-queue {
+    flex: 0 0 auto;
+    color: var(--cd-muted-ink);
+    font-size: var(--cd-size-1);
+  }
+
+  .tdy-ann-keys {
+    display: flex;
+    gap: calc(var(--cd-module) / 2);
+  }
+
+  /* latched: 2Hz square, 250ms lit / 250ms dark, NO FADE, until acknowledged */
+  .tdy-ann[data-tdy-ann="latched"] .tdy-ann-word {
+    animation: tdy-ann-flash 500ms steps(1, end) infinite;
+  }
+
+  /* background-COLOR and background-IMAGE, never the shorthand: the shorthand
+     resets background-color to transparent for the whole animation, which
+     would drop this word onto carbon weave the moment the gradient failed —
+     ruling 5's hard fail, arriving through an animation nobody would audit. */
+  @keyframes tdy-ann-flash {
+    0% {
+      background-color: var(--cd-face);
+      background-image: linear-gradient(var(--cd-light-axis), #f5efe3 0%, var(--cd-face) 100%);
+      color: var(--cd-role-danger-ink-light);
+    }
+    50% {
+      background-color: var(--cd-billet);
+      background-image: linear-gradient(var(--cd-light-axis), #d6d9da 0%, var(--cd-billet) 100%);
+      color: var(--cd-ink);
+    }
+  }
+
+  .tdy-ann[data-tdy-ann="dark"] .tdy-ann-text {
+    color: var(--cd-muted-ink);
+    font-weight: 400;
+  }
+
+  /* ===================================================================== */
+  /* 12 · THE MASTHEAD                                                      */
+  /* ===================================================================== */
+  .tdy-masthead {
+    display: flex;
+    align-items: center;
+    gap: var(--cd-module);
+    flex-wrap: wrap;
+    padding: calc(var(--cd-module) / 2) var(--cd-module);
+  }
+
+  .tdy-dateline {
+    display: flex;
+    align-items: baseline;
+    gap: calc(var(--cd-module) / 2);
+    flex-wrap: wrap;
+    padding: calc(var(--cd-module) / 2) var(--cd-module);
+  }
+
+  .tdy-dateline-day {
+    font-size: var(--cd-size-4);
+  }
+
+  .tdy-dateline-sep {
+    inline-size: 1px;
+    block-size: 0.875rem;
+    background: #00000047;
+    box-shadow: 1px 0 0 #ffffff8c;
+  }
+
+  .tdy-dateline-figure {
+    font-size: var(--cd-size-2);
+  }
+
+  .tdy-dateline-pass,
+  .tdy-dateline-variant {
+    font-size: var(--cd-micro-ceiling);
+    letter-spacing: var(--cd-track-micro);
+    text-transform: uppercase;
+  }
+
+  .tdy-dateline-variant {
+    color: var(--cd-role-warning-ink-light);
+    font-weight: 700;
+  }
+
+  /* the index strip: five seats milled into billet, the current one held under
+     a mirror-polished index */
+  .tdy-index {
+    display: flex;
+    gap: 2px;
+    padding: 3px;
+    background: var(--cd-panel);
+    clip-path: var(--tdy-cut);
+    box-shadow: var(--cd-shadow-well);
+  }
+
+  .tdy-index-seat {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    inline-size: 2.25rem;
+    block-size: 2.25rem;
+    background-color: var(--cd-billet);
+    background-image: linear-gradient(var(--cd-light-axis), #d6d9da 0%, var(--cd-billet) 58%, #a9adaf 100%);
+    clip-path: var(--tdy-cut);
+    box-shadow:
+      inset 0 1px 0 #ffffff8c,
+      inset 0 -1px 0 #00000052;
+  }
+
+  .tdy-index-num {
+    font-size: var(--cd-size-1);
+    text-shadow:
+      0 -1px 0 #00000040,
+      0 1px 0 #ffffff8c;
+  }
+
+  /* the dot is FILL, not hue: a filled dot means every slot on that day is
+     logged, and the state survives a desaturation intact */
+  .tdy-index-dot {
+    inline-size: 0.4375rem;
+    block-size: 0.4375rem;
+    border-radius: 50%;
+    background: #00000000;
+    box-shadow: inset 0 0 0 1.5px var(--cd-ink);
+  }
+
+  .tdy-index-seat[data-tdy-done="true"] .tdy-index-dot {
+    background: var(--cd-ink);
+  }
+
+  /* today's seat sits under the mirror index — position plus a second cue */
+  .tdy-index-seat[data-tdy-today="true"] {
+    background-color: var(--cd-face);
+    background-image: linear-gradient(var(--cd-light-axis), #f5efe3 0%, var(--cd-face) 58%, #ddd5c3 100%);
+  }
+
+  .tdy-index-seat[data-tdy-today="true"]::before {
+    content: "";
+    position: absolute;
+    inset-inline: 15%;
+    top: -3px;
+    block-size: 3px;
+    background: var(--cd-mirror);
+    box-shadow: 0 1px 2px #000000a6;
+  }
+
+  /* ===================================================================== */
+  /* 13 · OFF STATES                                                        */
+  /* ===================================================================== */
+  .tdy-onboard,
+  .tdy-offstate {
+    display: flex;
+    align-items: center;
+    gap: var(--cd-module);
+    flex-wrap: wrap;
+    padding: var(--cd-module);
+    clip-path: var(--tdy-cut);
+  }
+
+  .tdy-onboard-face,
+  .tdy-offstate-face {
+    flex: 1;
+    min-inline-size: 16rem;
+    padding: calc(var(--cd-module) / 2) var(--cd-module);
+  }
+
+  .tdy .tdy-onboard-key {
+    flex: 0 0 auto;
+  }
+
+  /* ===================================================================== */
+  /* 14 · TROPHY MODE COMPOSITION                                           */
+  /* ===================================================================== */
+  /*
+    "3-5 survivors as standing gauges at 2x card scale; age at 1.21875rem and
+    the exact figure at 1.75rem ALWAYS VISIBLE; everything else disappears
+    rather than shrinking."
+
+    Four survive: the two porthole gauges, the plate-log tally, and the
+    annunciator — because "alerts, freshness, and exact values pierce the
+    composition at both distances".
+  */
+  .tdy[data-tdy-trophy="true"] .tdy-cluster-row {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+    align-items: center;
+  }
+
+  /* 1.21875rem: the functional-label floor of 0.8125rem carried through
+     Trophy's own 1.5x re-cut (II.6.10), because an age that never disappears is
+     a fact this screen reads. */
+  .tdy[data-tdy-trophy="true"] .tdy-readout-age,
+  .tdy[data-tdy-trophy="true"] .tdy-tick-age {
+    font-size: 1.21875rem;
+    letter-spacing: var(--cd-track-body);
+  }
+
+  /* 1.75rem: the exact figure, at its already-committed Trophy size, printed
+     beneath each enlarged gauge at all times, never omitted. */
+  .tdy[data-tdy-trophy="true"] .tdy-readout-value,
+  .tdy[data-tdy-trophy="true"] .tdy-chrono-figure,
+  .tdy[data-tdy-trophy="true"] .tdy-tally-figure {
+    font-size: var(--cd-size-5); /* 1.75rem */
+  }
+
+  .tdy[data-tdy-trophy="true"] .tdy-age-threshold,
+  .tdy[data-tdy-trophy="true"] .tdy-age-label {
+    font-size: var(--cd-size-1);
+  }
+
+  /* the engraved numerals are read at wall distance too */
+  .tdy[data-tdy-trophy="true"] .tdy-face-label,
+  .tdy[data-tdy-trophy="true"] .tdy-face-unit {
+    font-size: var(--cd-size-2);
+  }
+
+  /* ===================================================================== */
+  /* 15 · RESPONSIVE — 1280x800 desk, 390x844 hand                          */
+  /* ===================================================================== */
+  @media (max-width: 68rem) {
+    .tdy {
+      --tdy-dial: clamp(10.5rem, 24vw, 14rem);
+    }
+
+    .tdy-cluster-row {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .tdy-evidence-row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .tdy-bank {
+      grid-column: 1 / -1;
+    }
+
+    .tdy-bank-keys {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+    }
+  }
+
+  @media (max-width: 44rem) {
+    .tdy {
+      /* one dial per row below this width, so it gets the width back: 62vw
+         keeps the engraved numerals clear of II.6.11's floor at 390px. */
+      --tdy-dial: clamp(11rem, 62vw, 15rem);
+      padding: calc(var(--cd-module) / 2);
+    }
+
+    .tdy-cluster-row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .tdy-ann {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .tdy-knob-seats {
+      justify-content: flex-start;
+    }
+
+    /* The bridge's column legend is the one escutcheon long enough to run off
+       a 390px panel: measured right edge 398px against a panel edge of 374.
+       `.cd-escutcheon` is `white-space: nowrap` by construction — a label that
+       wraps stops being a nameplate — so at this width the head wraps instead,
+       and the legend takes its own line rather than being cut. */
+    .tdy-bridge-head {
+      flex-wrap: wrap;
+    }
+
+    .tdy-bridge-note {
+      max-inline-size: 100%;
+      white-space: normal;
+    }
+
+    .tdy-ladder {
+      grid-template-columns: 3.75rem minmax(0, 1fr);
+      grid-template-areas:
+        "key well"
+        "key figure";
+    }
+
+    .tdy .tdy-ladder-key {
+      grid-area: key;
+    }
+
+    .tdy-ladder-well {
+      grid-area: well;
+    }
+
+    .tdy-ladder-figure {
+      grid-area: figure;
+    }
+
+    .tdy-slip {
+      flex-wrap: wrap;
+    }
+
+    .tdy .cd-guard-set {
+      inline-size: 100%;
+    }
+
+    .tdy-index-seat {
+      inline-size: 2rem;
+      block-size: 2rem;
+    }
+  }
+
+  @media (max-width: 30rem) {
+    .tdy-cluster-row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .tdy-readout-value {
+      font-size: var(--cd-size-6); /* 2.75rem — still on the closed ladder */
+    }
+  }
+
+  /* ===================================================================== */
+  /* 16 · REDUCED MOTION — II.4.26, translate, never delete                 */
+  /* ===================================================================== */
+  @media (prefers-reduced-motion: reduce) {
+    /* The needle's POSITION is the reading, so it still travels — at the
+       reduced dialect's 80ms linear rather than vanishing to a 0ms flash. */
+    .tdy-needle {
+      transition-duration: var(--cd-reduced-position);
+      transition-timing-function: linear;
+    }
+
+    .tdy-porthole-disc,
+    .tdy-escapement {
+      transition-duration: var(--cd-reduced-position);
+      transition-delay: 0ms;
+      transition-timing-function: linear;
+    }
+
+    .tdy-knob-cap,
+    .tdy-knob-rocker {
+      transition-duration: var(--cd-reduced-position);
+      transition-delay: 0ms;
+      transition-timing-function: linear;
+    }
+
+    /* The 2Hz flash becomes a STATIC lit tile plus its printed state word —
+       the same event, a different dialect. */
+    .tdy-ann[data-tdy-ann="latched"] .tdy-ann-word {
+      animation: none;
+      background-color: var(--cd-face);
+      background-image: linear-gradient(var(--cd-light-axis), #f5efe3 0%, var(--cd-face) 100%);
+      color: var(--cd-role-danger-ink-light);
+      box-shadow: inset 0 0 0 2px var(--cd-role-danger);
+    }
+
+    /* The confirm event keeps its hold and loses its decay ramp. */
+    .tdy .tdy-tick-key[data-tdy-fresh="true"]::before {
+      animation: none;
+      box-shadow:
+        inset 0 1px 0 #ffffff8c,
+        inset 0 -1px 0 #00000059,
+        inset 0 0 0 2px var(--cd-role-success-fill-light);
+    }
+
+    .tdy-frame,
+    .tdy-dial,
+    .tdy-readout-value,
+    .tdy-chrono-figure,
+    .tdy-tally-figure {
+      transition-duration: var(--cd-reduced-fade);
+    }
+  }
+
+  /* ===================================================================== */
+  /* 17 · FORCED COLOURS — the material argument is the OS's to discard      */
+  /* ===================================================================== */
+  @media (forced-colors: active) {
+    .tdy {
+      background: Canvas;
+      color: CanvasText;
+      box-shadow: none;
+      clip-path: none;
+      border: 1px solid CanvasText;
+    }
+
+    .tdy .cd-encl,
+    .tdy .cd-plate-mount,
+    .tdy .cd-escutcheon,
+    .tdy-index,
+    .tdy-index-seat,
+    .tdy-ladder-well,
+    .tdy-ladder-figure,
+    .tdy-knob-seat,
+    .tdy .cd-field-note,
+    .tdy-onboard,
+    .tdy-offstate,
+    .tdy-blank {
+      clip-path: none;
+      filter: none;
+      background: Canvas;
+      color: CanvasText;
+      box-shadow: none;
+      border: 1px solid CanvasText;
+    }
+
+    .tdy .cd-key {
+      forced-color-adjust: none;
+      background: ButtonFace;
+      color: ButtonText;
+      border: 1px solid ButtonText;
+    }
+
+    .tdy .cd-key::before {
+      content: none;
+    }
+
+    .tdy .cd-key-cap {
+      text-shadow: none;
+    }
+
+    /* The instruments keep their SHAPE when the OS takes the material away:
+       the needle, the ticks, the segments and the dot fills are all geometry,
+       and geometry is what survives. */
+    .tdy-ticks line {
+      stroke: CanvasText;
+    }
+
+    .tdy-face-label,
+    .tdy-face-unit {
+      color: CanvasText;
+    }
+
+    .tdy-zone--band,
+    .tdy-zone--warn,
+    .tdy-zone--redline {
+      stroke: CanvasText;
+      opacity: 1;
+    }
+
+    .tdy-zone--warn {
+      stroke-dasharray: 6 4;
+    }
+
+    .tdy-zone--redline {
+      stroke-dasharray: 2 3;
+    }
+
+    .tdy-dial {
+      background: Canvas;
+      border: 1px solid CanvasText;
+      box-shadow: none;
+    }
+
+    .tdy-needle-tip,
+    .tdy-needle-tail,
+    .tdy-needle-boss {
+      background: Highlight;
+      mask: none;
+      box-shadow: none;
+    }
+
+    .tdy-seg {
+      background: Canvas;
+      border: 1px solid CanvasText;
+      box-shadow: none;
+    }
+
+    .tdy-seg[data-tdy-seg="on"] {
+      background: Highlight;
+      box-shadow: none;
+    }
+
+    .tdy-seg[data-tdy-seg="hollow"] {
+      background: Canvas;
+      border: 2px solid Highlight;
+      box-shadow: none;
+    }
+
+    .tdy-index-dot {
+      box-shadow: inset 0 0 0 1.5px CanvasText;
+    }
+
+    .tdy-index-seat[data-tdy-done="true"] .tdy-index-dot {
+      background: Highlight;
+    }
+
+    .tdy-knob {
+      background: ButtonFace;
+      border: 1px solid ButtonText;
+      box-shadow: none;
+    }
+
+    .tdy-knob-cap {
+      background: ButtonFace;
+      border: 2px solid ButtonText;
+    }
+
+    .tdy-knob-index,
+    .tdy-knob-rocker,
+    .tdy-tick-rod,
+    .tdy-gate-rod,
+    .tdy-ladder-bracket {
+      background: ButtonText;
+      box-shadow: none;
+    }
+
+    .tdy-porthole-disc,
+    .tdy-escapement {
+      background: ButtonFace;
+      border: 1px solid ButtonText;
+    }
+
+    .tdy-porthole-glass,
+    .tdy-dial::after {
+      display: none;
+    }
   }
 }

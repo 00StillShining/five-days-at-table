@@ -1,14 +1,48 @@
-// Standby program picker — COOK's empty state (PLAN §6.6 / Sol §5.1: "no
-// program picked"). Three groups, in the spec's own order: tonight's meal
-// first, then the two Sunday batch sessions, then any meal (grouped list).
+/**
+ * src/screens/cook/ProgramPicker.tsx — the standby deck.
+ *
+ * The same three groups in the same order as the shipped build (tonight's meal,
+ * the Sunday session(s), any meal), rebuilt as machined seats rather than as a
+ * list of buttons, and with the browsable pool moved onto the foundry Register.
+ *
+ * CD-BRIEF R7 — "No page-length scrolling. Long registers use a GROUPED
+ * ACCORDION, one section open at a time, with the hidden remainder printed as a
+ * number." Forty meals is the longest list on this screen and it was previously
+ * a stack of <details> that could all be open at once.
+ *
+ * CD-BRIEF R6 — the open group lives in the chassis-level panel store, not in
+ * this component's state, because App.tsx unmounts the scene on navigation. A
+ * cook who opens WEEK A, checks STORES for a tin, and comes back finds WEEK A
+ * still open. That matters more on COOK than anywhere, because leaving mid-cook
+ * is now not only possible but expected (R5).
+ *
+ * NO CLOCK RUNS HERE, and that is what keeps the measured performance law's
+ * clock hazard off this screen entirely: the picker only renders when no
+ * program is loaded, and `useProgram`'s 1Hz interval only exists while one is
+ * running. The long list and the per-second clock are mutually exclusive.
+ */
+
+import { useOpenSection } from "../../cd/chassis";
+import { Enclosure, Escutcheon, Plate, PressKey, Register, type RegisterGroup } from "../../cd/foundry";
 import { mealMacros } from "../../state/selectors";
 import type { AppState } from "../../state/types";
-import type { Meal } from "../../data/types";
 import { activeVariant } from "../../data/variant";
 import { TESTER_PROGRAM_SUFFIX } from "../../engine/programs";
-import { groupedMealOptions, prepProgramDisplayName, prepSessionOptions, resolveTonightMeal, tonightDuty } from "./programGroups";
+import {
+  groupedMealOptions,
+  prepProgramDisplayName,
+  prepSessionOptions,
+  resolveTonightMeal,
+  tonightDuty,
+} from "./programGroups";
+import "./cook.css";
 
-const SLOT_LABEL: Record<string, string> = { breakfast: "breakfast", lunch: "lunch", dinner: "dinner", snack: "snack" };
+const SLOT_LABEL: Record<string, string> = {
+  breakfast: "breakfast",
+  lunch: "lunch",
+  dinner: "dinner",
+  snack: "snack",
+};
 
 export interface ProgramPickerProps {
   state: AppState;
@@ -22,92 +56,97 @@ export function ProgramPicker({ state, now, onLoad }: ProgramPickerProps) {
   const tonight = resolveTonightMeal(duty);
   const sessions = prepSessionOptions(variant);
   const weekGroups = groupedMealOptions(variant);
+  const [openWeek, setOpenWeek] = useOpenSection("cook-picker");
+
+  const groups: RegisterGroup[] = weekGroups.map((group) => ({
+    id: group.week,
+    label: `week ${group.week.toLowerCase()}`,
+    items: group.days.flatMap((day) =>
+      day.meals.map((meal) => () => {
+        const macros = mealMacros(meal.id, state.prefs.cover, state.prefs.scale);
+        return (
+          <PressKey
+            className="ck-seat ck-seat--meal"
+            onPress={() => onLoad(meal.id)}
+            aria-label={`load ${meal.name}, ${SLOT_LABEL[meal.slot] ?? meal.slot}, day ${day.day}`}
+          >
+            <span className="ck-seat-slot cd-silkscreen">
+              d{day.day} · {SLOT_LABEL[meal.slot] ?? meal.slot}
+            </span>
+            <span className="ck-seat-name">{meal.name}</span>
+            <span className="ck-seat-meta cd-printed">
+              {macros.kcal}
+              <span className="cd-unit">kcal</span>
+            </span>
+          </PressKey>
+        );
+      })
+    ),
+  }));
 
   return (
-    <div className="scr-cook-picker">
-      <header className="scr-cook-picker-head">
-        <p className="scr-cook-eyebrow">cook</p>
-        <h1 className="scr-cook-picker-title">no program loaded</h1>
-        <p className="scr-cook-picker-sub">pick tonight's dinner, a Sunday session, or browse any meal.</p>
-      </header>
+    <div className="ck-picker">
+      <Enclosure variant="faceplate" grain className="ck-picker-head">
+        <Escutcheon>cook · standby</Escutcheon>
+        <Plate className="ck-picker-plate">
+          <h1 className="ck-picker-title">no program loaded</h1>
+          <p className="ck-picker-sub">
+            the deck is stopped. load tonight's dinner, a sunday session, or any meal.
+          </p>
+        </Plate>
+      </Enclosure>
 
       {tonight && duty && (
-        <section className="scr-cook-picker-section" aria-labelledby="scr-cook-tonight-h">
-          <h2 id="scr-cook-tonight-h" className="scr-cook-h">
-            tonight
-          </h2>
-          <button
-            type="button"
-            className="fd5-control scr-cook-picker-tonight"
-            onClick={() => onLoad(tonight.id)}
+        <Enclosure variant="hero" grain className="ck-picker-tonight" as="section">
+          <Escutcheon>tonight</Escutcheon>
+          <PressKey
+            className="ck-seat ck-seat--tonight"
+            onPress={() => onLoad(tonight.id)}
+            aria-label={`load ${tonight.name}, start by ${duty.startBy}`}
           >
-            <span className="scr-cook-picker-tonight-name">{tonight.name}</span>
-            <span className="scr-cook-picker-tonight-meta">start by {duty.startBy}</span>
-          </button>
-        </section>
+            <span className="ck-seat-name ck-seat-name--big">{tonight.name}</span>
+            <span className="ck-seat-meta cd-printed">start by {duty.startBy}</span>
+          </PressKey>
+        </Enclosure>
       )}
 
-      <section className="scr-cook-picker-section" aria-labelledby="scr-cook-sessions-h">
-        <h2 id="scr-cook-sessions-h" className="scr-cook-h">
-          sunday sessions
-        </h2>
-        <ul className="scr-cook-picker-session-list">
+      <Enclosure variant="hero" grain className="ck-picker-sessions" as="section">
+        <Escutcheon>sunday sessions</Escutcheon>
+        <div className="ck-picker-session-row">
           {sessions.map(({ week, programId, session, totalMinutes, reducedNote }) => {
-            const isReduced = programId.endsWith(TESTER_PROGRAM_SUFFIX);
+            const reduced = programId.endsWith(TESTER_PROGRAM_SUFFIX);
             return (
-              <li key={programId}>
-                <button type="button" className="fd5-control scr-cook-picker-session" onClick={() => onLoad(programId)}>
-                  <span className="scr-cook-picker-session-text">
-                    <span className="scr-cook-picker-session-name">
-                      {isReduced ? "starter sunday session" : prepProgramDisplayName(week)}
-                    </span>
-                    <span className="scr-cook-picker-session-desc">{reducedNote ?? session.sessionName}</span>
-                  </span>
-                  <span className="scr-cook-picker-session-meta">{totalMinutes} min</span>
-                </button>
-              </li>
+              <PressKey
+                key={programId}
+                className="ck-seat ck-seat--session"
+                onPress={() => onLoad(programId)}
+                aria-label={`load ${reduced ? "starter sunday session" : prepProgramDisplayName(week)}, ${totalMinutes} minutes`}
+              >
+                <span className="ck-seat-name">
+                  {reduced ? "starter sunday session" : prepProgramDisplayName(week)}
+                </span>
+                <span className="ck-seat-desc">{reducedNote ?? session.sessionName}</span>
+                <span className="ck-seat-meta cd-printed">
+                  {totalMinutes}
+                  <span className="cd-unit">min</span>
+                </span>
+              </PressKey>
             );
           })}
-        </ul>
-      </section>
-
-      <section className="scr-cook-picker-section" aria-labelledby="scr-cook-any-h">
-        <h2 id="scr-cook-any-h" className="scr-cook-h">
-          any meal
-        </h2>
-        <div className="scr-cook-picker-groups">
-          {weekGroups.map((group) => (
-            <details key={group.week} className="scr-cook-picker-week">
-              <summary className="fd5-control scr-cook-picker-week-summary">week {group.week.toLowerCase()}</summary>
-              <div className="scr-cook-picker-week-body">
-                {group.days.map((d) => (
-                  <div key={d.day} className="scr-cook-picker-day">
-                    <p className="scr-cook-picker-day-label">day {d.day}</p>
-                    <ul className="scr-cook-picker-meal-list">
-                      {d.meals.map((meal: Meal) => {
-                        const m = mealMacros(meal.id, state.prefs.cover, state.prefs.scale);
-                        return (
-                          <li key={meal.id}>
-                            <button
-                              type="button"
-                              className="fd5-control scr-cook-picker-meal"
-                              onClick={() => onLoad(meal.id)}
-                            >
-                              <span className="scr-cook-picker-meal-slot">{SLOT_LABEL[meal.slot] ?? meal.slot}</span>
-                              <span className="scr-cook-picker-meal-name">{meal.name}</span>
-                              <span className="scr-cook-picker-meal-meta">{m.kcal} kcal</span>
-                            </button>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </details>
-          ))}
         </div>
-      </section>
+      </Enclosure>
+
+      <Enclosure variant="hero" grain className="ck-picker-any" as="section">
+        <Escutcheon>any meal</Escutcheon>
+        <Register
+          groups={groups}
+          openId={openWeek}
+          onOpenChange={setOpenWeek}
+          label="every approved meal, grouped by week"
+          overflowWord="more"
+          className="ck-picker-register"
+        />
+      </Enclosure>
     </div>
   );
 }
