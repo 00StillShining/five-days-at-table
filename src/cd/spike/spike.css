@@ -1,0 +1,1457 @@
+/*
+  src/cd/spike/spike.css — 10 CLEAR LID, at full material, over the real 65-row
+  register. Every value below is committed and names the clause it came from.
+
+  THE THESIS THIS FILE EXISTS TO PROVE
+  A register is ONE MACHINED OBJECT with rows milled into it, not sixty-five
+  little cases. CLEAR LID names the failure by itself: section 9, "LID INFLATION
+  — every card on a dashboard earns its own full lid rather than sharing one
+  hierarchy. Warning sign: the screen reads as a cabinet of specimen cases with
+  no leading object." So the grooves between rows are painted into the PLATE's
+  own background (one repeating gradient, one paint, sixty-five grooves), the
+  level and life scales are two continuous MILLED CHANNELS running the height of
+  the plate (two wells, not a hundred and thirty), and the selected row is ONE
+  acrylic strip that travels rather than sixty-five strips that toggle.
+
+  Note that CLEAR LID's repair for lid inflation is II.2.5's one-hero rule, which
+  CORRECTIONARY 3.1 REVOKES. The repair kept here is the structural half — one
+  plate, one hierarchy of construction — not the rationing half. The screen still
+  carries five hero-grade instruments, all at full treatment (3.1's normal
+  condition): the plate, the lamp scale, the thumbwheel, the annunciator, and the
+  count plate.
+
+  DECLARED CHAPTER DELTAS (CORRECTIONARY 6.5 — stated, never silent)
+  1. LIGHT AXIS. CLEAR LID section 2 puts its sun at 128 degrees. CD-BRIEF product
+     ruling 2 is "One sun at 138 degrees, shadow ratio 1:2, every screen", and
+     tokens/world.css ships --cd-light-axis: 138deg. The product ruling wins; the
+     chapter's 128 is not used anywhere in this file.
+  2. ROW HEIGHT. CLEAR LID section 4's List/Browser bands are Dense 1.5rem /
+     Standard 2rem / Comfortable 2.5rem. Every row here is an operable control,
+     and the Floor's 44px on BOTH axes is non-negotiable (CORRECTIONARY 4). Rows
+     are 2.75rem. The Floor outranks the band table.
+  3. WHEEL SEATS. CLEAR LID section 3's fenestrated knob adapts the Foundry's
+     thirteen seats to THREE at 30 degree pitch over 60 degrees of sweep. The
+     inventory level is five-valued (0..4), so this is FIVE seats at the
+     chapter's own 30 degree pitch over 120 degrees. Pitch, hysteresis (12%) and
+     seat time (110ms) are the chapter's, unchanged.
+*/
+
+@layer cd.screen {
+  /* =====================================================================
+     0 · the scene root — a material ground under one light (CORRECTIONARY 5.4)
+     ===================================================================== */
+
+  /* The plate's arithmetic is exact — a groove painted at a 44px pitch has to
+     land on a row that is 44px, padding included. Content-box would put every
+     padded, width:100% element 24px past its own column and the pointers would
+     read against the wrong scale. This is not a preference; it is the condition
+     under which the milled channels line up with the rows at all. */
+  .spk,
+  .spk *,
+  .spk *::before,
+  .spk *::after {
+    box-sizing: border-box;
+  }
+
+  .spk {
+    /* geometry, from CLEAR LID section 2: 0.5rem module, 0.75rem panel radius,
+       0.25rem control cap radius — "the geometry of a specimen case". */
+    --spk-row: 2.75rem; /* 44px — the Floor, delta 2 above */
+    --spk-gutter: 0.5rem; /* the module */
+    --spk-rail: 2.5rem; /* the elm hinge spine */
+    --spk-scale-w: 8rem; /* the level channel — mechanism, under the lid */
+    --spk-life-w: 5rem; /* the life channel — mechanism, under the lid */
+    --spk-fig-w: 3rem; /* printed level word — chassis, outside the lid */
+    --spk-ink-w: 4.5rem; /* printed countdown — chassis, outside the lid */
+    --spk-pad: 0.75rem; /* the plate's own margin at the cut edge */
+    --spk-gap: 0.75rem; /* between columns — one and a half modules */
+
+    position: relative;
+    min-height: 100dvh;
+    padding: var(--spk-gutter);
+    color: var(--cd-ink);
+    font-family: var(--cd-font-ui);
+    /* CLEAR LID section 2: cream painted steel follows the lacquer/enamel
+       recipe of II.2.12 — "a near-flat body, its whole story told in one hard
+       reflection ellipse". The body barely travels; the ellipse is .spk::before. */
+    /* Same rule as the plate: the scene ground's darkest stop is the world's own
+       face, so anything printed anywhere on it starts from the measured floor. */
+    background: linear-gradient(var(--cd-light-axis), #f2eee6 0%, #efeae1 58%, #ede8de 100%);
+  }
+
+  /* II.2.12's one ellipse, at the recipe's own 8%/7% origin, 34% x 26%.
+     "The window is fixed to the sun and does not travel on press." */
+  .spk::before {
+    content: "";
+    position: absolute;
+    left: 8%;
+    top: 7%;
+    width: 34%;
+    height: 26%;
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(closest-side, #ffffff59 0%, #ffffff21 55%, #ffffff00 100%);
+  }
+
+  /* CORRECTIONARY 3.3 — "visible, felt texture ... at whatever strength reads as
+     real material". Paint grain on enamelled steel, at the foundation's own
+     0.06 (three times the bible's revoked 2% cap). It renders BENEATH every
+     row of type, never over it — see the z-order note on .spk-plate__ink. */
+  .spk::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: var(--cd-noise);
+    opacity: var(--cd-grain-strength);
+    mix-blend-mode: overlay;
+    z-index: 0;
+  }
+
+  .spk > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* =====================================================================
+     1 · the register bay — a recess, and the elm hinge spine
+     ===================================================================== */
+
+  .spk-bay {
+    display: grid;
+    grid-template-columns: var(--spk-rail) minmax(0, 1fr);
+    border-radius: var(--cd-radius-panel);
+    background: var(--cd-field); /* recess well #DCD4C4 — "a level below the field" */
+    /* II.2.3 — the recess pair INVERTS, and this is the one place the full 1:2
+       cast vector is spent. --cd-shadow-x/y are 1px/2px product-wide. */
+    box-shadow: var(--cd-shadow-well);
+    overflow: hidden;
+  }
+
+  /* CLEAR LID section 2: "Elm is confined to rails, tray linings, and trim — it
+     never becomes a field." Its job here is structural, not decorative: every
+     group lid hinges off this spine, which is why it survives CD-BRIEF ruling
+     4's ledger ("does it state a value, or let the hand do something?"). */
+  .spk-rail {
+    position: relative;
+    /* II.2.16 — wood: grain with IRREGULAR stops, never metronomic. Band spacing
+       2/9/21px inside one 24px period, re-keyed to elm #D8BD8E. */
+    background:
+      repeating-linear-gradient(
+        93deg,
+        #00000000 0px,
+        #00000030 2px,
+        #00000000 3px,
+        #00000000 9px,
+        #00000022 11px,
+        #00000000 12px,
+        #00000000 21px,
+        #00000036 22px,
+        #00000000 24px
+      ),
+      linear-gradient(var(--cd-light-axis), #e2caa0 0%, #d8bd8e 46%, #c4a674 100%);
+    box-shadow:
+      inset 0 1px 0 #ffffff1f, /* oiled rim — never varnish glare (II.2.16) */
+      1px 0 0 #00000052, /* lip — the edge turning from the light */
+      3px 0 8px #00000038; /* core — the spine's own mass */
+  }
+
+  /* the hinge knuckles: real hardware, evenly pitched down the spine */
+  .spk-rail::after {
+    content: "";
+    position: absolute;
+    inset: 0.75rem 0.5rem;
+    border-radius: 0.25rem;
+    background: repeating-linear-gradient(
+      180deg,
+      #00000000 0px,
+      #00000000 18px,
+      #0000004d 18px,
+      #0000004d 20px,
+      #ffffff40 20px,
+      #ffffff40 21px,
+      #00000000 21px,
+      #00000000 40px
+    );
+  }
+
+  /* =====================================================================
+     2 · the group lid — CLEAR LID's own defining gesture (section 3, the tray)
+     ===================================================================== */
+
+  .spk-group {
+    /* The lid is absolutely positioned over THIS group and nothing else. Without
+       the containing block the pane escapes to the scene root and washes the
+       whole screen — which is what the first render actually did. */
+    position: relative;
+    border-bottom: 1px solid #00000024;
+  }
+
+  .spk-group:last-child {
+    border-bottom: 0;
+  }
+
+  /* The header IS the lid handle: a grey control plate (section 2, "escutcheon
+     plates") carrying an engraved label, the group's lamp scale, and its count. */
+  .spk-lid {
+    display: grid;
+    /* label · lamp scale · slack · count. The scale is a fixed-width instrument,
+       not a stretchy band — a scale that resizes has no calibration. */
+    grid-template-columns: minmax(6rem, 10rem) 8rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--spk-gutter);
+    width: 100%;
+    min-height: var(--spk-row);
+    padding: 0.375rem 0.625rem;
+    border: 0;
+    border-radius: 0;
+    text-align: left;
+    color: var(--cd-ink);
+    font: inherit;
+    cursor: pointer;
+    background: linear-gradient(var(--cd-light-axis), #c3c3ba 0%, #b7b7ae 58%, #a5a59c 100%);
+    /* II.2.5 tier 2 — a control the hand operates gets the full four-layer stack.
+       Declared inline rather than via the token so the press grammar below can
+       shorten exactly the two layers II.2.6 says shorten. */
+    box-shadow:
+      inset 0 1px 0 #ffffff59, /* rim light — the moulded top edge */
+      inset 0 -1px 0 #00000052, /* lip */
+      0 1px 0 #00000066, /* contact — glues the plate to the bay */
+      0 3px 6px #0000003d, /* core — the plate's own mass */
+      0 10px 24px #00000021; /* ambient — the recess */
+    transition:
+      transform var(--cd-contact-release) var(--cd-ease-settle),
+      box-shadow var(--cd-contact-release) var(--cd-ease-settle);
+  }
+
+  /* II.2.6 / II.4.3 — the down-stroke lands in one frame, linear, no easing.
+     The 1px contact line NEVER moves; core and ambient tighten; no box dimension
+     changes, because layout is untouchable. */
+  .spk-lid:active {
+    transform: translateY(1px);
+    transition-duration: var(--cd-contact-down);
+    transition-timing-function: linear;
+    box-shadow:
+      inset 0 1px 0 #ffffff2e,
+      inset 0 -1px 0 #00000052,
+      0 1px 0 #00000066,
+      0 1px 2px #0000003d,
+      0 4px 10px #00000021;
+  }
+
+  /* II.6.7 — engraved: glyph darker than the plate, carrying the one light's own
+     dual shadow. CLEAR LID puts engraving on the grey control plates and
+     silkscreen under the acrylic; a lid handle is a plate. */
+  .spk-lid__label {
+    font-size: var(--cd-size-3);
+    font-weight: 500;
+    letter-spacing: var(--cd-track-label);
+    color: #2f2c26;
+    text-shadow:
+      0 -1px 0 #00000038,
+      0 1px 0 #ffffff73;
+  }
+
+  .spk-lid__count {
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums slashed-zero;
+    font-size: var(--cd-size-1);
+    letter-spacing: var(--cd-track-body);
+    color: #2f2c26;
+    white-space: nowrap;
+  }
+
+  /* the hinge itself. CLEAR LID section 3: "the tray is hinged along its top edge
+     and rotates open rather than sliding flat ... a true perspective rather than
+     an affine flatten", 0 -> 96 degrees over 340ms at Panel mass spring(1.6,240,30). */
+  .spk-lidplate {
+    position: absolute;
+    inset: 0;
+    transform-origin: top center;
+    transform: perspective(60rem) rotateX(var(--spk-lid-angle, 96deg));
+    backface-visibility: hidden;
+    pointer-events: none;
+    background: var(--cd-acrylic-glance);
+    transition: transform var(--cd-settle-panel) var(--cd-ease-settle);
+    z-index: 2;
+  }
+
+  .spk-group[data-open="false"] .spk-lidplate {
+    --spk-lid-angle: 0deg; /* closed: the pane lies flat over the mechanism */
+  }
+
+  /* THE DRAWER. II.4.9 — "disclosed structure expands from the control that
+     summoned it ... structure first, content after", 260ms on the settle curve.
+     Built on grid-template-rows 0fr -> 1fr, which is the chapter's own recipe,
+     and which matters here for a second reason: the closed group STAYS IN THE
+     DOM and in layout, so `content-visibility: auto` has something to skip.
+     `display: none` would have made mitigation 3 unmeasurable by making it
+     unnecessary — and would have thrown away the accordion's own reveal. */
+  .spk-drawer {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--cd-reveal) var(--cd-ease-settle);
+  }
+
+  .spk-drawer > * {
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  .spk-group[data-open="true"] .spk-drawer,
+  .spk[data-allopen="on"] .spk-drawer {
+    grid-template-rows: 1fr;
+  }
+
+  /* MITIGATION 3 — content-visibility: auto on a closed group. The lid is shut,
+     the mechanism underneath is genuinely not being read, and the browser is
+     told it may skip style, layout and paint for that subtree entirely.
+     contain-intrinsic-size supplies a placeholder size so the scrollbar does
+     not lie about the document while the subtree is skipped. */
+  .spk[data-cv="on"] .spk-group[data-open="false"] .spk-drawer {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 1000px;
+  }
+
+  .spk[data-allopen="on"] .spk-lidplate {
+    --spk-lid-angle: 96deg;
+  }
+
+  /* =====================================================================
+     3 · THE MILLED PLATE — one object, sixty-five engraved rows
+     ===================================================================== */
+
+  .spk-plate {
+    position: relative;
+    /* the plate's own body: cream painted steel, near-flat, PLUS the grooves.
+       Layer 1 is the engraving; layer 2 is the enamel. Both painted once, for
+       every row, in one paint — this is the mitigation. */
+    background:
+      repeating-linear-gradient(
+        180deg,
+        #00000000 0px,
+        #00000000 calc(var(--spk-row) - 2px),
+        #0000002e calc(var(--spk-row) - 2px), /* groove floor: shadow enters HIGH (II.2.3, recess) */
+        #0000002e calc(var(--spk-row) - 1px),
+        #ffffff8c calc(var(--spk-row) - 1px), /* lit lip closes the groove LOW */
+        #ffffff8c var(--spk-row)
+      ),
+      /*
+        THE BODY NEVER GOES DARKER THAN THE WORLD'S OWN FACE.
+        II.2.12: lacquer/enamel is "a near-flat body ... its whole story told in
+        one hard reflection ellipse". The first build ran this gradient down to
+        #E6E0D4, four percent below the face — and that quietly invalidated
+        every contrast figure tokens/world.css measured against #EDE8DE. Measured
+        on the darker stop, danger ink #BD372D read 4.26:1 and warning ink
+        #8D5E1E read 4.26:1, both under the 4.5:1 text floor. The face is the
+        floor of the gradient now, and the light travels UPWARD from it, which is
+        both the correct recipe and the condition the world's own repairs assume.
+      */
+      linear-gradient(var(--cd-light-axis), #f2eee6 0%, #efeae1 58%, #ede8de 100%);
+    /* II.2.5 tier 3 — the resolved hero's full stack with the deepest ambient.
+       CORRECTIONARY 3.1: tier 3 is a construction set here, not a ration. */
+    box-shadow: var(--cd-shadow-t3);
+    border-radius: 0.25rem;
+    /* the plate is a machined billet: its edges are cut, not rounded like a card */
+    overflow: hidden;
+  }
+
+  /* the one reflection ellipse this faceplate is allowed (CLEAR LID section 2:
+     "restrained to a single ellipse per faceplate so the field reads as painted
+     metal, not as chrome pretending to be paint") */
+  .spk-plate::before {
+    content: "";
+    position: absolute;
+    left: 6%;
+    top: 2%;
+    width: 30%;
+    height: 14%;
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(closest-side, #ffffff4d 0%, #ffffff1c 55%, #ffffff00 100%);
+    z-index: 0;
+  }
+
+  /* THE TWO MILLED CHANNELS. Two elements. Sixty-five rows of printed scale.
+     Each is a real recess (II.2.3's inverted pair, the 1:2 cast vector) with its
+     scale printed on the well floor as paper-and-ink (II.2.14 — "a solid plate,
+     no gradient, no rim ... its response is ink, not light"). */
+  .spk-channel {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    pointer-events: none;
+    background-color: #dcd4c4; /* recess well */
+    box-shadow: var(--cd-shadow-well);
+    z-index: 0;
+  }
+
+  .spk-channel--level {
+    right: calc(
+      var(--spk-pad) + var(--spk-ink-w) + var(--spk-gap) + var(--spk-fig-w) + var(--spk-gap) +
+        var(--spk-life-w) + var(--spk-gap)
+    );
+    width: var(--spk-scale-w);
+    /* five printed seats across the scale, plus the row rule. Both repeat; the
+       whole 65-row scale is two gradients, painted once. */
+    background-image:
+      repeating-linear-gradient(
+        90deg,
+        #00000000 0,
+        #00000000 calc(20% - 1px),
+        #3a362e59 calc(20% - 1px),
+        #3a362e59 20%
+      ),
+      repeating-linear-gradient(
+        180deg,
+        #00000000 0,
+        #00000000 calc(var(--spk-row) - 1px),
+        #00000014 calc(var(--spk-row) - 1px),
+        #00000014 var(--spk-row)
+      );
+  }
+
+  .spk-channel--life {
+    right: calc(var(--spk-pad) + var(--spk-ink-w) + var(--spk-gap) + var(--spk-fig-w) + var(--spk-gap));
+    width: var(--spk-life-w);
+    /* the printed life ZONE, not a spinning anything (CD-BRIEF ruling 6). The
+       expired third is the danger zone band; the rest is bare paper. */
+    background-image:
+      linear-gradient(90deg, #c2392e3d 0 22%, #a26d2333 22% 46%, #00000000 46% 100%),
+      repeating-linear-gradient(
+        180deg,
+        #00000000 0,
+        #00000000 calc(var(--spk-row) - 1px),
+        #00000014 calc(var(--spk-row) - 1px),
+        #00000014 var(--spk-row)
+      );
+  }
+
+  /* the row layer — above the plate's grain and ellipse, so no glyph is ever
+     composited over texture. CD-BRIEF ruling 5, the ink-plate law: "Text never
+     renders raw over carbon weave or brushed grain ... a hard fail by rule." */
+  .spk-rows {
+    position: relative;
+    z-index: 1;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /*
+    THE LID, BUILT THE WAY THE SENTENCE READS.
+
+    CLEAR LID section 1: "Every value sits visible under a cool tint at rest;
+    operating it costs the one gesture that clears the tint away."
+
+    The first build did the opposite: it laid a LIT pane over the addressed row.
+    Measured, that put the row the operator is actually working on at 2.66:1 —
+    the least legible thing on the screen — and dropped the amber pointer to
+    1.03:1 under it. A tint over type reduces contrast no matter how it is
+    tuned; there is no intensity that fixes it.
+
+    So the pane covers the MECHANISM, not the printing — which is also what the
+    source object does: the hood sits over the platter and the tuning scale, and
+    the chassis markings are outside it. Two panes, above and below the addressed
+    row, leave exactly one row of mechanism standing bare. Nothing is lit; the
+    lid is CUT AWAY at the row the hand is on, and everything else stays under
+    the resting glance tint.
+
+    Two elements per plate, positioned by one custom property. Not sixty-five.
+  */
+  .spk-pane {
+    position: absolute;
+    right: calc(var(--spk-pad) + var(--spk-ink-w) + var(--spk-gap) + var(--spk-fig-w) + var(--spk-gap));
+    width: calc(var(--spk-scale-w) + var(--spk-gap) + var(--spk-life-w));
+    pointer-events: none;
+    z-index: 2;
+    background: var(--cd-acrylic-glance); /* the resting glance tint */
+    box-shadow:
+      inset 0 1px 0 #ffffff66, /* edge-light: the polished top edge (II.2.10) */
+      inset 0 0 0 1px #ffffff1a; /* wall — the slab's own thickness */
+    /* the cut travels on a focus-shift (II.4.10, 160ms, one ring one journey) */
+    transition:
+      top var(--cd-focus-shift) var(--cd-ease-settle),
+      height var(--cd-focus-shift) var(--cd-ease-settle);
+  }
+
+  .spk-pane--above {
+    top: 0;
+    height: 100%;
+  }
+
+  .spk-pane--below {
+    top: 100%;
+    height: 0;
+  }
+
+  /* a row is addressed: the lid is cut open across exactly that row */
+  .spk-plate[data-armed="true"] .spk-pane--above {
+    height: calc(var(--spk-strip-i, 0) * var(--spk-row));
+  }
+
+  .spk-plate[data-armed="true"] .spk-pane--below {
+    top: calc((var(--spk-strip-i, 0) + 1) * var(--spk-row));
+    height: calc(100% - (var(--spk-strip-i, 0) + 1) * var(--spk-row));
+  }
+
+  /* the addressed row still reads as addressed without any tint over it: the
+     plate's own cream lifts one step, which is a value change on a face, not a
+     film over type. */
+  .spk-strip {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: var(--spk-row);
+    pointer-events: none;
+    z-index: 0;
+    background: linear-gradient(var(--cd-light-axis), #fbf8f2 0%, #f6f2e9 100%);
+    box-shadow:
+      inset 0 1px 0 #ffffff8c,
+      inset 0 -1px 0 #00000024;
+    transform: translateY(calc(var(--spk-strip-i, 0) * var(--spk-row)));
+    opacity: var(--spk-strip-on, 0);
+    transition:
+      transform var(--cd-focus-shift) var(--cd-ease-settle),
+      opacity var(--cd-reveal) var(--cd-ease-settle);
+    will-change: transform;
+  }
+
+  /* =====================================================================
+     4 · one engraved row
+     ===================================================================== */
+
+  .spk-row {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 1fr)
+      var(--spk-scale-w)
+      var(--spk-life-w)
+      var(--spk-fig-w)
+      var(--spk-ink-w);
+    align-items: center;
+    gap: var(--spk-gap);
+    width: 100%;
+    height: var(--spk-row); /* fixed pitch — the grooves are painted to it */
+    padding: 0 var(--spk-pad);
+    border: 0;
+    background: transparent; /* the PLATE is the surface; the row is milled INTO it */
+    box-shadow: none;
+    color: var(--cd-ink);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* II.4.27 — hover carries no primitive: one low-cost report, 80ms, no travel. */
+  .spk-row {
+    transition: filter 80ms var(--cd-ease-settle);
+  }
+
+  .spk-row:hover {
+    filter: brightness(1.03);
+  }
+
+  /* The two-tone focus ring, RESTATED at this layer. `.spk-row { box-shadow:
+     none }` lives in cd.screen, which outranks cd.material's .cd-focusable rule
+     no matter how specific that rule is — layer order beats specificity. Without
+     this the keyline would be silently cancelled on every register row, which is
+     a Floor failure hiding inside a cascade detail. Values are CD-BRIEF repair
+     3's, unchanged: 2px #4C8FD1 + 1px #141414, offset 3px. */
+  .spk-lid:focus-visible,
+  .spk-knob:focus-visible {
+    outline: var(--cd-focus-width) solid var(--cd-role-focus);
+    outline-offset: var(--cd-focus-offset);
+    box-shadow: 0 0 0
+      calc(var(--cd-focus-offset) + var(--cd-focus-width) + var(--cd-focus-keyline-width))
+      var(--cd-focus-keyline);
+  }
+
+  /*
+    DECLARED DELTA on CD-BRIEF repair 3, with its reason.
+    The repair commits "2px #4C8FD1 + 1px #141414 keyline, OFFSET 3px". A
+    register row is full-bleed inside a plate that clips (the plate is a milled
+    billet with cut edges, `overflow: hidden`), so an OUTSET ring loses its left
+    and right sides entirely — rendered, it read as two floating horizontal bars,
+    not as a ring around a control. The two tones, their widths and their
+    measured pairing (5.40:1 against each other) are unchanged; only the offset
+    is inverted, so the whole ring lands inside the row and stays visible.
+  */
+  .spk-row:focus-visible {
+    outline: none;
+    box-shadow:
+      inset 0 0 0 var(--cd-focus-keyline-width) var(--cd-focus-keyline),
+      inset 0 0 0
+        calc(var(--cd-focus-keyline-width) + var(--cd-focus-width))
+        var(--cd-role-focus);
+  }
+
+  @media (forced-colors: active) {
+    .spk-lid:focus-visible,
+    .spk-knob:focus-visible {
+      outline-color: Highlight;
+      box-shadow: 0 0 0
+        calc(var(--cd-focus-offset) + var(--cd-focus-width) + var(--cd-focus-keyline-width))
+        ButtonText;
+    }
+
+    .spk-row:focus-visible {
+      outline: 2px solid Highlight;
+      outline-offset: -4px;
+      box-shadow: none;
+    }
+  }
+
+  /* MITIGATION 1d DEFEATED — selection as sixty-five toggling rows, each with
+     its own acrylic pane, instead of one strip that travels. */
+  .spk[data-perrowarmed="on"] .spk-row[data-armed="true"] {
+    background: var(--cd-acrylic-reveal);
+    box-shadow:
+      inset 0 1px 0 #ffffff66,
+      inset 0 0 0 1px #ffffff1a,
+      inset 0 -6px 12px -8px #00000059;
+  }
+
+  /* II.6.8 — silkscreen: flat paint, no shadow, no gradient. The register's row
+     labels are printed graphics on the plate, and printed ink #3A362E measures
+     9.84:1 on the cream face (tokens/world.css, measured). */
+  .spk-row__name {
+    font-size: var(--cd-size-2);
+    letter-spacing: var(--cd-track-body);
+    color: var(--cd-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .spk-row__suffix {
+    color: var(--cd-muted-ink); /* 5.61:1 on the cream face, measured */
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums slashed-zero;
+  }
+
+  /* the level POINTER — CLEAR LID section 3's lamp-scale pointer, unrolled from
+     an arc into a straight line, travelling at a fixed rate (340px/s, floored at
+     80ms) rather than a fixed duration (II.4.8). The duration is written per
+     move by the component; this is only its shape. */
+  .spk-row__scale {
+    position: relative;
+    height: 1.125rem;
+    align-self: center;
+  }
+
+  /*
+    THE POINTER READS BY ITS KEYLINE.
+
+    Measured: lamp hot #FFC868 against the well it travels in, #DCD4C4, is
+    1.04:1 — the register's primary instrument, invisible. CLEAR LID is a LIGHT
+    world and its one emissive hue sits at almost exactly the luminance of its
+    own paper; amber is legible as a lamp glowing in a dark well, which is how
+    the source object spends it, not as a mark printed on cream.
+
+    The repair is already precedented in this product. tokens/world.css does the
+    same thing for RESTOMOD: "the pinned livery orange measures 2.89:1 on ivory —
+    below the 3:1 graphical floor — so the needle reads by its KEYLINE". Here the
+    pointer is 4px of printed ink with the lamp's amber running down its centre:
+    ink #3A362E on the well measures 8.16:1, and the amber stays what it always
+    was — light, inside the mark, not the mark itself.
+  */
+  .spk-row__pointer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 4px;
+    margin-left: -2px;
+    background: linear-gradient(
+      90deg,
+      #3a362e 0 1px, /* keyline — 8.16:1 on the well */
+      var(--cd-lamp-hot) 1px 3px, /* the lamp's own light, inside the mark */
+      #3a362e 3px 4px
+    );
+    box-shadow:
+      0 0 2px #ffc868cc, /* bloom 1 — r, 80% (II.2.17) */
+      0 0 8px #ffc86866, /* bloom 2 — 4r, 40% */
+      0 0 24px #ffc86829; /* bloom 3 — 12r, 16% */
+    transform: translateX(var(--spk-pointer-x, 0px));
+    transition: transform var(--spk-pointer-ms, 80ms) linear;
+  }
+
+  /* an unstocked row's pointer sits on a physical stop at zero and does not
+     glow: II.4.16, stable data, stable instrument — and a dead needle sitting
+     proudly at zero is more honest than a lit one that means nothing. */
+  .spk-row[data-level="0"] .spk-row__pointer {
+    background: #7c7768;
+    box-shadow: none;
+  }
+
+  /* the exact figure. CORRECTIONARY 5.3: an instrument PLUS its exact figure. */
+  .spk-row__figure {
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums slashed-zero;
+    font-size: var(--cd-size-1);
+    text-align: right;
+    /* printed on the plate's own face, never in the well and never under the
+       pane — measured 7.24:1 on the darkest stop of the body gradient */
+    color: #4a453c;
+    white-space: nowrap;
+  }
+
+  /* the life MARKER — an engraved index on the printed life zone. Same rule: a
+     marker over a printed band, never a disc that spins for a value that
+     changes once a day (CD-BRIEF ruling 6). */
+  .spk-row__life {
+    position: relative;
+    height: 1.125rem;
+    align-self: center;
+  }
+
+  .spk-row__marker {
+    position: absolute;
+    top: 0.0625rem;
+    bottom: 0.0625rem;
+    left: 0;
+    width: 3px;
+    margin-left: -1.5px;
+    border-radius: 1px;
+    background: #3a362e;
+    box-shadow:
+      0 -1px 0 #ffffff59, /* the engraved index's own dual light (II.6.7) */
+      0 1px 0 #00000047;
+    transform: translateX(var(--spk-marker-x, 0px));
+    transition: transform var(--spk-marker-ms, 80ms) linear;
+  }
+
+  .spk-row__countdown {
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums slashed-zero;
+    font-size: var(--cd-size-1);
+    text-align: right;
+    color: var(--cd-muted-ink);
+    white-space: nowrap;
+  }
+
+  /* II.7.7 — colour never travels alone. Every status prints a glyph as well. */
+  .spk-row[data-status="expired"] .spk-row__countdown {
+    color: var(--cd-role-danger-ink-light); /* #BD372D — 4.51:1 on cream, measured */
+    font-weight: 700;
+  }
+
+  .spk-row[data-status="expiring"] .spk-row__countdown {
+    color: var(--cd-role-warning-ink-light); /* #8D5E1E — 4.50:1 on cream, measured */
+    font-weight: 700;
+  }
+
+  .spk-row[data-status="frozen"] .spk-row__countdown {
+    color: var(--cd-muted-ink);
+  }
+
+  /* THE NAIVE TRANSLATION, kept switchable so its cost is a measured number.
+     This is CLEAR LID section 9's "lid inflation" built on purpose: every row
+     its own case, its own four-layer stack, its own lid. */
+  .spk[data-enclosure="on"] .spk-row {
+    border-radius: var(--cd-radius-panel);
+    background: linear-gradient(var(--cd-light-axis), #f2eee6 0%, #ede8de 58%, #e6e0d4 100%);
+    box-shadow:
+      inset 0 1px 0 #ffffff59,
+      inset 0 -1px 0 #00000052,
+      0 1px 0 #00000066,
+      0 3px 6px #0000003d,
+      0 10px 24px #00000021;
+  }
+
+  .spk[data-enclosure="on"] .spk-rows > li {
+    margin-bottom: 2px;
+  }
+
+  /* per-row acrylic: the other half of lid inflation, and the expensive half —
+     a real backdrop-filter pane over every single row (II.2.10's 14px blur). */
+  .spk[data-rowacrylic="on"] .spk-row::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: var(--cd-acrylic-glance);
+    backdrop-filter: blur(14px) saturate(1.15);
+    -webkit-backdrop-filter: blur(14px) saturate(1.15);
+    box-shadow:
+      inset 0 1px 0 #ffffff66,
+      inset 0 0 0 1px #ffffff1a,
+      inset 0 -6px 12px -8px #00000059;
+  }
+
+  /* per-row grain: the third leg of the naive read — a composited noise layer
+     per row rather than one on the plate. */
+  .spk[data-rowgrain="on"] .spk-row::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: var(--cd-noise);
+    opacity: var(--cd-grain-strength);
+    mix-blend-mode: overlay;
+    border-radius: inherit;
+  }
+
+  /* =====================================================================
+     4b · THE NARROW PLATE — the same object, cut for a phone
+     ---------------------------------------------------------------------
+     DEFECT FOUND BY RENDERING AT THE REAL TARGET. At 390px the wide row's
+     four fixed columns (128 + 80 + 72 plus gutters = 304px of a 390px
+     viewport) starved `minmax(0, 1fr)` and every ingredient name collapsed to
+     zero width. The register rendered as instruments with nothing named — a
+     total failure of the screen's actual job, invisible at 1440px.
+
+     The repair is not a reflow into a list. It is the same plate cut narrower:
+     the row becomes two engraved lines at a 4rem pitch — the name and its
+     exact figure on the upper line, the two instruments on the lower — and
+     the milled channel print moves from the two shared column elements onto
+     the instrument cells' own backgrounds. Element count is unchanged and no
+     shadow layer is added: the wells are drawn as gradient hairlines, which is
+     how a milled groove is drawn anyway (II.2.3, the inverted recess pair).
+     ===================================================================== */
+
+  @media (max-width: 40rem) {
+    .spk {
+      --spk-row: 4rem;
+      --spk-life-w: 4rem;
+      --spk-ink-w: 5rem;
+      --spk-pad: 0.625rem;
+      --spk-gap: 0.5rem;
+      --spk-rail: 1.25rem;
+    }
+
+    /* the two shared columns do not apply to a two-line row */
+    .spk-channel {
+      display: none;
+    }
+
+    .spk-row {
+      grid-template-columns: minmax(0, 1fr) var(--spk-fig-w) var(--spk-ink-w);
+      grid-template-rows: 1.5rem 1.375rem;
+      align-content: center;
+      column-gap: var(--spk-gap);
+      row-gap: 0.125rem;
+    }
+
+    .spk-row__name {
+      grid-row: 1;
+      grid-column: 1;
+    }
+
+    /* both printed figures ride the upper line, on the plate's own face; the
+       lower line is mechanism only, so the lid can cover it without covering
+       a single glyph */
+    .spk-row__figure {
+      grid-row: 1;
+      grid-column: 2;
+      align-self: center;
+    }
+
+    .spk-row__countdown {
+      grid-row: 1;
+      grid-column: 3;
+      align-self: center;
+    }
+
+    .spk-row__scale {
+      grid-row: 2;
+      grid-column: 1;
+      height: 1.375rem;
+      /* the milled channel, per cell: well fill, printed five-seat scale, and
+         the recess pair as hairlines (shadow enters high, lit lip closes low) */
+      background-color: #dcd4c4;
+      background-image:
+        linear-gradient(180deg, #00000047 0 1px, #00000000 1px calc(100% - 1px), #ffffff1f calc(100% - 1px) 100%),
+        repeating-linear-gradient(
+          90deg,
+          #00000000 0,
+          #00000000 calc(20% - 1px),
+          #3a362e59 calc(20% - 1px),
+          #3a362e59 20%
+        );
+    }
+
+    .spk-row__life {
+      grid-row: 2;
+      grid-column: 2 / 4;
+      height: 1.375rem;
+      background-color: #dcd4c4;
+      background-image:
+        linear-gradient(180deg, #00000047 0 1px, #00000000 1px calc(100% - 1px), #ffffff1f calc(100% - 1px) 100%),
+        linear-gradient(90deg, #c2392e3d 0 22%, #a26d2333 22% 46%, #00000000 46% 100%);
+    }
+
+    .spk-lid {
+      grid-template-columns: minmax(0, 1fr) 6.5rem;
+      row-gap: 0.25rem;
+    }
+
+    .spk-lid__count {
+      display: none; /* the lid's own row/counted figures move to the count plate */
+    }
+
+    /*
+      The lid, banded. At phone width the row is two engraved lines and the
+      mechanism is the lower one, so the pane runs the plate's full width but
+      paints its tint only across that band — one repeating gradient, aligned to
+      the row pitch, covering instruments and never type. The two panes still cut
+      open at the addressed row exactly as they do at desk width.
+    */
+    .spk-pane {
+      left: var(--spk-pad);
+      right: var(--spk-pad);
+      width: auto;
+      background: repeating-linear-gradient(
+        180deg,
+        #00000000 0,
+        #00000000 1.75rem,
+        var(--cd-acrylic-glance) 1.75rem,
+        var(--cd-acrylic-glance) 3.375rem,
+        #00000000 3.375rem,
+        #00000000 var(--spk-row)
+      );
+      box-shadow: none;
+    }
+
+    /* Specificity, not order: section 5's own `.spk-lampscale { min-width: 8rem }`
+       is declared LATER in this file, so a bare class here would lose to it and
+       the scale would overflow the plate — which is exactly what it did. */
+    .spk .spk-lampscale {
+      min-width: 0;
+      width: 100%;
+    }
+  }
+
+  /* =====================================================================
+     5 · the lamp scale — CLEAR LID's signature readout (section 3)
+     ===================================================================== */
+
+  .spk-lampscale {
+    position: relative;
+    height: 2rem;
+    min-width: 8rem;
+    overflow: hidden;
+    border-radius: 0.125rem;
+    background: var(--cd-face); /* the printed paper ground (II.2.14) */
+    box-shadow:
+      inset var(--cd-shadow-x) var(--cd-shadow-y) 4px #00000047, /* the well */
+      inset 0 -1px 0 #ffffff1f; /* lip */
+  }
+
+  /* II.2.19 — "light enters at one edge and dies within 26% of the panel's own
+     width". CLEAR LID: the lamp is this world's ONE emissive source. */
+  .spk-lampscale__lamp {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 26%;
+    pointer-events: none;
+    background: linear-gradient(90deg, var(--cd-lamp-lit) 0%, transparent 100%);
+    opacity: var(--spk-lamp-charge, 0.34);
+    /* II.2.18 — charge 120ms, decay 6000ms to the 34% floor, re-charge resets. */
+    transition: opacity var(--spk-lamp-ms, 120ms) linear;
+  }
+
+  /* the printed scale: five seats, silkscreened on the paper (II.6.8) */
+  .spk-lampscale__print {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    /* a decile scale: the pointer reads a 0-100% fill, so the print is divided
+       in tenths. Ten divisions, not the level scale's five — they are different
+       quantities and must not borrow each other's calibration. */
+    background: repeating-linear-gradient(
+      90deg,
+      #00000000 0,
+      #00000000 calc(10% - 1px),
+      #3a362e4d calc(10% - 1px),
+      #3a362e4d 10%
+    );
+  }
+
+  /* same keyline law as the register pointer — see the note there */
+  .spk-lampscale__pointer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 4px;
+    margin-left: -2px;
+    background: linear-gradient(90deg, #3a362e 0 1px, var(--cd-lamp-hot) 1px 3px, #3a362e 3px 4px);
+    box-shadow:
+      0 0 2px #ffc868cc,
+      0 0 8px #ffc86866,
+      0 0 24px #ffc86829;
+    transform: translateX(var(--spk-scale-x, 0px));
+    transition: transform var(--spk-scale-ms, 80ms) linear;
+  }
+
+  .spk-lampscale__figure {
+    position: absolute;
+    right: 0.375rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums slashed-zero;
+    font-size: var(--cd-size-1);
+    color: var(--cd-ink);
+  }
+
+  /* =====================================================================
+     6 · the thumbwheel — the fenestrated knob (CLEAR LID section 3)
+     ===================================================================== */
+
+  .spk-pod {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem;
+    border-radius: var(--cd-radius-panel);
+    background: var(--cd-field);
+    box-shadow: var(--cd-shadow-well);
+  }
+
+  .spk-knob {
+    position: relative;
+    width: 5.5rem;
+    height: 5.5rem;
+    border: 0;
+    padding: 0;
+    border-radius: 50%;
+    background: transparent;
+    cursor: grab;
+    touch-action: none;
+  }
+
+  .spk-knob:active {
+    cursor: grabbing;
+  }
+
+  /* II.2.4 — TEXTURE ROTATES, LIGHT HOLDS. The grip is the knurl tile, cached
+     once for the whole product; the lighting plate above it never turns. */
+  /*
+    FOUNDATION FINDING, worked around here rather than edited there.
+    src/cd/material/textures.ts paints `knurl` with hard-coded neutral hexes
+    (#34373D base, #4A4E56/#2C2F35 hub) and takes no palette argument. II.2's
+    own rule is "a language re-keys hue and value to its own palette WITHOUT
+    TOUCHING STRUCTURE" — but there is no seam to re-key through, so a CLEAR LID
+    cap rendered from that tile comes out in another world's dark grey instead of
+    this world's grey control #B7B7AE.
+
+    The workaround: take the tile's LUMINANCE as tooth structure and this world's
+    colour as the body, by compositing with `overlay` over --cd-control. It is
+    correct here and it is not a substitute for the texture factory growing a
+    palette parameter, which is reported as a needed change.
+  */
+  .spk-knob__grip {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background-color: var(--cd-control);
+    background-image: var(--spk-knurl, none);
+    background-size: 100% 100%;
+    background-blend-mode: overlay;
+    transform: rotate(var(--spk-knob-deg, 0deg));
+    transition: transform 110ms var(--cd-ease-snap); /* the chapter's own seat */
+  }
+
+  .spk-knob__grip::after {
+    content: "";
+    position: absolute;
+    top: 0.3rem;
+    left: 50%;
+    width: 3px;
+    height: 0.6rem;
+    margin-left: -1.5px;
+    border-radius: 1px;
+    background: var(--cd-ink); /* the ONE mark that actually turns */
+  }
+
+  .spk-knob__light {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    pointer-events: none; /* the room does not turn, and the room is not clickable */
+    background: var(--cd-rotary-light);
+    box-shadow: var(--cd-rotary-light-shadow);
+  }
+
+  /* the fenestration: a window no wider than the digit it shows, sharp ONLY at
+     a detent, blurred whenever the hand is mid-turn. */
+  .spk-knob__window {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 0.125rem;
+    background: var(--cd-face);
+    box-shadow:
+      inset var(--cd-shadow-x) var(--cd-shadow-y) 4px #00000047,
+      inset 0 -1px 0 #ffffff1f;
+    color: var(--cd-ink);
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums slashed-zero;
+    font-size: var(--cd-size-2);
+    filter: blur(var(--spk-window-blur, 0px));
+    /* section 3's Signature escalation: the window sharpens 24ms BEHIND the
+       cap's arrival, so the hand feels the seat and reads the digit a beat
+       after — motion and figure never arriving in the same frame. */
+    transition: filter 140ms var(--cd-ease-settle) 24ms;
+    pointer-events: none;
+  }
+
+  .spk-detents {
+    display: grid;
+    gap: 2px;
+  }
+
+  .spk-detent {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: var(--cd-target-min); /* 44px — the Floor, both axes */
+    min-width: var(--cd-target-min);
+    padding: 0 0.75rem;
+    border-radius: var(--cd-radius-cap);
+    background: linear-gradient(var(--cd-light-axis), #c3c3ba 0%, #b7b7ae 58%, #a5a59c 100%);
+    box-shadow:
+      inset 0 1px 0 #ffffff59,
+      inset 0 -1px 0 #00000052,
+      0 1px 0 #00000066,
+      0 2px 4px #00000030;
+    color: #2f2c26;
+    font-size: var(--cd-size-1);
+    letter-spacing: var(--cd-track-label);
+    cursor: pointer;
+    transition:
+      transform var(--cd-contact-release) var(--cd-ease-settle),
+      box-shadow var(--cd-contact-release) var(--cd-ease-settle);
+  }
+
+  .spk-detent:active {
+    transform: translateY(1px);
+    transition-duration: var(--cd-contact-down);
+    transition-timing-function: linear;
+    box-shadow:
+      inset 0 1px 0 #ffffff2e,
+      inset 0 -1px 0 #00000052,
+      0 1px 0 #00000066,
+      0 1px 2px #00000030;
+  }
+
+  .spk-detent input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* the seated detent's own window, lit by the lamp — the reveal button's
+     fingertip-scale echo of the big lid (CLEAR LID section 3) */
+  .spk-detent__win {
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 50%;
+    background: #8f8f86;
+    box-shadow: inset 0 1px 2px #000000a6;
+    transition: background 140ms var(--cd-ease-settle);
+  }
+
+  .spk-detent[data-seated="true"] .spk-detent__win {
+    background: var(--cd-lamp-lit);
+    box-shadow:
+      inset 0 1px 1px #00000059,
+      0 0 2px #e8a23acc,
+      0 0 8px #e8a23a66,
+      0 0 24px #e8a23a29;
+  }
+
+  /* =====================================================================
+     7 · the annunciator — expiry, as lamps in wells plus printed figures
+     ===================================================================== */
+
+  .spk-annun {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--cd-radius-panel);
+    background: linear-gradient(var(--cd-light-axis), #c3c3ba 0%, #b7b7ae 58%, #a5a59c 100%);
+    box-shadow:
+      inset 0 1px 0 #ffffff59,
+      inset 0 -1px 0 #00000052,
+      0 1px 0 #00000066,
+      0 3px 6px #0000003d,
+      0 10px 24px #00000021;
+  }
+
+  .spk-annun__cell {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .spk-lamp {
+    width: 0.875rem;
+    height: 0.875rem;
+    border-radius: 50%;
+    /* II.2.17 — "off: a dark well behind glass — never invisible" */
+    background: var(--cd-lamp-off);
+    box-shadow: var(--cd-lamp-well);
+  }
+
+  .spk-lamp[data-on="true"][data-role="danger"] {
+    background: radial-gradient(closest-side, #ffd9d2 0%, #c2392e 34%, #8c2a22 100%);
+    box-shadow:
+      inset 0 1px 1px #00000059,
+      0 0 2px #c2392ecc,
+      0 0 8px #c2392e66,
+      0 0 24px #c2392e29;
+    /* II.4.12 — warning presentation is NEVER shed, at any stage, and II.4.14 —
+       it lands within one frame of the crossing, phase-locked to the cue. */
+    animation: spk-warn 500ms steps(1, end) infinite;
+  }
+
+  .spk-lamp[data-on="true"][data-role="warning"] {
+    background: radial-gradient(closest-side, #ffe6bd 0%, #c4832a 34%, #8d5e1e 100%);
+    box-shadow:
+      inset 0 1px 1px #00000059,
+      0 0 2px #c4832acc,
+      0 0 8px #c4832a66,
+      0 0 24px #c4832a29;
+  }
+
+  @keyframes spk-warn {
+    0%,
+    50% {
+      opacity: 1;
+    }
+    50.01%,
+    100% {
+      opacity: 0.45;
+    }
+  }
+
+  .spk-annun__figure {
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums slashed-zero;
+    font-size: var(--cd-size-4);
+    line-height: var(--cd-leading-tight);
+    color: #2f2c26; /* on the grey control plate #B7B7AE — measured 5.03:1 */
+  }
+
+  .spk-annun__label {
+    font-size: var(--cd-size-1);
+    letter-spacing: var(--cd-track-label);
+    color: #2f2c26;
+    text-shadow:
+      0 -1px 0 #00000038,
+      0 1px 0 #ffffff73;
+  }
+
+  /* =====================================================================
+     8 · the count plate — honesty: the exact figure AND its age
+     ===================================================================== */
+
+  .spk-countplate {
+    display: grid;
+    gap: 0.125rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.125rem;
+    background: var(--cd-face);
+    box-shadow:
+      inset var(--cd-shadow-x) var(--cd-shadow-y) 4px #00000047,
+      inset 0 -1px 0 #ffffff1f;
+  }
+
+  .spk-countplate__value {
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums slashed-zero;
+    font-size: var(--cd-size-4);
+    line-height: var(--cd-leading-tight);
+    color: var(--cd-ink);
+  }
+
+  .spk-countplate__age {
+    font-size: var(--cd-size-1);
+    letter-spacing: var(--cd-track-label);
+    color: var(--cd-muted-ink);
+  }
+
+  /* CORRECTIONARY 4 — "a value that stops updating declares itself stale". The
+     word PRINTS; the ink drops to 55% (II.3.18); the value never moves. */
+  .spk-countplate[data-stale="true"] .spk-countplate__value {
+    opacity: 0.55;
+  }
+
+  .spk-countplate__stale {
+    font-size: var(--cd-size-1);
+    letter-spacing: var(--cd-track-micro);
+    font-weight: 700;
+    color: var(--cd-role-warning-ink-light);
+  }
+
+  /* =====================================================================
+     9 · the harness chrome — deliberately plain. It is scaffolding, not the
+        object under test, and dressing it would only make the trace dirtier.
+     ===================================================================== */
+
+  .spk-bench {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    background: #dcd4c4;
+    box-shadow: inset 0 1px 3px #00000033;
+    font-family: var(--cd-font-data);
+    font-size: 11px;
+    color: #3a362e;
+  }
+
+  .spk-bench button,
+  .spk-bench select {
+    min-height: 26px;
+    padding: 2px 8px;
+    border: 1px solid #7c7768;
+    border-radius: 3px;
+    background: #ede8de;
+    color: #3a362e;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .spk-bench button[data-on="true"] {
+    background: #3a362e;
+    color: #ede8de;
+  }
+
+  .spk-masthead {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: stretch;
+    margin-bottom: 0.5rem;
+  }
+
+  .spk-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: stretch;
+    margin-top: 0.5rem;
+  }
+
+  .spk-vh {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* =====================================================================
+     10 · reduced motion — II.4.26, a translation and never a deletion
+     ===================================================================== */
+
+  @media (prefers-reduced-motion: reduce) {
+    /* travel, rotation and overshoot go. Position that carries meaning STILL
+       CHANGES, because position is semantic: the pointer still relocates, the
+       strip still travels to the addressed row, the lid still opens — all at
+       the reduced dialect's 80ms linear / 120ms fade. */
+    .spk-row__pointer,
+    .spk-row__marker,
+    .spk-lampscale__pointer {
+      transition-duration: var(--cd-reduced-position) !important;
+      transition-timing-function: linear !important;
+    }
+
+    .spk-strip {
+      transition:
+        transform var(--cd-reduced-position) linear,
+        opacity var(--cd-reduced-fade) linear;
+    }
+
+    .spk-lidplate {
+      /* the hinge's ROTATION is travel and goes; the tint change is the meaning
+         and stays, as a 120ms opacity translation. */
+      transition: opacity var(--cd-reduced-fade) linear;
+      transform: none;
+      opacity: var(--spk-lid-opacity, 1);
+    }
+
+    .spk-group[data-open="true"] .spk-lidplate {
+      --spk-lid-opacity: 0;
+    }
+
+    .spk-knob__grip {
+      transition-duration: var(--cd-reduced-position);
+      transition-timing-function: linear;
+    }
+
+    /* The reveal is a SIZE change carrying meaning — the group really does open.
+       It survives, translated to the reduced dialect's 120ms, never deleted and
+       never a 0ms flash (II.4.26: "a 0ms swap of a screen-sized region is the
+       one move worse than the motion it replaced"). */
+    .spk-drawer {
+      transition-duration: var(--cd-reduced-fade);
+      transition-timing-function: linear;
+    }
+
+    .spk-lamp[data-on="true"][data-role="danger"] {
+      /* the warning's colour half survives (II.4.26 Pushed) — the flash does not. */
+      animation: none;
+      opacity: 1;
+    }
+  }
+
+  /* =====================================================================
+     11 · forced colours — the material argument is the OS's to discard;
+        the readings and the ring are not.
+     ===================================================================== */
+
+  @media (forced-colors: active) {
+    .spk::after,
+    .spk-plate::before,
+    .spk::before {
+      content: none;
+    }
+
+    .spk-strip,
+    .spk-lidplate {
+      background: transparent;
+      border: 1px solid CanvasText;
+    }
+
+    .spk-row__pointer,
+    .spk-lampscale__pointer {
+      background: Highlight;
+      box-shadow: none;
+      forced-color-adjust: none;
+    }
+
+    .spk-lamp[data-on="true"] {
+      background: Highlight;
+      forced-color-adjust: none;
+    }
+  }
+}
