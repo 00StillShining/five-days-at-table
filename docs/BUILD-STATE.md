@@ -74,6 +74,18 @@ page-length scrolling — grouped accordion, one section open at a time.
   `docs/ladder/chassis-ladder.html`.
 - **TODAY (EXPOSED WORKS) + COOK (REEL LOGIC) IN FLIGHT** — 2 Opus agents, strict folder
   ownership (`src/screens/today/**` and `src/screens/cook/**`).
+  **A WIP checkpoint of both was committed at `67d2e19` at the owner's request (usage
+  93%). It is a snapshot, NOT a landing** — tsc clean and 492/492 at the time, but
+  neither screen had reported, neither had run its handoff critique, and none of the
+  landing gates (measured contrast, 44px both axes, keyboard, reduced motion,
+  forced-colors, frame budget, build size, ladder artifacts) were verified. **Do not
+  treat either screen as done on the strength of that commit.** Resume by letting both
+  agents finish and report, then verify and land properly.
+- **The dev server is SILENT by default** as of `d0f7a1c`-era `src/cd/sound/bus.ts`:
+  with HMR running and builders driving live cook timers, the warning cue fired on every
+  reload and the owner's machine made noise continuously. In DEV the bus starts muted
+  unless `fd5.v1.cdMuted` is explicitly `"0"`. **Production is unchanged.** To run a
+  sound audit: `localStorage.setItem("fd5.v1.cdMuted", "0")`.
 - **Next:** **wave 2 in risk order** — STORES → LIST → PLAN → MEAL → SHOP. Then deploy,
   then the single Fable review, whose findings are **planned and not built**.
 
