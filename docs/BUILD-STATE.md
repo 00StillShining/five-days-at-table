@@ -72,8 +72,21 @@ page-length scrolling — grouped accordion, one section open at a time.
   `@layer cd.material`, so a control's own `box-shadow` in `cd.screen` silently
   overwrites the focus keyline — compose via `--cd-stack`. Ladder artifact at
   `docs/ladder/chassis-ladder.html`.
-- **TODAY (EXPOSED WORKS) + COOK (REEL LOGIC) IN FLIGHT** — 2 Opus agents, strict folder
-  ownership (`src/screens/today/**` and `src/screens/cook/**`).
+- **TODAY (EXPOSED WORKS) COMPLETE** (`9757763`) — seven hero instruments; the geared
+  Signature verified (22.5° per click, a forward-forward-back-back reversal returns to
+  −33.75° and never −67.5°, carrier `transform: none`). Its truth pass **failed twice**
+  and the critique re-ran from truth each time. The builder also **withdrew a finding of
+  its own** after discovering it had measured a backgrounded tab, where transitions do
+  not advance. Gates verified independently: tsc clean · 520/520 · 1.378 MB · 0 contrast
+  failures measured in the running page · 0 nodes under 11px · 0 targets under 44px.
+- **COOK (REEL LOGIC) BUILT AND GREEN, BUT NOT LANDED** (`da530ea`) — the builder was
+  killed by a session limit mid-handoff. Work and ladder artifact survived; **the report
+  did not.** Verified by me: tsc clean, 23 COOK tests inside 520/520, build under amber,
+  ladder artifact complete, R5 confirmed. **NOT established:** the five-pass findings,
+  measured contrast, 44px both axes, keyboard, forced-colors, reduced-motion, frame
+  budget, the sound audit, the §6.6 checklist, and whether the Signature was built or
+  honestly declined against the never-grab constraint. **The agent has been resumed to
+  deliver exactly these.** Do not treat COOK as done until it reports.
   **A WIP checkpoint of both was committed at `67d2e19` at the owner's request (usage
   93%). It is a snapshot, NOT a landing** — tsc clean and 492/492 at the time, but
   neither screen had reported, neither had run its handoff critique, and none of the
