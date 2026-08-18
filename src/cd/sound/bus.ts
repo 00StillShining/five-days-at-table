@@ -41,28 +41,34 @@ function audioCtor(): WebAudioCtor | null {
 }
 
 /**
- * OWNER RULING, 2026-08-17: the dev server is silent by default.
+ * OWNER RULING, 2026-08-18: the dev server is UNCONDITIONALLY SILENT.
  *
- * With HMR running and builders driving live timers, the warning cue fires on
- * every reload of a screen that has a running program — so the owner's own
- * machine was making noise continuously while agents worked. In DEV the bus
- * therefore starts MUTED unless the key is explicitly set to "0".
+ * First pass at this made DEV muted-by-default with a localStorage escape
+ * hatch. That was not enough: an agent running a sound audit unmuted it, and
+ * the owner's machine started making noise again. The owner has now asked
+ * twice. So in DEV the bus is muted with NO override — not a default, a fact.
+ * Nothing an agent can set from the page will make this machine audible.
  *
- * Production behaviour is UNCHANGED: absent key means audible, exactly as
- * II.5 specifies. This is a development-environment courtesy, not a change to
- * the product's sound doctrine — and muting is already doctrinally free:
- * "A muted instrument is a complete instrument. Every motion and every warning
- * LAMP proceeds identically with the gain at zero."
+ * Production behaviour is UNCHANGED: `import.meta.env.DEV` is false there, the
+ * stored preference is honoured, and absent means audible exactly as II.5
+ * specifies.
  *
- * To hear cues while building or running a sound audit:
- *     localStorage.setItem("fd5.v1.cdMuted", "0")
+ * THIS COSTS NO VERIFICATION, by the sound chapter's own words: "A muted
+ * instrument is a complete instrument. Every motion and every warning LAMP
+ * proceeds identically with the gain at zero." A sound audit is performed by
+ * inspecting what the bus SCHEDULES — cue identity, coalescing above 8/s,
+ * duck steps, Trophy gating, and that nothing is scheduled on hover, scroll,
+ * pulse, navigation or load. Those are gain values and call records, all
+ * readable with the master at zero. Listening was never the test.
+ *
+ * If audible output is ever genuinely required, it is a code change made
+ * deliberately here — not a runtime toggle an agent can flip.
  */
 function readMute(): boolean {
+  if (import.meta.env.DEV) return true; // no override, by owner ruling
   if (typeof localStorage === "undefined") return false;
   try {
-    const raw = localStorage.getItem(MUTE_STORAGE_KEY);
-    if (raw === null) return import.meta.env.DEV; // dev: silent until asked
-    return raw === "1";
+    return localStorage.getItem(MUTE_STORAGE_KEY) === "1";
   } catch {
     return false; // private mode / storage disabled — audio simply stays available
   }
@@ -167,9 +173,13 @@ export function armOnFirstGesture(target: EventTarget | null = globalThis as Eve
  * Persisted, and honoured across sessions forever.
  */
 export function setMuted(next: boolean): void {
-  muted = next;
-  writeMute(next);
-  if (bus) bus.master.gain.value = next ? 0 : MASTER_GAIN;
+  // DEV cannot be unmuted at runtime either — see readMute above. Without this
+  // the ruling leaks: anything holding a reference to this function could undo
+  // it, which is exactly how the noise came back the first time.
+  const effective = import.meta.env.DEV ? true : next;
+  muted = effective;
+  writeMute(next); // remember what the OPERATOR asked for, so production honours it
+  if (bus) bus.master.gain.value = effective ? 0 : MASTER_GAIN;
 }
 
 /**
