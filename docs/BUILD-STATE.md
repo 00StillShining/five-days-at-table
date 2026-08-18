@@ -5,9 +5,9 @@
 > resumed from their transcripts.** `docs/RESUME-2026-08-22.md` remains accurate as a
 > cold-start briefing and as the ordered list of what still has to happen; only its
 > "halted until Saturday" framing is superseded.
-> The tree is still tsc-RED by one error (`src/screens/shop/index.tsx:510`) until the
-> SHOP builder supplies the real `onRecover`; tests are 674/674. Last fully green
-> commit: `a48bd8d`.
+> **The tree is GREEN again** — the SHOP builder cleared its own `onRecover` error while
+> running. tsc clean repo-wide, **677/677** tests, build **1.619 MB** under the 2.0 MB
+> amber line. **MEAL landed at `c9926bd`; SHOP is the last surface still building.**
 *Updated 2026-08-17 (session 3, CD redesign). Read this + `git log --oneline` to resume cold.*
 
 ## SESSION 3 — Council Defiance redesign (CURRENT PHASE, supersedes everything below)
@@ -148,7 +148,16 @@ page-length scrolling — grouped accordion, one section open at a time.
 - **ALL FIVE WAVE-2 SCREENS DISPATCHED.** STORES and PLAN were near done at 03:20 (both
   ladder artifacts already written); MEAL (FACETED VOLUME, a tray) and SHOP
   (TANGENT HORIZON, the last screen) dispatched after.
-- **STORES, PLAN LANDED** (`a48bd8d`, `227d935`). **MEAL + SHOP UNFINISHED** — both
+- **MEAL (FACETED VOLUME) COMPLETE** (`c9926bd`) — the wheel refuses coast, verified at
+  keyboard and pointer; the format ring does **not** report portion scale (its chapter's
+  named ornament failure), proven by driving the wheel end to end while the ring's word
+  held. **The language fence held** and I verified it independently: nothing under
+  `src/screens/cook/` or `src/app/` touches the wheel but a scene import and a comment,
+  and COOK's `Reel.tsx` still has zero handlers. **It confirmed the contrast-audit trap
+  on real gradients** — `--cd-muted-ink` is 4.53:1 against the flat token but **3.68:1
+  and 3.75:1 composited**, on five labels a naive audit passed. That is the second
+  independent confirmation after STORES.
+- *(superseded)* **STORES, PLAN LANDED** (`a48bd8d`, `227d935`). **MEAL + SHOP UNFINISHED** — both
   builders killed by a session limit mid-build, saved as WIP at `4619bf0`, neither
   reported. See `docs/RESUME-2026-08-22.md`.
 - **Next:** finish MEAL + SHOP, repair the foundry's six gradient surfaces, re-sweep
