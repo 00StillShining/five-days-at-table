@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FD-5 PLAN — the escalation ladder</title>
+<!--
+  docs/ladder/plan-ladder.html — 17 RESTOMOD on PLAN, four rungs kept.
+
+  EVERY RUNG ON THIS PAGE RUNS. The Simple rung's state selector really drives
+  it — all nine states, not nine drawings of states. The Pushed studies really
+  animate and really respond. The Refined rung is the subtraction ledger with
+  the survivors' own geometry. The Signature rung is the shipped re-commission:
+  hold its crown for 350ms and every printed figure re-casts between the week
+  and the a-twice fortnight WHILE THE NEEDLE DOES NOT MOVE.
+
+  REAL DATA THROUGHOUT, read off the running app on 2026-08-18:
+    week A, cover w (her, 70kg), five plated days
+      day totals kcal ... 1678 / 1722 / 1676 / 1650 / 1730
+      week totals ...... 8456 kcal · 563 g prot · 341.2 g fat
+                         679.4 g carb · 212.5 g fibre
+      week bands ....... kcal 8245-8650 · prot 525-595 · fat 285-425
+                         carb 435-825 · fibre 200-225
+    the longest meal name in the dataset
+      "Grated apple, cinnamon & coconut yoghurt" (40 chars, a-d4s)
+    an OVER-band day (real, and only reachable through a swap: the authored
+      plan is in band on every day and every channel by construction)
+      Friday, a-d5l -> b-d3l: 1868 kcal against a 1649-1730 band, and
+      188.9 g carb against 87-165
+    an UNDER-band day (real, from the tester variant)
+      Wednesday in morrisons-tester: all four slots cut, 0 on all five
+    the tester ........ "morrisons starter · 10 meals week A",
+                         10 of 20 slots cut, kcal band 916-1449/day
+    a live swap ....... a-d1l -> b-d4l put Monday at 1558 kcal UNDER BAND
+                         while protein went OVER — the finding that put the
+                         off-band line on every lid.
+  No image assets, no WebGL, no network. Open it in a browser.
+-->
+<style>
+  :root {
+    color-scheme: dark;
+    --ui: "Space Grotesk", system-ui, sans-serif;
+    --data: "JetBrains Mono", ui-monospace, monospace;
+    /* the Simple rung's entire palette — the doctrine's own grayscale ramp */
+    --g0:#141414; --g1:#1f1f1f; --g2:#2c2c2c; --g3:#4a4a4a; --g4:#6d6d6d;
+    --g5:#8f8f8f; --g6:#b4b4b4; --g7:#dcdcdc; --g8:#F2F2F2;
+    /* RESTOMOD's committed section-2 registry, for every rung above Simple */
+    --face:#F0E6D2; --field:#1B1B1B; --gold:#C9A46A; --nickel:#C7C8CA;
+    --needle:#E8590C; --keyline:#1B1B1B; --gdim:#1D3529; --glit:#1F5C3D;
+    --ghot:#143C28; --muted:#6F6659; --oled:#E9F6EC; --oledwell:#121213;
+    /* the product-wide reserved roles (world.css), which supersede ch.17's */
+    --danger:#C2392E; --danger-ink:#BD372D; --warn-zone:#A26D23; --warn-ink:#8D5E1E;
+    --success-fill:#318753; --success-ink:#2B7548; --focus:#4C8FD1; --fkey:#141414;
+    --axis:138deg; --module:.5rem;
+    --settle:cubic-bezier(.16,1,.30,1); --snap:cubic-bezier(.60,0,.10,1);
+    --heavy:cubic-bezier(.32,0,.12,1);
+    /* the measured case-diameter split, 115/100/100/80/80mm */
+    --d1:24.2%; --d2:21.1%; --d3:21.1%; --d4:16.8%; --d5:16.8%;
+  }
+  * { box-sizing:border-box }
+  body { margin:0; background:#0c0c0c; color:var(--g7); font-family:var(--ui); line-height:1.55 }
+  main { max-width:76rem; margin:0 auto; padding:2rem 1.25rem 6rem }
+  h1 { font-size:1.5rem; letter-spacing:.02em; margin:0 0 .25rem }
+  h2 { font-size:1.05rem; letter-spacing:.12em; text-transform:uppercase; margin:3.5rem 0 .25rem; color:var(--g8) }
+  h3 { font-size:.8125rem; letter-spacing:.12em; text-transform:uppercase; margin:1.5rem 0 .5rem; color:var(--g5) }
+  p { max-width:62ch; color:var(--g6); font-size:.9375rem }
+  .claim { border-left:2px solid var(--g4); padding-left:.75rem; font-size:.875rem; color:var(--g7); max-width:62ch }
+  .vs { font-family:var(--data); font-size:.8125rem; color:var(--g5); margin:.35rem 0 0; max-width:66ch }
+  .bench { display:flex; gap:1.25rem; flex-wrap:wrap; align-items:flex-start; margin-top:1rem }
+  .plinth { background:#101010; border:1px solid var(--g2); border-radius:.5rem; padding:1rem }
+  .plinth > figcaption { font-family:var(--data); font-size:.75rem; color:var(--g5); margin-bottom:.75rem }
+  table { border-collapse:collapse; font-size:.8125rem; margin-top:.75rem }
+  td,th { border:1px solid var(--g2); padding:.35rem .6rem; text-align:left; vertical-align:top }
+  th { color:var(--g8); font-weight:600 }
+  td.k { color:#9ec98a } td.x { color:#d98f88 }
+  code { font-family:var(--data); font-size:.8125rem; color:var(--g6) }
+  select,button { font-family:var(--ui); font-size:.8125rem }
+  .ctl { display:flex; gap:.5rem; flex-wrap:wrap; align-items:center; margin:.75rem 0 0 }
+  .ctl label { font-family:var(--data); font-size:.75rem; color:var(--g5) }
+  .ctl select, .ctl button { background:var(--g2); color:var(--g7); border:1px solid var(--g4); padding:.35rem .6rem; border-radius:3px; cursor:pointer }
+
+  /* ==================== RUNG 1 · SIMPLE ==================== */
+  /* Grayscale ramp only. No gradient, no shadow stack, no bloom, no texture,
+     no spring. Values snap frame to frame. The TASK must still complete: read
+     the five channels against their bands, read the days, read a slot. */
+  .s { width:44rem; max-width:100%; background:var(--g1); border:1px solid var(--g3); padding:.75rem; font-size:.8125rem }
+  .s-row { display:grid; grid-template-columns:var(--d5) var(--d2) var(--d1) var(--d3) var(--d4); gap:0 }
+  .s-g { border:1px solid var(--g3); margin:0 .35rem; padding:.35rem }
+  .s-arc { position:relative; width:100%; aspect-ratio:1; border:1px solid var(--g4); border-radius:50% }
+  .s-arc i { position:absolute; left:50%; bottom:50%; width:2px; height:41%; background:var(--g8);
+    transform-origin:50% 100%; transform:translateX(-50%) rotate(var(--a,0deg)) }
+  .s-arc b { position:absolute; left:50%; top:50%; width:9px; height:9px; translate:-50% -50%; background:var(--g6); border-radius:50% }
+  .s-g dl { margin:.35rem 0 0; font-family:var(--data); font-size:.6875rem; color:var(--g5) }
+  .s-g dl div { display:flex; justify-content:space-between; gap:.4rem }
+  .s-g dt,.s-g dd { margin:0 }
+  .s-g dd { color:var(--g8) }
+  .s-lid { display:grid; grid-template-columns:2.5rem 1fr 5rem 5rem 11rem; gap:.5rem; align-items:center;
+    border-top:1px solid var(--g2); min-height:2.75rem; font-family:var(--data); font-size:.75rem; color:var(--g6) }
+  .s-lid b { color:var(--g8); font-size:.875rem }
+  .s-slot { display:grid; grid-template-columns:3.25rem 1fr 8rem 5rem 3.5rem; gap:.5rem; align-items:center;
+    border-top:1px solid var(--g2); min-height:2.75rem; font-family:var(--data); font-size:.75rem; color:var(--g5) }
+  .s-slot a { color:var(--g8); text-decoration:none; display:flex; align-items:center; min-height:2.75rem;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+  .s-slot .m { border:1px solid var(--g4); text-align:center; padding:.1rem .2rem; color:var(--g7) }
+  .s-slot .m[data-cut] { border-bottom:2px dashed var(--g4) }
+  .s-slot button { border:1px solid var(--g4); background:var(--g2); color:var(--g7); min-height:2.75rem; min-width:2.75rem; cursor:pointer }
+  .s-slot button[disabled] { color:var(--g3); border-color:var(--g3); cursor:not-allowed }
+  .s-note { color:var(--g5); font-family:var(--data); font-size:.6875rem; margin:.5rem 0 0 }
+  .s-off { color:var(--g8) }
+
+  /* ==================== RUNG 2 · PUSHED ==================== */
+  /* Three studies, ONE axis each. Everything not on that study's axis stays at
+     the Simple rung, so each claim is testable on its own. */
+
+  /* study A — THE SCALE (geometry only, still grayscale) */
+  .pa { display:flex; gap:1.5rem; flex-wrap:wrap; background:var(--g1); border:1px solid var(--g3); padding:1rem }
+  .pa-d { position:relative; width:12rem; height:12rem; border-radius:50%; border:1px solid var(--g4); background:var(--g2) }
+  .pa-d svg { position:absolute; inset:0; width:100%; height:100% }
+  .pa-d .t { stroke:var(--g6) }
+  .pa-d .zb { stroke:var(--g7); fill:none }
+  .pa-d .zc { stroke:var(--g4); fill:none }
+  .pa-d .zr { stroke:var(--g3); fill:none }
+  .pa-d i { position:absolute; left:50%; bottom:50%; width:3px; height:41%; background:var(--g8);
+    transform-origin:50% 100%; transform:translateX(-50%) rotate(var(--a,0deg)) }
+  .pa-lab { position:absolute; inset:0 }
+  .pa-lab span { position:absolute; translate:-50% -50%; font-family:var(--data); font-size:11px; color:var(--g6) }
+
+  /* study B — THE CASE ROW (proportion only) */
+  .pb { background:var(--g1); border:1px solid var(--g3); padding:1rem }
+  .pb-row { display:grid; gap:0 }
+  .pb-row > div { border:1px solid var(--g4); background:var(--g2); aspect-ratio:1; border-radius:50%;
+    display:grid; place-items:center; font-family:var(--data); font-size:.6875rem; color:var(--g6) }
+
+  /* study C — THE FINISH (material only, geometry as Simple) */
+  .pc { display:flex; gap:1rem; flex-wrap:wrap }
+  .pc-t { width:11rem; height:7rem; border-radius:.5rem; position:relative; display:grid; place-items:center;
+    font-family:var(--data); font-size:.6875rem; color:var(--g8) }
+  .pc-crackle { background-color:var(--field);
+    background-image:
+      repeating-linear-gradient(23deg,#00000000 0 37px,#17171740 37px 38px),
+      repeating-linear-gradient(-64deg,#00000000 0 53px,#1f1f1f4d 53px 54px),
+      repeating-linear-gradient(111deg,#00000000 0 71px,#17171733 71px 72px),
+      repeating-linear-gradient(-7deg,#00000000 0 89px,#1f1f1f40 89px 90px);
+    box-shadow: inset 0 0 0 1px #00000059 }
+  .pc-nickel { color:var(--field);
+    background-image:
+      repeating-linear-gradient(90deg,#ffffff00 0px,#ffffff17 1px,#00000017 2px,#ffffff00 3px),
+      linear-gradient(var(--axis),#9a9c9f 0%,#b7b8ba 34%,#d6d9dd 47%,var(--nickel) 60%,#8f9194 100%);
+    box-shadow: inset 0 1px 0 #ffffff4d, inset 0 -1px 0 #00000059, 0 1px 0 #00000066, 0 4px 10px #00000040 }
+  .pc-gold { color:var(--field);
+    background-image:linear-gradient(var(--axis),#cdab76 0%,var(--gold) 52%,#b99762 100%);
+    box-shadow: inset 0 1px 0 #ffffff29, 0 1px 0 #00000073, 0 4px 10px #00000047 }
+  .pc-ivory { background-color:var(--face); color:var(--ghot); border-radius:50%; width:7rem; height:7rem;
+    box-shadow: inset 0 2px 4px #00000024, inset 0 1px 0 #ffffff33 }
+  .pc-ivory::after { content:""; position:absolute; left:8%; top:7%; width:34%; height:26%; border-radius:50%;
+    background:radial-gradient(closest-side,#ffffff59 0%,#ffffff21 55%,#ffffff00 100%) }
+
+  /* ==================== RUNG 4 · SIGNATURE ==================== */
+  .sig { background-color:var(--field); padding:1.25rem; border-radius:.5rem;
+    background-image:
+      repeating-linear-gradient(23deg,#00000000 0 37px,#17171740 37px 38px),
+      repeating-linear-gradient(-64deg,#00000000 0 53px,#1f1f1f4d 53px 54px),
+      repeating-linear-gradient(111deg,#00000000 0 71px,#17171733 71px 72px),
+      repeating-linear-gradient(-7deg,#00000000 0 89px,#1f1f1f40 89px 90px);
+    display:flex; gap:1.5rem; flex-wrap:wrap; align-items:center }
+  .sig-case { position:relative; padding:.5rem; border-radius:50%;
+    background:linear-gradient(var(--axis),#cdab76 0%,var(--gold) 52%,#b99762 100%);
+    box-shadow: inset 0 1px 0 #ffffff29, 0 1px 0 #00000073, 0 4px 10px #00000047 }
+  .sig-bez { padding:.375rem; border-radius:50%;
+    background-image:
+      repeating-linear-gradient(90deg,#ffffff00 0px,#ffffff17 1px,#00000017 2px,#ffffff00 3px),
+      linear-gradient(var(--axis),#9a9c9f 0%,#b7b8ba 34%,#d6d9dd 47%,var(--nickel) 60%,#8f9194 100%);
+    box-shadow: inset 0 1px 0 #ffffff4d, inset 0 -1px 0 #00000059, 0 4px 10px #00000040 }
+  .sig-dial { position:relative; width:15rem; height:15rem; border-radius:50%; background:var(--face);
+    box-shadow: inset 0 2px 4px #00000024, inset 0 1px 0 #ffffff33; overflow:hidden }
+  .sig-dial::after { content:""; position:absolute; left:8%; top:7%; width:34%; height:26%; border-radius:50%; z-index:6;
+    background:radial-gradient(closest-side,#ffffff59 0%,#ffffff21 55%,#ffffff00 100%); pointer-events:none }
+  .sig-face { position:absolute; inset:0; width:100%; height:100% }
+  .sig-face .t { stroke:var(--ghot) }
+  .sig-face .zb { stroke:var(--success-fill); fill:none }
+  .sig-face .zc { stroke:var(--warn-zone); fill:none }
+  .sig-face .zr { stroke:var(--danger); fill:none }
+  .sig-lab { position:absolute; inset:0; pointer-events:none; z-index:2 }
+  .sig-lab span { position:absolute; translate:-50% -50%; font-family:var(--data); font-size:11px; color:var(--ghot) }
+  .sig-lab span.wink { font-style:italic; letter-spacing:-.02em }
+  .sig-needle { position:absolute; inset:0; z-index:5; transform-origin:50% 50%;
+    transform:rotate(var(--sig-a,-135deg)) }
+  .sig-tip { position:absolute; left:50%; top:9%; width:4px; height:41%; translate:-50% 0;
+    background:var(--needle); outline:1px solid var(--keyline); outline-offset:-.5px; border-radius:2px 2px 0 0 }
+  .sig-tail { position:absolute; left:50%; top:50%; width:5px; height:9%; translate:-50% 0;
+    background:var(--needle); outline:1px solid var(--keyline); outline-offset:-.5px }
+  .sig-catch { position:absolute; inset:0; z-index:6; pointer-events:none; mix-blend-mode:screen;
+    background:linear-gradient(138deg,#ffffff00 47%,#ffffff66 50%,#ffffff00 53%) }
+  .sig-boss { position:absolute; left:50%; top:50%; width:12%; aspect-ratio:1; translate:-50% -50%; border-radius:50%; z-index:7;
+    background:linear-gradient(var(--axis),#cdab76 0%,var(--gold) 55%,#b99762 100%);
+    box-shadow: inset 0 1px 0 #ffffff40, 0 1px 2px #00000073 }
+  .sig-inset { position:absolute; left:50%; top:62%; translate:-50% -50%; z-index:4; display:flex; align-items:baseline; gap:.15em;
+    max-width:44%; padding:.05em .3em; border-radius:.25rem; background:var(--oledwell);
+    box-shadow: inset 0 1px 3px #000000a6, 0 1px 0 #ffffff33 }
+  .sig-inset b { font-family:var(--data); font-size:2.05rem; line-height:.95; color:var(--oled); font-weight:400;
+    font-variant-numeric:tabular-nums lining-nums slashed-zero;
+    text-shadow:0 0 2px #e9f6eccc, 0 0 8px #e9f6ec66, 0 0 24px #e9f6ec29 }
+  .sig-inset i { font-family:var(--data); font-size:.6875rem; font-style:normal; color:var(--oled); opacity:.8 }
+  .sig-word { position:absolute; left:50%; top:85%; translate:-50% -50%; z-index:2; font-family:var(--ui);
+    font-size:.8125rem; letter-spacing:.12em; text-transform:uppercase; font-weight:600; color:var(--ghot) }
+  .sig-side { display:grid; gap:.5rem; align-content:start }
+  .sig-plate { background:var(--face); color:var(--glit); border-radius:.25rem; padding:.4rem .6rem;
+    font-family:var(--data); font-size:.75rem; min-width:19rem;
+    box-shadow: inset 0 -1px 0 #ffffff1f, 0 1px 0 #00000059, 0 2px 5px #0000002e }
+  .sig-plate div { display:flex; justify-content:space-between; gap:1rem }
+  .sig-plate .cap { color:var(--muted); text-transform:uppercase; letter-spacing:.12em; font-family:var(--ui); font-size:.6875rem }
+  .sig-crownset { display:flex; gap:1.25rem; align-items:flex-start; padding-left:1rem }
+  .sig-crown { position:relative; width:.75rem; height:2.25rem; margin-top:.75rem; border-radius:.25rem;
+    border:1px solid var(--nickel); cursor:ns-resize; touch-action:none;
+    background:repeating-linear-gradient(180deg,var(--gold) 0,var(--gold) .125rem,#a6874f .125rem,#a6874f .25rem);
+    box-shadow:-1px 0 0 #ffffff29, 1px 1px 2px #00000059 }
+  .sig-crown::after { content:""; position:absolute; top:50%; left:50%; width:44px; height:44px; translate:-50% -50% }
+  .sig-crown[data-holding="true"] { transform:translateX(.25rem) }
+  .sig-fill { position:absolute; left:0; bottom:-.3rem; height:2px; width:var(--hold,0%); background:var(--gold) }
+  .sig-crown:focus-visible { outline:2px solid var(--focus); outline-offset:3px; box-shadow:0 0 0 6px var(--fkey), -1px 0 0 #ffffff29, 1px 1px 2px #00000059 }
+</style>
+</head>
+<body>
+<main>
+
+<h1>PLAN — the escalation ladder</h1>
+<p><strong>17 RESTOMOD</strong>, Dense Dashboard archetype. The question the screen answers:
+<em>how is the fortnight tracking against its targets?</em> Every rung below runs. Every figure on
+this page is read off the shipped dataset through the frozen accessors — no placeholder strings, no
+round demo numbers.</p>
+
+<h2>Rung 1 · Simple</h2>
+<p class="claim">Grayscale <code>#141414</code>→<code>#F2F2F2</code> only. No gradient, no shadow
+stack, no texture, no bloom, no spring, no sound. Values snap frame to frame. The proportion of the
+case row is present at this rung because it is <em>inherited</em>, not earned later — ch.17 §7's
+Simple rung keeps the row's ratio and nothing else.</p>
+<p><strong>The task must complete here.</strong> Read the five channels against their bands; read
+which day is off band and which way; read a slot, its mark, its figure and whether it was logged;
+reach the swap. Pick a state — the selector really drives the render.</p>
+
+<div class="ctl">
+  <label for="s-state">state</label>
+  <select id="s-state">
+    <option value="full">full — the whole authored fortnight, 20 slots</option>
+    <option value="firstrun">first-run — nothing logged, nothing counted, nothing swapped</option>
+    <option value="partial">partial — the morrisons tester, 10 of 20 slots</option>
+    <option value="under">under — the tester's Wednesday, all four slots cut</option>
+    <option value="over">over — Friday after a-d5l → b-d3l</option>
+    <option value="overflow">overflowing — the longest name and a 3-channel off-band line</option>
+    <option value="stale">stale — a logged tick past 24h, a count past 72h</option>
+    <option value="error">error — a swap pointing at a meal id that does not exist</option>
+    <option value="empty">empty — a slot the plan authors no meal for</option>
+    <option value="disabled">disabled — a cut slot's swap, and a refused re-commission</option>
+    <option value="loading">loading — declared, and unreachable</option>
+  </select>
+</div>
+
+<div class="bench">
+  <figure class="plinth" style="margin:0">
+    <figcaption>rung 1 · simple · running</figcaption>
+    <div class="s" id="s"></div>
+    <p class="s-note" id="s-note"></p>
+  </figure>
+</div>
+
+<h2>Rung 2 · Pushed</h2>
+<p>Three studies, <strong>one axis each</strong>. Everything not on a study's own axis stays exactly
+as Simple left it, so each claim can be falsified on its own rather than as part of a bundle. Each
+is stated against Simple, never against another study.</p>
+
+<h3>Study A — the scale (geometry only, still grayscale)</h3>
+<p class="claim"><strong>Claim:</strong> deriving the arc's range from the <em>band</em> rather than
+from zero is what makes this instrument able to answer its own question. plan.json's kcal band is
+[1649, 1730] — a span of 4.7% of its own ceiling.</p>
+<div class="bench">
+  <figure class="plinth" style="margin:0"><figcaption>A1 · zero-to-scale, as a first instinct draws it</figcaption>
+    <div class="pa"><div class="pa-d" id="pa1"></div></div></figure>
+  <figure class="plinth" style="margin:0"><figcaption>A2 · range = band ± 1.5 × its own span</figcaption>
+    <div class="pa"><div class="pa-d" id="pa2"></div></div></figure>
+</div>
+<p class="vs">vs Simple — Simple drew a needle over an unmarked ring and printed the figure beneath.
+A1 keeps that and adds a printed zone: measured live on this page, the band prints as
+<strong>8.4° of a 270° arc</strong> — a target you cannot see the needle enter or leave. A2 puts the
+band edges at 37.5% and 62.5%, so the target owns <strong>67.5°</strong> and the two caution zones
+and two redlines own the rest, and
+the geometry is <em>identical on all five dials</em>, which is what lets a row be read as a row.
+Cost: the dial's minimum is not zero. That is what an oil-temperature gauge does, and the minimum
+tick carries its own real numeral, so nothing is hidden.</p>
+
+<h3>Study B — the case row (proportion only)</h3>
+<p class="claim"><strong>Claim:</strong> the chapter's ratio is taken off CASE DIAMETERS, so it has
+to survive all the way down to the visible dial — which means every inset between the column and
+the face has to be a percentage of the column, not a constant.</p>
+<div class="ctl">
+  <label for="pb-mode">split</label>
+  <select id="pb-mode">
+    <option value="even">five equal columns (what a grid gives you for free)</option>
+    <option value="minus">tokens minus a flat 1rem, and a constant 6px bezel</option>
+    <option value="inset">tokens verbatim, but a CONSTANT inset inside each column</option>
+    <option value="exact" selected>tokens verbatim, every inset a PERCENTAGE of the column</option>
+  </select>
+</div>
+<div class="bench"><figure class="plinth" style="margin:0"><figcaption>B · 16.8 / 21.1 / 24.2 / 21.1 / 16.8</figcaption>
+  <div class="pb"><div class="pb-row" id="pb"></div><p class="s-note" id="pb-note"></p></div></figure></div>
+<p class="vs">vs Simple — Simple already carried the ratio, because ch.17 §7 puts it on the first
+rung. This study is about what a <em>gutter</em> does to it, and it cost two rounds to get right.
+Measured in the browser, and the size of the error depends on how large the
+constant is against the column, so it is quoted twice: <code>calc(var(--cd-dial-1) - 1rem)</code>
+renders <strong>1.14 : 1</strong> rank-one to outboard on the shipped 60rem row and
+<strong>2.02 : 1</strong> on this narrower bench — a flat 1rem is simply a bigger share of a 16.8%
+column than of a 24.2% one. Moving the gutter to a CONSTANT INSET fixes the COLUMNS exactly
+(0.694 / 0.872 / 1) and still renders the DIALS at 0.635 / 0.847 / 1 on the shipped row and
+0.601 / 0.833 / 1 here — and a reader looks at dials, not at columns. Only when every inset in the
+chain — the housing's margin, its own padding and the bezel's width — is a PERCENTAGE of the column
+does the dial ratio come out at <strong>0.6942 / 0.8720 / 1 / 0.8720 / 0.6942</strong> on the
+shipped row, against the chapter's own 0.6942 / 0.8719. Switch the selector and read the caption.</p>
+
+<h3>Study C — the finish (material only, geometry as Simple)</h3>
+<p class="claim"><strong>Claim:</strong> three finishes carry this world — crackle-black enamel,
+ivory lacquer, and warm metal in two recipes — and the metal must brush, never mirror.</p>
+<div class="bench">
+  <div class="pc">
+    <div class="pc-t pc-crackle">crackle black #1B1B1B</div>
+    <div class="pc-t pc-nickel">nickel satin, brushed</div>
+    <div class="pc-t pc-gold">champagne gold, anodized</div>
+    <div class="pc-t pc-ivory">ivory lacquer</div>
+  </div>
+</div>
+<p class="vs">vs Simple — Simple's panels were 1px grey keylines on <code>#1f1f1f</code>. The crackle
+web here is four <code>repeating-linear-gradient</code>s at 23° / −64° / 111° / −7° on coprime
+pitches (37 / 53 / 71 / 89px), so the web's repeat period is their least common multiple rather than
+any one of them — that is what §2's "never metronomic" buys, and it costs one paint. Measured
+luminance travel between its stops <code>#171717</code> and <code>#1F1F1F</code> is
+<strong>0.87%</strong>, inside the 3% ceiling §9's "crackle overreach" polices. The nickel uses
+II.2.7's brushed recipe — 3px grain, one specular band at 47%, brightest stop <code>#D6D9DD</code> —
+and <em>not</em> the foundry's chrome, because §9 names two sharp highlights on a bezel as this
+world's own failure mode by name.</p>
+
+<h2>Rung 3 · Refined — the re-authored rung</h2>
+<p class="claim">CD-BRIEF ruling 4: the stock rung is revoked. <strong>Subtract jobless elements;
+keep every survivor at full material strength.</strong> The ledger's question is <em>does it state a
+value, or let the hand do something?</em> — never <em>is it the hero?</em></p>
+<table>
+  <thead><tr><th>element</th><th>states a value?</th><th>lets the hand do something?</th><th>ruling</th></tr></thead>
+  <tbody>
+    <tr><td>five-dial case row</td><td class="k">five channels vs five bands</td><td>—</td><td class="k">KEPT, full material</td></tr>
+    <tr><td>rank-one OLED inset</td><td class="k">the energy figure, exactly</td><td>—</td><td class="k">KEPT — the one emissive on the screen</td></tr>
+    <tr><td>the other four dials' <em>on-face</em> figures</td><td>duplicates the plate's own figure</td><td>—</td><td class="x">MOVED to the plate — on a 72px face it overlapped the engraved channel name outright at 390px</td></tr>
+    <tr><td>commission plate + trend strip</td><td class="k">which plan is live, which week executes, the week's shape</td><td>—</td><td class="k">KEPT</td></tr>
+    <tr><td>"cut in this commission" well</td><td>restates a count the plate already prints and every cut row already explains</td><td>—</td><td class="x">CUT — and the tester board stopped overflowing its viewport by 149px</td></tr>
+    <tr><td>the crown</td><td class="k">the operator's own mark, printed</td><td class="k">pages the row, sets the mark, re-commissions the scope</td><td class="k">KEPT</td></tr>
+    <tr><td>day register (R7 accordion)</td><td class="k">each day vs its own day band</td><td class="k">opens one day at a time</td><td class="k">KEPT</td></tr>
+    <tr><td>per-lid off-band line</td><td class="k">every channel off band, both directions</td><td>—</td><td class="k">ADDED at Refined — a live swap put protein over while the lid, focused on kcal, said UNDER BAND and nothing on the board mentioned protein</td></tr>
+    <tr><td>swap deck</td><td class="k">coverage, its age, the band damage</td><td class="k">commits, undoes, drops all</td><td class="k">KEPT</td></tr>
+    <tr><td>channel hue on the five dials</td><td>reinforces identity that position and the engraved word already carry</td><td>—</td><td class="x">CUT — ornament, and it would have put a second hue system inside a one-signature-hue world</td></tr>
+    <tr><td>status lamps on 20 slot rows</td><td>logged / not logged</td><td>—</td><td class="x">CUT as lamps, KEPT as pigment — II.7.9 licenses this world exactly ONE emissive and §3 spends it on the inset. Shape + ink + word, three channels, no light.</td></tr>
+  </tbody>
+</table>
+<p><strong>Exit:</strong> six hero-grade instruments survive, each with a job in one sentence — the
+case row, the rank-one gauge, the commission plate, the crown, the day register, the swap deck.</p>
+
+<h2>Rung 4 · Signature</h2>
+<p class="claim">ch.17 §7: <em>"the crown, pulled and held past its own hard stop for 350ms of linear
+fill … trades the entire cluster's finish … while the five-dial row and every present value hold
+exactly still."</em></p>
+<p><strong>FD-5's own version of that trade is a fact, not a finish.</strong> Hold the crown and the
+board re-commissions its scope between <em>one plated week</em> and <em>the executing fortnight</em>.
+Because the fortnight <em>is</em> week A run twice (D5, "a-twice"), the reading and the band double
+together, so the ratio is identical and <strong>the needle cannot move</strong> — while every printed
+figure re-casts. A value redrawn is still the same fact.</p>
+<p class="vs">Hold the crown for 350ms (or focus it and hold <kbd>Space</kbd>). Watch the numerals,
+not the needle. Lifting before 350ms cancels and the fill collapses on the next frame.</p>
+
+<div class="sig">
+  <div class="sig-crownset">
+    <div class="sig-crown" id="sig-crown" role="slider" tabindex="0" aria-label="crown"
+         aria-valuemin="0" aria-valuemax="1" aria-valuenow="0" aria-valuetext="pulled · one plated week">
+      <span class="sig-fill" id="sig-fill"></span>
+    </div>
+  </div>
+  <div class="sig-case"><div class="sig-bez"><div class="sig-dial">
+    <svg class="sig-face" viewBox="0 0 200 200" id="sig-svg"></svg>
+    <div class="sig-lab" id="sig-lab"></div>
+    <div class="sig-inset"><b id="sig-fig">8456</b><i>kcal</i></div>
+    <div class="sig-word">kcal</div>
+    <div class="sig-needle" id="sig-needle"><span class="sig-tip"></span><span class="sig-tail"></span></div>
+    <span class="sig-catch"></span><span class="sig-boss"></span>
+  </div></div></div>
+  <div class="sig-side">
+    <div class="sig-plate"><div><span class="cap">reading</span><span id="sig-scope">one plated week</span></div></div>
+    <div class="sig-plate"><div><span class="cap">band</span><span id="sig-band">8245–8650 kcal</span></div></div>
+    <div class="sig-plate"><div><span class="cap">needle angle</span><span id="sig-ang">−13.74°</span></div></div>
+    <div class="sig-plate"><div><span class="cap">covers</span><span id="sig-note">five plated days · mon to fri</span></div></div>
+    <div class="sig-plate"><div><span class="cap">on week b</span><span>refused — nothing executes week b</span></div></div>
+  </div>
+</div>
+
+<h3>What this rung is not allowed to do</h3>
+<p>Change a value. The re-commission is a change of <em>frame</em>, and the arithmetic proves it:
+<code>(value × 2) / (band × 2) ≡ value / band</code>. <code>model.test.ts</code> asserts that
+identity for all five channels, both covers, to nine decimal places — so the needle's stillness is a
+theorem, not an animation someone remembered to suppress. And on Week B the hold is refused with a
+printed reason, because "B, twice" is not a fact about anything.</p>
+
+<script>
+(() => {
+  /* ------------------------------------------------------------------ data */
+  /* Every figure below is read off the running app and the shipped JSON. */
+  const WEEK = {
+    days: [
+      {abbr:"mon", theme:"Carts, Crusts & Chilli", kcal:1678,
+       slots:[["fresh","bfast","Bodega egg & cheese",426,"3h"],["batch","lunch","Halal cart chicken over rice",535,null],
+              ["fresh","dinner","Chicken-crust pizza",466,null],["fresh","snack","Lime & chilli yoghurt with banana",251,null]]},
+      {abbr:"tue", theme:"Bowls, Batter & Panko", kcal:1721,
+       slots:[["fresh","bfast","Overnight oats with berries",398,null],["batch","lunch","Chipotle beef burrito bowl",560,null],
+              ["fresh","dinner","Panko cod with slaw",512,null],["fresh","snack","Cottage cheese & pineapple",251,null]]},
+      {abbr:"wed", theme:"Nigeria, Start to Finish", kcal:1677,
+       slots:[["fresh","bfast","Egg sauce with yam",430,null],["fresh","lunch","Efo riro with rice",551,null],
+              ["fresh","dinner","Pepper soup with plantain",447,null],["fresh","snack","Roasted peanuts & apple",249,null]]},
+      {abbr:"thu", theme:"Bologna Meets the Bodega", kcal:1650,
+       slots:[["fresh","bfast","Steak & egg sandwich",470,null],["batch","lunch","Turkey bolognese with edamame spaghetti",520,null],
+              ["batch","dinner","Smash burger with slaw",406,null],["fresh","snack","Grated apple, cinnamon & coconut yoghurt",254,null]]},
+      {abbr:"fri", theme:"Wraps, Jerk & Char", kcal:1730,
+       slots:[["fresh","bfast","Callaloo & egg skillet",418,null],["batch","lunch","Roast chicken wrap",531,null],
+              ["fresh","dinner","Jerk salmon with rice & peas",530,null],["fresh","snack","Chia pot with mango",251,null]]}
+    ],
+    dayBand:[1649,1730],
+    channels:[
+      {k:"fat",  label:"fat",  unit:"g",    v:341.2, band:[285,425]},
+      {k:"prot", label:"prot", unit:"g",    v:563,   band:[525,595]},
+      {k:"kcal", label:"kcal", unit:"kcal", v:8456,  band:[8245,8650]},
+      {k:"carb", label:"carb", unit:"g",    v:679.4, band:[435,825]},
+      {k:"fib",  label:"fibre",unit:"g",    v:212.5, band:[200,225]}
+    ]
+  };
+
+  /* the same arithmetic the screen ships (src/screens/plan/model.ts) */
+  const PAD = 1.5;
+  function scaleOf(band, wink) {
+    const span = band[1] - band[0] || 1, lo = band[0] - PAD*span, baseHi = band[1] + PAD*span;
+    const minors = wink ? 45 : 40, hi = lo + (baseHi - lo) * (minors/40);
+    const f = v => (v - lo)/(hi - lo);
+    return {lo, hi, minors, f,
+      z:{dl:f(band[0]-PAD*span/3), bs:f(band[0]), be:f(band[1]), wh:f(band[1]+PAD*span/3)}};
+  }
+  const frac = (v,s) => Math.min(1, Math.max(0, (v - s.lo)/(s.hi - s.lo)));
+  const ang  = (v,s) => -135 + 270*frac(v,s);
+  const state = (v,b) => v < b[0] ? "under" : v > b[1] ? "over" : "in";
+  const WORD = {under:"UNDER BAND", in:"IN BAND", over:"OVER BAND"};
+  const fmt = (v,c) => c.unit === "kcal" ? String(Math.round(v)) : (Number.isInteger(Math.round(v*10)/10) ? String(Math.round(v*10)/10) : (Math.round(v*10)/10).toFixed(1));
+
+  /* ------------------------------------------------------- rung 1 · simple */
+  const CUT_WED = "Wednesday's off entirely — egg sauce, efo riro and pepper soup all need plantain, and efo riro needs egusi too. Neither is stocked at Morrisons.";
+  const CUT_SNACK = "not part of the tester week — no snack ingredients appear in the 39-line Morrisons basket";
+
+  function offSentence(off) {
+    if (!off.length) return "all five in band";
+    if (off.length === 5 && off.every(o => o.dir === off[0].dir)) return "all five " + off[0].dir;
+    const over = off.filter(o=>o.dir==="over").map(o=>o.k), under = off.filter(o=>o.dir==="under").map(o=>o.k);
+    const p = []; if (over.length) p.push(over.join(", ")+" over"); if (under.length) p.push(under.join(", ")+" under");
+    return p.join(" · ");
+  }
+
+  const S = document.getElementById("s"), SN = document.getElementById("s-note");
+  function renderSimple(mode) {
+    const tester = mode === "partial" || mode === "under" || mode === "disabled";
+    const chans = WEEK.channels.map(c => {
+      let v = c.v, band = c.band;
+      if (tester) { v = c.k==="kcal"?4817:c.k==="prot"?328.9:c.k==="fat"?197.5:c.k==="carb"?359.8:123.7;
+                    band = c.k==="kcal"?[4580,7245]:c.k==="prot"?[325,515]:c.k==="fat"?[195,325]:c.k==="carb"?[140,775]:[110,190]; }
+      if (mode === "over" && c.k === "kcal") v = 8646;
+      return {...c, v, band};
+    });
+
+    let rows = "";
+    const days = WEEK.days.map((d,i) => {
+      let kcal = d.kcal, off = [], slots = d.slots.map(s => s.slice());
+      if (tester) {
+        if (i===2) { kcal = 0; slots = slots.map(s => [ "cut", s[1], null, 0, null, CUT_WED ]); off = ["fat","prot","kcal","carb","fib"].map(k=>({k,dir:"under"})); }
+        else {
+          slots[3] = ["cut","snack",null,0,null,CUT_SNACK];
+          kcal = [1427,1449,0,917,1024][i];
+          if (i===3) slots[1] = ["cut","lunch",null,0,null,"Thursday's lunch (turkey bolognese with edamame spaghetti) is cut — Morrisons has no plain edamame or red-lentil pasta, and no turkey breast mince, only thigh."];
+          if (i===4) slots[0] = ["cut","bfast",null,0,null,"Friday's breakfast (callaloo & egg skillet) is cut — it needs plantain."];
+        }
+      }
+      if (mode === "over" && i === 4) { kcal = 1868; off = [{k:"kcal",dir:"over"},{k:"carb",dir:"over"}]; slots[1] = ["swap","lunch","Efo riro with rice",669,null,null,"Roast chicken wrap"]; }
+      if (mode === "overflow" && i === 0) { off = [{k:"prot",dir:"over"},{k:"kcal",dir:"under"},{k:"carb",dir:"under"}]; kcal = 1558;
+        slots[3] = ["fresh","snack","Grated apple, cinnamon & coconut yoghurt",254,null]; }
+      if (mode === "error" && i === 0) slots[1] = ["fresh","lunch","Halal cart chicken over rice",535,null,null,null,"swap → b-d9x (no such meal) — the model falls back to the AUTHORED meal and the row says so"];
+      if (mode === "empty" && i === 0) slots[3] = ["empty","snack",null,0,null];
+      if (mode === "stale" && i === 0) slots[0] = ["fresh","bfast","Bodega egg & cheese",426,"31h · YESTERDAY"];
+      if (mode === "firstrun") slots = slots.map(s => { const c=s.slice(); c[4]=null; return c; });
+      return {...d, kcal, off, slots};
+    });
+
+    for (const d of days) {
+      const st = state(d.kcal, tester?[916,1449]:WEEK.dayBand);
+      const sc = scaleOf(tester?[916,1449]:WEEK.dayBand);
+      rows += `<div class="s-lid"><b>${d.abbr}</b><span>${d.theme}</span>
+        <span style="text-align:right;color:var(--g8)">${d.kcal} kcal</span>
+        <span style="text-align:right">${WORD[st]}</span>
+        <span class="s-off" style="text-align:right">${offSentence(d.off)}</span></div>`;
+      if (d.abbr === (mode==="under" ? "wed" : mode==="over" ? "fri" : "mon")) {
+        for (const s of d.slots) {
+          const [mark, slot, name, kc, log, why, was, err] = s;
+          const cut = mark === "cut";
+          rows += `<div class="s-slot">
+            <span class="m" ${cut?'data-cut':''}>${mark}</span>
+            <span>${name ? `<a href="#">${name}</a>` : cut ? `cut · ${why}` : `no meal authored for this slot`}
+              ${was ? `<span style="color:var(--g4)"> was ${was}</span>`:''}
+              ${err ? `<span style="color:var(--g4)"> ${err}</span>`:''}</span>
+            <span>${log ? `logged ${log}` : name ? "not logged" : "—"}</span>
+            <span style="text-align:right;color:var(--g8)">${kc} kcal</span>
+            <button ${cut||!name?"disabled":""}>swap</button></div>`;
+        }
+      }
+    }
+
+    S.innerHTML = `<div class="s-row">` + chans.map(c => {
+      const sc = scaleOf(c.band, c.k === "kcal");
+      const st = state(c.v, c.band);
+      return `<div class="s-g"><div class="s-arc" style="--a:${ang(c.v,sc).toFixed(2)}deg"><i></i><b></b></div>
+        <dl><div><dt>${c.label}</dt><dd>${fmt(c.v,c)}${c.unit==="kcal"?"":c.unit}</dd></div>
+        <div><dt>state</dt><dd>${WORD[st]}</dd></div>
+        <div><dt>band</dt><dd>${fmt(c.band[0],c)}–${fmt(c.band[1],c)}</dd></div></dl></div>`;
+    }).join("") + `</div>` + rows;
+
+    const NOTES = {
+      full: "the authored fortnight, unswapped. Every day and every channel is IN BAND — that is not a rendering convenience, it is how the plan was authored, and it is exactly why the dial's range is derived from the band rather than from zero.",
+      firstrun: "no eaten ticks, no swaps, no stocktake. Every slot reads NOT LOGGED; the swap deck's ranking would print NEVER against a 72h threshold rather than a coverage percentage it cannot honestly claim.",
+      partial: "morrisons-tester: 10 of 20 slots cut, each carrying the commission's own stated reason. The gauges use the tester's OWN bands (kcal 916–1449/day), never plan.json's.",
+      under: "the tester's Wednesday. All four slots cut, so the day genuinely reads 0 on all five channels and every needle pins at its rest stop. The lid says ALL FIVE UNDER; the figure printed beside it is the real 0, never a dash.",
+      over: "Friday with a-d5l → b-d3l committed: 1868 kcal against a 1649–1730 band and 188.9 g carb against 87–165. This state is only reachable through a swap — nothing in the authored plan is out of band.",
+      overflow: "the longest name in the dataset (40 chars) and a three-channel off-band line. The name cuts at the tail with an ellipsis (II.6.22); the off-band line WRAPS rather than clips, because a warning cut off mid-word confesses nothing.",
+      stale: "a logged tick 31h old against the eaten class's declared 24h. The value HOLDS, the ink drops to 55%, the word YESTERDAY prints, and a recovery action sits at a fixed position whether or not it is offered.",
+      error: "a swap whose replacement id is not in meals.json. getMeal returns undefined and the row falls back to the AUTHORED meal — it does not blank, and it does not silently pretend the swap took.",
+      empty: "a slot the plan authors no meal for. NOT REACHABLE from the shipped dataset — all 20 cells of both weeks are authored — and rendered here only because the model carries a branch for it. Saying so is the point.",
+      disabled: "a cut slot's swap key is not rendered at all (there is nothing to swap into a slot the commission never cooks), and on Week B the crown's re-commission is refused with a printed reason rather than greyed out in silence.",
+      loading: "there is no loading state on this screen. The store is synchronous over localStorage and the plan is a compiled JSON module, so there is no frame in which PLAN has a question but not an answer. Declared, and unreachable — a spinner here would be theatre."
+    };
+    SN.textContent = NOTES[mode];
+  }
+  const sel = document.getElementById("s-state");
+  sel.addEventListener("change", () => renderSimple(sel.value));
+  renderSimple("full");
+
+  /* ------------------------------------------------------ rung 2 · study A */
+  function drawDial(el, {band, value, zeroBased, wink}) {
+    const s = zeroBased
+      ? {lo:0, hi:Math.max(1, band[1]*1.5), minors:40, f:v=>v/Math.max(1,band[1]*1.5),
+         z:{dl:0, bs:band[0]/(band[1]*1.5), be:band[1]/(band[1]*1.5), wh:Math.min(1,(band[1]*1.15)/(band[1]*1.5))}}
+      : scaleOf(band, wink);
+    const R=100, polar=(f,r)=>{const a=((135+270*f)*Math.PI)/180; return [100+r*Math.cos(a),100+r*Math.sin(a)];};
+    const arc=(f0,f1,r=0.91*R)=>{ if(f1<=f0) return ""; const[a,b]=polar(f0,r),[c,d]=polar(f1,r);
+      return `M ${a.toFixed(2)} ${b.toFixed(2)} A ${r} ${r} 0 ${((f1-f0)*270>180)?1:0} 1 ${c.toFixed(2)} ${d.toFixed(2)}`; };
+    let t="";
+    for(let i=0;i<=s.minors;i++){const f=i/s.minors,maj=i%5===0,r1=.98*R,r2=r1-R*(maj?.12:.06);
+      const[x1,y1]=polar(f,r1),[x2,y2]=polar(f,r2);
+      t+=`<line class="t" x1="${x1.toFixed(2)}" y1="${y1.toFixed(2)}" x2="${x2.toFixed(2)}" y2="${y2.toFixed(2)}" stroke-width="${maj?2:1}"/>`;}
+    el.innerHTML = `<svg viewBox="0 0 200 200"><g fill="none" stroke-width="${.06*R}" stroke-linecap="butt">
+      <path class="zr" d="${arc(0,s.z.dl)}"/><path class="zc" d="${arc(s.z.dl,s.z.bs)}"/>
+      <path class="zb" d="${arc(s.z.bs,s.z.be)}"/><path class="zc" d="${arc(s.z.be,s.z.wh)}"/>
+      <path class="zr" d="${arc(s.z.wh,1)}"/></g>${t}</svg><i style="--a:${ang(value,s).toFixed(2)}deg"></i>`;
+    return ((s.z.be-s.z.bs)*270);
+  }
+  const kcalDay = {band:[1649,1730], value:1678};
+  const degA1 = drawDial(document.getElementById("pa1"), {...kcalDay, zeroBased:true});
+  const degA2 = drawDial(document.getElementById("pa2"), {...kcalDay});
+  document.getElementById("pa1").insertAdjacentHTML("afterend",
+    `<p class="s-note">band occupies <b style="color:var(--g8)">${degA1.toFixed(1)}°</b> of 270°</p>`);
+  document.getElementById("pa2").insertAdjacentHTML("afterend",
+    `<p class="s-note">band occupies <b style="color:var(--g8)">${degA2.toFixed(1)}°</b> of 270°</p>`);
+
+  /* ------------------------------------------------------ rung 2 · study B */
+  const pb = document.getElementById("pb"), pbn = document.getElementById("pb-note"), pbm = document.getElementById("pb-mode");
+  function renderRow() {
+    const mode = pbm.value;
+    const cols = mode === "even" ? "repeat(5, 1fr)"
+      : mode === "minus" ? "calc(16.8% - 1rem) calc(21.1% - 1rem) calc(24.2% - 1rem) calc(21.1% - 1rem) calc(16.8% - 1rem)"
+      : "16.8% 21.1% 24.2% 21.1% 16.8%";
+    pb.style.gridTemplateColumns = cols;
+    pb.style.gap = mode === "minus" ? "1.25rem" : "0";
+    /* the DIAL is what a reader sees, so the dial is what is measured. */
+    const inset = mode === "exact" ? "4%" : "0.35rem";
+    const pad   = mode === "exact" ? "3.5%" : "6px";
+    pb.innerHTML = ["fat","prot","KCAL","carb","fibre"]
+      .map(n=>`<div style="margin:0 ${inset};padding:${pad}"><span>${n}</span></div>`).join("");
+    /* measured SYNCHRONOUSLY, not in a rAF: reading getBoundingClientRect
+       already flushes layout, and a backgrounded tab does not run rAF at all —
+       which is exactly how this caption came out blank the first time. */
+    const w = [...pb.children].map(c => { const b=c.getBoundingClientRect(); const cs=getComputedStyle(c);
+      return b.width - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight); });
+    const r = w.map(x => (x/w[2]).toFixed(4));
+    pbn.innerHTML = `measured DIAL rank-one : outboard = <b style="color:var(--g8)">${(w[2]/w[0]).toFixed(3)} : 1</b>
+      &nbsp;·&nbsp; the chapter's own is <b style="color:var(--g8)">1.440 : 1</b>
+      &nbsp;·&nbsp; ratios ${r.join(" / ")}`;
+  }
+  pbm.addEventListener("change", renderRow); renderRow();
+
+  /* --------------------------------------------------- rung 4 · signature */
+  const SIG = {
+    week:      {v:8456, band:[8245,8650], scope:"one plated week",       note:"five plated days · mon to fri"},
+    fortnight: {v:16912,band:[16490,17300],scope:"the executing fortnight",note:"week a, twice · ten plated days (D5)"}
+  };
+  let sigScope = "week";
+  const svg = document.getElementById("sig-svg"), lab = document.getElementById("sig-lab");
+  function paintSig() {
+    const d = SIG[sigScope], s = scaleOf(d.band, true), R=100;
+    const polar=(f,r)=>{const a=((135+270*f)*Math.PI)/180; return [100+r*Math.cos(a),100+r*Math.sin(a)];};
+    const arc=(f0,f1,r=0.91*R)=>{ if(f1<=f0) return ""; const[a,b]=polar(f0,r),[c,e]=polar(f1,r);
+      return `M ${a.toFixed(2)} ${b.toFixed(2)} A ${r} ${r} 0 ${((f1-f0)*270>180)?1:0} 1 ${c.toFixed(2)} ${e.toFixed(2)}`; };
+    let t="";
+    for(let i=0;i<=s.minors;i++){const f=i/s.minors,maj=i%5===0,r1=.98*R,r2=r1-R*(maj?.12:.06);
+      const[x1,y1]=polar(f,r1),[x2,y2]=polar(f,r2);
+      t+=`<line class="t" x1="${x1.toFixed(2)}" y1="${y1.toFixed(2)}" x2="${x2.toFixed(2)}" y2="${y2.toFixed(2)}" stroke-width="${maj?2:1}"/>`;}
+    svg.innerHTML = `<g fill="none" stroke-width="${.06*R}" stroke-linecap="butt">
+      <path class="zr" d="${arc(0,s.z.dl)}"/><path class="zc" d="${arc(s.z.dl,s.z.bs)}"/>
+      <path class="zb" d="${arc(s.z.bs,s.z.be)}"/><path class="zc" d="${arc(s.z.be,s.z.wh)}"/>
+      <path class="zr" d="${arc(s.z.wh,1)}"/></g>${t}`;
+    /* numerals every SECOND major, plus the wink's one extra past the run's end */
+    let L="";
+    for (let i=0;i<=9;i++){ const winkOne = i===9;
+      if (i%2!==0 && !winkOne) continue;
+      const f=i/9, [x,y]=polar(f,.68*R), v=s.lo+(s.hi-s.lo)*f;
+      L += `<span class="${winkOne?"wink":""}" style="left:${(x/2).toFixed(2)}%;top:${(y/2).toFixed(2)}%">${Math.round(v)}</span>`; }
+    lab.innerHTML = L;
+    const a = ang(d.v, s);
+    document.getElementById("sig-needle").style.setProperty("--sig-a", a.toFixed(2)+"deg");
+    document.getElementById("sig-fig").textContent = String(d.v);
+    document.getElementById("sig-scope").textContent = d.scope;
+    document.getElementById("sig-note").textContent = d.note;
+    document.getElementById("sig-band").textContent = `${d.band[0]}–${d.band[1]} kcal`;
+    document.getElementById("sig-ang").textContent = a.toFixed(2).replace("-","−")+"°";
+  }
+  paintSig();
+
+  const crown = document.getElementById("sig-crown"), fill = document.getElementById("sig-fill");
+  let raf = null, fired = false;
+  function begin() {
+    if (raf) return; fired = false; crown.dataset.holding = "true";
+    const t0 = performance.now();
+    const step = now => {
+      if (!raf) return;
+      const p = Math.min(1, (now - t0)/350);
+      crown.style.setProperty("--hold", (p*100).toFixed(1)+"%");
+      if (p < 1) { raf = requestAnimationFrame(step); return; }
+      raf = null; fired = true; crown.style.setProperty("--hold","0%"); crown.dataset.holding = "false";
+      sigScope = sigScope === "week" ? "fortnight" : "week";
+      crown.setAttribute("aria-valuenow", sigScope === "week" ? "0" : "1");
+      crown.setAttribute("aria-valuetext", "pulled · " + SIG[sigScope].scope);
+      paintSig();
+    };
+    raf = requestAnimationFrame(step);
+  }
+  function cancel() {
+    if (raf) cancelAnimationFrame(raf);
+    raf = null; crown.style.setProperty("--hold","0%"); crown.dataset.holding = "false";
+  }
+  crown.addEventListener("pointerdown", e => { crown.setPointerCapture?.(e.pointerId); begin(); });
+  crown.addEventListener("pointerup", cancel);
+  crown.addEventListener("pointercancel", cancel);
+  crown.addEventListener("pointerleave", cancel);
+  crown.addEventListener("keydown", e => { if (e.key === " " && !e.repeat) { e.preventDefault(); begin(); } });
+  crown.addEventListener("keyup", e => { if (e.key === " ") cancel(); });
+  crown.addEventListener("blur", cancel);
+})();
+</script>
+</main>
+</body>
+</html>

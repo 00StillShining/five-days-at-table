@@ -1,499 +1,2178 @@
 /*
-  PLAN — the fortnight board (PLAN.md §6.4). Scoped entirely under .scr-plan
-  per PHASE2-CONTRACT ownership rules; tokens.css chassis/shared-primitive
-  rules are consumed, never duplicated. Flat law: no metals/gradients
-  anywhere on this screen (Phase 3 polish only) — the needle dials are the
-  one permitted precision object and stay flat shapes, just more geometric
-  detail than the rest of the screen.
+  src/screens/plan/plan.css — 17 RESTOMOD, on PLAN.
+
+  ===========================================================================
+  COMMITTED VALUES, every one from ch.17 section 2 / 3 or a CD-BRIEF ruling
+  ===========================================================================
+    ivory dial face      #F0E6D2  --cd-face      lacquer, ONE hard reflection
+    crackle black        #1B1B1B  --cd-field     chassis + bezel undercarriage
+    champagne gold       #C9A46A  --cd-gold      case ring, anodized, 8% travel
+    nickel satin         #C7C8CA  --cd-nickel    brushed, 3px grain, band @47%
+    needle orange        #E8590C  --cd-needle    GAUGE NEEDLES ONLY
+    needle keyline       #1B1B1B  --cd-needle-keyline  1px down its own length
+    heritage green dim   #1D3529  --cd-green-dim non-hero dial markings
+    heritage green lit   #1F5C3D  --cd-green-lit the signature hue
+    heritage green hot   #143C28  --cd-green-hot the HERO dial's own ink only
+    muted ink            #6F6659  --cd-muted-ink units, timestamps on ivory
+    OLED white           #E9F6EC  --cd-oled-white the inset's digit stroke
+    one sun              138deg   --cd-light-axis shadow ratio 1:2, every screen
+    module               0.5rem   --cd-module    every radius, gap and diameter
+    case-diameter split  24.2 / 21.1 / 21.1 / 16.8 / 16.8   --cd-dial-1..5
+    needle slew          720 deg/s               full 270deg arc in 375ms
+    needle mass          spring(1.4,260,30)      Weighted; wobble = its own zeta
+    crown mass           spring(0.7,420,25)      Light  --cd-settle-light 180ms
+    crown commit         spring(1.2,300,38)      Anchored, 0% overshoot
+    dressing cross-fade  spring(1.6,240,30)      Panel  --cd-settle-panel 340ms
+    guarded engage       350ms linear fill       II.3.16, licensed onto ENGAGE
+    detent voice         960Hz, 22ms, peak 0.50  re-keyed off the bench's 1800Hz
+    larynx               1400Hz Q0.7 lowpass     the world's one shared throat
+
+  ===========================================================================
+  THE ROW, AND WHY THESE FIVE COLUMNS IN THIS ORDER
+  ===========================================================================
+  ch.17 section 2 measures the split off the real cluster's case diameters —
+  115/100/100/80/80mm => 24.2 / 21.1 / 21.1 / 16.8 / 16.8. Section 1 fixes the
+  arrangement: "one instrument centered, two flanking it, two more outboard, in
+  that order and no other." Section 4 names the hero: "The center instrument
+  alone takes the tier-3 hero treatment." Placing the measured SET by that
+  arrangement gives, left to right:
+
+      --cd-dial-5  --cd-dial-2  --cd-dial-1  --cd-dial-3  --cd-dial-4
+         16.8%        21.1%        24.2%        21.1%        16.8%   = 100.0%
+          fat          prot         KCAL         carb        fibre
+
+  Each column gives back 1rem so the four 1.25rem gutters (ch.17 section 4's
+  own Dense Dashboard gutter) fit exactly: 5 x 1rem = 4 x 1.25rem = 5rem.
+
+  ===========================================================================
+  MEASURED CONTRAST (WCAG 2.x, computed for this build, not eyeballed)
+  ===========================================================================
+  The ivory face presents four stops, not one. Measured against EVERY one:
+
+                                 lacquer   lacquer    ivory    bezel-well
+                                 core      mid        base     cast
+                                 #F5EFE2   #F2E9D8    #F0E6D2  #CEC6B4
+    green-hot   #143C28  text     10.74      10.21      9.93      7.24
+    green-lit   #1F5C3D  text      6.90       6.56      6.38      4.65
+    green-dim   #1D3529  text     11.50      10.93     10.64      7.76
+    muted ink   #6F6659  text      4.93       4.68      4.56      3.32  (*)
+    keyline     #1B1B1B  graphic  15.03      14.29     13.91     10.14
+    band zone   #318753  graphic   3.88       3.69      3.59      2.62  (*)
+    caution     #A26D23  graphic   3.86       3.67      3.57      2.60  (*)
+    redline     #C2392E  graphic   4.68       4.45      4.33      3.15
+    needle      #E8590C  graphic   3.12       2.97      2.89      2.11  (**)
+
+  (*)  THE BEZEL-WELL CAST IS FENCED OFF FROM EVERY MARK. II.3.18 puts the
+       recessed dial floor's cast at `inset 0 2px 4px`, which reaches at most
+       ~2% of the diameter inward from the rim; the innermost thing on the face
+       is a tick ending at 98% of R, and every NUMERAL sits at 68% of R. So the
+       #CEC6B4 stop exists only under bare face. It is recorded because a stop
+       a ground can present has to be measured whether or not type lands on it,
+       and because it is the reason NO ink plate on this screen carries an
+       inset dark cast: the plates use the lit lower lip only.
+  (**) THE NEEDLE READS BY ITS KEYLINE, by design and by ruling. #E8590C is
+       2.89:1 on ivory — under the 3:1 graphical floor — so `--cd-needle-keyline`
+       #1B1B1B runs its whole length: 13.91:1 on ivory, 4.81:1 against the
+       orange itself. ch.17 section 2 already gives the needle that 1px
+       catch-light down its body.
+
+  On the crackle-black chassis and its well:
+    ivory face  #F0E6D2 on #1B1B1B ................. 13.91 : 1  graphic
+    nickel      #C7C8CA on #1B1B1B ................. 10.29 : 1  graphic
+    champagne   #C9A46A on #1B1B1B .................. 7.38 : 1  graphic
+    OLED white  #E9F6EC on the inset well #121213 .. 16.81 : 1  text
+    needle      #E8590C on #1B1B1B .................. 4.81 : 1  graphic
+
+  The two-tone focus ring (CD-BRIEF repair 3), best-of-pair on every ground
+  this screen actually presents:
+    ivory  #F0E6D2 ... blue 2.75 / keyline 14.87 : 1   pair passes
+    crackle #1B1B1B .. blue 5.05 / keyline  1.07 : 1   pair passes
+    nickel #C7C8CA ... blue 2.04 / keyline 11.00 : 1   pair passes
+    gold   #C9A46A ... blue 1.46 / keyline  7.90 : 1   pair passes
+    well   #121212 ... blue 5.49 / keyline  1.02 : 1   pair passes
+  The two tones measure 5.40:1 against each other, so one edge always carries.
+
+  ===========================================================================
+  DECLARED DEPARTURES (CORRECTIONARY 6.5 — no silent downgrades)
+  ===========================================================================
+  1. THE INSET IS NOT LIT IN THE LIVE ROLE. ch.17 gives it a #5EE6A8 phosphor;
+     world.css supersedes that hex to `--cd-role-live` #FF2B1A, which CD-BRIEF
+     ruling 3 pins to exactly one product-wide meaning: a cook program is
+     running. Nothing on PLAN is live — a fortnight total is derived, which is
+     why the freshness table declares the macros class never-stale. Lighting
+     this window in the live red would be drama that lies. It burns instead in
+     `--cd-oled-white` #E9F6EC, ch.17's OWN registry entry for this window, on
+     the product's lamp well at 16.81:1. No reserved role is spent, so II.7.12's
+     "every other reserved role idles at zero" holds exactly.
+  2. DIAL DIAMETER. ch.17's Hero Screen fills a 58% band of viewport height.
+     This is the DENSE DASHBOARD, not the Hero Screen, and R7 forbids the
+     page-length scroll that five 18rem dials plus a twenty-slot register would
+     force. The hero dial is clamp(7.5rem, 12.5vw, 10.5rem) and every RATIO
+     inside it is II.3.18's own: tip 82% of R, tail 18%, hub 12%, ticks to 98%,
+     numerals at 68%, zone band 6% of R wide at 91%.
+  3. THE ROW BREAKS BELOW 1100px, AND THE NUMERALS LEAVE BEFORE THE DIAL DOES.
+     At 1280px the row is real: 203 / 255 / 292 / 255 / 203px of column. At
+     390px it would be 53 / 67 / 77 / 67 / 53, and II.6.11 is explicit — below
+     0.6875rem type is TEXTURE, never information. So below 1100px the row
+     re-lays out (rank one full width, the four others at the flank:outboard
+     pair 21.1:16.8, normalised 55.7% / 44.3%), and below 700px the subordinate
+     dials DROP their numerals rather than shrink them, keeping needle, printed
+     zone and the exact figure beside the face. A proportion of a row that is
+     not a row is not a fact.
+  4. THE 4.25rem RESERVED TOP STEP (II.6.20) IS THE INSET'S OWN FIGURE, and it
+     is responsive: clamp(--cd-size-4, 5.2vw, --cd-size-7). It reaches the
+     reserved step at desk width and floors at the 1.25rem panel-readout floor
+     on a phone. It never floors below that, and no other figure on this screen
+     approaches it.
+  5. TROPHY'S RANK-ONE SCALE IS 2x, NOT ch.17's 1.5x. The owner's cross-screen
+     Trophy ruling fixes 3-5 survivors at 2x scale; ch.17 section 4's Dense
+     Dashboard variant says 1.5x. The owner ruling is product-wide and wins.
+     The rest of that variant is followed exactly: the four subordinate dials
+     "recede to a single printed row beneath it at 1.75rem, needle and figure
+     only, no labels", and everything else disappears rather than shrinks.
 */
 
-.scr-plan {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-width: 76rem;
-  margin: 0 auto;
-}
-
-/* --- head --- */
-
-.scr-plan-head {
-  display: flex;
-  align-items: baseline;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-
-.scr-plan-title {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 700;
-  text-transform: lowercase;
-}
-
-.scr-plan-sub {
-  margin: 0;
-  font-family: var(--sol-font-data);
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-  text-transform: lowercase;
-}
-
-/* --- hero: week adherence gauge --- */
-
-.scr-plan-hero {
-  border: 1px solid var(--sol-border);
-  background: var(--sol-panel);
-  padding: 1rem;
-}
-
-.scr-plan-hero-title {
-  margin: 0 0 0.75rem;
-  font-size: 0.9rem;
-  font-weight: 700;
-  text-transform: lowercase;
-  color: var(--sol-text-muted);
-  /* PHASE 3 polish (item 5): silkscreen section-head, barely-there engraved
-     — opts into the shared token defined in tokens.css's PHASE 3 POLISH
-     section. */
-  text-shadow: var(--fd5-engrave);
-}
-
-.scr-plan-hero-body {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  align-items: center;
-}
-
-.scr-plan-dials {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  flex: 0 0 auto;
-}
-
-.scr-plan-dial {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 6.5rem;
-}
-
-.scr-plan-dial-svg {
-  width: 100%;
-  height: auto;
-}
-
-/* PHASE 3 polish (item 2): the recessed dial well + rim sit behind
-   everything else in the dial (track/ticks/needle) — Sol §1B "depth follows
-   structure". Flat fill on an existing token (--sol-bg), not a gradient:
-   this dial is the board's one precision object (PLAN §6.0) and stays
-   restrained rather than a showpiece. */
-.scr-plan-dial-well {
-  fill: var(--sol-bg);
-}
-
-.scr-plan-dial-well-rim {
-  fill: none;
-  stroke: var(--sol-border);
-  stroke-width: 1;
-  stroke-opacity: 0.55;
-}
-
-/* Printed-scale ticks: thin static marks, same visual weight regardless of
-   channel or state — a fixed instrument scale, not a data encoding. */
-.scr-plan-dial-tick {
-  stroke: var(--sol-border);
-  stroke-width: 1;
-  stroke-opacity: 0.8;
-}
-
-.scr-plan-dial-track {
-  fill: none;
-  stroke: var(--sol-border);
-  stroke-width: 2;
-}
-
-.scr-plan-dial-band {
-  fill: none;
-  stroke-width: 5;
-  stroke-linecap: round;
-  /* Color comes from a custom property set inline per-dial (AdherenceGauge.tsx),
-     not an inline `stroke` — so the forced-colors override below (a normal
-     stylesheet rule) can still beat it. An inline `style.stroke` would have
-     out-specificity'd any stylesheet rule regardless of media query. */
-  stroke: var(--scr-plan-dial-color, var(--sol-text));
-}
-
-.scr-plan-dial-needle {
-  stroke: var(--sol-text);
-  stroke-width: 2.5;
-  stroke-linecap: round;
-  transition: transform var(--sol-motion-state) ease;
-  /* Soft needle shadow (item 2). `filter` isn't on the forced-colors forced
-     property list, so it survives that mode by default — reset explicitly
-     below to keep the forced-colors dial perfectly flat, matching every
-     other forced-colors override on this screen. */
-  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.35));
-}
-
-.scr-plan-dial-pivot {
-  fill: var(--sol-text);
-}
-
-/* Center pivot cap: a tiny machined highlight dot on top of the pivot. */
-.scr-plan-dial-pivot-cap {
-  fill: var(--sol-panel);
-}
-
-.scr-plan-dial-label {
-  margin: 0.25rem 0 0;
-  font-size: var(--sol-text-label);
-  text-transform: lowercase;
-  color: var(--sol-text-muted);
-}
-
-/* the always-present exact-numbers text table (Sol gauge rule: toggle-free,
-   beside the dial, never the visual alone) */
-.scr-plan-hero-table {
-  flex: 1 1 16rem;
-  border-collapse: collapse;
-  font-size: var(--sol-text-label);
-}
-
-.scr-plan-hero-table th,
-.scr-plan-hero-table td {
-  text-align: left;
-  padding: 0.3rem 0.6rem 0.3rem 0;
-  border-bottom: 1px solid var(--sol-border);
-  text-transform: lowercase;
-}
-
-.scr-plan-hero-table thead th {
-  color: var(--sol-text-muted);
-  font-weight: 600;
-}
-
-.scr-plan-hero-num {
-  font-family: var(--sol-font-data);
-  font-variant-numeric: tabular-nums;
-}
-
-/* --- fortnight grid: day columns (desktop), day-stacked list (mobile) --- */
-
-.scr-plan-grid {
-  display: flex;
-  flex-direction: row;
-  gap: 0.75rem;
-  align-items: flex-start;
-}
-
-.scr-plan-day {
-  flex: 1 1 0;
-  min-width: 11rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.scr-plan-day-heading {
-  margin: 0;
-  font-size: 0.95rem;
-  font-weight: 700;
-  text-transform: lowercase;
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-}
-
-.scr-plan-day-theme {
-  font-family: var(--sol-font-data);
-  font-size: 0.6875rem; /* nonessential engraving band, 9-11px */
-  font-weight: 400;
-  color: var(--sol-text-muted);
-  text-transform: none;
-}
-
-.scr-plan-day-slots {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.scr-plan-day-total {
-  margin: 0;
-  font-family: var(--sol-font-data);
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-  text-transform: lowercase;
-}
-
-.scr-plan-day-total[data-over] {
-  color: var(--sol-text);
-}
-
-.scr-plan-day-flag {
-  color: var(--sol-text);
-  font-weight: 700;
-}
-
-/* --- slot card --- */
-
-.scr-plan-card {
-  border: 1px solid var(--sol-border);
-  background: var(--sol-panel);
-  padding: 0.625rem 0.75rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-}
-
-.scr-plan-card[data-logged="true"] {
-  border-style: solid;
-  border-width: 2px;
-}
-
-.scr-plan-card--empty {
-  border-style: dashed;
-  align-items: center;
-  justify-content: center;
-  min-height: 4rem;
-}
-
-.scr-plan-card-slot {
-  margin: 0;
-  font-family: var(--sol-font-data);
-  font-size: 0.6875rem;
-  color: var(--sol-text-muted);
-  text-transform: lowercase;
-}
-
-.scr-plan-card-name {
-  font-weight: 600;
-  color: var(--sol-text);
-  text-decoration: none;
-}
-
-.scr-plan-card-name:hover,
-.scr-plan-card-name:focus-visible {
-  text-decoration: underline;
-}
-
-.scr-plan-card-macro {
-  margin: 0;
-  font-family: var(--sol-font-data);
-  font-size: var(--sol-text-label);
-  font-variant-numeric: tabular-nums;
-  color: var(--sol-text-muted);
-}
-
-.scr-plan-card-meta {
-  margin: 0;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.scr-plan-chip {
-  font-family: var(--sol-font-data);
-  font-size: 0.6875rem;
-  text-transform: lowercase;
-  border: 1px solid var(--sol-border);
-  padding: 0.05rem 0.4rem;
-}
-
-.scr-plan-chip[data-chip="swap"] {
-  border-style: dashed;
-  font-weight: 700;
-}
-
-.scr-plan-card-swapnote {
-  font-size: 0.6875rem;
-  color: var(--sol-text-muted);
-  text-transform: lowercase;
-}
-
-.scr-plan-card-logged {
-  font-size: 0.6875rem;
-  color: var(--sol-success);
-  text-transform: lowercase;
-}
-
-.scr-plan-card-empty-text {
-  margin: 0;
-  color: var(--sol-text-muted);
-  text-transform: lowercase;
-}
-
-/* docs/VARIANT-SPEC.md: tester "cut · reason" cell — dashed border matches
-   the empty-card treatment (non-color second cue), quiet by design (no new
-   hero, flat-functional per the VARIANT RUNTIME style law). */
-.scr-plan-card--cut {
-  border-style: dashed;
-  justify-content: center;
-  min-height: 4rem;
-}
-
-.scr-plan-card-cut-text {
-  margin: 0;
-  color: var(--sol-text-muted);
-  font-size: var(--sol-text-label);
-  text-transform: lowercase;
-}
-
-.scr-plan-card-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-
-.scr-plan-swap-btn {
-  align-self: flex-start;
-  padding-inline: 0.75rem;
-  min-block-size: 2.75rem; /* fd5-control already guarantees this; explicit for clarity */
-  font-size: var(--sol-text-label);
-  text-transform: lowercase;
-}
-
-/* Guarded-action undo (Sol rule: reversible -> undo, not a confirm dialog).
-   Visually quieter than the primary "swap" action but the same target size. */
-.scr-plan-card-undo {
-  align-self: flex-start;
-  padding-inline: 0.75rem;
-  min-block-size: 2.75rem;
-  font-size: var(--sol-text-label);
-  text-transform: lowercase;
-  border-style: dashed;
-  color: var(--sol-text-muted);
-}
-
-/* --- swap deck (inside the shared Sheet) --- */
-
-.scr-plan-swapdeck-current {
-  margin: 0 0 0.75rem;
-  font-size: var(--sol-text-label);
-  text-transform: lowercase;
-}
-
-.scr-plan-swapdeck-stepper {
-  display: flex;
-  align-items: stretch;
-  gap: 0.5rem;
-}
-
-.scr-plan-swapdeck-candidate {
-  flex: 1;
-  border: 1px solid var(--sol-border);
-  padding: 0.75rem;
-  text-align: center;
-}
-
-.scr-plan-swapdeck-candidate-name {
-  margin: 0 0 0.35rem;
-  font-weight: 700;
-}
-
-.scr-plan-swapdeck-candidate-coverage {
-  margin: 0 0 0.35rem;
-  font-family: var(--sol-font-data);
-  font-size: var(--sol-text-label);
-}
-
-.scr-plan-swapdeck-delta {
-  margin: 0 0 0.35rem;
-  font-family: var(--sol-font-data);
-  font-size: var(--sol-text-label);
-  font-variant-numeric: tabular-nums;
-}
-
-.scr-plan-swapdeck-warn {
-  color: var(--sol-text);
-}
-
-.scr-plan-swapdeck-position {
-  margin: 0;
-  font-size: 0.6875rem;
-  color: var(--sol-text-muted);
-}
-
-.scr-plan-swapdeck-actions {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-
-.scr-plan-swapdeck-commit {
-  font-weight: 700;
-}
-
-/* --- mobile: grid becomes a day-stacked list, order preserved --- */
-
-@media (max-width: 700px) {
-  .scr-plan-grid {
-    flex-direction: column;
+@layer cd.screen {
+  /* ===================================================================== */
+  /* 1 · THE GROUND — crackle-finish black enamel, under one sun            */
+  /* ===================================================================== */
+  /*
+    ch.17 section 2: "Crackle-finish black enamel covers the chassis and every
+    bezel undercarriage, built on the paper recipe of II.2.14 — a solid plate,
+    no gradient, no rim, contact and ambient shadow only ... carrying its
+    microtexture at the irregular-stop discipline II.2.16 spends on grain:
+    NEVER METRONOMIC, so the crackle web reads as a period finish rather than a
+    printed pattern, held inside the 3% ceiling of II.2.21 so it never gleams
+    and never sits behind a numeral."
+
+    Procedural per CD-BRIEF ruling 7. Four repeating-linear-gradients at
+    irregular angles and coprime pitches (37/53/71/89px), so the web's own
+    repeat period is their least common multiple rather than any one of them —
+    that is what "never metronomic" buys, and it costs one paint.
+
+    The 3% ceiling, measured: #1B1B1B has relative luminance 0.0144. The web's
+    stops are #171717 (0.0106) and #1F1F1F (0.0193) — a travel of 0.0087, which
+    is 0.87% of the 0..1 luminance range and well inside the 3% the failure mode
+    "crackle overreach" polices. It is the CHASSIS finish and it is never
+    printed behind a read surface: every plate and every dial face sits on top
+    of it with its own opaque ground.
+  */
+  .pln {
+    --pln-gutter: 1rem;
+    /*
+      THE ONE HAIRLINE SEPARATOR (ch.17 section 4: "one hairline separator —
+      never a zebra fill on a light field, since a wash reads as a stain on
+      ivory"). Measured composited over the ivory face: #00000038 renders
+      #BBB3A4 at 1.68:1, which is a rule you have to hunt for. #00000073
+      renders #847E73 at 3.25:1 — over the 3:1 graphical floor, and still a
+      hairline rather than a rule.
+    */
+    --pln-hair: #00000073;
+    --pln-lux: 1;
+    --pln-mode-ms: 240ms; /* Trophy EXIT, on any input */
+
+    position: relative;
+    display: block;
+    min-block-size: 100%;
+    /*
+      NO PADDING OF ITS OWN, and that is a measurement rather than a taste.
+      The chassis gives every scene a 16px frame already (`.fd5-scene`), so the
+      real budget at 1280x800 is 768px, not 800. The first board measured
+      818.8px and R7 forbids the page-length scroll that buys. Five trims — this
+      padding, the frame gutter, the gauge's own padding, the register's group
+      gap and the gauge plate's leading — brought it to 766.8px with a day open,
+      inside the 768 the chassis actually hands over.
+    */
+    padding: 0 0.5rem;
+    color: var(--cd-green-lit);
+    font-family: var(--cd-font-ui);
+    background-color: var(--cd-field);
+    background-image:
+      repeating-linear-gradient(23deg, #00000000 0 37px, #17171740 37px 38px),
+      repeating-linear-gradient(-64deg, #00000000 0 53px, #1f1f1f4d 53px 54px),
+      repeating-linear-gradient(111deg, #00000000 0 71px, #17171733 71px 72px),
+      repeating-linear-gradient(-7deg, #00000000 0 89px, #1f1f1f40 89px 90px);
+    /* II.2.14's paper response: contact and ambient only, no rim, no gradient. */
+    box-shadow: inset 0 0 0 1px #00000059;
+    /* The burn-in orbit, applied to ONE node so the whole composition moves as
+       a rigid frame — a hero that drifts against its own evidence has turned a
+       burn-in guard into a layout bug. */
+    transform: translate3d(var(--pln-orbit-x, 0px), var(--pln-orbit-y, 0px), 0);
+    transition: transform 4000ms linear, filter 4000ms linear;
+    filter: brightness(var(--pln-lux));
   }
 
-  .scr-plan-day {
-    min-width: 0;
+  .pln::after {
+    /* the crackle's own grain, at II.2.21's texture layer. Never behind a
+       numeral: every read surface on this screen is an opaque plate above it. */
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: var(--cd-noise);
+    opacity: 0.05;
+    mix-blend-mode: overlay;
   }
 
-  .scr-plan-hero-body {
-    flex-direction: column;
+  .pln-frame {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: calc(var(--pln-gutter) * 0.5);
+  }
+
+  .pln-body {
+    display: grid;
+    grid-template-columns: 20rem minmax(0, 1fr); /* the plate's own casting */
+    gap: var(--pln-gutter);
+    align-items: start;
+  }
+
+  .pln-column {
+    display: grid;
+    gap: var(--pln-gutter);
+    align-content: start;
+  }
+
+  .pln [data-pln-hidden="true"] {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    transition: opacity var(--pln-mode-ms) var(--cd-ease-settle),
+      visibility 0s linear var(--pln-mode-ms);
+  }
+
+  /* ===================================================================== */
+  /* 2 · THE CASE ROW                                                       */
+  /* ===================================================================== */
+
+  .pln-row-set {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 14.5rem;
+    gap: var(--pln-gutter);
+    align-items: start;
+  }
+
+  /*
+    THE COLUMN SPLIT IS EXACT, AND THE GUTTER IS NOT SUBTRACTED FROM IT.
+    A first build wrote `calc(var(--cd-dial-1) - 1rem)` per column so four
+    1.25rem gaps would fit inside 100%. Measured, that distorts the ratio the
+    chapter took off real case diameters — the fixed 1rem is a bigger share of
+    a 16.8% column than of a 24.2% one, so 24.2 : 16.8 (1.44) rendered as 1.14.
+    The columns here are the tokens VERBATIM and the gutter is carried as a
+    constant inset on each housing instead, which leaves the split exact:
+    16.8 / 21.1 / 24.2 / 21.1 / 16.8, summing to 100.0.
+
+    The row's own extent is capped because the vertical budget is real: at
+    1280x800 the register needs 9 rows at the Floor's 44px, which leaves about
+    330px for the whole case row. 60rem of row puts the rank-one dial at ~200px
+    and the outboard pair at ~135px, and the page does not scroll (R7).
+  */
+  .pln-row {
+    display: grid;
+    grid-template-columns:
+      var(--cd-dial-5)
+      var(--cd-dial-2)
+      var(--cd-dial-1)
+      var(--cd-dial-3)
+      var(--cd-dial-4);
+    gap: 0;
+    max-inline-size: 60rem;
+    /* The five housings stretch to the row's own height so their plates land
+       on ONE baseline: five state words read as a row, which is the whole
+       point of a row. The DIALS keep their measured diameters — the ratio is
+       in the case, not in the housing's height. */
     align-items: stretch;
   }
 
-  .scr-plan-dials {
+  /* --- the housing ----------------------------------------------------- */
+  /*
+    SPECIFICITY, deliberately. `.cd-encl[data-cd-encl="pod"]` in foundry.css is
+    (0,2,1) and lives in this same layer, so a bare `.pln-gauge` at (0,1,0)
+    would silently lose. Every rule here that touches an element carrying
+    data-cd-encl is written `.pln <sel>[data-cd-encl="<variant>"]` at (0,3,1),
+    which beats it outright rather than relying on file order.
+  */
+  /*
+    EVERY INSET BETWEEN THE COLUMN AND THE DIAL IS A PERCENTAGE OF THE COLUMN.
+    A constant inset keeps the COLUMN split exact but breaks the DIAL split,
+    which is the one a reader actually sees: measured with a flat 0.5rem margin
+    and a 6px bezel, the columns rendered 0.694 / 0.872 / 1 (exact) while the
+    dials rendered 0.635 / 0.847 / 1. The chapter's ratio is taken off CASE
+    DIAMETERS, so it has to survive down to the case. Percentage margins and
+    padding resolve against the grid area's own inline size, so the whole chain
+    scales and the dial ratio equals the column ratio exactly.
+  */
+  .pln .pln-gauge[data-cd-encl] {
+    display: grid;
+    gap: calc(var(--cd-module) * 0.75);
+    justify-items: center;
+    align-content: start;
+    grid-template-rows: auto 1fr;
+    padding: 3% 2% 2%;
+    margin-inline: 4%;
+    border-radius: var(--cd-module); /* section 2's second silhouette: a milled
+                                        case, softened at the module */
+  }
+
+  /* tier 3 — the foundry's deepest ambient, plus one rim-light along the
+     housing's own top edge where the machined face turns into the sun. */
+  .pln .pln-gauge[data-cd-encl="hero"] {
+    box-shadow:
+      var(--cd-shadow-t3),
+      inset 0 1px 0 #ffffff1a;
+  }
+
+  .pln .pln-gauge[data-cd-focused="true"] {
+    /* the crown has paged here. A machined index cut into the case, not a
+       glow: this world's hot ink, printed, at 9.93:1 on ivory. */
+    outline: 2px solid var(--cd-gold);
+    outline-offset: -2px;
+  }
+
+  /* --- the champagne case ring (II.2.9, anodized) ---------------------- */
+  /* The dial fills its own column, so the case-diameter ratio IS the dial
+     ratio. Nothing caps it per-dial: a cap applied to the widest column only
+     would flatten the very ratio the row exists to state. */
+  .pln-case {
+    position: relative;
+    inline-size: 100%;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: stretch;
+  }
+
+  .pln-case::before {
+    content: "";
+    position: absolute;
+    inset: calc(var(--cd-module) * -0.75);
+    border-radius: 50%;
+    /* anodize: the hue lives IN the metal; travel held to the 8% a mid-tone
+       carries without banding. #CDAB76 -> #C9A46A -> #B99762, satin rim only. */
+    background: linear-gradient(var(--cd-light-axis), #cdab76 0%, var(--cd-gold) 52%, #b99762 100%);
+    box-shadow:
+      inset 0 1px 0 #ffffff29, /* satin rim — never a polish */
+      0 1px 0 #00000073,
+      0 4px 10px #00000047;
+  }
+
+  .pln-case::after {
+    /* the 2% microtexture II.2.9 makes mandatory on anodized metal */
+    content: "";
+    position: absolute;
+    inset: calc(var(--cd-module) * -0.75);
+    border-radius: 50%;
+    background-image: var(--cd-noise);
+    opacity: 0.02;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+
+  /* --- the nickel bezel (II.2.7 brushed, NEVER II.2.8 chrome) ---------- */
+  /*
+    ch.17 section 9, "Nickel mistaken for chrome": "Trim renders with a
+    hard-mirror stop pair instead of a brushed band. Warning sign: a bezel
+    throws two sharp highlights rather than one soft specular sweep. Repair:
+    II.2.7's brushed recipe, restored in place of II.2.8's."
+
+    The foundry's bezel ships --cd-grad-chrome, which is exactly the failure
+    that clause names, so it is replaced here with ch.17's own numbers: grain
+    pitch 3px, the specular band centred at 47% of the light axis, brightest
+    stop #D6D9DD, hard machined rim #FFFFFF4D.
+  */
+  .pln .pln-bezel[data-cd-encl="bezel"] {
+    --cd-bezel-width: 3.5%;
+    position: relative;
+    z-index: 1;
+    inline-size: 100%;
+    block-size: 100%;
+    background:
+      repeating-linear-gradient(90deg, #ffffff00 0px, #ffffff17 1px, #00000017 2px, #ffffff00 3px),
+      linear-gradient(
+        var(--cd-light-axis),
+        #9a9c9f 0%,
+        #b7b8ba 34%,
+        #d6d9dd 47%,
+        var(--cd-nickel) 60%,
+        #8f9194 100%
+      );
+    box-shadow:
+      inset 0 1px 0 #ffffff4d, /* the hard machined rim */
+      inset 0 -1px 0 #00000059,
+      0 1px 0 #00000066,
+      0 4px 10px #00000040;
+  }
+
+  /* --- the ivory-lacquer face (II.2.12) -------------------------------- */
+  .pln-dial {
+    position: relative;
+    inline-size: 100%;
+    block-size: 100%;
+    /* Every figure ON the face is sized off the FACE, not off the viewport —
+       which is what makes the case-diameter ratio a typographic fact as well
+       as a geometric one, and is why the rank-one inset is the biggest numeral
+       on the panel without a single media query. Floors are still II.6.10's. */
+    container-type: inline-size;
+    border-radius: 50%;
+    background: var(--cd-face);
+    /* II.3.18's recessed dial floor, and this screen's ONLY inset dark cast.
+       It reaches ~2% of the diameter inward; every numeral sits at 68% of R. */
+    box-shadow:
+      inset 0 2px 4px #00000024,
+      inset 0 1px 0 #ffffff33;
+    overflow: hidden;
+  }
+
+  .pln-dial::after {
+    /* the wet window: ONE hard reflection, fixed to the sun, never travelling.
+       8% / 7%, sized 34% x 26%, core #FFFFFF59 — II.2.12's own figures. */
+    content: "";
+    position: absolute;
+    inset-inline-start: var(--cd-lacquer-window-x);
+    inset-block-start: var(--cd-lacquer-window-y);
+    inline-size: var(--cd-lacquer-window-w);
+    block-size: var(--cd-lacquer-window-h);
+    border-radius: 50%;
+    background: var(--cd-lacquer-window);
+    pointer-events: none;
+    z-index: 4;
+  }
+
+  .pln-face,
+  .pln-mark-hair > svg {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  .pln-mark-hair {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  /* --- the printed zones (II.7.8's standing exception) ----------------- */
+  .pln-zone--band {
+    stroke: var(--cd-role-success-fill-light);
+  }
+
+  .pln-zone--caution {
+    stroke: var(--cd-role-warning-zone-light);
+  }
+
+  .pln-zone--redline {
+    stroke: var(--cd-role-danger);
+  }
+
+  /* --- ticks and numerals, engraved (II.6.7) --------------------------- */
+  .pln-ticks {
+    stroke: var(--cd-green-dim);
+  }
+
+  .pln .pln-gauge[data-pln-rank="1"] .pln-ticks {
+    /* section 2: hot is "spent only on the hero gauge's own ink" */
+    stroke: var(--cd-green-hot);
+  }
+
+  .pln-face-labels {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .pln-face-label {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    /* II.6.10 — "any numeral A TASK READS at 0.875rem". A dial numeral is
+       read, so it sits on the numeral floor and not the label floor. */
+    font-size: var(--cd-size-2);
+    line-height: 1;
+    white-space: nowrap;
+    color: var(--cd-green-dim);
+    /* II.6.7 — the glyph is cut INTO the plate: the dual shadow of one light. */
+    text-shadow: 0 1px 0 #ffffff8c, 0 -1px 0 #00000029;
+  }
+
+  .pln .pln-gauge[data-pln-rank="1"] .pln-face-label {
+    color: var(--cd-green-hot);
+  }
+
+  /* THE WINK. ch.17 section 2's one authored over-range numeral — the run
+     pushed one digit past the round number every other dial stops at. Drawn
+     once, on the kcal dial, and never repeated elsewhere on the panel. */
+  .pln-face-label[data-pln-wink="true"] {
+    font-style: italic;
+    letter-spacing: -0.02em;
+  }
+
+  /* --- the operator's own hairline mark -------------------------------- */
+  .pln-mark {
+    stroke: var(--cd-green-hot);
+    stroke-width: 1.5;
+    stroke-dasharray: 4 3;
+  }
+
+  /* --- the needle (II.3.18's anatomy, ch.17's livery) ------------------ */
+  .pln-needle {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    pointer-events: none;
+    transform: rotate(var(--pln-needle-angle, -139deg));
+    /* the angle is written every frame by needle.ts's rate loop; no CSS
+       transition may fight it (II.1.20) */
+  }
+
+  .pln-needle-tip,
+  .pln-needle-tail {
+    position: absolute;
+    inset-inline-start: 50%;
+    background: var(--cd-needle);
+    /* THE KEYLINE. The livery orange is 2.89:1 on ivory; this carries it. */
+    outline: 1px solid var(--cd-needle-keyline);
+    outline-offset: -0.5px;
+  }
+
+  /* The needle's width scales with its own face, so the 1px keyline never eats
+     the livery orange it exists to carry. Measured: at 3px flat, a 416px
+     Trophy dial rendered a needle that read as a dark hairline, because a 1px
+     outline inset 0.5px on each side left barely 1px of #E8590C showing. */
+  .pln-needle-tip {
+    inline-size: max(3px, 1.6cqi);
+    block-size: 41%; /* tip at 82% of R => 41% of the diameter */
+    inset-block-start: 9%;
+    transform: translateX(-50%);
+    border-radius: 1.5px 1.5px 0 0;
+  }
+
+  .pln-needle-tail {
+    inline-size: max(4px, 2.1cqi);
+    block-size: 9%; /* counterweight tail at 18% of R */
+    inset-block-start: 50%;
+    transform: translateX(-50%);
+    border-radius: 0 0 2px 2px;
+  }
+
+  .pln-needle[data-pln-pinned="true"] .pln-needle-tip {
+    /* II.3.18's rest stop, made visible: the needle is against a physical
+       limit and the plate beneath says so in words. */
+    background: var(--cd-role-danger);
+  }
+
+  .pln-needle-catch {
+    /* section 2: "a 1px catch-light the length of its own body, FIXED TO THE
+       ROOM rather than to the needle's angle (II.2.4: texture rotates, light
+       holds)" — hence a SIBLING of the needle, never its child. */
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    background: linear-gradient(138deg, #ffffff00 47%, #ffffff66 50%, #ffffff00 53%);
+  }
+
+  .pln-needle-boss {
+    position: absolute;
+    inset-inline-start: 50%;
+    inset-block-start: 50%;
+    inline-size: 12%; /* hub Ø12% of R */
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    z-index: 7;
+    background: linear-gradient(var(--cd-light-axis), #cdab76 0%, var(--cd-gold) 55%, #b99762 100%);
+    box-shadow: inset 0 1px 0 #ffffff40, 0 1px 2px #00000073;
+  }
+
+  /* --- the engraved channel word --------------------------------------- */
+  /*
+    THE ENGRAVED WORD SITS IN THE ARC'S OWN DEAD ZONE.
+    II.3.18's arc runs 135deg to 405deg, so its 90deg gap is the bottom wedge —
+    which is exactly where a real gauge prints its legend. A first build put the
+    word at 30% from the top and it landed on the mid-scale numeral, because
+    fraction 0.5 of a 135->405 arc is straight UP. Measured, then moved.
+  */
+  .pln .pln-dial-word.cd-escutcheon {
+    position: absolute;
+    inset-inline-start: 50%;
+    /* 82%, not 85%: at 85% down a circle's own chord is 0.672 of its diameter,
+       and on the 67px outboard face at 390px the word "fibre" measured 50px
+       against a 45px chord and was clipped by the face's own edge. At 82% the
+       chord is 51px and the word sits inside its own dial. */
+    inset-block-start: 82%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    padding: 0 calc(var(--cd-module) / 2);
+    background: none;
+    box-shadow: none;
+    color: var(--cd-green-lit);
+    font-size: var(--cd-size-1);
+    white-space: nowrap;
+    text-shadow: 0 1px 0 #ffffff8c, 0 -1px 0 #00000029;
+  }
+
+  .pln .pln-gauge[data-pln-rank="1"] .pln-dial-word.cd-escutcheon {
+    color: var(--cd-green-hot);
+  }
+
+  /* --- the ONE inset on the panel (II.3.22) ---------------------------- */
+  .pln-inset {
+    position: absolute;
+    inset-inline-start: 50%;
+    inset-block-start: 62%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    display: flex;
+    align-items: baseline;
+    gap: 0.15em;
+    /* II.3.22's window is SMALL. It is held clear of the two arc-end numerals,
+       which II.3.18 puts at 68% of R and therefore at 74% down the face and
+       26% / 74% across it. A first build let the window run 72cqi wide at 67%
+       down and it covered both of them. Measured, then narrowed and lifted. */
+    max-inline-size: 44cqi;
+    padding: 0.05em 0.3em;
+    border-radius: calc(var(--cd-module) / 2);
+    background: var(--cd-live-well);
+    box-shadow:
+      inset 0 1px 3px #000000a6,
+      0 1px 0 #ffffff33;
+  }
+
+  .pln-inset-figure {
+    /* Sized off the FACE (declared departure 4). A first build sized it at
+       5.2vw and measured 66.6px inside a 148px dial: the window overflowed its
+       own face and was clipped by it. II.6.20's reserved 4.25rem top step is
+       the CEILING here and is reached in Trophy Mode, where the rank-one dial
+       doubles; on the working board no numeral approaches it, which is what
+       II.6.20 asks of every figure that is not the hero. */
+    font-size: clamp(var(--cd-size-4), 16.5cqi, var(--cd-size-7));
+    line-height: 0.95;
+    color: var(--cd-oled-white);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    /* II.2.17's three bloom shells at r / 4r / 12r, alpha 80 / 40 / 16, hue
+       held constant across all three. The hue is WHITE: no reserved role is
+       spent on a derived figure (declared departure 1). */
+    text-shadow:
+      0 0 var(--cd-bloom-r) #e9f6eccc,
+      0 0 var(--cd-bloom-4r) #e9f6ec66,
+      0 0 var(--cd-bloom-12r) #e9f6ec29;
+  }
+
+  .pln-inset-unit {
+    color: var(--cd-oled-white);
+    opacity: 0.8;
+  }
+
+  /* --- the subordinate dials print their figure on their own PLATE ------ */
+  /*
+    Engraved on the face it collided with the engraved channel name at every
+    width under about 160px of dial, and overlapped outright at 390px. The
+    housing's own plate is where a smaller instrument prints its figure, and
+    keeping it off the face is what leaves the rank-one inset scarce.
+  */
+  .pln-gauge-read {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 0.1em;
+    white-space: nowrap;
+  }
+
+  .pln-gauge-figure {
+    /* II.6.10's floor for "any numeral a task reads" is 0.875rem; the panel
+       readout step is its ceiling, so it never competes with the inset. */
+    font-size: var(--cd-size-4);
+    line-height: 1.1;
+    color: var(--cd-green-hot);
+  }
+
+  /* --- the gauge's own ink plate --------------------------------------- */
+  .pln .pln-gauge-plate {
+    align-self: end;
+    inline-size: 100%;
+    display: grid;
+    gap: 0;
+    line-height: 1.3;
+    padding: 2px calc(var(--cd-module) * 0.75) 3px;
+    text-align: start;
+  }
+
+  .pln-gauge-line {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0 0.35rem;
+  }
+
+  .pln-gauge-word {
+    font-size: var(--cd-size-1);
+    white-space: nowrap;
+    color: var(--cd-role-success-ink-light);
+  }
+
+  .pln-gauge-word[data-pln-word="under"],
+  .pln-gauge-word[data-pln-word="over"] {
+    color: var(--cd-role-warning-ink-light);
+  }
+
+  .pln-gauge-miss,
+  .pln-gauge-band,
+  .pln-gauge-mark {
+    margin: 0;
+    white-space: nowrap;
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+  }
+
+  .pln-gauge-band,
+  .pln-gauge-mark {
+    display: flex;
+    gap: 0.35rem;
     justify-content: space-between;
   }
 
-  .scr-plan-dial {
-    width: 5rem;
-  }
-}
-
-/* --- reduced motion: needle jump handled by tokens.css's global
-   [data-motion] rule automatically (transition-duration -> 0.01ms); nothing
-   screen-specific required here. --- */
-
-/* --- forced colors --- */
-
-@media (forced-colors: active) {
-  .scr-plan-hero-title {
-    text-shadow: none;
-  }
-  .scr-plan-card,
-  .scr-plan-hero,
-  .scr-plan-swapdeck-candidate,
-  .scr-plan-chip {
-    border-color: CanvasText;
+  .pln-gauge-cap {
+    color: var(--cd-muted-ink);
   }
 
-  .scr-plan-dial-track,
-  .scr-plan-dial-band,
-  .scr-plan-dial-needle,
-  .scr-plan-dial-tick,
-  .scr-plan-dial-well-rim {
-    stroke: CanvasText;
+  .pln-gauge-pin {
+    margin: 0;
+    font-size: var(--cd-size-1);
+    color: var(--cd-role-danger-ink-light);
   }
 
-  .scr-plan-dial-pivot {
-    fill: CanvasText;
+  /* ===================================================================== */
+  /* 3 · THE CROWN (II.3.8, ch.17's two gears)                             */
+  /* ===================================================================== */
+
+  .pln-crown-mount {
+    display: grid;
+    gap: calc(var(--cd-module) / 2);
+    justify-items: stretch;
   }
 
-  /* PHASE 3 polish additions: flatten the well/pivot-cap fills to the system
-     canvas color and drop the needle's soft shadow, so forced-colors keeps
-     the exact same flat, high-contrast dial it had before this pass. */
-  .scr-plan-dial-well,
-  .scr-plan-dial-pivot-cap {
-    fill: Canvas;
+  .pln .pln-crown-title.cd-escutcheon {
+    justify-self: start;
+    font-size: var(--cd-size-1);
   }
 
-  .scr-plan-dial-needle {
-    filter: none;
+  /*
+    THE GUTTER HERE IS THE FLOOR, NOT TASTE. The crown's painted profile is
+    12 x 36px and its 44px target is a ::after centred on it, so the target
+    overhangs the profile by 16px on each side. At the module's own 6px gap the
+    legend plate painted over that overhang and a probe 18px to the right of
+    the crown's centre hit the PLATE, not the crown — a 28px-wide target
+    wearing a 44px one's name. Measured with elementFromPoint, then opened to
+    1.25rem so both overhangs are clear.
+  */
+  .pln-crown-set {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 1.25rem;
+    padding-inline-start: 1rem;
+    align-items: start;
+  }
+
+  .pln-crown {
+    position: relative;
+    inline-size: 0.75rem; /* II.3.8's painted profile, verbatim */
+    block-size: 2.25rem;
+    justify-self: start;
+    margin-block-start: 0.75rem;
+    border-radius: 0.25rem;
+    border: 1px solid var(--cd-nickel);
+    cursor: ns-resize;
+    touch-action: none;
+    /* Light mass, spring(0.7,420,25) => --cd-settle-light 180ms */
+    transition: transform var(--cd-settle-light) var(--cd-ease-settle);
+    /* The stack is published so the two-tone focus ring composes with it.
+       Setting box-shadow directly here would silently delete the keyline. */
+    --cd-stack: -1px 0 0 #ffffff29, 1px 1px 2px #00000059;
+    box-shadow: var(--cd-stack);
+  }
+
+  .pln-crown-knurl {
+    position: absolute;
+    inset: 0;
+    border-radius: 3px;
+    /* the knurl, recoloured to champagne and nickel (section 3) */
+    background: repeating-linear-gradient(
+      180deg,
+      var(--cd-gold) 0,
+      var(--cd-gold) 0.125rem,
+      #a6874f 0.125rem,
+      #a6874f 0.25rem
+    );
+  }
+
+  .pln-crown[data-pulled="true"] {
+    transform: translateX(0.25rem);
+  }
+
+  /*
+    THE ANCHORED COMMIT SPRING, SPENT (ch.17 section 5): "The commit spring is
+    spent once, on the crown's own arrival at its held position PAST THE HARD
+    STOP — a mechanical limit, Anchored, 0% overshoot."
+
+    It was declared and unspent: the guarded fill grew while the crown itself
+    never travelled, so the hold had progress but no arrival. Holding now seats
+    the crown a further 1px into its own stop on --cd-settle-anchored (320ms,
+    zeta 1.00, 0% overshoot) and it returns on release — a mechanical limit the
+    hand can see it reach.
+  */
+  .pln-crown[data-holding="true"] {
+    transform: translateX(0.3125rem);
+    transition-duration: var(--cd-settle-anchored);
+    transition-timing-function: var(--cd-ease-heavy);
+  }
+
+  .pln-crown[data-pulled="true"][data-holding="true"] {
+    transform: translateX(0.3125rem) translateY(1px);
+  }
+
+  .pln-crown:active {
+    /* II.2.6's press grammar: a one-frame linear down-stroke. */
+    transform: translateY(1px);
+    transition-duration: var(--cd-contact-down);
+    --cd-stack: -1px 0 0 #ffffff1f, 1px 1px 2px #00000073;
+  }
+
+  .pln-crown[data-pulled="true"]:active {
+    transform: translateX(0.25rem) translateY(1px);
+  }
+
+  .pln-crown::after {
+    /* THE FLOOR. The painted profile is 12 x 36px; the hit target is 44px on
+       both axes, centred on it (II.3.8's own fence). */
+    content: "";
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    inline-size: max(var(--cd-target-min), 100%);
+    block-size: max(var(--cd-target-min), 100%);
+    transform: translate(-50%, -50%);
+  }
+
+  .pln-crown-fill {
+    /* II.3.16's guarded engage: PROGRESS IS DATA, so this is not decoration
+       and it is not deleted under reduced motion — only its easing changes. */
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-end: -0.3rem;
+    block-size: 2px;
+    inline-size: var(--cd-hold-pct, 0%);
+    background: var(--cd-gold);
+  }
+
+  .pln .pln-crown-legend {
+    padding: calc(var(--cd-module) / 2) calc(var(--cd-module) * 0.75);
+    min-inline-size: 0;
+  }
+
+  .pln .pln-crown-gear.cd-escutcheon {
+    margin: 0 0 0.25rem;
+    font-size: var(--cd-size-1);
+    letter-spacing: var(--cd-track-body);
+    white-space: normal;
+    line-height: 1.25;
+  }
+
+  .pln-crown-map {
+    margin: 0;
+    display: grid;
+    gap: 0.1rem;
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+  }
+
+  .pln-crown-map > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .pln-crown-map dt,
+  .pln-crown-map dd {
+    margin: 0;
+  }
+
+  .pln-crown-map dd {
+    color: var(--cd-green-lit);
+    font-family: var(--cd-font-data);
+  }
+
+  .pln-crown-mark-note {
+    margin: 0.35rem 0 0;
+    font-size: 0.75rem;
+    line-height: 1.3;
+    color: var(--cd-muted-ink);
+  }
+
+  .pln-crown-refusal {
+    margin: 0.35rem 0 0;
+    font-size: var(--cd-size-1);
+    line-height: 1.35;
+    color: var(--cd-role-warning-ink-light);
+  }
+
+  /* ===================================================================== */
+  /* 4 · THE COMMISSION PLATE (II.3.32's casting, ch.17's finish)           */
+  /* ===================================================================== */
+
+  .pln .pln-commission {
+    inline-size: 100%;
+    display: grid;
+    gap: calc(var(--cd-module) / 2);
+    padding: var(--cd-module) calc(var(--cd-module) * 1.25);
+    border: 0.125rem solid var(--cd-nickel);
+  }
+
+  .pln .pln-commission-head.cd-escutcheon {
+    justify-self: start;
+    font-size: var(--cd-size-1);
+  }
+
+  .pln-commission-hero {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 0.3rem;
+  }
+
+  /*
+    DECLARED DEPARTURE from II.3.32's 2.75rem casting step. ch.17 section 2 is
+    the stronger claim: "the one hero numeral per screen claims the reserved top
+    step ... and NO OTHER FIGURE on a RESTOMOD screen approaches it." Measured
+    on the working board, the rank-one inset resolves to ~35px; a 44px figure on
+    this plate would out-rank the panel's own hero. One step down keeps the
+    order honest: inset 35px > plate 28px > every other figure.
+  */
+  .pln-commission-value {
+    font-size: var(--cd-size-5);
+    line-height: 1;
+    color: var(--cd-field); /* engraved in crackle black (section 3) */
+  }
+
+  .pln-commission-underline {
+    /* section 3's own: "a heritage-green underline that states which named
+       commission's finish is currently live". */
+    display: block;
+    block-size: 0.125rem;
+    inline-size: 40%;
+    background: var(--cd-green-lit);
+  }
+
+  .pln-trend {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: calc(var(--cd-module) / 2);
+    block-size: 3rem; /* the casting's own trend strip */
+    align-items: end;
+  }
+
+  .pln-trend-col {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 0.15rem;
+    block-size: 100%;
+  }
+
+  .pln-trend-well {
+    position: relative;
+    display: block;
+    inline-size: 100%;
+    background: #00000014;
+    box-shadow: inset 0 1px 2px #0000002e;
+    border-radius: 1px;
+  }
+
+  /* geometry comes from the same dialScale() the bar reads — see the note in
+     CommissionPlate.tsx. Nothing about the band's position is written here. */
+  .pln-trend-band {
+    position: absolute;
+    inset-inline: 0;
+    background: var(--cd-role-success-fill-light);
+    opacity: 0.55;
+  }
+
+  .pln-trend-bar {
+    position: absolute;
+    inset-inline: 15%;
+    inset-block-end: 0;
+    background: var(--cd-green-lit);
+  }
+
+  .pln-trend-col[data-pln-state="over"] .pln-trend-bar {
+    background: var(--cd-role-danger);
+  }
+
+  .pln-trend-col[data-pln-state="under"] .pln-trend-bar {
+    background: var(--cd-role-warning-zone-light);
+  }
+
+  .pln-trend-day {
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+    text-align: center;
+  }
+
+  .pln-commission-rule {
+    margin: 0;
+    display: grid;
+    gap: 0.1rem;
+    padding-block-start: calc(var(--cd-module) / 2);
+    border-block-start: 1px solid var(--pln-hair); /* the footer rule */
+    font-size: var(--cd-size-1);
+  }
+
+  .pln-commission-rule > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .pln-commission-rule dt,
+  .pln-commission-rule dd {
+    margin: 0;
+  }
+
+  .pln-commission-rule dt {
+    color: var(--cd-muted-ink);
+    text-transform: uppercase;
+    letter-spacing: var(--cd-track-label);
+    font-size: 0.75rem;
+  }
+
+  .pln-commission-rule dd {
+    color: var(--cd-green-lit);
+    text-align: end;
+  }
+
+  .pln-commission-note {
+    color: var(--cd-muted-ink);
+  }
+
+  /* ===================================================================== */
+  /* 5 · THE READING PLATE                                                  */
+  /* ===================================================================== */
+
+  .pln .pln-scope {
+    display: grid;
+    gap: 0.25rem;
+    padding: calc(var(--cd-module) * 0.75) calc(var(--cd-module) * 1.25);
+  }
+
+  .pln .pln-scope .cd-escutcheon {
+    justify-self: start;
+    font-size: var(--cd-size-1);
+  }
+
+  .pln-scope-line,
+  .pln-scope-fresh,
+  .pln-scope-flash {
+    margin: 0;
+    font-size: var(--cd-size-1);
+    line-height: 1.4;
+    color: var(--cd-muted-ink);
+  }
+
+  /*
+    II.7.13 — success is an EVENT: it lands, HOLDS 1800ms, then decays over
+    900ms. Both halves are spent here, 2700ms total, with the boundary at
+    1800/2700 = 66.67%. The row is reserved whether or not it carries a word, so
+    a commit never reflows the plate under a hand.
+
+    The element is KEYED on the flash text in index.tsx. Unkeyed it never
+    remounted, so this animation ran exactly once — at scene mount, with nothing
+    behind it — and every real commit after that printed its word with no event
+    at all. Measured by committing two swaps in a row and watching the second
+    arrive already cold.
+  */
+  .pln-scope-flash {
+    min-block-size: 1.2em;
+    color: var(--cd-role-success-ink-light);
+    animation: pln-confirm calc(var(--cd-success-hold) + var(--cd-success-decay)) linear forwards;
+  }
+
+  @keyframes pln-confirm {
+    0%,
+    66.67% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.55;
+    }
+  }
+
+  .pln-scope-word {
+    color: var(--cd-role-warning-ink-light);
+  }
+
+  /* ===================================================================== */
+  /* 6 · THE DAY REGISTER (R7)                                              */
+  /* ===================================================================== */
+
+  .pln-register-set {
+    display: grid;
+    gap: 2px;
+    align-content: start;
+    min-inline-size: 0;
+  }
+
+  .pln-register-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding-inline: calc(var(--cd-module) / 2);
+  }
+
+  .pln-register-head .cd-escutcheon {
+    font-size: var(--cd-size-1);
+  }
+
+  /* on a plate, not on the chassis — the ink-plate law is by RULE. */
+  .pln-register-note {
+    margin: 0;
+    padding: 0.15rem 0.5rem;
+    border-radius: calc(var(--cd-module) / 4);
+    background: var(--cd-plate);
+    box-shadow: inset 0 -1px 0 #ffffff1f, 0 1px 0 #00000047;
+    font-size: var(--cd-size-1);
+    color: var(--cd-green-lit);
+  }
+
+  .pln-register-note .cd-silkscreen {
+    color: var(--cd-muted-ink);
+  }
+
+  .pln .pln-register {
+    display: grid;
+    gap: 1px;
+    min-inline-size: 0;
+  }
+
+  /* the lid. A PressKey inside the foundry's Register — (0,2,0) there, so
+     these are written with the register class to clear it. */
+  .pln .pln-register .cd-register-head {
+    display: grid;
+    grid-template-columns: 3.5rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.5rem;
+    min-block-size: var(--cd-target-min);
+    padding: 0 calc(var(--cd-module) * 0.75);
+    background: var(--cd-face);
+    color: var(--cd-green-lit);
+    border-radius: calc(var(--cd-module) / 2);
+    text-align: start;
+    --cd-stack:
+      inset 0 -1px 0 #ffffff40,
+      0 1px 0 #00000047,
+      0 2px 5px #00000029;
+    box-shadow: var(--cd-stack);
+  }
+
+  .pln .pln-register .cd-register-group[data-cd-open="true"] > .cd-register-head {
+    /* the lifted lid: the case ring's own gold, as a machined edge — never a
+       zebra wash, which "reads as a stain on ivory" (section 4). */
+    box-shadow: var(--cd-stack), inset 0 0 0 2px var(--cd-gold);
+  }
+
+  .pln .pln-register .cd-register-label {
+    font-size: var(--cd-size-4);
+    line-height: 1;
+    letter-spacing: var(--cd-track-body);
+    color: var(--cd-green-hot);
+  }
+
+  .pln .pln-register .cd-register-count {
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+  }
+
+  .pln-lid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 5rem 4.5rem 5.5rem 11rem;
+    align-items: center;
+    gap: 0.5rem;
+    min-inline-size: 0;
+  }
+
+  .pln-lid-theme {
+    font-size: 0.75rem;
+    color: var(--cd-muted-ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .pln-lid-strip {
+    position: relative;
+    display: block;
+    block-size: 0.5rem;
+    background: #00000014;
+    box-shadow: inset 0 1px 2px #0000002e;
+    border-radius: 1px;
+  }
+
+  .pln-lid-band {
+    position: absolute;
+    inset-block: 0;
+    background: var(--cd-role-success-fill-light);
+    opacity: 0.55;
+  }
+
+  .pln-lid-needle {
+    position: absolute;
+    inset-block: -2px;
+    inline-size: 2px;
+    margin-inline-start: -1px;
+    background: var(--cd-needle);
+    outline: 1px solid var(--cd-needle-keyline);
+  }
+
+  .pln-lid-read {
+    font-size: var(--cd-size-2);
+    color: var(--cd-green-hot);
+    text-align: end;
+  }
+
+  .pln-lid-word {
+    font-size: 0.75rem;
+    text-align: end;
+    color: var(--cd-role-success-ink-light);
+  }
+
+  .pln-lid-word[data-pln-word="under"],
+  .pln-lid-word[data-pln-word="over"] {
+    color: var(--cd-role-warning-ink-light);
+  }
+
+  /*
+    THE OFF-BAND STATEMENT WRAPS RATHER THAN CLIPS. At `white-space: nowrap` a
+    day that was over on one channel and under on two rendered as
+    "PROT OVER · KCAL, C…" — a warning cut off mid-word, which is worse than no
+    warning at all and confesses nothing (II.6.24). Two lines at 0.75rem and
+    1.15 leading measure 27.6px and still sit inside the lid's own 44px.
+  */
+  .pln-lid-off {
+    font-size: 0.75rem;
+    text-align: end;
+    line-height: 1.15;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: var(--cd-muted-ink);
+  }
+
+  .pln-lid-off[data-pln-any="true"] {
+    color: var(--cd-role-warning-ink-light);
+  }
+
+  /* --- the rows -------------------------------------------------------- */
+
+  .pln .pln-register .cd-register-rows {
+    display: grid;
+    gap: 0;
+    padding: 0;
+    background: var(--cd-face);
+    border-radius: calc(var(--cd-module) / 2);
+    box-shadow:
+      inset 0 -1px 0 #ffffff40,
+      0 1px 0 #00000047,
+      0 2px 5px #00000029;
+  }
+
+  /* ONE hairline separator for the whole length — never a zebra fill on a
+     light field (ch.17 section 4). */
+  .pln .pln-register .cd-register-row + .cd-register-row {
+    border-block-start: 1px solid var(--pln-hair);
+  }
+
+  .pln-slot {
+    display: grid;
+    grid-template-columns: 3.25rem minmax(0, 1fr) 11rem 7rem auto;
+    align-items: center;
+    gap: 0.5rem;
+    min-block-size: var(--cd-row-standard);
+    padding: 0.25rem calc(var(--cd-module) * 0.75);
+    color: var(--cd-green-lit);
+  }
+
+  .pln-slot-mark {
+    font-size: 0.75rem;
+    text-align: center;
+    padding: 0.1rem 0.25rem;
+    border-radius: 2px;
+    color: var(--cd-green-hot);
+    box-shadow: inset 0 0 0 1px var(--cd-green-dim);
+  }
+
+  .pln-slot-mark[data-pln-mark="swap"] {
+    color: var(--cd-role-warning-ink-light);
+    box-shadow: inset 0 0 0 1px var(--cd-role-warning-ink-light);
+  }
+
+  .pln-slot-mark[data-pln-mark="cut"],
+  .pln-slot-mark[data-pln-mark="empty"] {
+    color: var(--cd-muted-ink);
+    box-shadow: inset 0 0 0 1px var(--cd-muted-ink);
+    /* the non-colour second cue a cut slot carries (docs/VARIANT-SPEC.md) */
+    border-block-end: 2px dashed var(--cd-muted-ink);
+    border-radius: 2px 2px 0 0;
+  }
+
+  /*
+    The row's identity slot runs INLINE, not stacked. Stacked it measured 70px
+    per row, which put the register at 560px and the whole board at 891px in an
+    800px viewport — a page-length scroll, which R7 forbids. Inline it is 52px,
+    the register is 488px, and the board fits without the accordion having to
+    hold fewer days.
+  */
+  .pln-slot-id {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-inline-size: 0;
+  }
+
+  .pln-slot-slot {
+    flex: none;
+    inline-size: 3.25rem;
+    font-size: 0.75rem;
+    color: var(--cd-muted-ink);
+  }
+
+  /*
+    THE CARRIED 44px DEFECT, CLEARED.
+
+    The shipped board's `.scr-plan-card-name` was a bare inline anchor with no
+    min-block-size, no padding and no display change — measured 199.6 x 24px,
+    failing the Floor on the block axis. This is its successor, and it declares
+    the target on BOTH axes rather than inheriting a line box.
+  */
+  .pln-slot-name {
+    display: flex;
+    align-items: center;
+    min-block-size: var(--cd-target-min);
+    min-inline-size: var(--cd-target-min);
+    padding-inline: 0.25rem;
+    margin-inline: -0.25rem;
+    border-radius: calc(var(--cd-module) / 4);
+    color: var(--cd-green-hot);
+    font-weight: 600;
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .pln-slot-name:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .pln-slot-cut {
+    display: grid;
+    gap: 0;
+    min-block-size: var(--cd-target-min);
+    align-content: center;
+    line-height: 1.15;
+  }
+
+  .pln-slot-cut-word {
+    font-size: 0.75rem;
+    color: var(--cd-role-warning-ink-light);
+  }
+
+  .pln-slot-cut-why {
+    margin: 0;
+    font-size: 0.75rem;
+    line-height: 1.15;
+    color: var(--cd-muted-ink);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .pln-slot-empty,
+  .pln-slot-unlogged,
+  .pln-slot-was {
+    font-size: 0.75rem;
+    color: var(--cd-muted-ink);
+  }
+
+  .pln-slot-was {
+    flex: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-inline-size: 40%;
+  }
+
+  .pln-slot-was-name {
+    color: var(--cd-green-lit);
+  }
+
+  .pln-slot-log {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-inline-size: 0;
+    font-size: 0.75rem;
+  }
+
+  /* "logged" carried in PIGMENT, on three channels — shape, ink and the word —
+     because II.7.9 licenses this world exactly ONE emissive, and section 3
+     spends it on the inset. */
+  .pln-slot-tick {
+    inline-size: 0.625rem;
+    block-size: 0.625rem;
+    flex: none;
+    border: 1px solid var(--cd-green-dim);
+    border-radius: 1px;
+    box-shadow: inset 0 1px 0 #ffffff59;
+  }
+
+  .pln-slot-tick[data-pln-logged="true"] {
+    background: var(--cd-green-hot);
+    border-color: var(--cd-green-hot);
+  }
+
+  .pln .pln-slot-stale {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    min-inline-size: 0;
+    font-size: 0.75rem;
+  }
+
+  .pln .pln-slot-stale .cd-stale-age {
+    color: var(--cd-muted-ink);
+  }
+
+  .pln .pln-slot-stale .cd-stale-word {
+    color: var(--cd-role-warning-ink-light);
+  }
+
+  .pln-slot-read {
+    display: grid;
+    justify-items: end;
+    gap: 0;
+    font-size: var(--cd-size-2);
+    color: var(--cd-green-hot);
+  }
+
+  .pln-slot-chan {
+    font-size: 0.75rem;
+    color: var(--cd-muted-ink);
+  }
+
+  .pln-slot-act {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-inline-size: 4.5rem;
+  }
+
+  .pln-slot-noswap {
+    font-size: 0.75rem;
+    color: var(--cd-muted-ink);
+  }
+
+  /* --- the unit's own floor -------------------------------------------- */
+  /*
+    II.6.6 puts the unit at 40% of its value's size; II.6.11 says "below
+    0.6875rem type is TEXTURE, never information". A unit is information — it
+    is the difference between 425 grams and 425 kcal — so where 40% would put
+    it under the micro ceiling, the ceiling wins and the unit stops shrinking.
+
+    Measured on the rendered page before this rule existed: 31 units on this
+    screen rendered between 5.20px and 8.00px, because 0.4 x a 13px label is
+    5.2px. The ratio is still 40% wherever 40% clears the floor.
+  */
+  .pln .cd-unit {
+    font-size: max(var(--cd-micro-ceiling), calc(1em * var(--cd-unit-scale)));
+  }
+
+  /* --- keys, in this world's own metal --------------------------------- */
+  .pln .cd-key {
+    min-block-size: var(--cd-target-min);
+    min-inline-size: var(--cd-target-min);
+    padding-inline: calc(var(--cd-module) * 0.75);
+    border-radius: calc(var(--cd-module) / 2);
+    color: var(--cd-field);
+    background:
+      repeating-linear-gradient(90deg, #ffffff00 0px, #ffffff14 1px, #00000014 2px, #ffffff00 3px),
+      linear-gradient(var(--cd-light-axis), #e2e3e4 0%, var(--cd-nickel) 46%, #a9aaac 100%);
+    --cd-stack:
+      inset 0 1px 0 #ffffff66,
+      inset 0 -1px 0 #00000040,
+      0 1px 0 #00000059,
+      0 3px 7px #00000038;
+    box-shadow: var(--cd-stack);
+    font-size: var(--cd-size-1);
+  }
+
+  .pln .cd-key[data-cd-pressed="true"] {
+    --cd-stack:
+      inset 0 1px 2px #00000073,
+      0 1px 0 #00000040;
+  }
+
+  .pln .pln-slot-recover.cd-key,
+  .pln .pln-cand-recover.cd-key {
+    min-block-size: var(--cd-target-min);
+    padding-inline: 0.4rem;
+    font-size: 0.75rem;
+  }
+
+  /* ===================================================================== */
+  /* 7 · THE SWAP DECK (the tray)                                           */
+  /* ===================================================================== */
+
+  .pln .pln-deck[data-cd-edge] {
+    inline-size: min(30rem, 92vw);
+    background: var(--cd-field);
+    color: var(--cd-face);
+  }
+
+  .pln .pln-deck .cd-tray-head {
+    background: var(--cd-field);
+    color: var(--cd-face);
+    border-block-end: 1px solid #ffffff1f;
+  }
+
+  .pln-deck-count {
+    font-size: var(--cd-size-2);
+    color: var(--cd-nickel);
+  }
+
+  .pln .pln-deck-now,
+  .pln .pln-deck-empty,
+  .pln .pln-deck-foot {
+    display: grid;
+    gap: 0.3rem;
+    padding: calc(var(--cd-module) * 0.75) var(--cd-module);
+    margin-block-end: var(--cd-module);
+  }
+
+  .pln-deck-now-name {
+    margin: 0;
+    font-size: var(--cd-size-4);
+    line-height: 1.15;
+    color: var(--cd-green-hot);
+  }
+
+  .pln-deck-now-was,
+  .pln-deck-now-note {
+    margin: 0;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--cd-muted-ink);
+  }
+
+  .pln-deck-was-name {
+    color: var(--cd-green-lit);
+  }
+
+  .pln-deck-rows {
+    display: grid;
+    gap: calc(var(--cd-module) / 2);
+  }
+
+  .pln-cand {
+    display: grid;
+    /* 10.5rem, not 7.5: the coverage cell carries a figure, its age, its state
+       word AND its fixed-position recovery key, and at 7.5rem the key was
+       clipped to the letters "fr". A recovery action that cannot be read is
+       not a recovery action. */
+    grid-template-columns: minmax(0, 1fr) 10.5rem;
+    grid-template-areas:
+      "id   cov"
+      "delta delta"
+      "warn warn"
+      "act  act";
+    gap: 0.35rem 0.5rem;
+    padding: calc(var(--cd-module) * 0.75) var(--cd-module);
+    border-radius: calc(var(--cd-module) / 2);
+    background: var(--cd-face);
+    color: var(--cd-green-lit);
+    box-shadow:
+      inset 0 -1px 0 #ffffff40,
+      0 1px 0 #00000059,
+      0 3px 8px #00000038;
+  }
+
+  .pln-cand-id {
+    grid-area: id;
+    display: grid;
+    min-inline-size: 0;
+  }
+
+  .pln-cand-name {
+    font-size: var(--cd-size-3);
+    line-height: 1.2;
+    color: var(--cd-green-hot);
+  }
+
+  .pln-cand-origin {
+    font-size: 0.75rem;
+    color: var(--cd-muted-ink);
+  }
+
+  .pln-cand-cov {
+    grid-area: cov;
+    display: grid;
+    justify-items: end;
+    gap: 0.15rem;
+  }
+
+  /* The freshness block stacks rather than running out of its own column, and
+     the recovery slot keeps its place whether or not it is currently offered
+     — that is the whole of the fixed-position rule. */
+  .pln .pln-cand-cov .cd-stale {
+    display: grid;
+    /* stale.css declares `grid-template-columns: auto auto auto auto` in
+       @layer cd.type. Overriding `display` alone left that four-column track
+       in force and the row still ran off its own cell — a layer wins per
+       PROPERTY, not per rule. */
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: end;
+    gap: 0.1rem;
+    inline-size: 100%;
+  }
+
+  .pln .pln-cand-cov .cd-stale-age,
+  .pln .pln-cand-cov .cd-stale-word {
+    font-size: 0.75rem;
+  }
+
+  .pln .pln-cand-cov .cd-stale-age {
+    color: var(--cd-muted-ink);
+  }
+
+  .pln .pln-cand-cov .cd-stale-word {
+    color: var(--cd-role-warning-ink-light);
+  }
+
+  .pln-cand-pct {
+    font-size: var(--cd-size-4);
+    line-height: 1;
+    color: var(--cd-green-hot);
+  }
+
+  .pln-cand-covword {
+    font-size: 0.75rem;
+    color: var(--cd-muted-ink);
+  }
+
+  .pln-cand-delta {
+    grid-area: delta;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--cd-muted-ink);
+    padding-block-start: 0.3rem;
+    border-block-start: 1px solid var(--pln-hair);
+  }
+
+  .pln-cand-d {
+    display: inline-flex;
+    gap: 0.2rem;
+    align-items: baseline;
+    color: var(--cd-green-lit);
+  }
+
+  .pln-cand-d[data-pln-sign="up"] {
+    color: var(--cd-role-warning-ink-light);
+  }
+
+  .pln-cand-dlabel {
+    color: var(--cd-muted-ink);
+  }
+
+  .pln-cand-warn {
+    grid-area: warn;
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--cd-role-danger-ink-light);
+  }
+
+  .pln-cand-act {
+    grid-area: act;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .pln-cand[data-pln-risk="true"] {
+    box-shadow:
+      inset 0 0 0 2px var(--cd-role-danger),
+      inset 0 -1px 0 #ffffff40,
+      0 1px 0 #00000059,
+      0 3px 8px #00000038;
+  }
+
+  .pln-deck-foot-count {
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--cd-muted-ink);
+  }
+
+  .pln .pln-deck-empty .cd-prose {
+    margin: 0;
+    font-size: var(--cd-size-1);
+    line-height: 1.45;
+  }
+
+  /* ===================================================================== */
+  /* 8 · BREAKPOINTS — declared departure 3                                 */
+  /* ===================================================================== */
+
+  @media (max-width: 1100px) {
+    .pln-row-set {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .pln-row {
+      /* the flank : outboard pair, normalised — 21.1 : 16.8 => 55.7 / 44.3 */
+      grid-template-columns: 55.7% 44.3%;
+      grid-template-areas:
+        "hero hero"
+        "a    b"
+        "c    d";
+      max-inline-size: 34rem;
+      margin-inline: auto;
+    }
+
+    .pln-gauge[data-pln-rank="1"] {
+      grid-area: hero;
+    }
+
+    .pln-body {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .pln-crown-set {
+      justify-content: start;
+    }
+  }
+
+  @media (max-width: 860px) {
+    .pln-slot {
+      grid-template-columns: 3rem minmax(0, 1fr) auto;
+      grid-template-areas:
+        "mark id   read"
+        "mark log  act";
+      row-gap: 0.15rem;
+    }
+
+    .pln-slot-mark {
+      grid-area: mark;
+    }
+    .pln-slot-id {
+      grid-area: id;
+    }
+    .pln-slot-log {
+      grid-area: log;
+    }
+    .pln-slot-read {
+      grid-area: read;
+    }
+    .pln-slot-act {
+      grid-area: act;
+    }
+
+    .pln-lid {
+      grid-template-columns: minmax(0, 1fr) 4rem 5.5rem;
+    }
+
+    .pln-lid-theme,
+    .pln-lid-word {
+      display: none;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .pln {
+      padding: 0.5rem;
+      --pln-gutter: 0.5rem;
+    }
+
+    /*
+      ONE COLUMN for the four subordinate instruments, not two. Measured at
+      390px in two columns, each housing had ~190px for a 72px face plus its
+      whole plate, and the plate spilled outside its own housing — a readout
+      hanging off the machine it belongs to. Lying them down full width gives
+      the plate 260px and every figure fits inside its case.
+    */
+    .pln-row {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas: none;
+      max-inline-size: none;
+    }
+
+    .pln-gauge[data-pln-rank="1"] {
+      grid-area: auto;
+    }
+
+    /* II.6.11 — below 0.6875rem type is TEXTURE, never information. The
+       subordinate dials' numerals LEAVE rather than shrink; the needle, the
+       printed zone and the exact figure all stay. */
+    .pln-gauge[data-pln-rank="2"] .pln-face-labels {
+      display: none;
+    }
+
+    /*
+      THE FOUR SUBORDINATE INSTRUMENTS LIE DOWN, they do not shrink.
+      Measured at 390x844 with them stacked as full dials, the case row alone
+      ran 744px — most of a phone viewport before the board is reached at all.
+      Laid on their sides, each keeps its whole face at 4.5rem, its needle, its
+      printed zone, its exact figure, its band and its state word; only the
+      stacking changes. The rank-one gauge keeps the wall.
+    */
+    .pln .pln-gauge[data-cd-encl][data-pln-rank="2"] {
+      grid-template-columns: 4.5rem minmax(0, 1fr);
+      grid-template-rows: auto;
+      align-items: center;
+      column-gap: 0.5rem;
+    }
+
+    .pln .pln-gauge[data-pln-rank="2"] .pln-gauge-plate {
+      align-self: center;
+    }
+
+    .pln .pln-gauge[data-pln-rank="1"] .pln-case {
+      inline-size: min(100%, 12rem);
+    }
+
+    /* the small faces carry no numerals here, so the word can sit lower into
+       the arc's own dead wedge where the chord is widest it will ever be */
+    .pln .pln-gauge[data-pln-rank="2"] .pln-dial-word.cd-escutcheon {
+      inset-block-start: 79%;
+    }
+  }
+
+  /* ===================================================================== */
+  /* 9 · TROPHY MODE — declared AFTER the breakpoints on purpose            */
+  /* ===================================================================== */
+
+  /*
+     SOURCE ORDER IS LOAD-BEARING HERE. Several of these rules tie on
+     specificity with the width rules above — `.pln .pln-gauge[data-cd-encl]
+     [data-pln-rank="2"]` is (0,4,0) in both — and a media query adds nothing to
+     specificity. Declared before them, the 390px layout won inside Trophy Mode
+     and the four survivors rendered two-up and overlapping on the wall.
+     Measured, then moved: the MODE outranks the width.
+  */
+  .pln[data-pln-power="ambient"] {
+    --pln-lux: 0.55;
+  }
+
+  .pln[data-pln-power="night"] {
+    /* declared and never entered: no ambient sensor exists (useTrophy.ts) */
+    --pln-lux: 0.2;
+  }
+
+  /*
+    THE INK-PLATE LAW APPLIES AT WALL SCALE TOO (CD-BRIEF ruling 5: a HARD FAIL
+    BY RULE, not by ratio). This line ran raw across the crackle ground, where
+    nickel measures a perfectly legible 10.29:1 — and the rule is not about the
+    ratio. It sits on the ivory face now, where green-lit reads 6.38:1.
+  */
+  .pln-trophy-age {
+    position: absolute;
+    inset-inline: 50%;
+    inset-block-end: 1.5rem;
+    translate: -50% 0;
+    margin: 0;
+    display: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 1.25rem;
+    padding: 0.35rem 1rem;
+    border-radius: calc(var(--cd-module) / 2);
+    background: var(--cd-plate);
+    box-shadow:
+      inset 0 -1px 0 #ffffff1f,
+      0 1px 0 #00000059,
+      0 2px 5px #0000002e;
+    font-size: 1.21875rem; /* the owner ruling's own figure, verbatim */
+    color: var(--cd-green-lit);
+    opacity: 0;
+    transition: opacity var(--pln-mode-ms) var(--cd-ease-settle);
+  }
+
+  .pln[data-pln-trophy="true"] {
+    /* the ruling's ENTER; the exit stays at the scene's own 240ms */
+    --pln-mode-ms: 420ms;
+  }
+
+  /*
+    THE AGE LINE GETS ITS OWN BAND, not an absolute perch. Positioned absolutely
+    at the scene's foot it landed straight across the four survivors' figures on
+    the rendered wall — two readings sharing one line of pixels. In Trophy the
+    scene becomes a two-row grid and the age line is the second row, so it can
+    never overlap what it is captioning.
+  */
+  .pln[data-pln-trophy="true"] {
+    display: grid;
+    grid-template-rows: 1fr auto;
+    align-content: center;
+  }
+
+  .pln[data-pln-trophy="true"] .pln-trophy-age {
+    position: static;
+    translate: none;
+    justify-self: center;
+    display: flex;
+    opacity: 1;
+    margin-block: 1.25rem 1.5rem;
+  }
+
+  /* on the ivory plate the cream-face inks carry: success 4.53:1, warning
+     4.52:1 — the dark-field pair would have measured 1.7:1 here. */
+  .pln[data-pln-trophy="true"] .pln-trophy-word[data-pln-word="in"] {
+    color: var(--cd-role-success-ink-light);
+  }
+
+  .pln[data-pln-trophy="true"] .pln-trophy-word[data-pln-word="under"],
+  .pln[data-pln-trophy="true"] .pln-trophy-word[data-pln-word="over"] {
+    color: var(--cd-role-warning-ink-light);
+  }
+
+  .pln[data-pln-trophy="true"] .pln-row-set {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /*
+    THE WALL COMPOSITION FITS THE WALL. The evidence column is removed from
+    LAYOUT, not merely from paint: with `visibility: hidden` alone it still held
+    560px of the scene, which pushed the age line — the one thing the ruling
+    says must always be visible — 480px below the fold. Measured, then removed.
+  */
+  .pln[data-pln-trophy="true"] .pln-body {
+    display: none;
+  }
+
+  .pln[data-pln-trophy="true"] .pln-row {
+    /* the rank-one gauge takes the wall; the four survivors recede beneath it
+       to a single printed row (ch.17 section 4's own Trophy variant). */
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-areas:
+      "hero hero hero hero"
+      "a    b    c    d";
+    justify-items: center;
+    gap: 1.5rem 1.25rem;
+    padding-block: 1rem;
+  }
+
+  /* The band and the mark leave with everything else: at wall range the state
+     word and the scope sit on the age line beneath, at 1.21875rem, where they
+     are read from across a room rather than from a plate under a dial. */
+  .pln[data-pln-trophy="true"] .pln-gauge-plate {
+    display: none;
+  }
+
+  .pln[data-pln-trophy="true"] .pln-gauge[data-pln-rank="1"] {
+    grid-area: hero;
+  }
+
+  /*
+    The owner ruling's 2x. On the working board at 1280px the rank-one dial
+    measures 188.6px; 26rem is 416px, and because every figure on the face is
+    sized in cqi off that face, the whole instrument doubles PROPORTIONALLY —
+    the inset figure lands on II.6.20's reserved 4.25rem top step exactly, and
+    reaches it nowhere else on this screen.
+
+    DECLARED DEPARTURE (CORRECTIONARY 6.5): the ruling's 420ms enter / 240ms
+    exit pair is carried here by OPACITY and by the 4000ms luminance ramp, both
+    of which retarget in flight. The dial's 2x is a layout change and lands in
+    one frame. Registering the size as an interpolable <length> is not open:
+    the working value is a percentage of a grid column, not a length, and TODAY
+    already measured what happens when two clamp() expressions are asked to
+    interpolate on `inline-size` — the used value simply sticks.
+  */
+  .pln[data-pln-trophy="true"] .pln-gauge[data-pln-rank="1"] .pln-case {
+    inline-size: min(26rem, 60vmin);
+  }
+
+  /* "others disappear rather than shrink" — the subordinate gauges keep
+     NEEDLE AND FIGURE ONLY, and every other part of them is removed. */
+  .pln[data-pln-trophy="true"] .pln-gauge[data-pln-rank="2"] .pln-gauge-plate,
+  .pln[data-pln-trophy="true"] .pln-gauge[data-pln-rank="2"] .pln-face-labels,
+  .pln[data-pln-trophy="true"] .pln-gauge[data-pln-rank="2"] .pln-dial-word {
+    display: none;
+  }
+
+  /* The survivor's own figure drops BELOW its face — "needle and figure only,
+     no labels" — so the small dial keeps its whole face and the figure keeps
+     the owner ruling's own 1.75rem step, verbatim. */
+  .pln[data-pln-trophy="true"] .pln-gauge[data-pln-rank="2"] .pln-dial {
+    overflow: visible;
+  }
+
+  /* the survivor keeps NEEDLE AND FIGURE ONLY: its plate loses its ground and
+     every line but the figure, at the ruling's own 1.75rem step, verbatim. */
+  .pln[data-pln-trophy="true"] .pln-gauge[data-pln-rank="2"] .pln-gauge-plate {
+    display: block;
+    background: none;
+    box-shadow: none;
+    padding: 0;
+    text-align: center;
+  }
+
+  .pln[data-pln-trophy="true"] .pln-gauge[data-pln-rank="2"] .pln-gauge-line,
+  .pln[data-pln-trophy="true"] .pln-gauge[data-pln-rank="2"] .pln-gauge-band,
+  .pln[data-pln-trophy="true"] .pln-gauge[data-pln-rank="2"] .pln-gauge-mark,
+  .pln[data-pln-trophy="true"] .pln-gauge[data-pln-rank="2"] .pln-gauge-pin {
+    display: none;
+  }
+
+  .pln[data-pln-trophy="true"] .pln-gauge[data-pln-rank="2"] .pln-gauge-read {
+    justify-content: center;
+  }
+
+  .pln[data-pln-trophy="true"] .pln-gauge[data-pln-rank="2"] .pln-gauge-figure {
+    font-size: 1.75rem;
+    color: var(--cd-oled-white);
+  }
+
+
+  /* the crown withdraws WHOLE — its title plate went with it only after the
+     rendered wall showed the word CROWN still burning in the corner. */
+  .pln[data-pln-trophy="true"] .pln-crown-mount {
+    display: none;
+  }
+
+  .pln[data-pln-trophy="true"] .pln-gauge[data-pln-rank="2"] {
+    grid-template-columns: auto;
+    margin-inline: 0;
+  }
+
+  .pln[data-pln-trophy="true"] .pln-gauge[data-pln-rank="2"] .pln-case {
+    inline-size: 6rem;
+  }
+
+  .pln[data-pln-trophy="true"] .pln-row-set,
+  .pln[data-pln-trophy="true"] .pln-row {
+    max-inline-size: none;
+  }
+
+  /* ===================================================================== */
+  /* 10 · REDUCED MOTION, AND FORCED COLOURS                                */
+  /* ===================================================================== */
+
+  @media (prefers-reduced-motion: reduce) {
+    /*
+      II.4.26 translates, never deletes. What a needle MEANS is its position:
+      the sweep and the one rebound are the reinforcement channel, and
+      needle.ts drops both, landing the angle immediately. Everything the
+      reading says is unchanged. The crown's guarded FILL is not motion — it is
+      progress, which is data — so it stays.
+    */
+    .pln {
+      transition-duration: var(--cd-reduced-fade);
+    }
+
+    .pln-scope-flash {
+      animation-duration: var(--cd-reduced-fade);
+    }
+  }
+
+  @media (forced-colors: active) {
+    /*
+      The whole material argument is decoration the OS is entitled to discard.
+      What has to survive is the reading: the needle, the printed zones, the
+      band, and every state word. The words already carry every state (II.7.7),
+      so nothing here depends on a hue the OS just replaced.
+    */
+    .pln {
+      background: Canvas;
+      forced-color-adjust: none;
+      color: CanvasText;
+    }
+
+    .pln::after,
+    .pln-dial::after,
+    .pln-needle-catch,
+    .pln-case::after {
+      display: none;
+    }
+
+    .pln-dial,
+    .pln .pln-register .cd-register-head,
+    .pln .pln-register .cd-register-rows,
+    .pln-cand,
+    .pln .pln-commission,
+    .pln .pln-scope,
+    .pln .pln-gauge-plate {
+      background: Canvas;
+      color: CanvasText;
+      border: 1px solid CanvasText;
+      box-shadow: none;
+    }
+
+    .pln-ticks,
+    .pln .pln-gauge[data-pln-rank="1"] .pln-ticks {
+      stroke: CanvasText;
+    }
+
+    .pln-zone--band {
+      stroke: Highlight;
+    }
+
+    .pln-zone--caution,
+    .pln-zone--redline {
+      stroke: CanvasText;
+      stroke-dasharray: 6 4;
+    }
+
+    .pln-needle-tip,
+    .pln-needle-tail,
+    .pln-lid-needle {
+      background: LinkText;
+      outline-color: CanvasText;
+    }
+
+    .pln-inset {
+      background: Canvas;
+      border: 1px solid CanvasText;
+    }
+
+    .pln-inset-figure,
+    .pln-inset-unit,
+    .pln-face-figure,
+    .pln-face-label,
+    .pln .pln-dial-word.cd-escutcheon {
+      color: CanvasText;
+      text-shadow: none;
+    }
+
+    .pln-slot-tick[data-pln-logged="true"] {
+      background: CanvasText;
+      border-color: CanvasText;
+    }
+
+    .pln-crown-knurl {
+      background: ButtonFace;
+      box-shadow: inset 0 0 0 1px ButtonText;
+    }
+
+    .pln-crown-fill {
+      background: Highlight;
+    }
   }
 }
