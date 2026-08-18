@@ -102,7 +102,14 @@ page-length scrolling — grouped accordion, one section open at a time.
   reload and the owner's machine made noise continuously. In DEV the bus starts muted
   unless `fd5.v1.cdMuted` is explicitly `"0"`. **Production is unchanged.** To run a
   sound audit: `localStorage.setItem("fd5.v1.cdMuted", "0")`.
-- **Next:** **wave 2 in risk order** — STORES → LIST → PLAN → MEAL → SHOP. Then deploy,
+- **WAVE 2 STARTED 2026-08-18 (overnight, owner asleep, autonomy granted).** STORES
+  (CLEAR LID) and LIST (IRREDUCIBLE) dispatched in parallel — disjoint folders, the two
+  register-shaped screens, both inheriting the spike's proven pattern. COOK's builder is
+  concurrently finishing its report. **On each landing: verify gates, commit, then
+  dispatch the next of PLAN → MEAL → SHOP.** Background agents survive orchestrator
+  usage limits and their completions re-invoke the orchestrator, so progress continues
+  across resets.
+- **Next:** **remaining wave 2** — PLAN → MEAL → SHOP. Then deploy,
   then the single Fable review — **and action its findings** (owner revision, 2026-08-18).
 
 ### Carried defects — fix when the owning screen is rebuilt
