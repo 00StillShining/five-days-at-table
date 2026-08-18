@@ -122,7 +122,24 @@ page-length scrolling — grouped accordion, one section open at a time.
   dispatch the next of PLAN → MEAL → SHOP.** Background agents survive orchestrator
   usage limits and their completions re-invoke the orchestrator, so progress continues
   across resets.
-- **Next:** **remaining wave 2** — PLAN → MEAL → SHOP. Then deploy,
+- **LIST (IRREDUCIBLE) COMPLETE** (`53fc5df`) — a register that **empties itself**, so
+  nothing on it scrolls; the 1800ms run-out is the undo window. Its worst finding: the
+  plan followed the till, so the over-run could never fire (spend £340.88, plan £340.88,
+  over £0.00 — a budget that always agrees with the basket). It also **corrected two
+  stale facts in its own brief**: the full trip is 44 lines / £170.44, not 49, and a
+  "pantry-optional line" does not exist on the wire. **THE EPOXY CEILING held.**
+- **Two foundation defects repaired** (`677ab55`), both found by the LIST builder and
+  confirmed by reading: `.cd-focusable:focus-visible` used `var(--cd-stack, none)`, so an
+  unset stack produced `0 0 0 6px #141414, none` — **invalid CSS, whole declaration
+  dropped, focus keyline gone** on every control a screen builder writes without reading
+  foundry.css. And IRREDUCIBLE was the one scope of eight declaring no `--cd-well`, so
+  BACK CHANNEL's `#121212` inherited into a grey epoxy world. **Recorded not repaired:**
+  `Voicing.contactOnRelease` has no consumer — `PressKey` still voices on the down-stroke.
+  Left alone deliberately while builders are mid-flight; resolve after wave 2.
+- **ALL FIVE WAVE-2 SCREENS DISPATCHED.** STORES and PLAN were near done at 03:20 (both
+  ladder artifacts already written); MEAL (FACETED VOLUME, a tray) and SHOP
+  (TANGENT HORIZON, the last screen) dispatched after.
+- **Next:** land STORES, PLAN, MEAL, SHOP as they report. Then deploy,
   then the single Fable review — **and action its findings** (owner revision, 2026-08-18).
 
 ### Carried defects — fix when the owning screen is rebuilt
