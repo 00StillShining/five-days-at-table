@@ -5,7 +5,9 @@
 > resumed from their transcripts.** `docs/RESUME-2026-08-22.md` remains accurate as a
 > cold-start briefing and as the ordered list of what still has to happen; only its
 > "halted until Saturday" framing is superseded.
-> **The tree is GREEN again** — the SHOP builder cleared its own `onRecover` error while
+> **ALL EIGHT SURFACES ARE LANDED.** The single Fable review is running over the whole
+> product. Remaining after it: action its findings, then deploy.
+> **The tree is GREEN** — the SHOP builder cleared its own `onRecover` error while
 > running. tsc clean repo-wide, **677/677** tests, build **1.619 MB** under the 2.0 MB
 > amber line. **MEAL landed at `c9926bd`; SHOP is the last surface still building.**
 *Updated 2026-08-17 (session 3, CD redesign). Read this + `git log --oneline` to resume cold.*
@@ -260,3 +262,32 @@ page-length scrolling — grouped accordion, one section open at a time.
 - Redeploy: `npm run build && $HOME/.local/fd5-netlify/node_modules/.bin/netlify deploy --prod --dir dist` (folder is linked)
 
 - **Morrisons Starter variant shipped 2026-08-05** (commit 8d9cc4e + deploy): plan · full | starter switch in settings drawer; canonical list revision adopted (owner-ruled D0-035: 49 lines £172.57/£6.93, 22 SKUs verifiedOn 11 Aug, 6 pantryOptional); variant reviewed PASS after coherence+band fix cycle (chickpea-tin-not-contended checksum, unrounded bands both modes). 358/358 tests.
+
+
+## Post-wave-2 status (2026-08-18)
+
+- **SHOP (TANGENT HORIZON) COMPLETE** (`213dcf3`) — the last screen. It **confessed an
+  invented `verifiedOn`** unprompted and replaced it with a real read (23 SKUs carry one,
+  all `2026-08-11` — I verified the count against the dataset myself; my brief had said
+  22). It then found a **second** invention: cost class judged against the canonical SKU
+  even in tester mode, rendering the authored receipt as `18 costed / 21 unpriced`
+  against VARIANT-SPEC's "all lines verified". Now 39/39.
+  **The `onRecover` refusal was vindicated.** Supplying it honestly *forced a design
+  change*: the reconcile pad held only 2–3 arbiter nominees, but a stale price sheet goes
+  stale across all 44 lines — "a key that opens a panel which cannot reach the value that
+  expired". A faked no-op would have shipped that defect invisibly. `reconcileState`,
+  which reported a subset whose truth had no consequence, was **deleted** rather than
+  kept as decoration.
+- **Foundry repairs landed** (`b3d0f0a`-era): the **contrast-audit trap closed at
+  source** (background-color declared alongside all six gradient surfaces);
+  **TANGENT HORIZON's missing `--cd-well`** — the *second* scope caught omitting it, after
+  LIST found the same in `irreducible`, which makes it a pattern: a scope that omits a
+  token silently adopts the chassis's; and `.cd-tray-head` / `.cd-tray-title` added to the
+  forced-colours block.
+- **The legacy bridge is NOT yet removable.** All remaining `--sol-*` mentions in screens
+  are comments, but `App.tsx:183` still renders `data-language="playful"` on the
+  workspace and `Sheet` / `ArbiterSlot` / `Paddle` still wear `.fd5-control`. Migrating
+  those three shared components is the real remaining work. Hygiene, not correctness.
+- **Review ordering changed deliberately:** the approved plan said deploy *then* review,
+  written when findings were not to be actioned. Since the owner lifted that, the review
+  runs **first** so that what goes live already incorporates it.
