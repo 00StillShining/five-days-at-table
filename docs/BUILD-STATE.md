@@ -1,4 +1,9 @@
 # BUILD-STATE — resume point
+
+> **HALTED 2026-08-18. Development resumes Saturday 2026-08-22.**
+> **Read `docs/RESUME-2026-08-22.md` FIRST** — it is self-contained and names the one
+> thing to fix before anything else (the tree is tsc-RED by a single error, so
+> `npm run build` fails; tests are 674/674 green). Last fully green commit: `a48bd8d`.
 *Updated 2026-08-17 (session 3, CD redesign). Read this + `git log --oneline` to resume cold.*
 
 ## SESSION 3 — Council Defiance redesign (CURRENT PHASE, supersedes everything below)
@@ -139,7 +144,11 @@ page-length scrolling — grouped accordion, one section open at a time.
 - **ALL FIVE WAVE-2 SCREENS DISPATCHED.** STORES and PLAN were near done at 03:20 (both
   ladder artifacts already written); MEAL (FACETED VOLUME, a tray) and SHOP
   (TANGENT HORIZON, the last screen) dispatched after.
-- **Next:** land STORES, PLAN, MEAL, SHOP as they report. Then deploy,
+- **STORES, PLAN LANDED** (`a48bd8d`, `227d935`). **MEAL + SHOP UNFINISHED** — both
+  builders killed by a session limit mid-build, saved as WIP at `4619bf0`, neither
+  reported. See `docs/RESUME-2026-08-22.md`.
+- **Next:** finish MEAL + SHOP, repair the foundry's six gradient surfaces, re-sweep
+  contrast on every landed screen, delete the legacy bridge. Then deploy,
   then the single Fable review — **and action its findings** (owner revision, 2026-08-18).
 
 ### Carried defects — fix when the owning screen is rebuilt
