@@ -376,7 +376,6 @@ export default function CookScene(_props: SceneProps) {
   const stateWord = transportWord(status, dueNow);
   const glyph =
     status === "idle" ? "stop" : status === "paused" ? "pause" : dueNow ? "alert" : "play";
-  const lampWord = stateWord.toLowerCase();
   const countWord = dueNow ? "OVERDUE" : status === "paused" ? "HELD" : status === "idle" ? "READY" : "RUN";
 
   /* ---- the transport, folded into the reel's own collar ------------ */
@@ -487,7 +486,6 @@ export default function CookScene(_props: SceneProps) {
             spinning={spinning}
             lampLit={lampLit(status)}
             lampBreathing={lampBreathes(status, dueNow)}
-            lampWord={lampWord}
             overrun={overrun}
             primary={primary}
             pause={pause}
@@ -564,7 +562,7 @@ export default function CookScene(_props: SceneProps) {
         seedSeconds={derived.elapsedMin * 60}
         survivors={survivors}
         alert={dueNow ? ((dueStep ?? stepNow)?.text ?? "a step") : null}
-        lampWord={lampWord}
+        lampWord={lampLit(status) ? "rec" : "off"}
         lampLit={lampLit(status)}
       />
     </div>

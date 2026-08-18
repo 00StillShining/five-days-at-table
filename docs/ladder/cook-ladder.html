@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FD-5 COOK — 02 REEL LOGIC — the escalation ladder</title>
+<!--
+  docs/ladder/cook-ladder.html — the four rungs, kept as an artifact.
+
+  Every rung on this page RUNS. Nothing here is a picture of a rung: the state
+  selector on the Simple rung really drives it, the Pushed studies really move,
+  and the Refined and Signature rungs are the same construction the screen
+  ships. "Code that 'should look right' is worthless testimony."
+
+  REAL DATA throughout, taken from the running app on 2026-08-18:
+    program ............ "Chicken-crust pizza" (a-d1d), 25:00 total, 7 steps
+    tracks ............. oven 25:00 · prep 19:00 · pan 05:00
+    the long one ....... "starter sunday session" (prep-a-tester), 100:00,
+                         8 tracks, step bodies that run to a full paragraph
+    the longest label .. "mandoline / processor" — the width the lanes are
+                         dimensioned to
+    the states ......... empty · loading · partial · full · overflowing ·
+                         error · stale · disabled · first-run · RUNNING ·
+                         PAUSED · STOPPED · OVERDUE
+  No image assets, no WebGL, no network. Open it in a browser.
+-->
+<style>
+  :root {
+    color-scheme: dark;
+    --ui: "Space Grotesk", system-ui, sans-serif;
+    --data: "JetBrains Mono", ui-monospace, monospace;
+    /* the Simple rung's whole palette: a grayscale ramp, nothing else */
+    --g0:#141414; --g1:#222; --g2:#333; --g3:#555; --g4:#777; --g5:#9a9a9a;
+    --g6:#c2c2c2; --g7:#e2e2e2; --g8:#F2F2F2;
+    /* 02 REEL LOGIC's committed registry, for the rungs above Simple */
+    --field:#1B1B1D; --well:#121213; --rim:#2C2D30;
+    --mirror:#C9CACB; --mirror-hot:#E2E3E4; --mirror-floor:#161719;
+    --ink:#F2F1EA; --ink-unlit:#1C1C1D; --muted:#8A8D93; --border:#6A6D73;
+    --live:#FF2B1A; --live-dim:#76211C; --live-hot:#FF756A;
+    --warning:#C4832A; --danger:#C2392E; --danger-dark:#D96A61;
+    --focus:#4C8FD1; --keyline:#141414;
+    --axis:138deg; --module:.5rem;
+    --settle:cubic-bezier(.16,1,.30,1); --snap:cubic-bezier(.60,0,.10,1);
+    --heavy:cubic-bezier(.32,0,.12,1);
+  }
+  * { box-sizing:border-box }
+  body { margin:0; background:#0c0c0c; color:var(--g7); font-family:var(--ui); line-height:1.5 }
+  main { max-width:74rem; margin:0 auto; padding:2rem 1.25rem 6rem }
+  h1 { font-size:1.5rem; letter-spacing:.02em; margin:0 0 .25rem }
+  h2 { font-size:1.05rem; letter-spacing:.12em; text-transform:uppercase; margin:3rem 0 .25rem; color:var(--g8) }
+  h3 { font-size:.8125rem; letter-spacing:.12em; text-transform:uppercase; margin:1.25rem 0 .5rem; color:var(--g5) }
+  p  { max-width:62ch; color:var(--g6); font-size:.9375rem }
+  .claim { border-left:2px solid var(--g4); padding-left:.75rem; font-size:.875rem; color:var(--g7) }
+  .vs { font-family:var(--data); font-size:.8125rem; color:var(--g5); margin:.35rem 0 0; max-width:62ch }
+  .bench { display:flex; gap:1.25rem; flex-wrap:wrap; align-items:flex-start; margin-top:1rem }
+  .plinth { background:#101010; border:1px solid var(--g2); border-radius:.5rem; padding:1rem }
+  .plinth > figcaption { font-family:var(--data); font-size:.75rem; color:var(--g5); margin-bottom:.75rem }
+  table { border-collapse:collapse; font-size:.8125rem; margin-top:.75rem }
+  td,th { border:1px solid var(--g2); padding:.35rem .6rem; text-align:left; vertical-align:top }
+  th { color:var(--g8); font-weight:600 }
+  td.k { color:#9ec98a } td.x { color:#d98f88 }
+  code { font-family:var(--data); font-size:.8125rem; color:var(--g6) }
+  .states { display:flex; flex-wrap:wrap; gap:.35rem; margin:.75rem 0 0 }
+  .states button { font:inherit; font-size:.75rem; padding:.3rem .6rem; min-height:2.75rem; min-width:2.75rem;
+                   background:var(--g1); color:var(--g6); border:1px solid var(--g3); cursor:pointer; border-radius:.25rem }
+  .states button[aria-pressed="true"] { background:var(--g5); color:var(--g0); font-weight:700 }
+  .states button:focus-visible { outline:2px solid var(--focus); outline-offset:3px; box-shadow:0 0 0 6px var(--keyline) }
+
+  /* ================= RUNG 1 · SIMPLE ================= */
+  /* Grayscale ramp only. No gradient, no shadow stack, no bloom, no texture,
+     no material. The task must complete: read the state, read the time left,
+     press the one thing that advances it. */
+  .s-deck { width:22rem; background:var(--g1); border:1px solid var(--g3); padding:.75rem;
+            display:flex; flex-direction:column; gap:.5rem }
+  .s-row { display:flex; justify-content:space-between; gap:.5rem; font-size:.8125rem; color:var(--g5) }
+  .s-state { font-family:var(--data); font-size:1.25rem; color:var(--g8); font-weight:700 }
+  .s-fig { font-family:var(--data); font-size:2rem; color:var(--g8); letter-spacing:.02em }
+  .s-fig[data-held="true"] { opacity:.55 }
+  .s-bar { height:.75rem; background:var(--g0); border:1px solid var(--g3); position:relative }
+  .s-bar i { position:absolute; inset:0 auto 0 0; background:var(--g6); display:block }
+  .s-bar[data-over="true"] i { background:var(--g8) }
+  .s-step { font-size:.8125rem; color:var(--g7); border:1px solid var(--g3); padding:.4rem; min-height:3.4rem }
+  .s-keys { display:flex; gap:.35rem }
+  .s-key { flex:1; font:inherit; font-size:.8125rem; min-height:2.75rem; background:var(--g2);
+           color:var(--g7); border:1px solid var(--g3); cursor:pointer }
+  .s-key:disabled { color:var(--g3); cursor:default }
+  .s-key--primary { flex:2; font-weight:700 }
+  .s-key:focus-visible { outline:2px solid var(--g8); outline-offset:2px }
+  .s-note { font-family:var(--data); font-size:.6875rem; color:var(--g4) }
+
+  /* ================= SHARED · the world above Simple ================= */
+  .world { background:linear-gradient(var(--axis),
+             color-mix(in srgb,#fff 3%,var(--field)) 0%, var(--field) 52%,
+             color-mix(in srgb,#000 3%,var(--field)) 100%);
+           padding:1rem; border-radius:.75rem }
+  .chrome { background:linear-gradient(178deg, var(--mirror-hot) 0%, var(--mirror) 34%,
+              #6a6d70 47%, var(--mirror-floor) 48%, #34373a 62%, #9a9c9e 63%, var(--mirror-hot) 100%) }
+  .plate { background:var(--well); color:var(--ink); border-radius:.25rem; padding:.25rem .5rem;
+           box-shadow:inset 0 -1px 0 #ffffff1f, 0 1px 0 #00000059, 0 2px 5px #0000002e }
+  .esc { display:inline-flex; align-items:center; padding:.125rem .375rem; border-radius:.25rem;
+         background:var(--well); color:var(--ink); font-size:.6875rem; font-weight:600;
+         letter-spacing:.12em; text-transform:uppercase;
+         box-shadow:inset 0 1px 0 #ffffff14, inset 0 -1px 0 #00000038, 0 1px 0 #00000047 }
+
+  /* the disc, in every rung that has one */
+  .disc { position:relative; width:var(--d,11rem); height:var(--d,11rem) }
+  .disc .collar { position:absolute; inset:8.34%; border-radius:50%;
+    box-shadow:inset 0 1px 0 #ffffffa6, inset 0 -1px 0 #00000059, 0 1px 0 #00000066,
+               0 4px 10px #00000040, 0 24px 56px #00000029 }
+  .disc .face { position:absolute; inset:16.67%; border-radius:50%; overflow:hidden }
+  .disc .grip { position:absolute; inset:9%; border-radius:50%;
+    background:conic-gradient(#C9CACB 0deg 18deg,#1B1B1D 18deg 60deg,#C9CACB 60deg 78deg,
+      #1B1B1D 78deg 120deg,#C9CACB 120deg 138deg,#1B1B1D 138deg 180deg,#C9CACB 180deg 198deg,
+      #1B1B1D 198deg 240deg,#C9CACB 240deg 258deg,#1B1B1D 258deg 300deg,#C9CACB 300deg 318deg,
+      #1B1B1D 318deg 360deg);
+    animation:spin 10s linear infinite; animation-play-state:paused }
+  .disc[data-spin="true"] .grip { animation-play-state:running }
+  @keyframes spin { to { transform:rotate(360deg) } }
+  .disc .light { position:absolute; inset:0; border-radius:50%; pointer-events:none;
+    background:
+      radial-gradient(closest-side,#d4d5d6 0%,#9a9c9e 13%,#34373a 17%,#00000000 18%),
+      radial-gradient(closest-side,#00000000 88%,#00000080 91%,#00000000 93%),
+      linear-gradient(var(--axis),#ffffff1f 0%,#ffffff08 30%,#00000000 52%,#00000059 100%),
+      radial-gradient(120% 90% at 30% 18%,#e2e3e429 0%,#e2e3e400 46%);
+    box-shadow:inset 0 1px 0 #e2e3e4a6, inset 0 -1px 0 #00000066, inset 0 0 0 2px #00000073,
+               inset 0 0 22px 6px #00000047, 0 1px 0 #00000066, 0 4px 10px #00000040 }
+  .arc { position:absolute; inset:0; pointer-events:none }
+  .arc i { position:absolute; left:50%; top:50%; width:.25rem; height:.75rem;
+    margin-left:-.125rem; margin-top:-.375rem; border-radius:.125rem; background:var(--rim);
+    transform:rotate(var(--a)) translateY(calc(var(--d,11rem) * -0.468)); transform-origin:0 0 }
+  .arc i[data-on] { background:var(--ink) }
+
+  /* the lamp */
+  .lamp { width:.875rem; height:.875rem; border-radius:50%; display:inline-block;
+    background:radial-gradient(closest-side,#38100c 0%,#1e0907 78%,#140605 100%);
+    box-shadow:inset 0 1px 2px #000000a6, inset 0 -1px 0 #ffffff14 }
+  .lamp[data-lit="true"] { background:radial-gradient(closest-side,
+      color-mix(in srgb,#fff 45%,var(--live)) 0%, var(--live) 34%,
+      color-mix(in srgb,#000 22%,var(--live)) 100%);
+    box-shadow:inset 0 1px 1px #00000059, 0 0 2px #FF2B1ACC, 0 0 8px #FF2B1A66, 0 0 24px #FF2B1A29 }
+  .lamp[data-pulse="true"] { animation:pulse 2000ms cubic-bezier(.45,0,.55,1) infinite }
+  @keyframes pulse { 0%{opacity:1} 50%{opacity:.8} 100%{opacity:1} }
+
+  /* the transport cap */
+  .cap { min-width:2.75rem; min-height:2.75rem; border:0; border-radius:.25rem; cursor:pointer;
+    font:inherit; font-size:.75rem; text-transform:uppercase; letter-spacing:.12em; color:var(--ink);
+    background:linear-gradient(var(--axis), color-mix(in srgb,#fff 12%,var(--field)) 0%,
+      var(--field) 58%, color-mix(in srgb,#000 12%,var(--field)) 100%);
+    box-shadow:inset 0 1px 0 #ffffff59, inset 0 -1px 0 #00000059, 0 1px 0 #00000073,
+               0 3px 6px #0000004d, 0 10px 24px #00000029;
+    transition:transform 80ms var(--settle), box-shadow 80ms var(--settle) }
+  .cap:active { transform:translateY(1px); transition-duration:20ms; transition-timing-function:linear;
+    box-shadow:inset 0 1px 0 #ffffff33, inset 0 -1px 0 #00000059, 0 1px 0 #00000073,
+               0 1px 2px #0000004d, 0 4px 10px #00000029 }
+  .cap:focus-visible { outline:2px solid var(--focus); outline-offset:3px;
+    box-shadow:0 0 0 6px var(--keyline), inset 0 1px 0 #ffffff59, 0 3px 6px #0000004d }
+
+  /* the drum counter */
+  .drums { display:inline-flex; gap:1px; padding:.1875rem; border-radius:.25rem; background:var(--well);
+    box-shadow:inset 1px 2px 4px #00000047, inset 0 -1px 0 #ffffff1f }
+  .drums b { display:grid; place-items:center; width:calc(var(--ds,1.75rem)*.72);
+    font-family:var(--data); font-weight:400; font-size:var(--ds,1.75rem); line-height:1; color:var(--ink);
+    background:linear-gradient(180deg,#2c2d30 0%,#1c1c1d 42%,#1c1c1d 58%,#121213 100%);
+    box-shadow:inset 0 1px 0 #ffffff1f, inset 0 -1px 0 #00000073 }
+  .drums s { display:grid; place-items:center; width:calc(var(--ds,1.75rem)*.34); text-decoration:none;
+    font-family:var(--data); font-size:var(--ds,1.75rem); line-height:1; color:var(--muted) }
+  .drums[data-held="true"] b { opacity:.55 }
+
+  /* the dot matrix */
+  .dm { display:inline-flex; align-items:center; gap:.75rem; padding:.375rem; border-radius:.25rem;
+    background:var(--well); box-shadow:inset 1px 2px 4px #00000047 }
+  .dm .ch { display:grid; grid-template-columns:repeat(5,var(--dot,.4rem)); grid-auto-rows:var(--dot,.4rem); gap:.125rem }
+  .dm .ch i { width:var(--dot,.4rem); height:var(--dot,.4rem); border-radius:50%; background:var(--rim) }
+  .dm .ch i[data-on] { background:var(--ink) }
+
+  /* the segmented meter */
+  .meter { display:flex; gap:.125rem; height:1.25rem; padding:.125rem; border-radius:.1875rem;
+    background:var(--field); box-shadow:inset 1px 2px 4px #00000047, inset 0 -1px 0 #ffffff1f }
+  .meter i { flex:1; border-radius:.0625rem; background:var(--rim) }
+  .meter i[data-on] { background:var(--ink) }
+  .meter i[data-zone][data-on] { background:var(--warning) }
+  .meter[data-over="true"] i[data-on] { background:var(--danger-dark) }
+
+  .ann { display:grid; place-items:center; width:5rem; min-height:2rem; border-radius:.1875rem;
+    background:var(--well); border:1px solid #00000059; box-shadow:inset 0 1px 0 #ffffff14;
+    font-size:.5625rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted) }
+  .ann[data-firing="true"] { animation:flash 500ms steps(1,end) infinite }
+  @keyframes flash { 0%{background:var(--danger);color:var(--ink)} 50%{background:var(--well);color:var(--muted)} }
+
+  @media (prefers-reduced-motion: reduce) {
+    .grip, .lamp[data-pulse="true"], .ann[data-firing="true"] { animation:none }
+    .ann[data-firing="true"] { background:var(--danger); color:var(--ink) }
+  }
+</style>
+</head>
+<body>
+<main>
+
+<h1>FD-5 COOK — 02 REEL LOGIC — the escalation ladder</h1>
+<p class="vs">Four rungs, all live. Real data from the running app, 2026-08-18.</p>
+
+<p class="claim">
+  COOK answers <b>what am I doing right now, and when does it need me?</b>
+  REEL LOGIC owns it because the cook timer is the one genuinely live process in
+  the whole product — everywhere else FD-5's data changes once a day, and
+  CD-BRIEF ruling 6 says spinning elements attach only to values whose change is
+  user-caused or clock-continuous. A disc that would be ornament on any other
+  screen is the honest instrument here.
+</p>
+
+<!-- ===================================================================== -->
+<h2>1 · Simple</h2>
+<p>
+  Grayscale ramp <code>#141414</code> → <code>#F2F2F2</code>, nothing else. No
+  gradient, no shadow stack, no bloom, no texture, no material, no motion. The
+  disc does not exist yet: elapsed is a number, not a reel. <b>The task still
+  completes</b> — read the state, read what is left, press the one key that
+  advances it — which is the whole point of the rung.
+</p>
+<p class="vs">Every state, including the four this screen adds: running, paused, stopped, overdue.</p>
+
+<div class="bench">
+  <figure class="plinth" style="margin:0">
+    <figcaption>the deck, driven by the selector below</figcaption>
+    <div class="s-deck">
+      <div class="s-row"><span id="s-cap">step remaining</span><span id="s-age">0s</span></div>
+      <div class="s-fig" id="s-fig">11:14</div>
+      <div class="s-bar" id="s-bar"><i style="width:74%"></i></div>
+      <div class="s-row"><b class="s-state" id="s-state">RUN</b><span id="s-word">running</span></div>
+      <div class="s-step" id="s-step">Press onto the paper into a 20 cm round, 5–6 mm thick and even. Wet fingers stop it sticking. Bake 15 minutes.</div>
+      <div class="s-keys">
+        <button class="s-key" id="s-hold">hold</button>
+        <button class="s-key" id="s-ext">+1 min</button>
+        <button class="s-key s-key--primary" id="s-pri">done</button>
+      </div>
+      <p class="s-note" id="s-note">oven 11:14 / 25:00 · prep 11:14 / 19:00 · pan 05:00 / 05:00</p>
+    </div>
+  </figure>
+
+  <div>
+    <h3>the state set</h3>
+    <div class="states" id="s-states"></div>
+    <p class="vs" style="margin-top:.75rem">
+      Thirteen states, each real: the nine the ladder asks for plus the four a
+      timer adds. <b>Running is DRIVEN, not drawn</b> — the figure below counts
+      down against a real clock while it is selected.
+    </p>
+  </div>
+</div>
+
+<!-- ===================================================================== -->
+<h2>2 · Pushed — four studies, ONE exaggerated axis each</h2>
+<p>
+  Each study pushes exactly one axis to the point where it argues, states its
+  claim, and is compared against Simple. None of them is the answer; each of
+  them tells you something Simple could not.
+</p>
+
+<h3>study A — geometry: the Ø18rem reel hero</h3>
+<p class="claim">
+  <b>Claim.</b> The chapter's Hero Screen puts one disc at Ø18rem with nothing
+  competing beside it. If the disc is big enough, its stillness alone carries
+  the alarm and the printed words become confirmation rather than the report.
+</p>
+<div class="bench">
+  <figure class="plinth" style="margin:0">
+    <figcaption>Ø18rem, nothing beside it</figcaption>
+    <div class="world" style="display:grid;place-items:center;padding:1.5rem">
+      <div class="disc" style="--d:18rem" data-spin="true">
+        <span class="arc" id="arcA"></span>
+        <span class="collar chrome"></span>
+        <span class="face chrome"><span class="grip"></span><span class="light"></span></span>
+      </div>
+    </div>
+  </figure>
+  <div>
+    <p class="vs"><b>vs Simple:</b> the state is now readable across a room, and
+      a stopped disc is felt before it is read. <b>What it costs:</b> the deck
+      answers only half its own question. "When does it need me" is legible;
+      "what am I doing right now" is nowhere, and the step text is the thing the
+      operator's hands are actually following. <b>Kept:</b> the diameter, and
+      the disc as the screen's first mass. <b>Rejected:</b> the disc alone.</p>
+  </div>
+</div>
+
+<h3>study B — motion: the transport folded into the reel's own gesture grammar</h3>
+<p class="claim">
+  <b>Claim.</b> The chapter's Signature removes the key row and folds every
+  transport function into the disc: tap centre to play, radial flick to seek,
+  350ms hold to arm. One control becomes the input, the readout and the
+  transport.
+</p>
+<div class="bench">
+  <figure class="plinth" style="margin:0">
+    <figcaption>the grab, drawn — and then refused</figcaption>
+    <div class="world" style="display:grid;place-items:center;padding:1.5rem;position:relative">
+      <div class="disc" style="--d:11rem;opacity:.45" data-spin="true">
+        <span class="collar chrome"></span>
+        <span class="face chrome"><span class="grip"></span><span class="light"></span></span>
+      </div>
+      <div style="position:absolute;inset:auto 0 .75rem;text-align:center">
+        <span class="esc" style="color:var(--danger-dark)">refused — see below</span>
+      </div>
+    </div>
+  </figure>
+  <div>
+    <p class="vs"><b>vs Simple:</b> it would be the most economical control on
+      the screen. <b>Why it is refused:</b> FD-5's ruling is that this reel is an
+      <code>aria-hidden</code> process readout and <b>is never grabbed</b>. That
+      is not a taste call — it is the single reason the
+      <b>FACETED VOLUME × REEL LOGIC curdle</b> does not exist in this product:
+      "both fuse a rotary and its own readout into one control, but one earns
+      coast through traversal and the other refuses coast on principle." Make
+      this disc grabbable and MEAL's wheel and COOK's reel become two
+      contradictory laws in one product. <b>Kept:</b> the Signature's <i>claim</i>
+      — no transport key row anywhere. <b>Rejected:</b> the grab that delivers it.</p>
+  </div>
+</div>
+
+<h3>study C — density: lane-dominant</h3>
+<p class="claim">
+  <b>Claim.</b> The real work of a Sunday session is eight parallel tracks. Give
+  the lanes the deck and the reel a corner, and the screen answers "what is
+  cooking where" better than any disc can.
+</p>
+<div class="bench">
+  <figure class="plinth" style="margin:0">
+    <figcaption>eight lanes, real windows, real playhead</figcaption>
+    <div class="world" style="min-width:26rem">
+      <div id="lanesC" style="display:grid;gap:.375rem"></div>
+    </div>
+  </figure>
+  <div>
+    <p class="vs"><b>vs Simple:</b> the parallel structure of a prep session
+      becomes visible for the first time — Simple's one bar cannot show that the
+      oven and the pan are different clocks. <b>What it costs:</b> at eight lanes
+      the deck stands 1005px in a 768px viewport, and nothing tells you which
+      lane needs you <i>now</i>. <b>Kept:</b> the lanes, their three-zone windows
+      and the shared playhead — and the measurement that forced the ranking and
+      the cap. <b>Rejected:</b> lanes as the hero.</p>
+  </div>
+</div>
+
+<h3>study D — palette: lamp-only saturation</h3>
+<p class="claim">
+  <b>Claim.</b> The chapter grants one bulb per world. Spend every saturated
+  pixel on the record lamp and let the rest of the deck be chrome and ink, so
+  the one colour on screen always means exactly one thing.
+</p>
+<div class="bench">
+  <figure class="plinth" style="margin:0">
+    <figcaption>the lamp lit, and the same deck with it dark</figcaption>
+    <div class="world" style="display:flex;gap:2rem;align-items:center;min-width:26rem">
+      <span style="display:inline-flex;align-items:center;gap:.5rem">
+        <span class="lamp" data-lit="true" data-pulse="true"></span><span class="esc">rec</span>
+      </span>
+      <span style="display:inline-flex;align-items:center;gap:.5rem">
+        <span class="lamp"></span><span class="esc">off</span>
+      </span>
+      <span class="dm"><span class="ch" data-g="R"></span><span class="ch" data-g="U"></span><span class="ch" data-g="N"></span></span>
+    </div>
+  </figure>
+  <div>
+    <p class="vs"><b>vs Simple:</b> "is it recording" becomes a pre-attentive
+      fact. <b>What it costs:</b> with saturation rationed to the lamp, an
+      overdue step has no colour left — and the alarm is the one thing on this
+      screen that must survive a glance from two metres. <b>Kept:</b> the lamp as
+      the only <i>emissive</i>, and its word beside it, because a colour never
+      travels alone. <b>Rejected:</b> the ration. The danger role is spent as a
+      printed keyline and a filled meter as well, which is pigment, not light.</p>
+  </div>
+</div>
+
+<!-- ===================================================================== -->
+<h2>3 · Refined — subtract jobless elements, keep every survivor at full strength</h2>
+<p>
+  The re-authored rung. CD's stock "one hierarchy, plain competence below" is
+  revoked by CORRECTIONARY 3.1 and would have undone the push. The ledger asks
+  <b>does it state a value, or let the hand do something?</b> — never <i>is it
+  the hero?</i>
+</p>
+
+<table>
+  <tr><th>element</th><th>states a value?</th><th>lets the hand act?</th><th>verdict</th></tr>
+  <tr><td>the reel + its rim-printed arc</td><td>elapsed, and whether the program is advancing</td><td>no — never grabbed</td><td class="k">KEPT, at full material</td></tr>
+  <tr><td>the collar's three keys</td><td>no</td><td>start · done · hold · +1 min</td><td class="k">KEPT</td></tr>
+  <tr><td>the hub counter window</td><td>the exact elapsed figure</td><td>no</td><td class="k">KEPT</td></tr>
+  <tr><td>the record lamp + its word</td><td>is a program recording</td><td>no</td><td class="k">KEPT</td></tr>
+  <tr><td>the countdown drums + meter</td><td>time left on the step, exactly and as travel</td><td>no</td><td class="k">KEPT — takes the reserved 4.25rem step</td></tr>
+  <tr><td>the dot-matrix strip</td><td>the transport state, at wall range</td><td>no</td><td class="k">KEPT</td></tr>
+  <tr><td>the annunciator</td><td>the DUE condition, latching</td><td>no</td><td class="k">KEPT</td></tr>
+  <tr><td>the NOW plate</td><td>the step the hands are following</td><td>no</td><td class="k">KEPT</td></tr>
+  <tr><td>the scrub rocker + NOW key</td><td>the preview offset</td><td>±1 min preview</td><td class="k">KEPT</td></tr>
+  <tr><td>the track lanes</td><td>every parallel clock</td><td>no</td><td class="k">KEPT — ranked and capped</td></tr>
+  <tr><td>a separate TIME IS UP enclosure</td><td>the step text — <b>again</b></td><td>no</td><td class="x">CUT — two instruments, one fact. The alarm is a STATE of the NOW plate.</td></tr>
+  <tr><td>the completion ring-and-check animation</td><td>nothing the heading does not</td><td>no</td><td class="x">CUT — a motion to wait through on the hundredth session</td></tr>
+  <tr><td>the 600ms hold-to-pause</td><td>nothing</td><td>pauses, slowly</td><td class="x">CUT — a hold IS guarding, and R5 accepted the mis-tap risk</td></tr>
+  <tr><td>the separate transport key row</td><td>nothing</td><td>what the collar now does</td><td class="x">CUT — the Signature's own subtraction</td></tr>
+  <tr><td>the local chime toggle + its WebAudio context</td><td>nothing</td><td>a second mute beside the chassis's own</td><td class="x">CUT — replaced by the shared bus</td></tr>
+</table>
+<p class="vs">
+  Ten survivors, six of them hero-grade instruments, each with a job named in
+  one sentence. Nothing was demoted to plain competence to make room.
+</p>
+
+<!-- ===================================================================== -->
+<h2>4 · Signature — the one move only this screen would make</h2>
+<p class="claim">
+  <b>THE TRANSPORT IS THE REEL'S OWN RIM.</b> There is no transport key row
+  anywhere on this screen. The three keys are seated in the machined collar that
+  is part of the reel assembly — hold at 9, done at 6, +1 min at 3 — with the
+  record lamp on the crown at 12 and the count printed around the rim as
+  II.3.18's committed 270° arc, its 90° bottom dead zone occupied by the primary
+  key. One object is the input, the readout and the transport, reached by
+  pressing the assembly's rim rather than by turning its disc.
+</p>
+<p class="vs">
+  <b>The tension, stated rather than hidden.</b> The chapter delivers this by
+  making the disc grabbable, and FD-5 forbids that (study B). So the Signature is
+  built as the chapter <i>means</i> it — the key row is gone, the reel carries
+  everything — and not as the chapter <i>draws</i> it. That is a real departure
+  and it is recorded here rather than smoothed over.
+</p>
+
+<div class="bench">
+  <figure class="plinth" style="margin:0">
+    <figcaption>the shipped assembly — press the collar, drive the states</figcaption>
+    <div class="world" style="display:grid;place-items:center;padding:2rem 1.5rem 3rem">
+      <div class="disc" style="--d:13rem" id="sig" data-spin="true">
+        <span class="arc" id="arcS"></span>
+        <span class="collar chrome"></span>
+        <span class="face chrome"><span class="grip"></span><span class="light"></span></span>
+        <div style="position:absolute;left:50%;top:5.5%;transform:translateX(-50%);display:inline-flex;
+                    align-items:center;gap:.5rem;padding:.1875rem .375rem;border-radius:.25rem;
+                    background:var(--well);box-shadow:inset 0 1px 0 #ffffff14,0 1px 0 #00000047">
+          <span class="lamp" id="sigLamp" data-lit="true" data-pulse="true"></span>
+          <span style="font-size:.6875rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink)" id="sigLampWord">rec</span>
+        </div>
+        <div class="plate" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+                    display:grid;justify-items:center;gap:.125rem;min-width:52%;text-align:center">
+          <span class="drums" style="--ds:1.25rem" id="sigDrums"></span>
+          <span style="font-family:var(--data);font-size:.6875rem;color:var(--muted)">of 25:00</span>
+        </div>
+        <button class="cap" id="sigHold" style="position:absolute;left:12.5%;top:50%;transform:translate(-50%,-50%);width:3rem;height:3rem;padding:0">hold</button>
+        <button class="cap" id="sigExt"  style="position:absolute;left:87.5%;top:50%;transform:translate(-50%,-50%);width:3rem;height:3rem;padding:0">+1</button>
+        <button class="cap" id="sigPri"  style="position:absolute;left:50%;top:100%;transform:translate(-50%,-78%);width:9rem;height:3.5rem;border-radius:.75rem;font-size:1rem">done</button>
+      </div>
+    </div>
+  </figure>
+  <div style="display:grid;gap:.75rem;align-content:start">
+    <div style="display:flex;gap:.75rem;align-items:center">
+      <span class="dm" id="sigDm"></span>
+      <span class="ann" id="sigAnn">step due</span>
+    </div>
+    <span class="drums" style="--ds:2.75rem" id="sigCount"></span>
+    <span class="meter" id="sigMeter"></span>
+    <p class="vs" style="margin:0">
+      Press the collar. <b>HOLD</b> freezes the disc in the input frame — the
+      commit is applied to a shadow model with the frozen reducer and the disc's
+      own attribute is written straight to the DOM, before the handler returns.
+      <b>DONE</b> clears the alarm. The disc stops for exactly three reasons and
+      every one of them is printed: HOLD, WAIT, READY.
+    </p>
+  </div>
+</div>
+
+<h3>what changed, precisely</h3>
+<table>
+  <tr><th></th><th>Refined</th><th>Signature</th></tr>
+  <tr><td>transport</td><td>three keys in a row beneath the disc</td><td>three keys seated in the disc's own collar; no row exists</td></tr>
+  <tr><td>the count</td><td>a strip below the disc</td><td>a 270° printed arc around the disc's own rim, 60 cells, one per 1/60 of the program</td></tr>
+  <tr><td>the exact figure</td><td>beside the strip</td><td>a counter window bolted across the hub, in drums</td></tr>
+  <tr><td>added</td><td colspan="2">the crown escutcheon at 12 o'clock, carrying the one licensed emissive and its word</td></tr>
+  <tr><td>removed</td><td colspan="2">the key row, the separate counter strip, the separate alarm enclosure</td></tr>
+</table>
+
+<h3>the committed values this rung spends</h3>
+<table>
+  <tr><th>value</th><th>figure</th><th>clause</th></tr>
+  <tr><td>reel diameter</td><td>22rem ≥80rem · 18rem desktop · 13rem handheld</td><td>ch.02 §4 Hero Screen (18/10rem), scaled up per CORRECTIONARY 4</td></tr>
+  <tr><td>reel rate</td><td>0.1 rev/s — one turn per 10s of program time</td><td>II.3.9 (rate is a live readout); constant because a cook clock runs at 1×</td></tr>
+  <tr><td>arc</td><td>270°, −135°→+135°, 60 cells at 4.5°, 5 majors</td><td>II.3.18 arc + dead zone; II.3.21 cells</td></tr>
+  <tr><td>dot-matrix</td><td>5×7 at 0.625rem pitch, 0.5rem dot</td><td>II.3.21</td></tr>
+  <tr><td>chamfer</td><td>0.25rem controls · 0.75rem panels</td><td>ch.02 §2</td></tr>
+  <tr><td>anodize travel</td><td>6% (+3%/−3%) + microtexture</td><td>ch.02 §2's declared delta on II.2.9</td></tr>
+  <tr><td>chrome stops</td><td>47/48% and 62/63%, range #161719→#E2E3E4</td><td>ch.02 §2's declared delta on II.2.8</td></tr>
+  <tr><td>springs</td><td>hero 1.4/260/30 · transport 1/320/26 · lamp 0.7/420/25 · commit 1.2/300/38</td><td>ch.02 §5</td></tr>
+  <tr><td>contact</td><td>≤20ms linear down, 80ms settle</td><td>II.4.3</td></tr>
+  <tr><td>lamp</td><td>bloom 120ms rise / 140ms decay, shells r·4r·12r at 80/40/16%</td><td>II.2.17, II.3.24</td></tr>
+  <tr><td>pulse</td><td>2000ms, 0.5Hz, only while truly running</td><td>II.4.11</td></tr>
+  <tr><td>annunciator</td><td>2Hz square, 250ms lit / 250ms dark, no fade</td><td>II.3.25 — fixed doctrine</td></tr>
+  <tr><td>held-key repeat</td><td>12/s after 380ms, on the product's own clock</td><td>II.1.18</td></tr>
+  <tr><td>whir</td><td>the detent tick coalesced above 8/s — never a synthesized hum</td><td>II.5.11 + ch.02 §6</td></tr>
+  <tr><td>warning</td><td>620 + 877Hz, 180ms, 2/s, phase-locked, never ducked</td><td>II.5.8 — one global cue</td></tr>
+  <tr><td>trophy</td><td>90s idle · 420ms in · 240ms out · 2px on an 8-position orbit / 240s · 1.00→0.55→0.20 over 4000ms linear</td><td>owner ruling</td></tr>
+  <tr><td>focus</td><td>2px #4C8FD1 + 1px #141414 keyline at 3px offset</td><td>CD-BRIEF repair 3</td></tr>
+</table>
+
+<script>
+/* ---------------- RUNG 1 · the Simple deck, really driven ---------------- */
+const STATES = ["first-run","empty","loading","partial","full","overflowing","error","stale","disabled","running","paused","stopped","overdue"];
+const S = {
+  "first-run":  {cap:"ready to start", fig:"--:--", bar:0,  st:"READY", word:"no program has been run on this deck", step:"Load tonight's dinner, a Sunday session, or any meal.", pri:"start", dis:false, held:true, age:"never"},
+  "empty":      {cap:"standby",        fig:"--:--", bar:0,  st:"READY", word:"no program loaded", step:"The deck is stopped.", pri:"start", dis:true,  held:true, age:"never"},
+  "loading":    {cap:"standby",        fig:"--:--", bar:0,  st:"READY", word:"compiling the program", step:"Chicken-crust pizza — 7 steps across 3 tracks.", pri:"start", dis:true, held:true, age:"0s"},
+  "partial":    {cap:"next step in",   fig:"00:33", bar:40, st:"RUN",   word:"running, no step timer counting", step:"Waiting for the next step to come round.", pri:"done", dis:false, held:false, age:"0s"},
+  "full":       {cap:"step remaining", fig:"11:14", bar:74, st:"RUN",   word:"running", step:"Press onto the paper into a 20 cm round, 5–6 mm thick and even. Wet fingers stop it sticking. Bake 15 minutes.", pri:"done", dis:false, held:false, age:"0s"},
+  "overflowing":{cap:"step remaining", fig:"04:02", bar:26, st:"RUN",   word:"8 tracks · 3 more lanes, 3 already settled", step:"Trays in — chicken, chickpeas, peppers — TRAY A: 600 g chicken breast, salt, garlic powder, onion powder. Nothing else. 25 min. TRAY B: 250 g drained chickpeas, 1 tbsp rapeseed oil, 2 tsp jerk seasoning (5 g). 35 min, shaken twice.", pri:"done", dis:false, held:false, age:"0s"},
+  "error":      {cap:"standby",        fig:"--:--", bar:0,  st:"READY", word:"this program id is no longer in the data", step:"Eject and load another program.", pri:"start", dis:true, held:true, age:"never"},
+  "stale":      {cap:"step remaining", fig:"11:14", bar:74, st:"RUN",   word:"NO SIGNAL — the clock has not reported for 2s", step:"Press onto the paper into a 20 cm round, 5–6 mm thick and even.", pri:"done", dis:false, held:true, age:"4s"},
+  "disabled":   {cap:"step remaining", fig:"11:14", bar:74, st:"RUN",   word:"previewing +3 min — done and +1 min are off", step:"Press onto the paper into a 20 cm round, 5–6 mm thick and even.", pri:"done", dis:true, held:false, age:"0s"},
+  "running":    {cap:"step remaining", fig:null,    bar:null,st:"RUN",  word:"running", step:"Bake 15 minutes. It should be firm, browned at the rim.", pri:"done", dis:false, held:false, age:"0s"},
+  "paused":     {cap:"step remaining", fig:"11:14", bar:74, st:"HOLD",  word:"HELD — a paused timer is not stale", step:"Bake 15 minutes. It should be firm, browned at the rim.", pri:"resume", dis:false, held:true, age:"held"},
+  "stopped":    {cap:"standby",        fig:"--:--", bar:0,  st:"READY", word:"ejected", step:"The deck is stopped.", pri:"start", dis:true, held:true, age:"never"},
+  "overdue":    {cap:"overdue by",     fig:"00:49", bar:100,st:"WAIT",  word:"OVERDUE — the step's clock is past zero", step:"Base out. It should be firm, browned at the rim and lift cleanly off the paper.", pri:"done", dis:false, held:false, age:"0s", over:true}
+};
+let cur = "full", t0 = Date.now();
+const $ = id => document.getElementById(id);
+function paintSimple() {
+  const s = S[cur];
+  $("s-cap").textContent = s.cap; $("s-age").textContent = s.age;
+  $("s-state").textContent = s.st; $("s-word").textContent = s.word;
+  $("s-step").textContent = s.step; $("s-pri").textContent = s.pri;
+  $("s-pri").disabled = s.dis; $("s-hold").disabled = s.dis; $("s-ext").disabled = s.dis;
+  $("s-bar").dataset.over = String(!!s.over);
+  $("s-fig").dataset.held = String(!!s.held);
+  if (cur === "running") {                     // DRIVEN, not drawn
+    const left = Math.max(0, 900 - Math.floor((Date.now()-t0)/1000));
+    $("s-fig").textContent = String(Math.floor(left/60)).padStart(2,"0")+":"+String(left%60).padStart(2,"0");
+    $("s-bar").firstElementChild.style.width = (left/900*100)+"%";
+  } else {
+    $("s-fig").textContent = s.fig;
+    $("s-bar").firstElementChild.style.width = s.bar + "%";
+  }
+}
+STATES.forEach(name => {
+  const b = document.createElement("button");
+  b.textContent = name; b.setAttribute("aria-pressed", String(name===cur));
+  b.onclick = () => { cur = name; t0 = Date.now();
+    [...$("s-states").children].forEach(c => c.setAttribute("aria-pressed", String(c.textContent===name)));
+    paintSimple(); };
+  $("s-states").appendChild(b);
+});
+paintSimple(); setInterval(paintSimple, 1000);
+
+/* ---------------- shared painters ---------------- */
+function arc(el, lit, d) {
+  el.innerHTML = "";
+  for (let i=0;i<60;i++){ const c=document.createElement("i");
+    c.style.setProperty("--a", (-135 + 270*i/59)+"deg");
+    if (i<lit) c.dataset.on = "true"; el.appendChild(c); }
+}
+const FONT = {"0":["01110","10001","10011","10101","11001","10001","01110"],"1":["00100","01100","00100","00100","00100","00100","01110"],
+"2":["01110","10001","00001","00010","00100","01000","11111"],"3":["11111","00010","00100","00010","00001","10001","01110"],
+"4":["00010","00110","01010","10010","11111","00010","00010"],"5":["11111","10000","11110","00001","00001","10001","01110"],
+"6":["00110","01000","10000","11110","10001","10001","01110"],"7":["11111","00001","00010","00100","01000","01000","01000"],
+"8":["01110","10001","10001","01110","10001","10001","01110"],"9":["01110","10001","10001","01111","00001","00010","01100"],
+"A":["01110","10001","10001","11111","10001","10001","10001"],"D":["11110","10001","10001","10001","10001","10001","11110"],
+"E":["11111","10000","10000","11110","10000","10000","11111"],"H":["10001","10001","10001","11111","10001","10001","10001"],
+"I":["01110","00100","00100","00100","00100","00100","01110"],"L":["10000","10000","10000","10000","10000","10000","11111"],
+"N":["10001","11001","10101","10011","10001","10001","10001"],"O":["01110","10001","10001","10001","10001","10001","01110"],
+"R":["11110","10001","10001","11110","10100","10010","10001"],"T":["11111","00100","00100","00100","00100","00100","00100"],
+"U":["10001","10001","10001","10001","10001","10001","01110"],"W":["10001","10001","10001","10101","10101","11011","10001"],
+"Y":["10001","10001","01010","00100","00100","00100","00100"],":":["00000","00100","00100","00000","00100","00100","00000"]};
+function dm(el, text) {
+  el.innerHTML = "";
+  for (const ch of text) { const g = FONT[ch] || FONT[" "] || ["00000","00000","00000","00000","00000","00000","00000"];
+    const cell = document.createElement("span"); cell.className="ch";
+    for (let r=0;r<7;r++) for (let c=0;c<5;c++){ const d=document.createElement("i");
+      if (g[r][c]==="1") d.dataset.on="true"; cell.appendChild(d); }
+    el.appendChild(cell); }
+}
+function drums(el, v) {
+  el.innerHTML = "";
+  for (const ch of v) { const t = document.createElement(/[:\-]/.test(ch) ? "s" : "b"); t.textContent = ch; el.appendChild(t); }
+}
+function meter(el, lit, over) {
+  el.innerHTML = ""; el.dataset.over = String(!!over);
+  for (let i=0;i<24;i++){ const s=document.createElement("i");
+    if (i<24*0.15) s.dataset.zone="warn"; if (over || i<lit) s.dataset.on="true"; el.appendChild(s); }
+}
+
+/* study A + C + D painters */
+arc(document.getElementById("arcA"), 27);
+document.querySelectorAll('.dm .ch[data-g]').forEach(cell => {
+  const g = FONT[cell.dataset.g];
+  for (let r=0;r<7;r++) for (let c=0;c<5;c++){ const d=document.createElement("i");
+    if (g[r][c]==="1") d.dataset.on="true"; cell.appendChild(d); }
+});
+const LANES = [["oven · 3 trays",0,10],["oven",10,40],["hob 2",15,40],["processor",0,15],
+               ["mandoline / processor",5,12],["bench",0,100],["hob 1",45,75],["fridge",75,100]];
+const lanesC = document.getElementById("lanesC");
+LANES.forEach(([name,a,b]) => {
+  const row = document.createElement("div");
+  row.style.cssText = "display:grid;grid-template-columns:8.5rem 1fr auto;gap:.5rem;align-items:center;min-height:2rem";
+  row.innerHTML = `<span class="esc" style="max-width:8.5rem;white-space:normal;line-height:1.15">${name}</span>
+    <span style="position:relative;height:1rem;border-radius:.125rem;background:var(--well);
+                 box-shadow:inset 1px 2px 4px #00000047;overflow:hidden">
+      <span style="position:absolute;top:.125rem;bottom:.125rem;left:${a}%;width:${b-a}%;
+                   border-radius:.0625rem;background:var(--rim)">
+        <span style="position:absolute;inset:0 auto 0 0;width:${Math.max(0,Math.min(100,(38-a)/(b-a)*100))}%;
+                     background:repeating-linear-gradient(90deg,var(--ink) 0,var(--ink) .5rem,#0000 .5rem,#0000 .625rem)"></span>
+      </span>
+      <span style="position:absolute;top:-.125rem;bottom:-.125rem;left:38%;width:2px;margin-left:-1px;background:var(--mirror-hot)"></span>
+    </span>
+    <span style="font-family:var(--data);font-size:.875rem;color:var(--ink)">38:00<span style="color:var(--muted)"> / 100:00</span></span>`;
+  lanesC.appendChild(row);
+});
+
+/* ---------------- RUNG 4 · the Signature, really driven ---------------- */
+const sig = {status:"running", due:false, elapsed:754, left:674, total:1500};
+function paintSig() {
+  const spinning = sig.status === "running" && !sig.due;
+  document.getElementById("sig").dataset.spin = String(spinning);
+  const lamp = document.getElementById("sigLamp");
+  lamp.dataset.lit = String(sig.status === "running");
+  lamp.dataset.pulse = String(spinning);
+  document.getElementById("sigLampWord").textContent = sig.status === "running" ? "rec" : "off";
+  const word = sig.status === "paused" ? "HOLD" : sig.due ? "WAIT" : "RUN";
+  dm(document.getElementById("sigDm"), word);
+  document.getElementById("sigAnn").dataset.firing = sig.due ? "true" : "false";
+  const clk = s => String(Math.floor(s/60)).padStart(2,"0")+":"+String(Math.floor(s%60)).padStart(2,"0");
+  drums(document.getElementById("sigDrums"), clk(sig.elapsed));
+  drums(document.getElementById("sigCount"), clk(Math.abs(sig.left)));
+  meter(document.getElementById("sigMeter"), Math.ceil(Math.max(0,sig.left)/900*24), sig.due);
+  arc(document.getElementById("arcS"), Math.round(sig.elapsed/sig.total*60));
+  document.getElementById("sigHold").textContent = sig.status === "paused" ? "run" : "hold";
+  document.getElementById("sigPri").textContent  = sig.status === "paused" ? "resume" : "done";
+}
+document.getElementById("sigHold").onclick = () => {
+  sig.status = sig.status === "paused" ? "running" : "paused"; paintSig(); };
+document.getElementById("sigExt").onclick  = () => { sig.left += 60; sig.due = false; paintSig(); };
+document.getElementById("sigPri").onclick  = () => {
+  if (sig.status === "paused") sig.status = "running"; else { sig.due = false; sig.left = 674; }
+  paintSig(); };
+setInterval(() => {
+  if (sig.status !== "running") return;
+  sig.elapsed++; if (!sig.due) sig.left--;
+  if (sig.left <= 0) { sig.due = true; sig.left = 0; }
+  paintSig();
+}, 1000);
+paintSig();
+</script>
+</main>
+</body>
+</html>

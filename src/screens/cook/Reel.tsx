@@ -103,7 +103,6 @@ export interface ReelProps {
   lampLit: boolean;
   /** II.4.11 — the lamp breathes ONLY for a process actually running. */
   lampBreathing: boolean;
-  lampWord: string;
   /** Elapsed has run past the program's own declared total. */
   overrun: boolean;
   primary: TransportKey;
@@ -231,7 +230,6 @@ export function Reel({
   spinning,
   lampLit,
   lampBreathing,
-  lampWord,
   overrun,
   primary,
   pause,
@@ -247,17 +245,34 @@ export function Reel({
         overrun={overrun}
         seedSeconds={seedSeconds}
       >
-        {/* the crown escutcheon at 12 o'clock — the one licensed emissive */}
+        {/*
+          The crown escutcheon at 12 o'clock — the one licensed emissive in this
+          world, and ONE BIT with TWO WORDS.
+
+          It reports ONE THING: is a cook program recording. That is the same
+          claim the chassis rec-dot makes, in the same hex, which is what
+          CD-BRIEF ruling 3 means by "one claim made once" — so it is lit on
+          exactly `isCookRunning`'s own condition and on nothing else. The strip
+          below reports the TRANSPORT (READY / RUN / WAIT / HOLD) and the
+          annunciator reports the DUE condition; three instruments, three facts.
+
+          THE WORDS ARE REC / OFF, and they got there by failing the static-
+          equivalence test. An earlier cut read LIVE / STOPPED, which put the
+          lamp in direct contradiction with the disc four inches away: during a
+          due-freeze the program IS running, so the lamp was lit and captioned
+          LIVE beside a visibly still reel — a lamp calling the reel a liar.
+          REC names the program's own state and collides with nothing.
+        */}
         <div className="ck-crown">
           <span className={lampBreathing ? "ck-lamp cd-pulse" : "ck-lamp"}>
             <Lamp
               lit={lampLit}
-              word={{ on: lampWord, off: lampWord }}
+              word={{ on: "rec", off: "off" }}
               label="cook program"
               showWord={false}
             />
           </span>
-          <span className="ck-crown-word cd-engraved">{lampWord}</span>
+          <span className="ck-crown-word cd-engraved">{lampLit ? "rec" : "off"}</span>
         </div>
 
         {/*

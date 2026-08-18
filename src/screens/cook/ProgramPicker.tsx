@@ -56,32 +56,49 @@ export function ProgramPicker({ state, now, onLoad }: ProgramPickerProps) {
   const tonight = resolveTonightMeal(duty);
   const sessions = prepSessionOptions(variant);
   const weekGroups = groupedMealOptions(variant);
-  const [openWeek, setOpenWeek] = useOpenSection("cook-picker");
+  /*
+    GROUPED BY DAY, not by week, and that is R7 doing real work rather than
+    being satisfied on paper.
 
-  const groups: RegisterGroup[] = weekGroups.map((group) => ({
-    id: group.week,
-    label: `week ${group.week.toLowerCase()}`,
-    items: group.days.flatMap((day) =>
-      day.meals.map((meal) => () => {
-        const macros = mealMacros(meal.id, state.prefs.cover, state.prefs.scale);
-        return (
-          <PressKey
-            className="ck-seat ck-seat--meal"
-            onPress={() => onLoad(meal.id)}
-            aria-label={`load ${meal.name}, ${SLOT_LABEL[meal.slot] ?? meal.slot}, day ${day.day}`}
-          >
-            <span className="ck-seat-slot cd-silkscreen">
-              d{day.day} · {SLOT_LABEL[meal.slot] ?? meal.slot}
-            </span>
-            <span className="ck-seat-name">{meal.name}</span>
-            <span className="ck-seat-meta cd-printed">
-              {macros.kcal}
-              <span className="cd-unit">kcal</span>
-            </span>
-          </PressKey>
-        );
-      })
-    ),
+    A week group holds up to twenty meals. MEASURED at 1280x800 with the tester
+    variant's TEN: the open group pushed the deck to 879px in a 800px viewport,
+    and in full mode it would be twice that — a page-length scroll behind an
+    accordion, which is the thing R7 exists to forbid. Clipping the group with
+    `limit` would have "confessed" its way out of the measurement while making
+    the eleventh meal unreachable, which is a worse answer than scrolling.
+
+    A day holds two to four. One open day group always fits, every meal stays
+    reachable, nothing is clipped, and it matches how the operator asks the
+    question — they want Tuesday's dinner, not the ninth item of week A.
+  */
+  const dayGroups = weekGroups.flatMap((group) =>
+    group.days.map((day) => ({ week: group.week, day: day.day, meals: day.meals }))
+  );
+  const [openDay, setOpenDay] = useOpenSection(
+    "cook-picker",
+    dayGroups.length ? `${dayGroups[0].week}-${dayGroups[0].day}` : null
+  );
+
+  const groups: RegisterGroup[] = dayGroups.map((group) => ({
+    id: `${group.week}-${group.day}`,
+    label: `week ${group.week.toLowerCase()} · day ${group.day}`,
+    items: group.meals.map((meal) => () => {
+      const macros = mealMacros(meal.id, state.prefs.cover, state.prefs.scale);
+      return (
+        <PressKey
+          className="ck-seat ck-seat--meal"
+          onPress={() => onLoad(meal.id)}
+          aria-label={`load ${meal.name}, ${SLOT_LABEL[meal.slot] ?? meal.slot}, week ${group.week}, day ${group.day}`}
+        >
+          <span className="ck-seat-slot cd-silkscreen">{SLOT_LABEL[meal.slot] ?? meal.slot}</span>
+          <span className="ck-seat-name">{meal.name}</span>
+          <span className="ck-seat-meta cd-printed">
+            {macros.kcal}
+            <span className="cd-unit">kcal</span>
+          </span>
+        </PressKey>
+      );
+    }),
   }));
 
   return (
@@ -140,9 +157,9 @@ export function ProgramPicker({ state, now, onLoad }: ProgramPickerProps) {
         <Escutcheon>any meal</Escutcheon>
         <Register
           groups={groups}
-          openId={openWeek}
-          onOpenChange={setOpenWeek}
-          label="every approved meal, grouped by week"
+          openId={openDay}
+          onOpenChange={setOpenDay}
+          label="every approved meal, grouped by day"
           overflowWord="more"
           className="ck-picker-register"
         />

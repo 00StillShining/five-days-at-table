@@ -25,6 +25,16 @@
  */
 
 import { describe, expect, it } from "vitest";
+import { REPEAT_DELAY_MS, REPEAT_INTERVAL_MS, REPEAT_RATE_HZ } from "../../cd/physics/keys";
+import {
+  MERGE_12DB,
+  MERGE_6DB,
+  SLOT_MS,
+  coalesce,
+  createCoalescerState,
+  duckGain,
+  flushMerged,
+} from "../../cd/sound/coalescer";
 import { FONT } from "./glyphs";
 import { lampBreathes, lampLit, reelSpins, transportWord } from "./reelState";
 
@@ -233,5 +243,114 @@ describe("forced colours are rendered, not merely survived", () => {
     // palette flattens both states to one, the instruments stop reporting.
     expect(/\.ck-arc-cell\[data-on="true"\][\s\S]{0,200}background:\s*Highlight/.test(forced)).toBe(true);
     expect(forced.includes("HighlightText")).toBe(true);
+  });
+});
+
+
+describe("the motor whir is made of ticks (II.5.11, and the chapter's section 6)", () => {
+  /*
+    "The product's motor whir is not a sixth cue; the doctrine permits five and
+    no more. It is the detent tick itself, COALESCED above eight events per
+    second — a whir made of ticks too close to hear apart, NEVER a synthesized
+    hum."
+
+    On FD-5 the operator-driven fast traversal is the scrub rocker held down,
+    and II.1.18 fixes the held-key clock at 12 events/second on the product's
+    own clock. 12 is above the coalescer's 8 slots per second, so the whir falls
+    out of arithmetic that is already committed rather than out of a sound that
+    had to be invented for it. This test is the composition of those two
+    committed rates, which is the part neither module's own tests cover.
+
+    Driven here as pure arithmetic on the frozen coalescer, because the browser
+    could not be used as the instrument: a dynamically imported `cues.ts` under
+    the dev server gets its own module graph, so its `gate()` reads a different
+    bus singleton than the one the probe armed, and every cue measured silent.
+    That is an artefact of measuring, not of the product — the app's own code
+    path was observed firing the alert dyad correctly from a real press.
+  */
+  const HELD_MS = 2000;
+
+  function heldRockerEventTimes(): number[] {
+    // startRepeat: fire NOW, then repeat at 12/s after a 380ms hold.
+    const times = [0];
+    for (let t = REPEAT_DELAY_MS; t <= HELD_MS; t += REPEAT_INTERVAL_MS) times.push(t);
+    return times;
+  }
+
+  it("holds the rocker at exactly the doctrine's own repeat rate", () => {
+    expect(REPEAT_RATE_HZ).toBe(12);
+    expect(REPEAT_INTERVAL_MS).toBe(83);
+    // above the coalescer's 8 slots per second — which IS the whir condition
+    expect(REPEAT_RATE_HZ).toBeGreaterThan(1000 / SLOT_MS);
+  });
+
+  it("merges those ticks instead of billing the ear for every seat", () => {
+    const state = createCoalescerState();
+    const events = heldRockerEventTimes();
+    let audible = 0;
+    let pendingBoundary: number | null = null;
+    for (const ms of events) {
+      const now = ms / 1000; // the coalescer runs on the AUDIO clock, in seconds
+      if (pendingBoundary !== null && now >= pendingBoundary) {
+        flushMerged(state, pendingBoundary);
+        audible++;
+        pendingBoundary = null;
+      }
+      const d = coalesce(state, now);
+      if (d.fire) audible++;
+      else if (pendingBoundary === null) pendingBoundary = d.scheduleAt;
+    }
+    if (pendingBoundary !== null) audible++;
+
+    expect(events.length).toBeGreaterThan(20); // ~21 seats in two seconds
+    expect(audible).toBeLessThan(events.length); // the ear was NOT billed for each
+    // and never faster than one voice per 125ms slot
+    expect(audible).toBeLessThanOrEqual(Math.ceil(HELD_MS / SLOT_MS) + 1);
+  });
+
+  it("drops the merged tick as the crowd thickens, never raises it", () => {
+    const state = createCoalescerState();
+    coalesce(state, 0); // opens and closes the first slot
+    coalesce(state, 0.01);
+    expect(flushMerged(state, 0.125)).toBe(MERGE_6DB); // one overflow: -6 dB
+    coalesce(state, 0.13);
+    for (let i = 0; i < 5; i++) coalesce(state, 0.13 + i * 0.01);
+    expect(flushMerged(state, 0.25)).toBe(MERGE_12DB); // more than three: -12 dB
+  });
+
+  it("ducks a repeated cue and never ducks the warning (II.5.12)", () => {
+    const ducks = new Map();
+    expect(duckGain(ducks, "contact", 0)).toBe(1); // a first fire is not a repeat
+    expect(duckGain(ducks, "contact", 100)).toBeCloseTo(Math.pow(10, -3 / 20), 5);
+    expect(duckGain(ducks, "contact", 200)).toBeCloseTo(Math.pow(10, -6 / 20), 5);
+    // urgency does not fatigue on schedule
+    for (let i = 0; i < 6; i++) expect(duckGain(ducks, "warning", i * 100)).toBe(1);
+  });
+
+  it("never synthesizes a hum: this screen names no sixth cue", () => {
+    // II.5.3 — "Five cues, no sixth. A sound without a row in this table is a
+    // sound you cut." A sixth would have to be named in this folder's source,
+    // so this reads the source rather than trusting the claim.
+    const cueNames = ["contact", "detent", "latch", "confirm", "warning"];
+    const used: string[] = [];
+    for (const file of ["index.tsx", "Instruments.tsx", "Reel.tsx", "CompletionTally.tsx"]) {
+      const src: string = readFileSync(
+        fileURLToPath(new URL("./" + file, import.meta.url)),
+        "utf8"
+      );
+      for (const m of src.matchAll(/\bcue\(\s*"([a-zA-Z]+)"/g)) used.push(m[1]);
+    }
+    expect(used.length).toBeGreaterThan(0);
+    for (const name of used) expect(cueNames).toContain(name);
+    // and no oscillator is built anywhere in this folder — synthesis belongs to
+    // the shared bus, and a screen that reached for the Web Audio API directly
+    // would be a second voice in a world that grants one
+    for (const file of ["index.tsx", "Instruments.tsx", "Reel.tsx"]) {
+      const src: string = readFileSync(
+        fileURLToPath(new URL("./" + file, import.meta.url)),
+        "utf8"
+      );
+      expect(/createOscillator|new AudioContext|webkitAudioContext/.test(src)).toBe(false);
+    }
   });
 });

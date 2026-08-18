@@ -125,6 +125,19 @@
     z-index: 1;
   }
 
+  /*
+    THE UNIT FLOOR. II.6.6 sets a unit at 40% of its value's size, which is
+    right for a hero: 2.75rem x 0.4 = 1.1rem. Applied to a 0.8125rem label it
+    gives 0.325rem — 5px — and II.6.11 is explicit that "below 0.6875rem type is
+    TEXTURE, NEVER INFORMATION". MEASURED on the standby deck: the session's
+    "100 min" and the register lid's "10 rows" both rendered their unit at 5.2px
+    and read as an ellipsis. The ratio still governs; the floor stops it
+    producing a unit nobody can read.
+  */
+  .ck .cd-unit {
+    font-size: max(calc(1em * var(--cd-unit-scale)), var(--cd-micro-ceiling));
+  }
+
   /* ===================================================================== */
   /* 1 · THE FACE — II.4/IV.1's unequal thirds, 62fr hero / 38fr evidence   */
   /* ===================================================================== */
@@ -1112,9 +1125,33 @@
   /* ===================================================================== */
   /* 11 · THE PICKER                                                       */
   /* ===================================================================== */
+  /*
+    CORRECTIONARY 5.5 again, and the standby deck was the worse offender: four
+    stacked enclosures down the left of a 1208px deck, each holding one
+    centre-aligned line, with 160px of bare field under them. A standby deck is
+    still a deck — the picker is now an instrument panel with the two immediate
+    choices side by side and the browsable pool filling what is left.
+  */
   .ck .ck-picker {
     display: grid;
+    grid-template-columns: 62fr 38fr;
+    grid-template-rows: auto auto 1fr;
     gap: calc(var(--cd-module) * 1.5);
+    /*
+      block-size, not min-block-size. A MINIMUM lets the 1fr row grow past the
+      deck and hand the page a scrollbar instead of the register — measured at
+      1115px against a 800px viewport with the full variant's fifteen lids. A
+      fixed height is what makes the `1fr` row a real budget the window inside
+      it has to live within.
+    */
+    block-size: calc(100dvh - var(--cd-module) * 4);
+  }
+  .ck .ck-picker-head {
+    grid-column: 1 / -1;
+  }
+  .ck .ck-picker-any {
+    grid-column: 1 / -1;
+    align-content: start;
   }
   .ck .ck-picker-head,
   .ck .ck-picker-tonight,
@@ -1144,14 +1181,22 @@
   }
   .ck .ck-picker-session-row {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
     gap: var(--cd-module);
     inline-size: 100%;
   }
+  /*
+    `.cd-key` is a centred inline-flex, and a seat is not a key cap: it is a row
+    of facts. MEASURED on the first render — "Chicken-crust pizza / start by
+    19:05" printed centred inside a full-width housing, and the session's own
+    "100 min" clipped to "100...". Both are this one rule not overriding the
+    foundry's centring.
+  */
   .ck .ck-seat {
     --cd-stack: var(--cd-shadow-t2);
     display: grid;
     justify-items: start;
+    justify-content: start;
+    align-items: center;
     gap: 0.125rem;
     inline-size: 100%;
     text-align: start;
@@ -1159,13 +1204,32 @@
   }
   .ck .ck-seat--tonight,
   .ck .ck-seat--session {
+    grid-template-columns: 1fr auto;
+    justify-content: stretch;
     min-block-size: 4.5rem;
+    column-gap: var(--cd-module);
+  }
+  .ck .ck-seat--tonight .ck-seat-meta,
+  .ck .ck-seat--session .ck-seat-meta {
+    grid-column: 2;
+    grid-row: 1 / -1;
+    justify-self: end;
+    align-self: center;
+    white-space: nowrap;
+  }
+  .ck .ck-seat--session .ck-seat-desc {
+    grid-column: 1;
   }
   .ck .ck-seat--meal {
     grid-template-columns: 7rem 1fr auto;
+    justify-content: stretch;
     align-items: center;
     justify-items: start;
     gap: var(--cd-module);
+  }
+  .ck .ck-seat--meal .ck-seat-meta {
+    justify-self: end;
+    white-space: nowrap;
   }
   .ck .ck-seat-slot {
     font-size: var(--cd-size-1);
@@ -1183,8 +1247,41 @@
     font-size: var(--cd-size-1);
     color: var(--cd-muted-ink);
   }
+  /*
+    THE BROWSABLE POOL IS A WINDOW, and this is R7 read carefully rather than
+    literally. MEASURED in FULL variant: fifteen day lids plus one open group
+    stood the standby deck at 1115px in a 800px viewport. R7 forbids
+    PAGE-length scrolling; it does not forbid an instrument having its own
+    bounded travel, and the alternative — clipping lids and confessing them —
+    would make whole days of the fortnight unreachable, which is a worse answer
+    than a slot with a slider in it. The page does not move; one panel does, and
+    its travel is visible hardware (see the NOW plate for the same argument).
+  */
+  .ck .ck-picker-any {
+    grid-template-rows: auto 1fr;
+    min-block-size: 0;
+  }
   .ck .ck-picker-register {
     inline-size: 100%;
+    min-block-size: 0;
+    overflow-y: scroll;
+    overscroll-behavior: contain;
+    padding-inline-end: calc(var(--cd-module) / 2);
+    scrollbar-width: thin;
+    scrollbar-color: var(--cd-border) var(--cd-well);
+  }
+  .ck .ck-picker-register::-webkit-scrollbar {
+    inline-size: var(--cd-module);
+  }
+  .ck .ck-picker-register::-webkit-scrollbar-track {
+    background: var(--cd-well);
+    box-shadow: inset 1px 0 2px #00000073;
+    border-radius: 0.125rem;
+  }
+  .ck .ck-picker-register::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, #6a6d70 0%, var(--cd-mirror) 45%, #34373a 100%);
+    border-radius: 0.125rem;
+    box-shadow: inset 0 1px 0 #ffffff59;
   }
 
   /* ===================================================================== */
@@ -1487,6 +1584,14 @@
     }
     .ck .ck-lane-label {
       max-inline-size: 6rem;
+    }
+    .ck .ck-picker {
+      grid-template-columns: 1fr;
+      grid-template-rows: none;
+      min-block-size: 0;
+    }
+    .ck .ck-picker-register {
+      overflow-y: visible;
     }
     .ck .ck-seat--meal {
       grid-template-columns: 1fr auto;
