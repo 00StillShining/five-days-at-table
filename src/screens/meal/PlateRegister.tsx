@@ -198,7 +198,7 @@ export function PlateRegister({
             travels without the number (CORRECTIONARY 5.3). */}
         <span className="mea-plate-weight">
           <Drum value={grams} />
-          <span className="cd-unit mea-plate-unit">g</span>
+          <span className="cd-unit">g</span>
         </span>
       </header>
 

@@ -137,7 +137,7 @@ export const StockMeter = forwardRef<StockMeterHandle, StockMeterProps>(function
           >
             {pct}
           </span>
-          <span className="cd-unit mea-stock-unit">%</span>
+          <span className="cd-unit">%</span>
           <span className="mea-stock-word" ref={wordRef} data-mea-zone={zone}>
             {STOCK_ZONE_WORD[zone]}
           </span>

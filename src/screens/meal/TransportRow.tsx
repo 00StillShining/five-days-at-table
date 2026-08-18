@@ -89,6 +89,10 @@ export function TransportRow({
           disabled={trophy}
         />
       ) : (
+        /* Voiced, and the distinction matters: this key COMMITS — it writes
+           `timers/load` into the model before the route changes — and ch.16
+           voices contact on its transport keys. A key whose only act is a
+           route change stays silent (II.5.16). */
         <PressKey
           className="mea-key mea-key--cook"
           onPress={onCook}

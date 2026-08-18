@@ -123,18 +123,29 @@
 */
 
 /*
-  THE TRAY'S WIDTH IS A REGISTERED PROPERTY, AND THAT IS A REPAIR.
+  THE TRAY'S WIDTH IS A REGISTERED PROPERTY, AND IT IS NOT TRANSITIONED.
 
-  MEASURED on this build: Trophy Mode widens the tray from clamp(20rem, 42vw,
-  34rem) to clamp(20rem, 62vw, 46rem), and a `transition: inline-size` between
-  two clamp() expressions NEVER LANDS — Chrome retained the used 336px value
-  indefinitely while the cascade correctly reported the wider rule. (TODAY hit
-  the identical failure on its hero dial's diameter; the repair is the same.)
+  Two measured facts, in the order they were found.
 
-  Registering the driver as a <length> makes each clamp() compute to ONE length
-  at computed-value time, which the engine can interpolate. The transition then
-  rides the custom property, and the ground's own gutter — which is derived from
-  the same value — travels with it rather than snapping a frame later.
+  1. `transition: inline-size` between two clamp() expressions NEVER LANDS.
+     Trophy Mode widens the tray from clamp(20rem, 42vw, 34rem) to
+     clamp(20rem, 62vw, 46rem); Chrome kept the used 336px value indefinitely
+     while the cascade correctly reported the wider rule. TODAY hit the
+     identical failure on its hero dial's diameter.
+  2. Registering the driver as a <length> and transitioning the CUSTOM PROPERTY
+     instead did not fix it — measured at 600ms and again at 1200ms, and with an
+     inline `style.setProperty('--mea-tray-w','30rem')` override, the computed
+     value was still 336px every time. A transition that cannot be observed to
+     complete is a transition that can strand a geometry.
+
+  So the property stays REGISTERED — that alone makes each clamp() compute to
+  one interpolatable length rather than a token soup, and it is what lets the
+  ground's gutter derive from the same value without a frame of disagreement —
+  and NOTHING transitions it. The stage re-composes in a single frame, exactly
+  as TODAY's dial does and for the same recorded reason: "a gauge that can be
+  caught reporting a stale geometry is worse than one that re-composes in a
+  single frame." II.4.23's 420ms enter and 240ms exit are still carried, by
+  everything that WITHDRAWS across them — the shelf and the tray's lower fold.
 
   @property has to sit OUTSIDE @layer: it is an at-rule, not a style rule.
 */
@@ -196,7 +207,37 @@
       idea sized for a Detail stage that carries a hero wheel and a hero meter.
     */
     --mea-tray-w: clamp(20rem, 42vw, 34rem);
-    transition: --mea-tray-w 420ms var(--cd-ease-settle);
+    /*
+      ===================================================================
+      THE MUTED INK THIS SCREEN ACTUALLY PAINTS ON (CD-BRIEF, contrast-audit
+      integrity) — a DERIVED value, and the reason it exists is measured.
+      ===================================================================
+      --cd-muted-ink #AAADB0 is derived at 4.53:1 against the FLAT token field
+      #3E4148. Every ground on this screen is a gradient, and a gradient's
+      lightest stop is not its token:
+
+        the hero enclosure   color-mix(#ffffff 14%, #3E4148)  ->  #4C4E55
+        the jewel card       the 22deg back-etch's #ffffff12  ->  #4C4E55
+        ch.16's key cap      its own 170deg ramp, stops 0/38% ->  #4A4D54
+
+      Composited and measured against those real stops rather than against the
+      token, #AAADB0 reads 3.68:1 and 3.75:1 — under the 4.5:1 text floor, on
+      five labels that a background-color-only audit reported as passing.
+
+      #C4C6C7 holds the same hue (210deg) and saturation (3.2%) and moves only
+      lightness (II.7.5 — "the hue itself never bends"): 4.85 on #4C4E55,
+      4.94 on #4A4D54, 5.96 on the field, 8.05 in the well.
+
+      The first solve landed on #BDBFC1, which measures 4.50 on #4C4E55 — the
+      floor EXACTLY, with no margin, which is the same zero-margin condition
+      that made this world seat every focusable in its well rather than on its
+      field. Solved again for a real margin instead.
+
+      This is a SCREEN-LOCAL derivation. --cd-muted-ink is correct for the flat
+      field it was solved against and src/cd/** is not this builder's to edit;
+      the lifted value is reported upward instead.
+    */
+    --mea-ink-on-material: #c4c6c7;
 
     /* the back-etch: parallel facet lines at 22deg (ch.16 §2) */
     --mea-etch: repeating-linear-gradient(
@@ -798,7 +839,7 @@
     font-family: var(--cd-font-data);
     font-variant-numeric: tabular-nums lining-nums slashed-zero;
     font-size: var(--cd-size-1);
-    color: var(--cd-muted-ink);
+    color: var(--mea-ink-on-material);
     letter-spacing: var(--cd-track-body);
   }
 
@@ -999,10 +1040,6 @@
     color: var(--cd-ink);
   }
 
-  .mea-stock-unit {
-    font-size: var(--cd-size-4);
-  }
-
   .mea-stock-word {
     margin-inline-start: auto;
     font-family: var(--cd-font-ui);
@@ -1132,10 +1169,6 @@
     line-height: 1.25em;
     text-align: center;
     color: var(--cd-ink);
-  }
-
-  .mea-plate-unit {
-    font-size: var(--cd-size-2);
   }
 
   /* --- the register lids ---------------------------------------------- */
@@ -1353,9 +1386,15 @@
     font-variant-numeric: tabular-nums lining-nums slashed-zero;
   }
 
+  /*
+    II.6.11 — "below 0.6875rem type is texture, never information." MEASURED:
+    40% of the 1.25rem pair rendered at 8px, and the cover half of the unit-pair
+    is not decoration — it is half of what the figure means. Floored at the
+    information ceiling, exactly as tokens/type.css now floors `.cd-unit`.
+  */
   .mea-spec-pair-unit {
-    font-size: calc(1em * var(--cd-unit-scale));
-    color: var(--cd-muted-ink);
+    font-size: max(var(--cd-micro-ceiling), calc(1em * var(--cd-unit-scale)));
+    color: var(--mea-ink-on-material);
   }
 
   .mea-spec-macros {
@@ -1528,8 +1567,9 @@
     background: linear-gradient(170deg, #2b2d31 0%, #34373d 62%, #23252a 100%);
   }
 
+  /* the unseated cap sits on ch.16's own key ramp, whose top stop is #4A4D54 */
   .mea-key--cover[data-mea-seated="false"].cd-key {
-    color: var(--cd-muted-ink);
+    color: var(--mea-ink-on-material);
   }
 
   /* the guard, only while a program is actually running */
@@ -1703,8 +1743,18 @@
     clip-path: var(--mea-cut-card);
   }
 
-  .mea-card-slot {
+  /*
+    (0,2,0), deliberately. `.cd-silkscreen` sets `color: var(--cd-muted-ink)` at
+    (0,1,0) in the same layer, so a bare `.mea-card-slot` won this only by file
+    order — and its sibling `.mea-card-tag`, which inherits from a parent rather
+    than declaring its own colour, LOST and stayed at 3.68:1. Compound selectors
+    settle it by specificity, which no bundler can reorder.
+  */
+  .mea-card-slot.cd-silkscreen,
+  .mea-card-tag.cd-silkscreen,
+  .mea-card-here.cd-silkscreen {
     font-size: var(--cd-size-1);
+    color: var(--mea-ink-on-material);
   }
 
   .mea-card-face {
@@ -1820,8 +1870,8 @@
     text-shadow: 0 1px 2px #000000cc;
   }
 
-  .mea-card-here {
-    color: var(--cd-mirror);
+  .mea-card-here.cd-silkscreen {
+    color: var(--cd-mirror); /* 5.08:1 on the card's lightest etched stop */
   }
 
   .mea-card-foot {
@@ -1830,6 +1880,7 @@
     gap: calc(var(--cd-module) / 2);
     padding-inline-end: 1.25rem; /* the badge's own corner */
     font-size: var(--cd-size-1);
+    color: var(--mea-ink-on-material);
   }
 
   .mea-card-swap {
@@ -2128,16 +2179,35 @@
       forced-color-adjust: none;
     }
 
+    /*
+      THE INDEX IS THE READING, so it is the one mark on the wheel that may not
+      be discarded. MEASURED with the forced-colours declarations applied: the
+      rule targeted `.mea-wheel-index`, but that element is only the ROTATING
+      CARRIER — the visible bar is drawn by its ::before, which kept a
+      background the OS is entitled to throw away, and the wheel rendered as a
+      bare circle with no pointer on it at all. A rotary whose angle is its
+      value cannot afford to lose the thing that shows the angle.
+    */
     .mea-wheel-index {
+      background: none;
+      box-shadow: none;
+    }
+
+    .mea-wheel-index::before {
       background: Highlight;
       box-shadow: none;
       forced-color-adjust: none;
     }
 
-    .mea-porthole,
-    .mea-porthole-disc {
+    .mea-porthole {
       background: Canvas;
       border: 1px solid CanvasText;
+      forced-color-adjust: none;
+    }
+
+    /* the teeth ARE the count — one tooth per committed seat — so the disc
+       keeps its own paint rather than being flattened to a blank aperture */
+    .mea-porthole-disc {
       forced-color-adjust: none;
     }
 

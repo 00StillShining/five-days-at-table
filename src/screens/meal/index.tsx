@@ -122,8 +122,23 @@ function useNarrow(): boolean {
     const mq = window.matchMedia(NARROW);
     const onChange = () => setNarrow(mq.matches);
     onChange();
+    /*
+      BOTH listeners, and the second one is not belt-and-braces.
+
+      MEASURED: after the viewport went from 729px to 1280px, matchMedia
+      reported `matches === false` while the tray was still rendering at its
+      block-end edge, full-width — the `change` event never arrived, so React
+      never re-rendered and the tray kept a layout the viewport had left. Which
+      EDGE a tray belongs to is semantic (II.3.30: "a tray slides in from the
+      edge nearest its invoking control"), so a stale edge is a stale fact, not
+      a stale animation. `resize` fires whatever the media-query listener does.
+    */
     mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
+    window.addEventListener("resize", onChange);
+    return () => {
+      mq.removeEventListener("change", onChange);
+      window.removeEventListener("resize", onChange);
+    };
   }, []);
   return narrow;
 }
@@ -386,7 +401,12 @@ export default function MealScene({ route }: SceneProps) {
                   : "the address carries no meal id, so there is no plate to cut."}
               </p>
             </Plate>
-            <PressKey className="mea-void-key" onPress={goBack} cap={`${from} →`} sound="contact" />
+            {/* SILENT, deliberately. II.5.16's list bans a cue for "navigation
+                of every kind", and this key's only act is a route change — it
+                commits nothing. The transport row's keys are voiced because
+                ch.16 voices contact on a transport key that COMMITS; this one
+                only leaves. */}
+            <PressKey className="mea-void-key" onPress={goBack} cap={`${from} →`} />
           </Enclosure>
         </div>
       </section>
