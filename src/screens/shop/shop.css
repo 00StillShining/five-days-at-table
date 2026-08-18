@@ -1,670 +1,2102 @@
 /*
-  SHOP — the Saturday console (PLAN §6.8). Scoped entirely under .scr-shop
-  per PHASE2-CONTRACT ("colocate your own screen CSS scoped by screen-root
-  class") — no new global tokens invented here, only src/tokens.css's
-  sol- and fd- custom properties.
+  src/screens/shop/shop.css — 11 TANGENT HORIZON, on SHOP.
 
-  Lean (PLAN §6.0): playful-technical, borrowed precision ~20% — "calm
-  console horizon (Beogram reading); the convex send-to-phone key and
-  costed-column discipline are the precision notes." Composition: one quiet
-  low control row (paddle + key), then three quiet, tabular-aligned costed
-  columns — the key is the one exception that earns visual weight, per the
-  Braun ET66/Beogram §0.4 rule ("exceptions, not size inflation, create
-  hierarchy"). No metals/gradients anywhere (Phase 3 polish only).
+  Every value below is committed and names the clause it came from. Read the
+  declared deltas first: they are the places this file knowingly departs from its
+  chapter or its archetype, and CORRECTIONARY 6.5 forbids doing that quietly.
+
+  ===========================================================================
+  THE ONE LAW THIS FILE IS BUILT AROUND
+  ===========================================================================
+  Section 2: "nothing in this world may rise above the band's own seam. Controls,
+  indices, and labels live at or below the band; whatever occupies the space
+  above it is empty."
+
+  It is held literally. Every control on this screen — both selectors, both
+  crowns, the five cueing keys, the send key, the register's lids, the trays —
+  sits AT or BELOW the aluminium band. Above the seam there is the rosewood mass
+  and exactly one thing: the trip's own total, on a plate MILLED INTO the
+  plinth's surface. It is a recess, so nothing rises through the horizon to reach
+  it. That single grant is section 4's own Hero Screen archetype ("Above the
+  band ... the rosewood-toned ground and the single hero readout of the screen's
+  own dominant value").
+
+  ===========================================================================
+  DECLARED DELTAS (CORRECTIONARY 6.5 — stated, never silent)
+  ===========================================================================
+
+  1. LIGHT AXIS. Section 2 seats this world's sun at 142 degrees. CD-BRIEF
+     product ruling 2 is "One sun at 138 degrees, shadow ratio 1:2, every
+     screen", and tokens/world.css ships --cd-light-axis: 138deg. The product
+     ruling wins; 142 appears nowhere in this file. The grazing-angle INTENT
+     survives intact: the specular band runs the horizon's own length rather
+     than crossing it, so the band reads as one unbroken glint.
+
+  2. THE FLUSH KEY'S CAP IS INSET BLACK, NOT ALUMINIUM. Section 3 builds the
+     flush key on `background: var(--cd-horizon-cap)` — the brushed cap — and
+     answers a press with a flat #161514 ink mark rising from beneath it. But a
+     key carries a mark, a mark is ink, and CD-BRIEF ruling 5 in this world's own
+     terms is "TEXT PRINTS ON THE INSET CONTROL BLACK #161514, NEVER on the
+     brushed aluminium band" — a hard fail BY RULE, not by ratio. Measured:
+     strobe white #E8E6DD on brushed aluminium #C6C7C8 is 1.35:1. So the cap is
+     the inset black and the key sits inside the band's own recessed track, which
+     is where section 2 already puts "the touch controls and the index window".
+     The press recipe is unchanged in every other respect — 1px translateY, a
+     FLAT pigment mark with no gradient and no glow, rising in 16ms and receding
+     over 90ms — with the mark's pigment inverted to strobe white at 0.16 alpha
+     because black ink on a black cap is not a mark.
+
+  3. THE BAND IS 6.5rem, NOT 11% OF THE VIEWPORT. Section 4's Hero Screen fixes
+     the band at 11% of viewport height. At 800px that is 88px, and this band
+     carries a 1.5rem track window ABOVE a row of 2.75rem Floor-sized controls,
+     which needs 6.5rem (104px) to seat both without either losing its target.
+     The band's proportions serve the Floor; the Floor does not bend to a
+     percentage. Its vertical centre still sits on the composition's own horizon.
+
+  4. THE PLINTH IS 26% OF THE SCENE, NOT 42%. Section 4's Hero Screen spends 42%
+     above the band on one readout. SHOP's task is reading a 44-line costed
+     register, not admiring one figure, so the plinth holds the hero readout and
+     its cost track at their full committed sizes and gives the rest of the
+     column to the register. The horizon geometry is untouched; only the share
+     above it is.
+
+  5. THE OPEN GROUP'S ROWS RUN IN MULTIPLE TRACKS. Section 4's List/Browser
+     assumes one column of rows. Its Dense Dashboard, in the same section,
+     assumes a multi-column grid at the 13rem card floor and the 0.875rem gutter,
+     and this screen is both archetypes at once. So the open group lays its rows
+     into as many 24rem tracks as the deck can hold, at that gutter. A costed
+     register at desk width that shows five of thirteen lines has confessed more
+     than it has reported, and R7's confession is meant to be a remainder rather
+     than the main event.
+
+  6. THE ROW'S FLUSH MARK IS LINEAR, NOT A RING. Section 3's flush-check is a
+     ring of ticks around a crown. A row is not a crown, and section 9's "Fake
+     locks" cuts the ring from anything that cannot fail its own check. A costed
+     line CAN fail its check, so it keeps the LAW — broken means not yet, closed
+     means true — in this world's own one axis: two hairline dashes that sit
+     offset while a line is uncosted and close into one continuous rule the
+     instant it is costed. Forty-four of them closing together is the horizon
+     completing itself at register scale.
+
+  7. NO NEEDLE, NO ARC, NO FILLED BAR, ANYWHERE. Section 9's "Arc creep" names
+     the failure by name and CD-BRIEF's SHOP brief repeats it: budget-versus-
+     spend is a position on a track. The trip's money is one track running
+     0 -> total with one index per retailer at the CUMULATIVE position its spend
+     ends at; the distance between two indices is that retailer's share, read as
+     position rather than as area. Nothing on this screen is drawn as an angle.
+
+  ===========================================================================
+  MEASURED, WITH THE WCAG FORMULA, ON EVERY GROUND THIS SCREEN PAINTS
+  ===========================================================================
+    strobe white  #E8E6DD on inset black #161514 ............ 14.58 : 1
+    strobe white  #E8E6DD on the 10% selection wash #292928 . 11.65 : 1
+    strobe white  #E8E6DD on rosewood #4A2C22 ................ 10.03 : 1
+    muted ink     #9B9A92 on inset black ...................... 6.45 : 1
+    muted ink     #9B9A92 on the selection wash ............... 5.15 : 1
+    stale ink     strobe white at 55% on inset ................ 5.15 : 1
+    warning ink   #DAA254 on inset black ...................... 8.06 : 1
+    danger ink    #E59992 on inset black ...................... 8.08 : 1
+    success ink   #53C17E on inset black ...................... 8.07 : 1
+    index red     #C8272B on inset black ...................... 3.28 : 1   MARK ONLY
+    index red     #C8272B on brushed aluminium ................ 3.28 : 1   MARK ONLY
+    focus ring    #4C8FD1 on inset black ...................... 5.35 : 1
+    focus ring    #4C8FD1 on rosewood ......................... 3.68 : 1
+    focus keyline #141414 on brushed aluminium ................ 10.88 : 1
+    focus pair    #4C8FD1 against its own keyline ............. 5.40 : 1
+    strobe white  #E8E6DD on brushed aluminium ................ 1.35 : 1   <- and
+      this is why NOTHING prints on the band. The ink-plate law is not a
+      preference in this world; the band is the one ground where no ink of any
+      lightness reaches the Floor, because the band is a SURFACE, not a page.
+
+  INDEX RED IS NEVER TEXT AND NEVER LIVE. 3.28:1 clears the 3:1 graphical floor
+  and fails the 4.5:1 text floor, which is exactly right for what it is: an
+  emissive mark on a position that has STOPPED (CD-BRIEF ruling 3 fences it to
+  SHOP with that meaning). Every state it marks also prints a word in strobe
+  white or muted ink, so the hue never travels alone (II.7.7). The product's
+  `live` role #FF2B1A appears nowhere in this file.
 */
 
-.scr-shop {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  max-width: 68rem;
-  margin: 0 auto;
-}
-
-/* ---- header ---- */
-
-.scr-shop-header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.scr-shop-title {
-  margin: 0;
-  font-size: 1.25rem;
-  text-transform: lowercase;
-}
-
-.scr-shop-status {
-  margin: 0;
-  font-family: var(--sol-font-data);
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-}
-
-/* docs/VARIANT-SPEC.md tester note — flat text, own row under the title/status
-   line (flex-basis: 100% inside .scr-shop-header's wrapping flex row). */
-.scr-shop-tester-note {
-  flex-basis: 100%;
-  margin: 0;
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-}
-
-/* ---- console row: trip-strategy paddle + the send-to-phone hero key ---- */
-
-.scr-shop-console {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem;
-  padding: 0.75rem 1rem;
-  background: var(--sol-panel);
-  border: 1px solid var(--sol-border);
-}
-
-/* ---- send-to-phone hero ---- */
-
-.scr-shop-hero {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  align-items: flex-end;
-  min-width: 0;
-}
-
-.scr-shop-key {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.625rem;
-  padding-inline: 1.5rem;
-  font-weight: 700;
-  text-transform: lowercase;
-}
-
-/* Specificity bump (0,2,0 vs .fd5-control's 0,1,0): tokens.css's shared
-   .fd5-control rule also sets min-block-size/color/border (to the 44px
-   house default, --sol-text, --sol-border), and depending on CSS module
-   load order that rule can land later in the cascade than this screen's own
-   file — equal specificity would then let it silently win and erase every
-   property below. Qualifying with the screen root guarantees this screen's
-   intent always wins regardless of load order (verified against the actual
-   dev-server injection order, which does place tokens.css after this file).
-
-   NOT --sol-accent-fill for the fill: that token is reserved for the
-   arbiter's single act-now slot only (tokens.css §3 role reference —
-   ".fd5-arbiter only"). The hero's visual weight instead comes from size
-   (4.5rem, well above every other control here) and a bold ink-orange
-   outline — the Braun ET66/Beogram §0.4 rule ("exceptions, not size
-   inflation, create hierarchy") read literally: size already does the
-   work, so the border/ink is the second, smaller cue, not a second
-   attention-grabber. */
-.scr-shop .scr-shop-key {
-  min-block-size: 4.5rem;
-  color: var(--sol-accent);
-  border: 2px solid var(--sol-accent);
-  /* PHASE 3 polish (item 4): "the convex key from §6.8 — doming via radial
-     highlight, crisp edge bevel." A soft off-center highlight simulates a
-     domed cap; a thin inset ring just inside the accent border reads as a
-     machined bevel catching light. Kept low-amplitude (peak 0.32 alpha,
-     fading out by 45% of the key's width) so the ink-orange label/border
-     keep their existing contrast margin regardless of where the highlight
-     falls under the text. A static "resting on the surface" lift shadow
-     replaces the flat panel fill — still one background property, so the
-     whole thing auto-strips under forced-colors and falls back to the
-     explicit Highlight/HighlightText override further down (which already
-     existed before this pass). */
-  background: radial-gradient(circle at 30% 24%, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0) 48%), var(--sol-panel);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5),
-    0 2px 0 rgba(0, 0, 0, 0.12),
-    0 3px 5px rgba(0, 0, 0, 0.14);
-}
-
-/* Key-travel press state (item 4): the shared .fd5-control:active rule
-   already sinks the key 1px via `transform: translateY(1px)` (no layout
-   shift — pure transform); this deepens the SHADOW story to match, flipping
-   the dome's highlight into a pressed-in hollow. Same transition as every
-   other .fd5-control (tokens.css: border-color/box-shadow, var(--sol-motion-state)),
-   so this isn't a new timing, just a new end-state for the existing one. */
-.scr-shop .scr-shop-key:active:not(:disabled) {
-  background: var(--sol-panel);
-  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.38), inset 0 -1px 0 rgba(255, 255, 255, 0.1);
-}
-
-.scr-shop-key-glyph {
-  display: inline-flex;
-}
-
-.scr-shop-key--open {
-  background: var(--sol-panel);
-  box-shadow:
-    inset 0 2px 5px rgba(0, 0, 0, 0.4),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.1);
-}
-
-.scr-shop-flipcard {
-  width: min(26rem, 100%);
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  padding: 1rem;
-  background: var(--sol-panel);
-  border: 1px solid var(--sol-border);
-  align-items: stretch;
-  transform-origin: top center;
-  /* PHASE 3 polish (item 4): a static "lifted panel" shadow so the card
-     reads as hinged hardware sitting proud of the console rather than a
-     flat popover — no forced-color-adjust set here, so it auto-strips
-     under forced-colors like every other decorative shadow on this
-     screen. */
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.14);
-}
-
-/* Re-skinned, not re-timed (item 4): same selector, same duration/easing
-   (var(--sol-motion-state) ease, untouched below) — only the motion's
-   CHARACTER changes, from a plain scale-fade to a hinge-drop, so the card
-   reads as a panel opening on a top edge rather than zooming in. Still
-   transform/opacity only. */
-@media (prefers-reduced-motion: no-preference) {
-  .scr-shop-flipcard {
-    animation: scr-shop-flip-open var(--sol-motion-state) ease;
-  }
-}
-@keyframes scr-shop-flip-open {
-  from {
-    transform: perspective(700px) rotateX(-10deg) scaleY(0.94);
-    opacity: 0;
-  }
-  to {
-    transform: perspective(700px) rotateX(0deg) scaleY(1);
-    opacity: 1;
-  }
-}
-
-.scr-shop-flipcard-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-}
-
-.scr-shop-flipcard-title {
-  margin: 0;
-  font-weight: 700;
-  text-transform: lowercase;
-}
-
-.scr-shop-flipcard-close {
-  padding-inline: 0.875rem;
-}
-
-.scr-shop-flipcard-empty {
-  margin: 0;
-  color: var(--sol-text-muted);
-}
-
-.scr-shop-qr {
-  align-self: center;
-  border: 1px solid var(--sol-border);
-}
-
-.scr-shop-qr-fallback {
-  margin: 0;
-  color: var(--sol-text-muted);
-  font-size: var(--sol-text-label);
-}
-
-.scr-shop-url-row {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.scr-shop-url-input {
-  flex: 1 1 auto;
-  min-width: 0;
-  font-family: var(--sol-font-data);
-  font-size: var(--sol-text-label);
-  padding-inline: 0.625rem;
-}
-
-.scr-shop-copy-btn,
-.scr-shop-copy-list-btn {
-  padding-inline: 1rem;
-  white-space: nowrap;
-}
-
-.scr-shop-textarea-label {
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-  text-transform: lowercase;
-}
-
-.scr-shop-textarea {
-  width: 100%;
-  font-family: var(--sol-font-data);
-  font-size: 0.75rem;
-  padding: 0.5rem;
-  resize: vertical;
-}
-
-.scr-shop-copy-status {
-  margin: 0;
-  min-height: 1.4em; /* reserve space so its appearance doesn't jump layout */
-  font-size: var(--sol-text-label);
-  color: var(--sol-success);
-}
-
-/* ---- empty (stocked-up) state ---- */
-
-.scr-shop-empty {
-  background: var(--sol-panel);
-  border: 1px solid var(--sol-border);
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.375rem;
-}
-
-.scr-shop-empty-title {
-  margin: 0;
-  font-size: 1.1rem;
-  font-weight: 700;
-  text-transform: lowercase;
-}
-
-.scr-shop-empty-body {
-  margin: 0;
-  color: var(--sol-text-muted);
-}
-
-/* ---- three costed columns (quiet, tabular-aligned) ---- */
-
-.scr-shop-columns {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  align-items: start;
-}
-
-.scr-shop-col {
-  background: var(--sol-panel);
-  border: 1px solid var(--sol-border);
-  padding: 0.875rem 1rem 1rem;
-  min-width: 0;
-}
-
-.scr-shop-col-h {
-  margin: 0 0 0.625rem;
-  font-size: var(--sol-text-label);
-  text-transform: lowercase;
-  color: var(--sol-text-muted);
-  border-bottom: 1px solid var(--sol-border);
-  padding-bottom: 0.375rem;
-  /* PHASE 3 polish (item 5): silkscreen section-head, barely-there engraved
-     — opts into the shared token defined in tokens.css's PHASE 3 POLISH
-     section. */
-  text-shadow: var(--fd5-engrave);
-}
-
-.scr-shop-col-empty {
-  margin: 0;
-  color: var(--sol-text-muted);
-  font-size: var(--sol-text-label);
-}
-
-.scr-shop-col-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-variant-numeric: tabular-nums;
-}
-
-.scr-shop-row td {
-  padding: 0.375rem 0;
-  vertical-align: top;
-  border-bottom: 1px dotted var(--sol-border);
-}
-
-.scr-shop-row-name {
-  text-align: left;
-  padding-right: 0.5rem;
-}
-
-.scr-shop-row-alt {
-  display: block;
-  margin-top: 0.125rem;
-  font-size: 0.6875rem;
-  font-style: italic;
-  color: var(--sol-text-muted);
-}
-
-.scr-shop-row-qty {
-  text-align: right;
-  white-space: nowrap;
-  font-family: var(--sol-font-data);
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-  padding-right: 0.5rem;
-}
-
-.scr-shop-row-price {
-  text-align: right;
-  white-space: nowrap;
-  font-family: var(--sol-font-data);
-}
-
-.scr-shop-chip {
-  display: inline-block;
-  margin-left: 0.375rem;
-  padding: 0.0625rem 0.375rem;
-  font-size: 0.6875rem;
-  border: 1px solid var(--sol-warning);
-  color: var(--sol-warning);
-  vertical-align: middle;
-}
-
-.scr-shop-verified {
-  display: inline-block;
-  margin-left: 0.375rem;
-  font-size: 0.6875rem;
-  color: var(--sol-success);
-  vertical-align: middle;
-}
-
-.scr-shop-subtotal-row td {
-  border-bottom: none;
-  border-top: 1px solid var(--sol-border);
-  padding-top: 0.5rem;
-  font-weight: 700;
-}
-
-.scr-shop-subtotal {
-  text-align: right;
-  font-family: var(--sol-font-data);
-}
-
-/* ---- market ticket: chrome-free, 1-bit, large type (PLAN §6.8) ---- */
-
-.scr-shop-col--market {
-  background: #ffffff;
-  color: #000000;
-  border: none;
-  border-top: 2px dashed var(--sol-border);
-  border-bottom: 2px dashed var(--sol-border);
-  font-size: 1.05em;
-}
-
-.scr-shop-col--market .scr-shop-col-h {
-  color: #000000;
-  border-bottom-color: #000000;
-}
-
-.scr-shop-col--market .scr-shop-row-qty {
-  color: #000000;
-}
-
-/* ---- overall total (till-style, mono tabular) ---- */
-
-.scr-shop-total {
-  display: flex;
-  align-items: baseline;
-  justify-content: flex-end;
-  gap: 0.75rem;
-  margin: 0;
-  padding-top: 0.75rem;
-  border-top: 2px solid var(--sol-border);
-  font-family: var(--sol-font-data);
-}
-
-.scr-shop-total-label {
-  text-transform: lowercase;
-  color: var(--sol-text-muted);
-  font-size: var(--sol-text-label);
-}
-
-.scr-shop-total-figure {
-  font-size: 1.5rem;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-
-/* ---- have-list (dedupe rows) ---- */
-
-.scr-shop-havelist {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.scr-shop-h {
-  margin: 0;
-  font-size: var(--sol-text-label);
-  text-transform: lowercase;
-  color: var(--sol-text-muted);
-}
-
-.scr-shop-muted {
-  margin: 0;
-  color: var(--sol-text-muted);
-  font-size: var(--sol-text-label);
-}
-
-.scr-shop-have-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.375rem;
-}
-
-.scr-shop-have-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  border: 1px dashed var(--sol-border);
-  color: var(--sol-text-muted);
-}
-
-.scr-shop-have-text {
-  min-width: 0;
-}
-
-.scr-shop-have-toggle {
-  padding-inline: 0.75rem;
-  font-size: var(--sol-text-label);
-  white-space: nowrap;
-}
-
-/* ---- waste-cost readout ---- */
-
-.scr-shop-waste {
-  margin: 0;
-  font-family: var(--sol-font-data);
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-}
-
-/* ---- reconcile ---- */
-
-.scr-shop-reconcile {
-  display: flex;
-  flex-direction: column;
-  gap: 0.625rem;
-}
-
-.scr-shop-reconcile-note {
-  margin: 0;
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-}
-
-.scr-shop-verify-list,
-.scr-shop-verify-done-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.375rem;
-}
-
-.scr-shop-verify-row {
-  padding: 0.25rem 0;
-}
-
-.scr-shop-verify-form {
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-  flex-wrap: wrap;
-}
-
-.scr-shop-verify-label {
-  flex: 1 1 auto;
-  min-width: 8rem;
-}
-
-.scr-shop-verify-prefix {
-  color: var(--sol-text-muted);
-}
-
-.scr-shop-verify-input {
-  width: 6rem;
-  padding-inline: 0.5rem;
-  font-family: var(--sol-font-data);
-}
-
-.scr-shop-verify-save {
-  padding-inline: 0.875rem;
-}
-
-.scr-shop-verify-done-row {
-  color: var(--sol-success);
-  font-size: var(--sol-text-label);
-}
-
-/* ---- responsive: mobile 390×844 — columns stack, key stays reachable ---- */
-
-@media (max-width: 900px) {
-  .scr-shop-columns {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 700px) {
-  .scr-shop-console {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .scr-shop-hero {
-    align-items: stretch;
-  }
-
-  .scr-shop-key {
-    justify-content: center;
-  }
-
-  .scr-shop-flipcard {
-    width: 100%;
-  }
-
-  .scr-shop-total {
-    justify-content: space-between;
-  }
-}
-
-/* ---- print: only the market ticket, chrome-free ---- */
-
-@media print {
-  .scr-shop-console,
-  .scr-shop-havelist,
-  .scr-shop-waste,
-  .scr-shop-reconcile,
-  .scr-shop-header,
-  .scr-shop-total {
-    display: none;
-  }
-
-  .scr-shop-columns {
+@layer cd.screen {
+  /* =====================================================================
+     0 · THE WORLD, SCOPED TO THIS SCREEN
+     ===================================================================== */
+
+  .shop {
+    /* --- geometry (II.3.2 — every value a multiple of the 0.5rem module) -- */
+    --shop-band: 6.5rem; /* declared delta 3 */
+    --shop-seam: 0.125rem; /* the horizon's own rule */
+    /*
+      Declared delta 4, and MEASURED rather than chosen: the readout plate is
+      131px (a 68px hero figure, a 24px track, a 22px legend and its padding),
+      the micro-etch strip is 20px, and the plinth's own padding is 12px. 10.5rem
+      is exactly that and not one pixel more, because every pixel above the seam
+      is a pixel the register does not get, and at 1280x800 the register is
+      already confessing rows.
+    */
+    --shop-plinth: clamp(10.5rem, 21vh, 12rem);
+    --shop-row: 2rem; /* II.6.13 Dense — 44 lines is a scan, not a read */
+    --shop-lid: 2.75rem; /* the Floor exactly: a lid is a press target */
+    --shop-gutter: 0.875rem; /* section 4's own Dense Dashboard gutter */
+    --shop-track-min: 24rem; /* declared delta 5 — a costed row's real width */
+    --shop-pad: 0.75rem;
+    --shop-cap: 3rem; /* section 3's flush key: 3rem cap */
+    --shop-crown: 1.25rem; /* section 4: crown diameter 1.25rem */
+    --shop-window: 1.5rem; /* section 4: track window height 1.5rem */
+
+    /* --- reserved widths (II.6.5) ---------------------------------------- */
+    --shop-money-ch: 7; /* "999.99" plus the currency's own slot */
+    --shop-delta-ch: 7; /* sign + 999.99 */
+
+    /*
+      THE ZONE FENCE, CLOSED (CD-BRIEF: "No element may read tokens from two
+      language scopes").
+
+      world.css's `[data-cd-language="tangent-horizon"]` block declares no
+      --cd-well. Custom properties inherit and the chassis is an ancestor of
+      every scene, so 13 BACK CHANNEL's --cd-well: #121212 flows straight into
+      this world and the foundry's `well` enclosure renders in smoked glass. This
+      is the same breach the LIST builder found in the `irreducible` scope, in
+      the one remaining scope that still has it.
+
+      Section 3 already commits this world's own well by name: the track window's
+      is `--cd-horizon-well: #161514`, the inset control black. So the well IS
+      the field here, declared, and BACK CHANNEL's five glyph tokens are
+      neutralised so nothing downstream can read one by accident.
+
+      REPORTED UPWARD: the correct home for this line is world.css's own
+      tangent-horizon block, which this builder may not write to.
+    */
+    --cd-well: var(--cd-field);
+    --cd-rim-catch: var(--cd-horizon);
+    --cd-substrate: var(--cd-rosewood);
+    --cd-glyph-off: var(--cd-muted-ink);
+    --cd-glyph-dim: var(--cd-muted-ink);
+    --cd-glyph-lit: var(--cd-ink);
+    --cd-label-ink: var(--cd-muted-ink);
+
+    /*
+      BRUSHED ALUMINIUM (II.2.7), re-cut by section 2: "3px grain pitch, an
+      anisotropic specular band, a hard rim — but TANGENT HORIZON runs its grain
+      in ONE DIRECTION ONLY, horizontal, unbroken, the full width of every panel
+      it dresses. A true horizon has one axis."
+
+      So the grain LINES run horizontally, which means the repeating gradient's
+      own axis is vertical (0deg); and the specular band runs ALONG the band's
+      length (90deg) rather than across it, so "the entire band reads as a single
+      unbroken glint rather than a lit object among shadows". Brightest stop at
+      47%, per the recipe. CORRECTIONARY 3.3 removed the intensity cap, so the
+      grain runs at +/-12% rather than the recipe's +/-4%: this metal is meant to
+      be readable as metal at arm's length.
+    */
+    --shop-brushed:
+      repeating-linear-gradient(
+        0deg,
+        #ffffff00 0px,
+        #ffffff1f 1px,
+        #0000001f 2px,
+        #ffffff00 3px
+      ),
+      linear-gradient(
+        90deg,
+        #a2a4a6 0%,
+        #bcbdbe 26%,
+        #dedfdf 47%,
+        #c6c7c8 60%,
+        #b0b1b2 80%,
+        #9a9c9e 100%
+      );
+
+    /*
+      The Signature-rung dress, section 2: champagne anodized #CBB088 with the
+      oak warm trim #D2B48C. Same grain, same stop positions — only the specular
+      band's hue travels, so the metal is recognisably the same metal wearing its
+      anniversary finish. Applied ONLY when the horizon completes (section 7).
+    */
+    --shop-brushed-champagne:
+      repeating-linear-gradient(
+        0deg,
+        #ffffff00 0px,
+        #ffffff1f 1px,
+        #0000001f 2px,
+        #ffffff00 3px
+      ),
+      linear-gradient(
+        90deg,
+        #a48d6c 0%,
+        #c0a67f 26%,
+        #e5d2ae 47%,
+        #cbb088 60%,
+        #b59b76 80%,
+        #9c8462 100%
+      );
+
+    /*
+      OILED ROSEWOOD (II.2.16), on this world's own hex: grain bands with
+      IRREGULAR stops, never metronomic — 2 / 9 / 21px inside one 24px period at
+      +/-8% luminance — plus the oiled rim. #4A2C22 is the mid stop; the light
+      and dark stops are the same hue at the recipe's own travel.
+    */
+    --shop-rosewood:
+      repeating-linear-gradient(
+        93deg,
+        #00000000 0px,
+        #00000040 2px,
+        #00000000 3px,
+        #00000000 9px,
+        #00000024 11px,
+        #00000000 12px,
+        #00000000 21px,
+        #00000047 22px,
+        #00000000 24px
+      ),
+      linear-gradient(var(--cd-light-axis), #5c3a2e 0%, #4a2c22 46%, #3b221a 100%);
+
+    /*
+      Section 2, the hairline chamfer: "Corners take a single hairline chamfer,
+      never a radius — one pass of a milling tool, no second operation to soften
+      an edge that was never meant to be soft."
+
+      Spent as a clip-path on FACES ONLY. A clip-path also clips `outline`, so it
+      never lands on a focusable element: every control keeps a square, unclipped
+      box and wears its chamfer on an inner face.
+    */
+    --shop-cut: polygon(
+      3px 0,
+      calc(100% - 3px) 0,
+      100% 3px,
+      100% calc(100% - 3px),
+      calc(100% - 3px) 100%,
+      3px 100%,
+      0 calc(100% - 3px),
+      0 3px
+    );
+
+    /* --- section 5, the named springs, as their settle pairs (II.1.2) ----- */
+    --shop-crown-settle: var(--cd-settle-light); /* spring(0.7,420,25) */
+    --shop-select-settle: var(--cd-settle-standard); /* spring(1,320,26) */
+    --shop-track-settle: var(--cd-settle-weighted); /* spring(1.4,260,30) */
+    --shop-tray-settle: var(--cd-settle-panel); /* spring(1.6,240,30) */
+    --shop-lock-settle: var(--cd-settle-anchored); /* spring(1.2,300,38), 0% overshoot */
+
+    /* --- Trophy: the sizes IV.1 fixes, not this file's choice ------------- */
+    --shop-trophy-fig: 1.75rem;
+    --shop-trophy-age: 1.21875rem;
+
+    position: relative;
     display: block;
+    /*
+      R7 — NO PAGE-LENGTH SCROLLING. The screen is exactly the box the chassis
+      hands it: 100dvh less .fd5-scene's own 1rem on each side. Everything that
+      would have overflowed is confessed as a number instead.
+    */
+    block-size: calc(100dvh - 2rem);
+    overflow: hidden;
+    color: var(--cd-ink);
+    font-family: var(--cd-font-ui);
+
+    /* CORRECTIONARY 5.4 — the ground is a MATERIAL: the rosewood mass the band
+       floats above, lit from the one sun. */
+    background-color: var(--cd-rosewood);
+    background-image: var(--shop-rosewood);
+
+    /* IV.1's luminance tiers travel over 4000ms linear in BOTH directions, so
+       the wake is as declared as the settle. */
+    transition: filter 4000ms linear;
   }
 
-  .scr-shop-col:not(.scr-shop-col--market) {
+  .shop *,
+  .shop *::before,
+  .shop *::after {
+    box-sizing: border-box;
+  }
+
+  /*
+    The burn-in orbit moves the WHOLE composition as one rigid frame. A hero that
+    drifts against its own evidence has turned a burn-in guard into a layout bug.
+  */
+  .shop-frame {
+    position: relative;
+    display: grid;
+    grid-template-rows: var(--shop-plinth) auto minmax(0, 1fr);
+    block-size: 100%;
+    transform: translate3d(var(--shop-orbit-x, 0px), var(--shop-orbit-y, 0px), 0);
+  }
+
+  /* =====================================================================
+     1 · THE PLINTH — above the seam, and it is a recess
+     ===================================================================== */
+
+  .shop-plinth {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-content: center;
+    gap: calc(var(--cd-module) / 2);
+    padding: var(--shop-pad) var(--shop-pad) 0;
+    min-block-size: 0;
+  }
+
+  /*
+    THE READOUT PLATE. Milled INTO the rosewood: a well, so the full 1:2 cast
+    vector is spent inwards and nothing rises through the horizon (II.2.3, and
+    the specificity is (0,3,0) so it outranks the foundry's own (0,1,1) rule for
+    [data-cd-encl]).
+  */
+  .shop .shop-readout[data-cd-encl] {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      "figure census"
+      "track  track";
+    align-items: end;
+    column-gap: var(--shop-gutter);
+    row-gap: calc(var(--cd-module) / 2);
+    padding: calc(var(--cd-module) / 2) var(--cd-module) 0.625rem;
+    background: var(--cd-field);
+    clip-path: var(--shop-cut);
+    box-shadow:
+      inset 1px 2px 6px #00000073, /* the well itself — the 1:2 cast vector */
+      inset 0 -1px 0 #ffffff1f; /* lip — the milled edge catching the sun */
+  }
+
+  .shop-figure {
+    grid-area: figure;
+    display: flex;
+    align-items: baseline;
+    gap: 0.25rem;
+  }
+
+  /* II.6.20 — the top step is reserved to ONE numeral per screen. This is it. */
+  .shop-total {
+    font-size: var(--cd-size-7);
+    font-weight: 600;
+    color: var(--cd-ink);
+    line-height: 0.95;
+    letter-spacing: var(--cd-track-hero);
+  }
+
+  /* II.6.6 — the unit trails on the baseline at 40% of the value, capped at
+     1.25rem, in muted ink. It never competes with the figure. */
+  .shop-total-unit {
+    font-family: var(--cd-font-data);
+    font-size: 1.25rem;
+    color: var(--cd-muted-ink);
+    align-self: flex-start;
+    padding-block-start: 0.35rem;
+  }
+
+  .shop-figure-name {
+    display: block;
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+  }
+
+  .shop-census {
+    grid-area: census;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: 0 var(--shop-gutter);
+    padding-block-end: 0.4rem;
+  }
+
+  .shop-census-cell {
+    display: flex;
+    align-items: baseline;
+    gap: 0.35rem;
+    white-space: nowrap;
+  }
+
+  .shop-census-fig {
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-size: var(--cd-size-4);
+    color: var(--cd-ink);
+  }
+
+  .shop-census-word {
+    font-family: var(--cd-font-ui);
+    font-size: var(--cd-size-1);
+    font-weight: 500;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    color: var(--cd-muted-ink);
+  }
+
+  /* II.6.11 — micro-etch is texture, never a fact: it repeats what a functional
+     label already states at or above the floor. On its own inset strip, because
+     even texture obeys the ink-plate law. */
+  .shop-etch {
+    justify-self: stretch;
+    padding: 0.125rem 0.5rem;
+    background: var(--cd-field);
+    clip-path: var(--shop-cut);
+    font-family: var(--cd-font-data);
+    font-size: var(--cd-micro-ceiling);
+    letter-spacing: var(--cd-track-micro);
+    text-transform: uppercase;
+    color: var(--cd-muted-ink);
+    opacity: var(--cd-micro-alpha);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* =====================================================================
+     2 · THE COST TRACK — position, never area (section 3 / section 9)
+     ===================================================================== */
+
+  .shop-costtrack {
+    grid-area: track;
+    position: relative;
+  }
+
+  /*
+    Section 3's track window, verbatim in construction: a well of inset black
+    carrying a printed scale of strobe-white ticks (II.7.8 — "zones are printed,
+    lamps are lit"), with lit indices riding it. The tick pitch is derived from
+    the reading, never chosen: one tick per costed line on the cost track, one
+    tick per line in the trip on the position window.
+  */
+  .shop-window {
+    position: relative;
+    block-size: var(--shop-window);
+    background-color: #161514;
+    background-image: repeating-linear-gradient(
+      90deg,
+      var(--cd-ink) 0 1px,
+      transparent 1px var(--shop-tick, 8%)
+    );
+    background-size: 100% 40%;
+    background-position: center;
+    background-repeat: repeat-x;
+    box-shadow:
+      inset 0 2px 4px #00000059,
+      inset 0 -1px 0 #ffffff14;
+    overflow: hidden;
+  }
+
+  /*
+    THE INDEX. "The index itself travels in strobe white, never in the
+    position-index red: the registry reserves that hue for a location that has
+    already stopped, so the traveling light stays the cooler tone and only the
+    arrival earns the red."
+
+    Travel is on transform, never on `left` — no layout thrash — and its duration
+    is DERIVED from distance at the chapter's own rate (model.ts's trackSweepMs),
+    never chosen.
+  */
+  .shop-index {
+    position: absolute;
+    inset-block-start: 0.125rem;
+    inset-inline-start: 0;
+    inline-size: 0.1875rem;
+    block-size: calc(var(--shop-window) - 0.25rem);
+    background: var(--cd-ink);
+    transform: translateX(var(--shop-index-x, 0px));
+    transition: transform var(--shop-sweep, 80ms) linear;
+    box-shadow: 0 0 5px #e8e6dd99, 0 0 1px #ffffff66;
+  }
+
+  /*
+    Arrival is a LOCK: the hot red frame ignites around the now-motionless index
+    and decays to a dim, static resting mark. The red never travels — it only
+    ever marks where travel has already ended (section 2, the fenced meaning of
+    #C8272B). Section 6: a position merely settling makes no sound.
+  */
+  .shop-index[data-shop-locked="true"] {
+    animation: shop-index-settle var(--shop-lock-decay, 900ms) ease-out forwards;
+  }
+
+  @keyframes shop-index-settle {
+    from {
+      box-shadow: 0 0 0 2px var(--cd-index-red), 0 0 14px #c8272bcc;
+    }
+    to {
+      box-shadow: 0 0 0 1px var(--cd-index-red-dim), 0 0 3px #5d1c1d66;
+    }
+  }
+
+  /*
+    The retailer legend under the cost track.
+
+    THE FIRST BUILD POSITIONED EACH CELL AT ITS OWN INDEX and it collided:
+    Sainsbury's index sits at 97.9% and the market's at 100%, so at 1176px their
+    two readouts overlapped into "SAI £74.23.50" — two true figures rendering
+    as one false one. Position is what the TRACK reports; the legend's job is
+    II.4/honesty's other half, the exact figure. So it is a plain row in track
+    order, evenly spread, and it cannot collide at any width or any split.
+  */
+  .shop-legend {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--shop-gutter);
+    block-size: 1.375rem;
+    margin-block-start: 0.125rem;
+  }
+
+  .shop-legend-item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.3rem;
+    white-space: nowrap;
+  }
+
+  /* the axis states its own origin, so a cumulative track is self-describing
+     rather than requiring the reader to infer what zero means */
+  .shop-legend-origin {
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+  }
+
+  .shop-legend-seat {
+    font-family: var(--cd-font-ui);
+    font-size: var(--cd-size-1);
+    font-weight: 600;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    color: var(--cd-muted-ink);
+  }
+
+  .shop-legend-fig {
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-size: var(--cd-size-2);
+    color: var(--cd-ink);
+  }
+
+  /* =====================================================================
+     3 · THE BAND — the horizon itself
+     ===================================================================== */
+
+  .shop-band-mount {
+    position: relative;
+    padding-inline: 2%; /* section 4: the band spans full width with a 2% inset */
+  }
+
+  /*
+    Brushed aluminium, horizontal grain, chamfered, carrying ONLY a rim and a
+    lip. There is no contact layer in this shadow stack, deliberately: section 2
+    puts every panel in this language on "exactly THREE points of shadow contact,
+    never four — a direct translation of the deck's own three-point spring
+    suspension — so the aluminium band always reads as floating a hairline above
+    the rosewood mass beneath it". The three feet below are those points.
+  */
+  .shop-band {
+    position: relative;
+    z-index: 1;
+    padding: 0.3125rem;
+    background-image: var(--shop-brushed);
+    clip-path: var(--shop-cut);
+    box-shadow:
+      inset 0 1px 0 #ffffffa6, /* rim light — the machined top edge, hard */
+      inset 0 -1px 0 #00000066; /* lip — the edge turning from the light */
+  }
+
+  /* the three points of contact. Transparent boxes: a box-shadow is painted from
+     the border box whether or not the box has a fill. */
+  .shop-foot {
+    position: absolute;
+    inset-block-start: calc(100% - 3px);
+    block-size: 3px;
+    inline-size: 14%;
+    pointer-events: none;
+    box-shadow:
+      0 2px 0 #00000073, /* contact — the foot meeting the wood */
+      0 5px 10px #00000059, /* core — the band's own mass */
+      0 16px 34px #00000040; /* ambient — the deepest throw on the plinth */
+  }
+
+  .shop-foot[data-shop-foot="a"] {
+    inset-inline-start: 6%;
+  }
+  .shop-foot[data-shop-foot="b"] {
+    inset-inline-start: 43%;
+  }
+  .shop-foot[data-shop-foot="c"] {
+    inset-inline-start: 80%;
+  }
+
+  /* The recessed track. Everything readable on this band lives inside it. */
+  .shop-band-track {
+    display: grid;
+    /* `auto`, not the window's own height: the position row carries the window
+       AND its printed reading, and below 767.84px those stack. A fixed first
+       row cut the reading in half at 390px and the band said nothing about it. */
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: 0.3125rem;
+    padding: 0.3125rem;
+    background: var(--cd-field);
+    clip-path: var(--shop-cut);
+    box-shadow:
+      inset 1px 2px 5px #0000008c,
+      inset 0 -1px 0 #ffffff14;
+  }
+
+  .shop-position {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--shop-gutter);
+  }
+
+  .shop-position-read {
+    display: flex;
+    align-items: baseline;
+    gap: 0.35rem;
+    white-space: nowrap;
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+  }
+
+  .shop-position-read b {
+    font-weight: 600;
+    color: var(--cd-ink);
+  }
+
+  .shop-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--shop-gutter);
+    min-block-size: var(--cd-target-min);
+  }
+
+  .shop-controls-spacer {
+    flex: 1 1 auto;
+  }
+
+  /* =====================================================================
+     4 · THE SEAM — the Signature's own instrument
+     ===================================================================== */
+  /*
+    Section 7's Signature: "when every flush-check ring on the screen reads true
+    at once — no pending value, no live error anywhere — every ring aligns in the
+    same frame into ONE CONTINUOUS UNBROKEN LINE running across the whole
+    composition, the horizon completing itself. It is not decoration; it fires
+    only because the underlying condition it reports — total agreement — has
+    become true, and it un-fires the instant any one value drifts again."
+
+    The line is this: a rule under the band, dashed with a gap fraction that IS
+    the uncosted share of the basket (model.ts's seamBreak), closing to one
+    continuous strobe-white rule at zero uncosted. Redrawn from a live error
+    every time the error changes, never animated on idle (section 9's repair).
+  */
+  .shop-seam {
+    position: relative;
+    block-size: var(--shop-seam);
+    margin-block-start: 0.5rem;
+    background-image: repeating-linear-gradient(
+      90deg,
+      var(--cd-muted-ink) 0 calc(var(--shop-seam-dash, 40%) * 0.28),
+      transparent calc(var(--shop-seam-dash, 40%) * 0.28) 1.75rem
+    );
+    transition: background-image var(--shop-lock-settle) var(--cd-ease-snap);
+  }
+
+  .shop[data-shop-horizon="true"] .shop-seam {
+    background-image: linear-gradient(90deg, var(--cd-ink) 0 100%);
+    box-shadow: 0 0 6px #e8e6dd40;
+  }
+
+  /* the Signature's second channel: the metal takes its anniversary dress */
+  .shop[data-shop-horizon="true"] .shop-band {
+    background-image: var(--shop-brushed-champagne);
+    box-shadow:
+      inset 0 1px 0 #ffffffa6,
+      inset 0 -1px 0 #00000066,
+      inset 0 0 0 1px var(--cd-oak);
+  }
+
+  /* the Signature's third channel: a printed word, so the state survives a
+     squint, a desaturation and forced colours (II.7.7) */
+  .shop-horizon-word {
+    font-family: var(--cd-font-ui);
+    font-size: var(--cd-size-1);
+    font-weight: 600;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    color: var(--cd-muted-ink);
+    white-space: nowrap;
+  }
+
+  .shop[data-shop-horizon="true"] .shop-horizon-word {
+    color: var(--cd-ink);
+  }
+
+  /* =====================================================================
+     5 · THE FLUSH KEY — section 3, cap inverted (declared delta 2)
+     ===================================================================== */
+
+  .shop .shop-key {
+    --cd-stack:
+      inset 0 1px 0 #ffffff33, /* rim light — the machined top edge */
+      0 1px 0 #00000059, /* contact */
+      0 2px 5px #00000033; /* core — the cap's own small mass */
+    position: relative;
+    min-inline-size: var(--shop-cap);
+    min-block-size: var(--shop-cap);
+    inline-size: var(--shop-cap);
+    block-size: var(--shop-cap);
+    padding: 0;
+    border-radius: 0;
+    background: var(--cd-field);
+    color: var(--cd-ink);
+    box-shadow: var(--cd-stack);
+    /* return: Standard mass, spring(1,320,26) */
+    transition:
+      transform var(--shop-select-settle) var(--cd-ease-settle),
+      box-shadow var(--shop-select-settle) var(--cd-ease-settle);
+  }
+
+  .shop .shop-key[data-cd-pressed="true"] {
+    /* press-in: one frame, linear (section 3, II.4.3) */
+    --cd-stack:
+      inset 0 1px 0 #ffffff33,
+      0 0 0 #00000059,
+      0 1px 3px #00000033;
+    transform: translateY(1px);
+    transition-duration: var(--cd-contact-down);
+    transition-timing-function: linear;
+  }
+
+  .shop-key-face {
+    position: absolute;
+    inset: 0;
+    clip-path: var(--shop-cut);
+    background: linear-gradient(
+      var(--cd-light-axis),
+      #201f1d 0%,
+      var(--cd-field) 58%,
+      #100f0e 100%
+    );
+    pointer-events: none;
+  }
+
+  /*
+    The press mark. "a flat ink mark that rises from beneath the aluminium at the
+    moment of contact and recedes within 90ms — pigment standing in for travel a
+    flush surface cannot offer, NEVER a glow." Flat fill, no gradient, no shadow,
+    no blur. Inverted to strobe white because the cap is the inset black.
+  */
+  .shop-key-mark {
+    position: absolute;
+    inset: 0;
+    clip-path: var(--shop-cut);
+    background: var(--cd-ink);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 90ms var(--cd-ease-settle); /* release, in the 60-100ms band */
+  }
+
+  .shop .shop-key[data-cd-pressed="true"] .shop-key-mark {
+    opacity: 0.16;
+    transition: opacity 16ms linear; /* rise: <=1 frame */
+  }
+
+  .shop-key-glyph {
+    position: relative;
+    display: block;
+    margin: auto;
+    color: var(--cd-ink);
+  }
+
+  .shop .shop-key[disabled] .shop-key-glyph {
+    color: var(--cd-muted-ink);
+  }
+
+  .shop .shop-key[disabled] {
+    cursor: default;
+  }
+
+  /* The cueing cluster: paired opposed directions plus one lift (section 3's
+     surviving semantic; the source panel's own compass is NOT reproduced). */
+  .shop-cluster {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  /* =====================================================================
+     6 · THE SELECTOR — a coarse choice on hard stops
+     ===================================================================== */
+  /*
+    Section 5's Standard mass, "33/45-style speed selector commit". Section 4's
+    List/Browser: "a selected row washes at 10% opacity in the aluminium's own
+    brightest stop #D6D9DD, never the reserved red and never a border, because a
+    border would put a second line into a world that owns exactly one." Section
+    4's Tool Menu adds the side highlight bar at 40% of the same stop.
+  */
+  .shop-select {
+    display: flex;
+    align-items: stretch;
+    gap: 1px;
+    padding: 1px;
+    background: #00000059;
+    clip-path: var(--shop-cut);
+  }
+
+  .shop .shop-seat {
+    --cd-stack: inset 0 1px 0 #ffffff14;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0;
+    min-inline-size: var(--cd-target-min);
+    min-block-size: var(--cd-target-min);
+    padding: 0.25rem 0.625rem;
+    border-radius: 0;
+    background: var(--cd-field);
+    color: var(--cd-muted-ink);
+    font-family: var(--cd-font-ui);
+    font-size: var(--cd-size-1);
+    font-weight: 600;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    text-align: start;
+    box-shadow: var(--cd-stack);
+    transition:
+      background var(--shop-select-settle) var(--cd-ease-snap),
+      color var(--shop-select-settle) var(--cd-ease-snap);
+  }
+
+  .shop .shop-seat[aria-pressed="true"] {
+    background: #d6d9dd1a; /* the 10% wash — #292928 composited; 11.65:1 */
+    color: var(--cd-ink);
+  }
+
+  /* the side highlight bar, at 40% of the aluminium's brightest stop */
+  .shop .shop-seat[aria-pressed="true"]::before {
+    content: "";
+    position: absolute;
+    inset-block: 0.25rem;
+    inset-inline-start: 0;
+    inline-size: 2px;
+    background: #d6d9dd66;
+  }
+
+  .shop-seat-fig {
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-size: var(--cd-size-1);
+    font-weight: 400;
+    letter-spacing: var(--cd-track-body);
+    text-transform: none;
+    color: var(--cd-muted-ink);
+  }
+
+  /* =====================================================================
+     7 · THE FINE-ADJUST CROWN AND ITS FLUSH-CHECK
+     ===================================================================== */
+  /*
+    Section 3, whole: an edge-mounted Light-mass crown wrapped in a ring of 24
+    hairline radial ticks. "At rest, off a locked value, its ticks sit at a small
+    constant angular offset from the fixed index mark beside them — a visibly
+    broken line. The instant the value the crown governs reads true, every tick
+    snaps flush with its neighbour in one detent seat, and the ring reads as one
+    continuous, unbroken circle."
+
+    The control's box is the Floor's own 44px so the focus ring wraps a real
+    target; the visible cap is 1.25rem, centred inside it (section 4's committed
+    crown diameter).
+  */
+  .shop .shop-crown {
+    --cd-stack: none;
+    position: relative;
+    display: grid;
+    place-items: center;
+    inline-size: var(--cd-target-min);
+    block-size: var(--cd-target-min);
+    min-inline-size: var(--cd-target-min);
+    min-block-size: var(--cd-target-min);
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: var(--cd-stack);
+  }
+
+  .shop-crown-cap {
+    position: relative;
+    inline-size: var(--shop-crown);
+    block-size: var(--shop-crown);
+    border-radius: 50%;
+    background: conic-gradient(from 90deg, #d2d3d4 0deg, var(--cd-horizon) 180deg, #aeb0b1 360deg);
+    box-shadow:
+      inset 0 1px 0 #ffffff3d, /* rim light — the machined top edge */
+      0 1px 0 #00000066, /* contact — glues the cap to its well */
+      0 2px 5px #00000040, /* core — the cap's own small mass */
+      0 6px 14px #00000026; /* ambient — the recessed well */
+  }
+
+  /* 24 hairline ticks at a 15deg pitch, cut as a ring only — the cap's own
+     radius is masked out. */
+  .shop-crown-ticks {
+    position: absolute;
+    inset: -0.375rem;
+    border-radius: 50%;
+    background: repeating-conic-gradient(
+      var(--cd-horizon) 0deg 1.2deg,
+      transparent 1.2deg 15deg
+    );
+    mask: radial-gradient(circle, transparent 62%, #000 63%);
+    transform: rotate(var(--shop-tick-offset, 7.5deg));
+    /* detent seat: 120ms, Anchored, zero overshoot — "a lock either holds or it
+       has not happened yet, and a ring that overshoots its own flush position
+       and settles back has lied for one frame" */
+    transition: transform var(--cd-detent-seat) var(--cd-ease-snap);
+    pointer-events: none;
+  }
+
+  .shop-crown-ticks[data-shop-locked="true"] {
+    background: repeating-conic-gradient(
+      var(--cd-index-red) 0deg 1.2deg,
+      transparent 1.2deg 15deg
+    );
+  }
+
+  .shop-crown-ticks[data-shop-locked="true"]::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: repeating-conic-gradient(
+      var(--cd-index-red-hot) 0deg 1.2deg,
+      transparent 1.2deg 15deg
+    );
+    animation: shop-lock-decay var(--shop-lock-decay, 900ms) ease-out forwards;
+  }
+
+  @keyframes shop-lock-decay {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  /* the fixed index mark the ticks are read against — without it a rotation has
+     nothing to be flush WITH */
+  .shop-crown-fix {
+    position: absolute;
+    inset-block-start: -0.5rem;
+    inset-inline-start: 50%;
+    inline-size: 1px;
+    block-size: 0.3125rem;
+    background: var(--cd-ink);
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  .shop-crown-set {
+    display: flex;
+    align-items: center;
+    gap: 0.125rem;
+  }
+
+  .shop-crown-read {
+    display: flex;
+    flex-direction: column;
+    gap: 0.0625rem;
+    min-inline-size: 0;
+  }
+
+  .shop-crown-label {
+    font-family: var(--cd-font-ui);
+    font-size: var(--cd-size-1);
+    font-weight: 600;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    color: var(--cd-muted-ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-inline-size: 9rem;
+  }
+
+  .shop-crown-fig {
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-size: var(--cd-size-1);
+    color: var(--cd-ink);
+    white-space: nowrap;
+  }
+
+  /* =====================================================================
+     8 · THE DECK — the register, below the seam
+     ===================================================================== */
+
+  .shop-deck {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: 0.25rem;
+    min-block-size: 0;
+    padding: 0.375rem var(--shop-pad) 0.5rem;
+  }
+
+  /* the one duty competing for the hand, on its own inset plate */
+  .shop-duty {
+    display: flex;
+    align-items: center;
+    gap: var(--shop-gutter);
+    min-block-size: var(--cd-target-min);
+    padding: 0 0.125rem 0 0.75rem;
+    background: var(--cd-field);
+    clip-path: var(--shop-cut);
+    box-shadow:
+      inset 1px 2px 4px #00000059,
+      inset 0 -1px 0 #ffffff14;
+  }
+
+  .shop-duty-text {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    font-family: var(--cd-font-ui);
+    font-size: var(--cd-size-2);
+    color: var(--cd-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .shop-duty[data-shop-duty="expired"] .shop-duty-text,
+  .shop-duty[data-shop-duty="defrost-overdue"] .shop-duty-text {
+    color: var(--cd-role-danger-ink-dark); /* 8.08:1 on the inset field */
+  }
+
+  .shop-duty[data-shop-duty="verify-nominee"] .shop-duty-text,
+  .shop-duty[data-shop-duty="over-band"] .shop-duty-text {
+    color: var(--cd-role-warning-ink-dark); /* 8.06:1 on the inset field */
+  }
+
+  .shop-duty-queue {
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+    white-space: nowrap;
+  }
+
+  .shop-register-mount {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    min-block-size: 0;
+  }
+
+  .shop-register-bay {
+    min-block-size: 0;
+    overflow: hidden;
+  }
+
+  .shop .shop-register {
+    gap: 2px;
+    min-block-size: 0;
+    overflow: hidden;
+  }
+
+  /* the lid: a milled plate, chamfered on its own face so the focus ring is
+     never clipped */
+  .shop .shop-register .cd-register-group {
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .shop .shop-register .cd-register-head {
+    --cd-stack:
+      inset 0 1px 0 #ffffff14,
+      0 1px 0 #00000047;
+    min-block-size: var(--shop-lid);
+    padding: 0.25rem 0.75rem;
+    border-radius: 0;
+    background: linear-gradient(var(--cd-light-axis), #201f1d 0%, var(--cd-field) 100%);
+    color: var(--cd-ink);
+    font-size: var(--cd-size-1);
+    letter-spacing: var(--cd-track-label);
+    box-shadow: var(--cd-stack);
+  }
+
+  .shop .shop-register .cd-register-group[data-cd-open="true"] > .cd-register-head {
+    --cd-stack:
+      inset 0 1px 0 #ffffff2e,
+      inset 0 -1px 0 #00000052,
+      0 1px 0 #00000066,
+      0 3px 6px #0000003d;
+    background: #d6d9dd1a; /* the 10% wash: the open lid is the selected row */
+    border-radius: 0;
+  }
+
+  .shop .shop-register .cd-register-rows {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--shop-track-min), 1fr));
+    gap: 0 var(--shop-gutter);
+    padding: 0.25rem 0.5rem 0.375rem;
+    background: #0e0d0d;
+    box-shadow: inset 1px 2px 5px #00000073;
+    /* II.4.9 — structure discloses in 260ms, inside the 200-320ms band */
+    animation: cd-register-reveal var(--cd-reveal) var(--cd-ease-settle) both;
+  }
+
+  .shop .shop-register .cd-register-row {
+    min-inline-size: 0;
+  }
+
+  .shop .shop-register .cd-register-count {
+    color: var(--cd-muted-ink);
+  }
+
+  .shop .shop-register .cd-register-overflow {
+    grid-column: 1 / -1;
+    min-block-size: var(--shop-row);
+    padding: 0 0.5rem;
+    justify-content: flex-start;
+  }
+
+  .shop-lid-slot {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-inline-start: auto;
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-size: var(--cd-size-1);
+    font-weight: 400;
+    letter-spacing: var(--cd-track-body);
+    text-transform: none;
+    color: var(--cd-muted-ink);
+    white-space: nowrap;
+  }
+
+  .shop-lid-slot b {
+    font-weight: 400;
+    color: var(--cd-ink);
+  }
+
+  .shop-lid-overflow {
+    padding: 0.25rem 0.75rem 0;
+    font-size: var(--cd-size-1);
+    line-height: 1.45;
+    color: var(--cd-muted-ink);
+  }
+
+  .shop-lid-overflow > span {
+    margin-inline-end: 0.5rem;
+  }
+
+  /* =====================================================================
+     9 · THE COSTED ROW
+     ===================================================================== */
+  /*
+    II.6.12's five slots in fixed order, with II.6.15's own alignment (numbers
+    right, text left) and II.6.17's delta in a column of its own, sign always
+    printed. The identity slot is the UI voice in the case the dataset authored
+    it, not tracked caps: upper-casing "Morrisons chickpeas in water, 400 g tin
+    (240 g drained), Price Match" would cost the one reading this row exists for.
+  */
+  .shop-row {
+    display: grid;
+    grid-template-columns:
+      0.875rem
+      minmax(0, 1fr)
+      auto
+      calc(var(--shop-money-ch) * 1ch)
+      calc(var(--shop-delta-ch) * 1ch)
+      5.25rem;
+    align-items: center;
+    column-gap: 0.5rem;
+    block-size: var(--shop-row);
+    padding-inline: 0.25rem;
+  }
+
+  /*
+    The slots are PLACED, not ordered by the DOM, so one markup serves both
+    density bands: at desk width `.shop-meta` is `display: contents` and its
+    three children sit in columns 3, 5 and 6 with the price between them.
+  */
+  .shop-meta {
+    display: contents;
+  }
+
+  .shop-mark {
+    grid-column: 1;
+  }
+  .shop-name {
+    grid-column: 2;
+  }
+  .shop-qty {
+    grid-column: 3;
+  }
+  .shop-price {
+    grid-column: 4;
+  }
+  .shop-delta {
+    grid-column: 5;
+  }
+  .shop-word {
+    grid-column: 6;
+  }
+
+  /* II.6.14 — a list spends exactly ONE separation device. Dense takes the
+     zebra fill; there is no hairline anywhere in this register. */
+  .shop-row:nth-child(even) {
+    background: #ffffff05;
+  }
+
+  /*
+    THE ROW'S FLUSH MARK (declared delta 6). Two hairline dashes offset while the
+    line is uncosted; one continuous rule the instant it is costed. Same law as
+    the crown's ring, in this world's one axis.
+  */
+  .shop-mark {
+    position: relative;
+    block-size: 0.625rem;
+  }
+
+  .shop-mark::before,
+  .shop-mark::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    block-size: 1px;
+    background: var(--cd-muted-ink);
+    transition: transform var(--cd-detent-seat) var(--cd-ease-snap);
+  }
+
+  .shop-mark::before {
+    inset-block-start: 0.1875rem;
+    transform: translateY(-0.125rem);
+  }
+
+  .shop-mark::after {
+    inset-block-start: 0.3125rem;
+    transform: translateY(0.125rem);
+  }
+
+  .shop-row[data-shop-costed="true"] .shop-mark::before,
+  .shop-row[data-shop-costed="true"] .shop-mark::after {
+    background: var(--cd-ink);
+    transform: translateY(0);
+  }
+
+  /*
+    II.6.12's identity slot, with slot 3 — "secondary trails in muted ink" —
+    INLINE rather than in a column of its own. Declared: at the Dense band a
+    fifth column would have cost the identity the width it needs, and how many
+    packs of what size is part of what the line IS, not a support figure read
+    separately from it. II.6.22's truncation grammar applies at the tail with the
+    full string carried in `title`.
+  */
+  .shop-name {
+    font-size: var(--cd-size-2);
+    color: var(--cd-ink);
+    letter-spacing: var(--cd-track-body);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .shop-qty {
+    flex: 0 0 auto;
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+    white-space: nowrap;
+  }
+
+  .shop-price {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: 0.125rem;
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-size: var(--cd-size-2);
+    color: var(--cd-ink);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  /*
+    II.3.18 / II.3.32 — stale HOLDS the value and drops its ink to 55%. Measured:
+    strobe white at 55% over the inset field is 5.15:1, so the dimming is legal
+    here as a real alpha rather than as a substituted hex. The state word beside
+    it is at full ink, because when a reading is stale its own word is the most
+    load-bearing thing on the row.
+  */
+  .shop-row[data-shop-cost="stale"] .shop-price {
+    opacity: 0.55;
+  }
+
+  .shop-delta {
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .shop-delta[data-shop-sign="up"] {
+    color: var(--cd-role-warning-ink-dark); /* 8.06:1 — costs more than the sheet */
+  }
+
+  .shop-delta[data-shop-sign="down"] {
+    color: var(--cd-role-success-ink-dark); /* 8.07:1 — costs less */
+  }
+
+  /*
+    II.6.9 — the state token: printed caps in the data voice, the still form a
+    pulse falls back to. It is the row's own second channel and the one that
+    survives a squint, a desaturation and forced colours (II.7.7). Reserved width
+    so a row never reflows when a price is typed back and CHECKED replaces NEVER.
+  */
+  .shop-word {
+    font-family: var(--cd-font-data);
+    font-size: var(--cd-size-1);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--cd-muted-ink);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .shop-row[data-shop-cost="stale"] .shop-word {
+    color: var(--cd-role-warning-ink-dark); /* 8.06:1 — the value is being held */
+  }
+
+  .shop-row[data-shop-cost="checked"] .shop-word {
+    color: var(--cd-role-success-ink-dark); /* 8.07:1 — someone stood in front of it */
+  }
+
+  .shop-row[data-shop-cost="verified"] .shop-word {
+    color: var(--cd-ink); /* 14.58:1 — a current price is the good case, printed */
+  }
+
+  /* the estimate mark, app-wide grammar, unchanged: figure THEN the approx sign */
+  .shop-est {
+    color: var(--cd-muted-ink);
+  }
+
+  /* =====================================================================
+     10 · THE TRAYS — always along the horizon's one axis (section 3)
+     ===================================================================== */
+  /*
+    "A tray in this world never opens in the direction of its own trigger unless
+    that trigger already sits on the world's one axis; instead it always opens
+    sideways, along the horizon's own line, because nothing here is permitted a
+    second direction of travel."
+
+    The foundry's Tray already travels its own size with no scrim; this fixes the
+    edge to inline-end on every viewport, including the one where the chassis
+    rail has moved to the block end and a bottom sheet would have been the
+    obvious choice.
+  */
+  .shop .shop-tray {
+    background: var(--cd-field);
+    color: var(--cd-ink);
+    transition-duration: var(--shop-tray-settle);
+  }
+
+  .shop-tray-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--shop-gutter);
+    padding: 0.5rem 0.75rem;
+    background: #0e0d0d;
+    box-shadow: inset 0 -1px 0 #ffffff14;
+  }
+
+  .shop-tray-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    overflow-y: auto;
+    min-block-size: 0;
+  }
+
+  .shop-qr {
+    display: block;
+    inline-size: 100%;
+    max-inline-size: 18rem;
+    block-size: auto;
+    align-self: center;
+    padding: 0.5rem;
+    background: #ffffff;
+  }
+
+  .shop-url-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: stretch;
+  }
+
+  .shop .shop-input,
+  .shop .shop-textarea {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    min-block-size: var(--cd-target-min);
+    padding: 0.5rem;
+    border: 0;
+    border-radius: 0;
+    background: #0e0d0d;
+    color: var(--cd-ink);
+    font-family: var(--cd-font-data);
+    font-size: var(--cd-size-1);
+    box-shadow: inset 1px 2px 4px #00000073, inset 0 -1px 0 #ffffff14;
+  }
+
+  .shop .shop-textarea {
+    resize: vertical;
+    line-height: 1.45;
+  }
+
+  .shop .shop-cap-key {
+    --cd-stack:
+      inset 0 1px 0 #ffffff29,
+      0 1px 0 #00000059,
+      0 2px 5px #00000038;
+    min-block-size: var(--cd-target-min);
+    padding: 0.4rem 0.75rem;
+    border-radius: 0;
+    background: linear-gradient(var(--cd-light-axis), #232220 0%, var(--cd-field) 100%);
+    color: var(--cd-ink);
+    font-size: var(--cd-size-1);
+    font-weight: 600;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    box-shadow: var(--cd-stack);
+  }
+
+  .shop .shop-cap-key[data-cd-pressed="true"] {
+    --cd-stack:
+      inset 0 1px 0 #ffffff1a,
+      0 0 0 #00000059,
+      0 1px 3px #00000038;
+    transform: translateY(1px);
+    transition-duration: var(--cd-contact-down);
+    transition-timing-function: linear;
+  }
+
+  .shop-verify-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 0.5rem;
+    background: #0e0d0d;
+    clip-path: var(--shop-cut);
+  }
+
+  .shop-verify-name {
+    grid-column: 1 / -1;
+    font-size: var(--cd-size-1);
+    color: var(--cd-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .shop-verify-form {
+    display: contents;
+  }
+
+  .shop-verify-field {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  .shop-verify-prefix {
+    font-family: var(--cd-font-data);
+    color: var(--cd-muted-ink);
+  }
+
+  .shop-note {
+    font-size: var(--cd-size-1);
+    line-height: 1.5;
+    color: var(--cd-muted-ink);
+    max-inline-size: 60ch;
+  }
+
+  .shop-status {
+    min-block-size: 1.25rem;
+    font-family: var(--cd-font-data);
+    font-size: var(--cd-size-1);
+    color: var(--cd-ink);
+  }
+
+  /* =====================================================================
+     11 · THE OFF STATES
+     ===================================================================== */
+
+  .shop-empty {
+    display: grid;
+    align-content: center;
+    justify-items: start;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: var(--cd-field);
+    clip-path: var(--shop-cut);
+    box-shadow: inset 1px 2px 6px #00000073, inset 0 -1px 0 #ffffff1f;
+  }
+
+  .shop-empty-title {
+    font-family: var(--cd-font-ui);
+    font-size: var(--cd-size-4);
+    font-weight: 600;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    color: var(--cd-ink);
+  }
+
+  /* =====================================================================
+     12 · TROPHY MODE — and the privacy plate
+     ===================================================================== */
+  /*
+    Owner ruling, this screen's own sharpest clause: "PRIVACY BY DECLARED CLASS
+    IS SHARPEST ON YOUR SCREEN: basket totals and per-line prices are MASKED
+    behind a milled blank plate. A kitchen screen facing a window must not
+    publish the household's grocery spend."
+
+    So in Trophy every figure denominated in money is replaced by a blank plate
+    of milled aluminium — a real machined surface with its own concentric turning
+    marks, not a blur and not a redaction bar — and the survivors are the counts,
+    the freshness and the horizon state. The plate carries an engraved word,
+    because a masked value that does not say it is masked reads as a fault.
+  */
+  .shop[data-shop-trophy="true"] {
+    /* IV.1's luminance tiers: 1.00 active / 0.55 ambient / 0.20 night, 4000ms
+       linear between them. The night tier is DECLARED AND NEVER ENTERED: there
+       is no ambient light sensor in this build and guessing darkness from the
+       clock would be invented data. */
+    filter: brightness(0.55);
+  }
+
+  .shop-mask {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-inline-size: 9rem;
+    min-block-size: 3rem;
+    padding: 0.5rem 1rem;
+    /* milled aluminium: concentric turning marks under the one sun */
+    background-image:
+      repeating-radial-gradient(
+        circle at 24% 22%,
+        #ffffff00 0 3px,
+        #ffffff14 3px 4px,
+        #00000014 4px 6px
+      ),
+      linear-gradient(90deg, #a2a4a6 0%, #dedfdf 47%, #9a9c9e 100%);
+    clip-path: var(--shop-cut);
+    box-shadow:
+      inset 0 1px 0 #ffffffa6,
+      inset 0 -1px 0 #00000066,
+      0 2px 5px #00000059;
+  }
+
+  .shop-mask-word {
+    font-family: var(--cd-font-ui);
+    font-size: var(--cd-size-1);
+    font-weight: 600;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    /* the ONE place a word sits on aluminium, and it is engraved INTO it:
+       #141414 on the milled plate measures 10.88:1 at the base stop and 13.80:1
+       at the bright stop. The ink-plate law bans strobe-white type on the band's
+       surface; an engraved cut filled with near-black is the plate itself
+       carrying the word, and it is measured rather than assumed. */
+    color: #141414;
+    text-shadow: 0 1px 0 #ffffff59;
+  }
+
+  .shop-trophy {
+    display: grid;
+    gap: 0.75rem;
+    padding: 0.75rem;
+  }
+
+  .shop-trophy-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+
+  /* IV.1 — the exact figure at 1.75rem and the age at 1.21875rem, ALWAYS
+     visible, never omitted for the composition's sake. */
+  .shop-trophy-fig {
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-size: var(--shop-trophy-fig);
+    color: var(--cd-ink);
+  }
+
+  .shop-trophy-age {
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-size: var(--shop-trophy-age);
+    color: var(--cd-muted-ink);
+  }
+
+  .shop-trophy-word {
+    font-family: var(--cd-font-ui);
+    font-size: var(--cd-size-1);
+    font-weight: 600;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    color: var(--cd-muted-ink);
+  }
+
+  /*
+    "Others disappear rather than shrink" — IV.1 grants no floor exception, "not
+    even a horizon's own". What goes is the census row, the whole register, the
+    duty strip and the micro-etch. What STAYS is the band (this chapter's own
+    Trophy clause re-cuts it at 1.5x and makes its track window "the single
+    widest object on the wall") and the survivor list that replaces the register.
+  */
+  .shop[data-shop-trophy="true"] .shop-census,
+  .shop[data-shop-trophy="true"] .shop-duty,
+  .shop[data-shop-trophy="true"] .shop-lid-overflow,
+  .shop[data-shop-trophy="true"] .shop-etch {
     display: none;
   }
 
-  .scr-shop-col--market {
-    font-size: 1.3rem;
-    border: none;
+  /* this chapter's Trophy variant: the band rises and its window widens */
+  .shop[data-shop-trophy="true"] {
+    --shop-window: 2.25rem; /* 1.5x the committed 1.5rem */
   }
 
-  /* Chrome-free 1-bit print (PLAN §6.8): the PHASE 3 engraved-label
-     text-shadow is a screen-only nicety — strip it so the printed ticket
-     stays pure black-on-white. */
-  .scr-shop-col-h {
-    text-shadow: none;
-  }
-}
+  /* =====================================================================
+     13 · NARROW — the band deepens, the horizon stays one line
+     ===================================================================== */
+  @media (max-width: 47.99rem) {
+    .shop {
+      /* the chassis rail has moved to the block end; the scene's own box is
+         100dvh less the scene padding AND the rail's committed footprint */
+      block-size: calc(100dvh - 2rem - var(--fd5-rail-footprint));
+      /*
+        CONTENT-SIZED, not clamped. The readout stacks into four bands here
+        (figure, census, track, legend) and a fixed plinth clipped the hero
+        figure's own cap height at 390px. The deck takes whatever is left and
+        confesses the rest, which is R7 doing its job rather than a clip doing
+        it silently.
+      */
+      --shop-plinth: auto;
+      --shop-track-min: 100%;
+      /* II.6.13's Comfortable band — a second line, at 0.8125rem. Nothing is
+         dropped to reach a phone; the row grows the line it needs. */
+      --shop-row: 3.25rem;
+    }
 
-/* ---- reduced motion ---- */
+    /* THE READOUT STACKS. The first build kept the desk grid and the census
+       overflowed its plate at 390px — four true figures clipped into none. */
+    .shop .shop-readout[data-cd-encl] {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        "figure"
+        "census"
+        "track";
+      row-gap: 0.25rem;
+    }
 
-@media (prefers-reduced-motion: reduce) {
-  .scr-shop-flipcard {
-    animation: none;
-  }
-}
+    .shop-total {
+      font-size: var(--cd-size-6); /* 2.75rem — the hero steps down one rung of
+                                      the closed scale rather than overflowing */
+    }
 
-/* ---- forced-colors ---- */
+    .shop-census {
+      justify-content: flex-start;
+      padding-block-end: 0;
+    }
 
-@media (forced-colors: active) {
-  .scr-shop-col-h {
-    text-shadow: none;
+    .shop-census-fig {
+      font-size: var(--cd-size-2);
+    }
+
+    .shop-legend {
+      flex-wrap: wrap;
+      block-size: auto;
+    }
+
+    /* the track window keeps the band's full width; the reading sits under it,
+       because a window squeezed to 50px by a text column is not a window */
+    .shop-position {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: 0.25rem;
+    }
+
+    .shop-position-read {
+      flex-wrap: wrap;
+    }
+
+    /*
+      THE BAND EXTENDS PAST THE VIEWPORT AND YOU TRAVEL ALONG IT.
+
+      Measured at 390x844: wrapping the eight controls onto three rows made the
+      band 326px of a 756px scene and left the register 60px — one lid, its rows
+      clipped, nothing said. Stacking is a SECOND AXIS in a world whose entire
+      argument is that it has one, so the fix is the chapter's own: the horizon
+      keeps running, and the hand travels sideways along it. One row, full-size
+      controls, horizontal scroll, scroll-snap, and every control still reachable
+      by Tab in DOM order with `scroll-margin` keeping the focused one in view.
+
+      This is not R7's page-length scroll: nothing here is a register of rows
+      being hidden from a count. It is one continuous control surface, read the
+      way the source hardware's own plate is read — by moving along it.
+    */
+    .shop-controls {
+      flex-wrap: nowrap;
+      column-gap: 0.5rem;
+      align-items: center;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x proximity;
+      scrollbar-width: thin;
+      scrollbar-color: var(--cd-muted-ink) transparent;
+      padding-block-end: 0.125rem;
+    }
+
+    .shop-controls > * {
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+      scroll-margin-inline: 0.5rem;
+    }
+
+    .shop-controls-spacer {
+      display: none;
+    }
+
+    .shop-crown-set {
+      flex: 0 1 auto;
+      min-inline-size: 0;
+    }
+
+    .shop-crown-read {
+      flex-direction: row;
+      align-items: baseline;
+      gap: 0.4rem;
+      min-inline-size: 0;
+    }
+
+    .shop-crown-label {
+      max-inline-size: 8.5rem;
+    }
+
+    .shop-cluster {
+      flex: 0 0 auto;
+    }
+
+    /* a seat word that wraps turns a 44px seat into a 60px one */
+    .shop .shop-seat {
+      white-space: nowrap;
+      padding-inline: 0.5rem;
+    }
+
+    /* a lid whose label wraps is a 60px lid in a 46px budget: the label takes
+       the truncation grammar instead (II.6.22) */
+    .shop .shop-register .cd-register-head {
+      gap: 0.5rem;
+      padding-inline: 0.5rem;
+    }
+
+    .shop .shop-register .cd-register-label {
+      min-inline-size: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .shop-lid-slot {
+      gap: 0.5rem;
+    }
+
+    /* THE ROW'S SECOND LINE. Mark spans both; name and price hold the first;
+       qty, delta and the state word share the second. */
+    .shop-row {
+      grid-template-columns: 0.875rem minmax(0, 1fr) auto;
+      grid-template-rows: 1.625rem 1.375rem;
+      align-content: center;
+      row-gap: 0;
+    }
+
+    .shop-mark {
+      grid-row: 1 / 3;
+      align-self: center;
+    }
+
+    .shop-name {
+      grid-row: 1;
+      grid-column: 2;
+    }
+
+    .shop-price {
+      grid-row: 1;
+      grid-column: 3;
+    }
+
+    .shop-meta {
+      display: flex;
+      align-items: baseline;
+      justify-content: flex-start;
+      gap: 0.75rem;
+      grid-row: 2;
+      grid-column: 2 / -1;
+      min-inline-size: 0;
+    }
+
+    .shop-qty,
+    .shop-delta,
+    .shop-word {
+      grid-column: auto;
+    }
+
+    .shop-word {
+      margin-inline-start: auto;
+      text-align: right;
+    }
   }
-  .scr-shop-key {
-    forced-color-adjust: none;
-    background: Highlight;
-    color: HighlightText;
-    border-color: ButtonText;
+
+  @media (max-width: 30rem) {
+    .shop-cluster [data-shop-key="first"],
+    .shop-cluster [data-shop-key="last"] {
+      display: none; /* the rapid-outward pair folds; the slow pair and the LIFT
+                        diamond carry the whole semantic on their own */
+    }
   }
-  /* PHASE 3 polish additions (dome highlight, bevel ring, press/open
-     shadows, hinge-lift shadow) all land on selectors at least as specific
-     as `.scr-shop .scr-shop-key` — matching that specificity here (rather
-     than relying on the single-class rule above) so forced-colors keeps
-     exactly the flat Highlight/HighlightText key it already had, with none
-     of this pass's decorative shadow/gradient surviving into it. */
-  .scr-shop .scr-shop-key,
-  .scr-shop .scr-shop-key:active:not(:disabled) {
-    background: Highlight;
-    /* color/border must be restated at THIS specificity too: the base
-       `.scr-shop .scr-shop-key { color: var(--sol-accent); border: 2px … }`
-       rule outranks the single-class fc rule above, so without these the
-       key rendered accent-orange text on Highlight (~1.5:1 — the Phase 3
-       ship-gate finding). */
-    color: HighlightText;
-    border-color: ButtonText;
-    box-shadow: none;
+
+  /* =====================================================================
+     14 · REDUCED MOTION — II.4.26, translate, never delete
+     ===================================================================== */
+  @media (prefers-reduced-motion: reduce) {
+    /* the index's POSITION carries meaning, so it still travels — at the
+       reduced-motion dialect's own 80ms linear, never a 0ms flash */
+    .shop-index {
+      transition-duration: var(--cd-reduced-position);
+      transition-timing-function: linear;
+    }
+
+    /* the lock's hot frame is a report, not travel: it holds its full 900ms so
+       the arrival is still legible, but it no longer eases */
+    .shop-index[data-shop-locked="true"],
+    .shop-crown-ticks[data-shop-locked="true"]::before {
+      animation-timing-function: linear;
+    }
+
+    .shop[data-shop-trophy="true"] {
+      transition-duration: var(--cd-reduced-fade);
+    }
   }
-  .scr-shop-key--open {
-    box-shadow: none;
-  }
-  .scr-shop-chip {
-    forced-color-adjust: none;
-    border-color: ButtonText;
-    color: ButtonText;
-  }
-  .scr-shop-col--market {
-    forced-color-adjust: none;
-    background: Canvas;
-    color: CanvasText;
-    border-color: ButtonText;
+
+  /* =====================================================================
+     15 · FORCED COLOURS — the material argument is the OS's to discard
+     ===================================================================== */
+  /*
+    THE SHIPPED REGRESSION THIS BLOCK EXISTS TO NOT REPEAT: the previous SHOP set
+    `.scr-shop .scr-shop-key { color: var(--sol-accent) }` at (0,2,0) while its
+    forced-colours override sat at (0,1,0), so the key rendered accent orange on
+    Highlight at roughly 1.5:1. Every rule below is written at the SAME OR HIGHER
+    specificity as the rule it replaces, and every one of them restates BOTH
+    `color` and `border-color` rather than assuming the base rule's value is
+    system-safe.
+  */
+  @media (forced-colors: active) {
+    .shop {
+      forced-color-adjust: none;
+      background: Canvas;
+      background-image: none;
+      color: CanvasText;
+    }
+
+    .shop .shop-readout[data-cd-encl],
+    .shop .shop-band,
+    .shop .shop-band-track,
+    .shop .shop-duty,
+    .shop .shop-window,
+    .shop .shop-empty,
+    .shop .shop-verify-row,
+    .shop .shop-tray-head,
+    .shop .shop-etch,
+    .shop .shop-mask {
+      forced-color-adjust: none;
+      background: Canvas;
+      background-image: none;
+      color: CanvasText;
+      box-shadow: none;
+      border: 1px solid CanvasText;
+      clip-path: none;
+    }
+
+    .shop .shop-mask .shop-mask-word {
+      color: CanvasText;
+      text-shadow: none;
+    }
+
+    .shop .shop-total,
+    .shop .shop-census-fig,
+    .shop .shop-legend-fig,
+    .shop .shop-name,
+    .shop .shop-price,
+    .shop .shop-trophy-fig,
+    .shop .shop-position-read b,
+    .shop .shop-crown-fig {
+      color: CanvasText;
+    }
+
+    .shop .shop-census-word,
+    .shop .shop-legend-seat,
+    .shop .shop-qty,
+    .shop .shop-delta,
+    .shop .shop-crown-label,
+    .shop .shop-trophy-age,
+    .shop .shop-trophy-word,
+    .shop .shop-horizon-word,
+    .shop .shop-position-read,
+    .shop .shop-note,
+    .shop .shop-lid-overflow {
+      color: GrayText;
+    }
+
+    .shop .shop-delta[data-shop-sign="up"],
+    .shop .shop-delta[data-shop-sign="down"],
+    .shop .shop-duty[data-shop-duty] .shop-duty-text {
+      color: CanvasText;
+    }
+
+    /* the keys: colour AND border restated at the specificity of the base rule,
+       which is the whole point of this block */
+    .shop .shop-key,
+    .shop .shop-key[data-cd-pressed="true"],
+    .shop .shop-seat,
+    .shop .shop-cap-key,
+    .shop .shop-cap-key[data-cd-pressed="true"],
+    .shop .shop-register .cd-register-head {
+      forced-color-adjust: none;
+      background: ButtonFace;
+      background-image: none;
+      color: ButtonText;
+      border: 1px solid ButtonText;
+      box-shadow: none;
+      clip-path: none;
+    }
+
+    .shop .shop-seat[aria-pressed="true"],
+    .shop .shop-register .cd-register-group[data-cd-open="true"] > .cd-register-head {
+      background: Highlight;
+      background-image: none;
+      color: HighlightText;
+      border-color: ButtonText;
+    }
+
+    .shop .shop-seat[aria-pressed="true"] .shop-seat-fig {
+      color: HighlightText;
+    }
+
+    .shop .shop-seat[aria-pressed="true"]::before {
+      background: HighlightText;
+    }
+
+    .shop .shop-key .shop-key-face,
+    .shop .shop-key .shop-key-mark {
+      display: none;
+    }
+
+    .shop .shop-key .shop-key-glyph,
+    .shop .shop-key[disabled] .shop-key-glyph {
+      color: ButtonText;
+    }
+
+    /* the instruments: geometry survives, the material argument does not */
+    .shop .shop-index,
+    .shop .shop-mark::before,
+    .shop .shop-mark::after,
+    .shop .shop-crown-fix {
+      background: CanvasText;
+      box-shadow: none;
+    }
+
+    .shop .shop-window {
+      background-image: none;
+    }
+
+    .shop .shop-seam,
+    .shop[data-shop-horizon="true"] .shop-seam {
+      background-image: none;
+      background: GrayText;
+      box-shadow: none;
+    }
+
+    .shop[data-shop-horizon="true"] .shop-seam {
+      background: Highlight;
+    }
+
+    .shop[data-shop-horizon="true"] .shop-band {
+      background: Canvas;
+      background-image: none;
+      box-shadow: none;
+      border-color: Highlight;
+    }
+
+    .shop .shop-crown-cap {
+      background: ButtonFace;
+      background-image: none;
+      border: 1px solid ButtonText;
+      box-shadow: none;
+    }
+
+    .shop .shop-crown-ticks,
+    .shop .shop-crown-ticks[data-shop-locked="true"],
+    .shop .shop-crown-ticks[data-shop-locked="true"]::before {
+      background: none;
+      background-image: none;
+      animation: none;
+    }
+
+    /* a ring the OS palette has flattened still has to report: the tick geometry
+       is replaced by a single keyline that is present when locked and absent
+       when broken, so the true/not-yet reading survives with no colour at all */
+    .shop .shop-crown-ticks[data-shop-locked="true"] {
+      border: 1px solid Highlight;
+      border-radius: 50%;
+    }
+
+    .shop .shop-foot {
+      display: none;
+    }
+
+    .shop .shop-row:nth-child(even) {
+      background: Canvas;
+    }
+
+    .shop .shop-input,
+    .shop .shop-textarea {
+      background: Field;
+      color: FieldText;
+      border: 1px solid ButtonText;
+      box-shadow: none;
+    }
+
+    /*
+      THE ONE THING THE OS PALETTE MAY NOT HAVE. A QR code is not decoration and
+      not type: it is a machine-readable pattern whose whole contract is a black
+      module on a white quiet zone. Re-coloured to Canvas/CanvasText it stops
+      scanning, so its own literals are held with forced-color-adjust: none. This
+      is the single sanctioned exception on this screen and it is stated rather
+      than smuggled.
+    */
+    .shop .shop-qr {
+      forced-color-adjust: none;
+      background: #ffffff;
+    }
   }
 }

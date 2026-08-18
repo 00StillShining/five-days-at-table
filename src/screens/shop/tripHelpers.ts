@@ -8,13 +8,14 @@ import type { TripBuild, TripLine } from "../../state/selectors";
 import type { InventoryLevel } from "../../state/types";
 import type { TripEnvelope, TripKind, TripRow, TripShop } from "../../engine/tripCodec";
 
-// Re-exported so ShopColumn.tsx's existing `import { formatPackG } from
-// "./tripHelpers"` keeps working unchanged (F2's shared-helper adoption —
-// the canonical implementation now lives in src/state/format.ts).
+// Re-exported for the screen's own row, which prints "3x1kg" beside the
+// identity (F2's shared-helper adoption — the canonical implementation lives
+// in src/state/format.ts).
 export { formatPackG };
 
 /** Three costed columns, in the order PLAN §6.8 lists them: "Morrisons /
- * Sainsbury's / market ticket". */
+ * Sainsbury's / market ticket". They are the three seats of the horizon band's
+ * own station selector and the three indices of the plinth's cost track. */
 export const SHOP_ORDER: Shop[] = ["M", "S", "X"];
 
 export const LEVEL_LABEL: Record<InventoryLevel, string> = { 0: "empty", 1: "¼", 2: "½", 3: "¾", 4: "full" };

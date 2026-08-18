@@ -1,716 +1,2214 @@
 /*
-  FD-5 · MEAL screen (src/screens/meal/**)
-  Scoped by `.scr-meal` per PHASE2-CONTRACT conventions. Reads tokens.css's
-  `.fd5` custom properties (this subtree always lives inside the app-wide
-  playful-technical light scope — MEAL never overrides data-language).
-  Lean: playful-technical, precision borrowed only on the portion knob hero
-  (PLAN §6.0).
+  src/screens/meal/meal.css — 16 FACETED VOLUME, on MEAL.
 
-  Phase 3 polish (this file's `.mk-*` block below): the knob face gets a
-  turned-metal read — a CSS conic-gradient "brushed" sweep + a radial "soft
-  top light" sheen sit BEHIND the SVG face as `.mk-knob::before`/`::after`
-  (painted first per normal DOM order; the SVG is given its own stacking
-  order via `z-index` so it always paints on top), with `.mk-body`'s SVG fill
-  turned semi-transparent so the CSS texture reads through while the ring
-  stroke/ticks/index dot stay crisp on top. Everything else on this screen
-  (readout, steppers, covers) stays deliberately flat/quiet — "the knob is
-  the jewel" (PLAN brief) — no gradients anywhere else in this file. Local
-  custom properties (`--mk-*`) are polish-only and defined here, never in
-  tokens.css.
+  ===========================================================================
+  COMMITTED VALUES — every one from ch.16 section 2/3/5/6 or a CD-BRIEF ruling
+  ===========================================================================
+    gunmetal field        #3E4148  --cd-field         faceplate, panel body
+    gunmetal well         #2B2D31  --cd-well          wheel recess, card recess
+    facet seam            #4A4D54  --cd-seam          hairline between planes
+    mirror body           #C7CBCD  --cd-mirror        wheel, machined trim
+    mirror hot stop       #EDEFEF  --cd-mirror-hot    specular peak only
+    mirror low stop       #9FA4A7                     this world's darkened end
+    black edition         #1B1B1D  --cd-black-edition deep well fill, shadow floor
+    printed ink           #EDEEEC  --cd-ink
+    muted ink             #AAADB0  --cd-muted-ink     DERIVED, see world.css
+    cover lamp · her      #4E9C5C  --cd-fmt-24        rim #8CBF95
+    cover lamp · him      #3E7FD6  --cd-fmt-32        rim #82ACE4
+    provenance · batch    #8E44AD  --cd-fmt-dsd       rim #B685CA, dim #4A2E56
+    one sun               138deg   --cd-light-axis    shadow ratio 1:2
+    chamfer · control     0.25rem  half the 0.5rem module — the Transport Key's cut
+    chamfer · card        0.75rem  three half-steps — the Jewel Card's corner
+    wheel cap             4.5rem   ch.16 §3, below the Foundry's 8rem minimum
+    recessed collar       0.375rem deep, Ø5.25rem
+    detent pitch          22.5deg  13 seats over 270deg (II.3.6, declared revert)
+    facet planes          16 at 22.5deg — one plane per committed seat
+    seat snap             110ms    --cd-ease-snap (II.3.6's own figure)
+    wheel mass            spring(1.4,260,30)  Weighted, --cd-settle-weighted
+    ring mass             spring(0.7,420,25)  Light, --cd-settle-light
+    transport mass        spring(1,320,26)    Standard, --cd-settle-standard
+    guard mass            spring(1.2,300,38)  Anchored, 0% overshoot
+    tray travel           280ms in / 220ms out, Panel mass (II.4.23)
+    transport key         3.25rem tall, 0.875rem gap (widths declared below)
+    back-etch             parallel facet lines at 22deg (ch.16 §2, II.2.21)
+    ring geometry         2 x 166deg arcs, 2deg gaps = 336deg, 24deg reserved
+    detent tick           sine 2100Hz, 18ms, -24dBFS (cd/sound/cues.ts)
+
+  ===========================================================================
+  MEASURED CONTRAST (WCAG 2.x, computed for this build, not eyeballed)
+  ===========================================================================
+    ink #EDEEEC on gunmetal #3E4148 ................... 8.78 : 1   text
+    ink #EDEEEC on the well #2B2D31 .................. 11.85 : 1   text
+    ink #EDEEEC on black edition #1B1B1D ............. 14.77 : 1   text
+    muted #AAADB0 on gunmetal ......................... 4.53 : 1   text
+    muted #AAADB0 on the well ......................... 6.12 : 1   text
+    mirror #C7CBCD on gunmetal ........................ 6.26 : 1   graphic
+    mirror hot #EDEFEF on gunmetal .................... 8.86 : 1   graphic
+    cover lamp · her  #4E9C5C on the well ............. 4.09 : 1   graphic
+      its lens rim    #8CBF95 on the well ............. 6.57 : 1
+    cover lamp · him  #3E7FD6 on the well ............. 3.42 : 1   graphic
+      its lens rim    #82ACE4 on the well ............. 5.89 : 1
+    provenance        #8E44AD on the well ............. 2.35 : 1   FAILS ALONE
+      its lens rim    #B685CA on the well ............. 4.73 : 1   carries it
+    warning ink dark  #DAA254 on gunmetal ............. 4.52 : 1   text
+    danger  ink dark  #E59992 on gunmetal ............. 4.53 : 1   text
+    success ink dark  #53C17E on gunmetal ............. 4.53 : 1   text
+    meter zone · short   #D96A61 vs the well .......... 4.06 : 1   graphic
+    meter zone · part    #C4832A vs the well .......... 4.35 : 1   graphic
+    meter zone · covered #3FAE6B vs the well .......... 4.91 : 1   graphic
+    focus pair on the WELL ... blue 4.04 / pair 5.40 : 1  (passes)
+    focus pair on the FIELD .. blue 3.00 / pair 5.40 : 1  (the Floor exactly)
+
+  THE CONSEQUENCE OF THAT LAST LINE, and it is structural rather than a note:
+  the focus pair reaches only 3.00:1 on bare gunmetal — the Floor with zero
+  margin. ch.16 section 2 already requires it: "the wheel recess, socket
+  interiors, card recess" are the WELL. So EVERY focusable control on this
+  screen is seated in --cd-well #2B2D31, where the blue measures 4.04:1, and
+  none sits on the bare faceplate. That is enforced below by giving every
+  focusable a well behind it, not by remembering to.
+
+  ===========================================================================
+  DECLARED DEPARTURES (CORRECTIONARY 6.5 — no silent downgrades)
+  ===========================================================================
+  1. 13 SEATS, NOT 150. ch.16 scales the detent range to a hundred and fifty at
+     2.4deg on an unbounded encoder. FD-5's portion scale is a BOUNDED 0.70-1.30
+     at 0.05, which is exactly the Foundry's own detented knob (II.3.6): 13 seats,
+     270deg, 22.5deg pitch, 110ms snap. Everything that makes it ch.16's wheel is
+     carried by hand — Ø4.5rem cap, 0.375rem recessed collar, Weighted spring,
+     the refusal of coast at any speed, the 2100Hz sine tick, the two-layer
+     ring-and-catch split. 150 free steps on a value with 13 legal ones would be
+     a wheel that lied about how many decisions it had made.
+  2. TWO RING LAMPS, NOT FOUR. The ring reports which cover the plate is cut
+     for, and that fact has two values. The chapter's 336/24 split is kept
+     exactly and spent on two arcs: 2 x 166 + 2 x 2 = 336, with the same 24deg
+     reserved at the base for the lit lamp's bloom. Two invented lamps would be
+     a code with nothing behind it — ch.16 section 9's own named failure.
+  3. THE TRANSPORT KEY'S WIDTH. 2.25rem is 36px and the Floor is 44px on both
+     axes, which outranks a cap dimension. The HEIGHT (3.25rem), the GAP
+     (0.875rem) and the chamfered silhouette are kept exactly; widths are set by
+     the words, floored at 2.75rem. ch.16's Signature rung would remove the
+     words entirely; three universal transport glyphs can survive that, and
+     "her", "him" and "cook" cannot.
+  4. NO PULSE, ANYWHERE. ch.16 permits exactly one idle motion, the DSD ring's
+     0.5Hz breath, and states its own reason: "a DSD lock is the one truthfully
+     alive process on a FACETED VOLUME screen". Nothing on MEAL is a live
+     process — every value here is either set by the hand or fixed in the
+     dataset. A breathing lamp over a static fact is CD-BRIEF ruling 6's
+     ornament exactly. The language's one idle motion is therefore NOT SPENT on
+     this screen, and that is stated rather than quietly omitted.
+  5. THE SECOND PORTHOLE IS NOT SPENT. ch.16's Detail archetype is the one
+     screen permitting two. Only one value here changes in a way a geared disc
+     can honestly report — the portion the hand turns. The macros, the weight
+     and the spec all follow from that same one gesture. A second porthole would
+     have been a mechanism with no independent fact behind it.
+  6. THE ARBITER'S ACT-NOW SLOT IS NOT REPEATED HERE. TODAY carries it and the
+     chassis carries the live claim; a detail tray that restates it makes one
+     claim twice (CD-BRIEF ruling 3's own principle). This plate's own duty is
+     the stock meter, which is a hero and says something the arbiter cannot:
+     whether THIS plate, at THIS portion, is short.
+  7. THE WORKSPACE BENEATH THE TRAY IS MEAL'S OWN. App.tsx mounts one scene per
+     route and this folder may not import another screen, so the live surface
+     under the tray is the day's other plates rather than a re-render of PLAN.
+     The exit still returns to the summoning screen. See DayBench.tsx.
+
+  ===========================================================================
+  CASCADE
+  ===========================================================================
+  Everything lands in @layer cd.screen, the strongest layer (tokens/index.css).
+  Any rule that dresses a foundry Enclosure is written at (0,2,0) —
+  `.mea-x[data-cd-encl]` — because `.cd-encl[data-cd-encl="hero"]` is (0,1,1)
+  and a bare class would silently lose to it. Every machined control publishes
+  --cd-stack and never sets `box-shadow` directly, so the two-tone focus ring
+  composes with it instead of deleting it.
 */
 
-.scr-meal {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  max-width: 52rem;
-  margin: 0 auto;
-}
-
-/* ---------------------------------------------------------------------- */
-/* Header                                                                  */
-/* ---------------------------------------------------------------------- */
-
-.scr-meal-head {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-
-.scr-meal-kicker {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 0;
-  font-family: var(--sol-font-data);
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-  text-transform: lowercase;
-}
-
-.scr-meal-tag {
-  padding: 0.05rem 0.5rem;
-  border: 1px solid var(--sol-border);
-  background: var(--sol-panel);
-  font-size: 0.6875rem;
-  letter-spacing: 0.04em;
-}
-
-.scr-meal-tag[data-tag="batch"] {
-  color: var(--sol-accent);
-  border-color: var(--sol-accent);
-}
-
-.scr-meal-title {
-  margin: 0;
-  font-size: 1.75rem;
-  line-height: 1.15;
-}
-
-.scr-meal-origin {
-  margin: 0;
-  color: var(--sol-text-muted);
-  font-size: var(--sol-text-label);
-}
-
-/* ---------------------------------------------------------------------- */
-/* Hero: the portion knob                                                  */
-/* ---------------------------------------------------------------------- */
-
-.scr-meal-hero {
-  display: flex;
-  justify-content: center;
-  padding: 1.25rem 1rem;
-  background: var(--sol-panel);
-  border: 1px solid var(--sol-border);
-  /* SP3000 framing (atlas §3.16): a shallow recessed well protects/frames the
-     knob as the screen's one crafted object — everything else stays flat. */
-  box-shadow:
-    inset 0 2px 6px rgba(0, 0, 0, 0.14),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.5);
-}
-
-.mk-portion {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  width: 100%;
-  max-width: 22rem;
-}
-
-.mk-portion-label {
-  margin: 0;
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-  text-transform: lowercase;
-  letter-spacing: 0.02em;
-}
-
-.mk-portion-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.875rem;
-}
-
-.mk-step {
-  border-radius: 50%;
-  font-size: 1.25rem;
-  line-height: 1;
-  padding: 0;
-  flex: 0 0 auto;
-}
-
-.mk-knob {
-  width: 7.5rem;
-  height: 7.5rem;
-  flex: 0 0 auto;
-  border-radius: 50%;
-  touch-action: none;
-  cursor: pointer;
-  position: relative;
-  /* Local polish tokens (Phase 3, this file only — never tokens.css). */
-  --mk-brush-hi: rgba(255, 255, 255, 0.55);
-  --mk-brush-lo: rgba(0, 0, 0, 0.1);
-  --mk-sheen: rgba(255, 255, 255, 0.5);
-  --mk-dot-hi: #ffd9b8;
-  --mk-dot-mid: var(--sol-accent-fill);
-  /* Rim bevel: a raised bezel at rest, sinks on press (see :active below). */
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.2),
-    inset 0 1px 1px rgba(255, 255, 255, 0.55),
-    inset 0 -2px 3px rgba(0, 0, 0, 0.22);
-  transition: box-shadow var(--sol-motion-state) ease;
-}
-
-/* Turned-metal face: a conic "brushed" sweep (::before) + a soft top-light
-   radial sheen (::after), both sized to exactly the SVG's r=44 body circle
-   (viewBox is -14..114 over a 128-unit box, so the r=44 circle occupies the
-   middle 68.75% => 15.625% inset on every side) and painted BEHIND the SVG
-   (`.mk-face` gets z-index:1 below; these stay at the implicit z-index:0 of
-   normal DOM order). `.mk-body`'s fill-opacity (below) is lowered so this
-   texture reads through while the stroke/ticks/dot on top stay crisp. */
-.mk-knob::before,
-.mk-knob::after {
-  content: "";
-  position: absolute;
-  inset: 15.625%;
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.mk-knob::before {
-  background: conic-gradient(
-    from 205deg,
-    var(--mk-brush-lo) 0deg,
-    var(--mk-brush-hi) 6deg,
-    var(--mk-brush-lo) 14deg,
-    var(--mk-brush-hi) 40deg,
-    var(--mk-brush-lo) 66deg,
-    var(--mk-brush-hi) 100deg,
-    var(--mk-brush-lo) 150deg,
-    var(--mk-brush-hi) 190deg,
-    var(--mk-brush-lo) 230deg,
-    var(--mk-brush-hi) 270deg,
-    var(--mk-brush-lo) 310deg,
-    var(--mk-brush-hi) 345deg,
-    var(--mk-brush-lo) 360deg
-  );
-}
-
-.mk-knob::after {
-  background: radial-gradient(circle at 32% 26%, var(--mk-sheen), rgba(255, 255, 255, 0) 55%);
-}
-
-.mk-knob:focus-visible {
-  outline: var(--sol-focus-width) solid var(--sol-focus);
-  outline-offset: 3px;
-  border-radius: 50%;
-}
-
-/* Press state (Sol §5.1 active/pressed: "immediate response, no layout
-   shift"): transform is intentionally NOT in the transition list above, so
-   it snaps instantly on pointer-down/keyboard-activate — same convention as
-   the shared `.fd5-control:active` in tokens.css. */
-.mk-knob:active {
-  transform: translateY(1px);
-  box-shadow:
-    inset 0 2px 3px rgba(0, 0, 0, 0.3),
-    inset 0 -1px 1px rgba(255, 255, 255, 0.3);
-}
-
-.mk-face {
-  width: 100%;
-  height: 100%;
-  display: block;
-  position: relative;
-  z-index: 1;
-}
-
-.mk-body {
-  fill: var(--sol-panel);
-  fill-opacity: 0.4;
-  stroke: var(--sol-border);
-  stroke-width: 1.5;
-}
-
-.mk-tick {
-  stroke: var(--sol-border);
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  /* Engraved groove: a hairline light offset under the stroke. */
-  filter: drop-shadow(0 0.5px 0 rgba(255, 255, 255, 0.5));
-}
-
-.mk-tick[data-active] {
-  stroke: var(--sol-accent);
-  stroke-width: 2.5;
-  /* The active detent is "lit" — a small glow instead of the plain groove. */
-  filter: drop-shadow(0 0 3px var(--sol-accent-fill));
-}
-
-.mk-index-dot {
-  /* Paint-server first, plain accent colour as the CSS fallback (used if the
-     gradient reference ever fails to resolve) — forced-colors overrides this
-     property outright further down, same pattern as the tick rules above. */
-  fill: url(#mk-dot-grad) var(--sol-accent);
-}
-
-.mk-arc-label {
-  font-family: var(--sol-font-data);
-  /* SVG viewBox is -14 -14 128 128 rendered into a 120px (7.5rem) box at
-     default size, i.e. 1 user-unit ~= 0.9375px there — 10 is a >=9px
-     equivalent at that scale (9.375px), and scales proportionally with the
-     knob at any other rendered size. */
-  font-size: 10px;
-  fill: var(--sol-text-muted);
-}
-
-.mk-portion-readout {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.mk-readout {
-  font-family: var(--sol-font-data);
-  font-size: 1.375rem;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-
-.mk-typed-label {
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-  text-transform: lowercase;
-}
-
-.mk-typed-input {
-  width: 5rem;
-  font-family: var(--sol-font-data);
-  text-align: center;
-  padding: 0.25rem 0.4rem;
-}
-
-/* ---------------------------------------------------------------------- */
-/* Covers (both sides side by side on desktop; toggled stack on mobile)    */
-/* ---------------------------------------------------------------------- */
-
-.scr-meal-cover-toggle {
-  display: none;
-  justify-content: center;
-  margin-bottom: 0.75rem;
-}
-
-.scr-meal-cover-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-.scr-meal-cover {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  padding: 1rem;
-  background: var(--sol-panel);
-  border: 1px solid var(--sol-border);
-  min-width: 0;
-}
-
-.scr-meal-cover-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.5rem;
-}
-
-.scr-meal-cover-title {
-  margin: 0;
-  font-size: 1rem;
-  text-transform: lowercase;
-}
-
-.scr-meal-cover-scale {
-  font-family: var(--sol-font-data);
-  font-size: 0.6875rem;
-  color: var(--sol-text-muted);
-}
-
-.scr-meal-macro-strip {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 0.5rem;
-  margin: 0;
-  padding: 0.625rem 0.5rem;
-  background: var(--sol-bg);
-  border: 1px solid var(--sol-border);
-}
-
-.scr-meal-macro {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.15rem;
-  min-width: 0;
-}
-
-.scr-meal-macro-label {
-  margin: 0;
-  font-size: 0.625rem;
-  text-transform: lowercase;
-  color: var(--sol-text-muted);
-  white-space: nowrap;
-}
-
-.scr-meal-macro-value {
-  margin: 0;
-  font-family: var(--sol-font-data);
-  font-size: 0.9375rem;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-
-/* AA-safe darkened text variants (--fd-ch-*-text), not the raw --fd-ch-*
-   hues — those fail 4.5:1 against panel/bg as plain text (wave-1 design
-   review: protein fill alone measured 2.33:1). The vivid --fd-ch-* fills
-   stay reserved for non-text uses (segment/gauge chips). */
-.scr-meal-macro[data-channel="protein"] .scr-meal-macro-value {
-  color: var(--fd-ch-protein-text);
-}
-.scr-meal-macro[data-channel="fat"] .scr-meal-macro-value {
-  color: var(--fd-ch-fat-text);
-}
-.scr-meal-macro[data-channel="carb"] .scr-meal-macro-value {
-  color: var(--fd-ch-carb-text);
-}
-.scr-meal-macro[data-channel="fibre"] .scr-meal-macro-value {
-  color: var(--fd-ch-fibre-text);
-}
-
-.scr-meal-ing-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.scr-meal-ing-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  column-gap: 0.5rem;
-  row-gap: 0.15rem;
-  padding: 0.5rem 0;
-  border-top: 1px solid var(--sol-border);
-}
-
-.scr-meal-ing-row:first-child {
-  border-top: none;
-}
-
-.scr-meal-ing-name {
-  flex: 1 1 8rem;
-  min-width: 0;
-}
-
-.scr-meal-ing-g {
-  font-family: var(--sol-font-data);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-.scr-meal-ing-hint {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.2rem;
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-  white-space: nowrap;
-}
-
-.scr-meal-ing-row .mk-stock {
-  flex-basis: 100%;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-size: var(--sol-text-label);
-}
-
-.mk-stock-glyph {
-  font-size: 0.9rem;
-  line-height: 1;
-  color: var(--sol-text-muted);
-}
-
-.mk-stock[data-instock] .mk-stock-glyph,
-.mk-stock[data-instock] .mk-stock-text {
-  color: var(--sol-success);
-}
-
-.mk-stock-text {
-  color: var(--sol-text-muted);
-}
-
-.mk-stock--pantry .mk-stock-glyph,
-.mk-stock--pantry .mk-stock-text {
-  color: var(--sol-text-muted);
-}
-
-/* ---------------------------------------------------------------------- */
-/* Batch card                                                              */
-/* ---------------------------------------------------------------------- */
-
-.scr-meal-batch {
-  padding: 1rem;
-  background: var(--sol-panel);
-  border: 1px solid var(--sol-border);
-}
-
-.scr-meal-section-title {
-  margin: 0 0 0.5rem;
-  font-size: 0.9375rem;
-  text-transform: lowercase;
-}
-
-.scr-meal-batch-take {
-  margin: 0 0 0.35rem;
-}
-
-.scr-meal-batch-total {
-  font-family: var(--sol-font-data);
-  font-variant-numeric: tabular-nums;
-}
-
-.scr-meal-batch-split {
-  color: var(--sol-text-muted);
-  font-family: var(--sol-font-data);
-  font-size: var(--sol-text-label);
-}
-
-.scr-meal-batch-source {
-  margin: 0;
-  color: var(--sol-text-muted);
-  font-size: var(--sol-text-label);
-}
-
-.scr-meal-batch-list {
-  margin: 0;
-  padding-left: 1.1rem;
-  color: var(--sol-text-muted);
-  font-size: var(--sol-text-label);
-}
-
-.scr-meal-batch-qty {
-  font-family: var(--sol-font-data);
-}
-
-/* ---------------------------------------------------------------------- */
-/* Method preview                                                          */
-/* ---------------------------------------------------------------------- */
-
-.scr-meal-method {
-  padding: 1rem;
-  background: var(--sol-panel);
-  border: 1px solid var(--sol-border);
-}
-
-.scr-meal-method-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.35rem;
-}
-
-.scr-meal-method-head .scr-meal-section-title {
-  margin: 0;
-  flex: 1 1 auto;
-}
-
-.scr-meal-rev {
-  font-family: var(--sol-font-data);
-  font-size: 0.625rem;
-  color: var(--sol-text-muted);
-}
-
-.scr-meal-unapproved {
-  font-size: 0.6875rem;
-  color: var(--sol-warning);
-  border: 1px solid var(--sol-warning);
-  padding: 0.05rem 0.4rem;
-}
-
-.scr-meal-method-note {
-  margin: 0 0 0.75rem;
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-}
-
-.scr-meal-steps {
-  list-style: none;
-  margin: 0 0 1rem;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.625rem;
-}
-
-.scr-meal-step {
-  display: flex;
-  gap: 0.625rem;
-}
-
-.scr-meal-step-n {
-  flex: 0 0 auto;
-  width: 1.5rem;
-  height: 1.5rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--sol-font-data);
-  font-size: 0.75rem;
-  border: 1px solid var(--sol-border);
-  color: var(--sol-text-muted);
-}
-
-.scr-meal-step-body {
-  flex: 1 1 auto;
-  min-width: 0;
-}
-
-.scr-meal-step-text {
-  margin: 0 0 0.25rem;
-}
-
-.scr-meal-step-meta {
-  margin: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
-}
-
-.scr-meal-step-tag {
-  font-family: var(--sol-font-data);
-  font-size: 0.625rem;
-  text-transform: lowercase;
-  color: var(--sol-text-muted);
-  border: 1px solid var(--sol-border);
-  padding: 0.05rem 0.35rem;
-}
-
-.scr-meal-why {
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--sol-border);
-}
-
-.scr-meal-why-title {
-  margin: 0 0 0.25rem;
-  font-size: 0.8125rem;
-  text-transform: lowercase;
-  color: var(--sol-text-muted);
-}
-
-.scr-meal-why p {
-  margin: 0;
-}
-
-.scr-meal-cook-link {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 1rem;
-}
-
-/* ---------------------------------------------------------------------- */
-/* Error state (unknown meal id)                                           */
-/* ---------------------------------------------------------------------- */
-
-.scr-meal--error {
-  align-items: center;
-  text-align: center;
-  gap: 0.75rem;
-  padding: 2.5rem 1.5rem;
-  background: var(--sol-panel);
-  border: 1px solid var(--sol-border);
-  max-width: 28rem;
-  margin: 2rem auto;
-}
-
-/* The ArbiterSlot convention (always rendered, idle-capable) means this
-   branch carries one too — `align-items: center` above would otherwise
-   shrink it to its content width like a stray pill; stretch it back to the
-   card's full width so it reads as the same banner as everywhere else. */
-.scr-meal--error .fd5-arbiter {
-  align-self: stretch;
-}
-
-.scr-meal-error-kicker {
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: 700;
-  text-transform: lowercase;
-}
-
-.scr-meal-error-id {
-  margin: 0;
-  font-family: var(--sol-font-data);
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-}
-
-.scr-meal-back {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding-inline: 1rem;
-  text-decoration: none;
-}
-
-/* ---------------------------------------------------------------------- */
-/* Mobile: single cover column + paddle toggle (PLAN §6.5)                 */
-/* ---------------------------------------------------------------------- */
-
-@media (max-width: 700px) {
-  .scr-meal-cover-toggle {
+/*
+  THE TRAY'S WIDTH IS A REGISTERED PROPERTY, AND THAT IS A REPAIR.
+
+  MEASURED on this build: Trophy Mode widens the tray from clamp(20rem, 42vw,
+  34rem) to clamp(20rem, 62vw, 46rem), and a `transition: inline-size` between
+  two clamp() expressions NEVER LANDS — Chrome retained the used 336px value
+  indefinitely while the cascade correctly reported the wider rule. (TODAY hit
+  the identical failure on its hero dial's diameter; the repair is the same.)
+
+  Registering the driver as a <length> makes each clamp() compute to ONE length
+  at computed-value time, which the engine can interpolate. The transition then
+  rides the custom property, and the ground's own gutter — which is derived from
+  the same value — travels with it rather than snapping a frame later.
+
+  @property has to sit OUTSIDE @layer: it is an at-rule, not a style rule.
+*/
+@property --mea-tray-w {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+@layer cd.screen {
+  /* ===================================================================== */
+  /* 1 · THE GROUND — gunmetal, cut, under one sun                         */
+  /* ===================================================================== */
+  /*
+    CORRECTIONARY 5.4: "The ground is a material ... A flat hex-color page
+    background is the enemy's ground."
+
+    Three layers, and each is ch.16's own: the back-etch microtexture (II.2.21,
+    "repeating parallel facet lines at 22 degrees" — run at full strength, since
+    CORRECTIONARY 3.3 revoked the 2% cap and the only test is whether it reads
+    as the material it claims to be), a broad facet catch across the upper
+    third, and the lit plate beneath both.
+  */
+  .mea {
+    --mea-chamfer: 0.25rem; /* half the module — the Transport Key's own cut */
+    --mea-chamfer-card: 0.75rem; /* three half-steps — the Jewel Card's corner */
+    --mea-cut: polygon(
+      var(--mea-chamfer) 0,
+      calc(100% - var(--mea-chamfer)) 0,
+      100% var(--mea-chamfer),
+      100% calc(100% - var(--mea-chamfer)),
+      calc(100% - var(--mea-chamfer)) 100%,
+      var(--mea-chamfer) 100%,
+      0 calc(100% - var(--mea-chamfer)),
+      0 var(--mea-chamfer)
+    );
+    --mea-cut-card: polygon(
+      var(--mea-chamfer-card) 0,
+      calc(100% - var(--mea-chamfer-card)) 0,
+      100% var(--mea-chamfer-card),
+      100% calc(100% - var(--mea-chamfer-card)),
+      calc(100% - var(--mea-chamfer-card)) 100%,
+      var(--mea-chamfer-card) 100%,
+      0 calc(100% - var(--mea-chamfer-card)),
+      0 var(--mea-chamfer-card)
+    );
+    --mea-mirror-low: #9fa4a7; /* this world's darkened hard-mirror low stop */
+    --mea-seat-ms: 110ms; /* II.3.6's own snap, inside the 80-160ms band */
+    --mea-collar: 5.25rem;
+    --mea-cap: 4.5rem;
+    --mea-ring: 7rem;
+    --mea-lux: 1;
+    --mea-trophy-age: 1.21875rem; /* 1.5 x the 0.8125rem label floor */
+    /*
+      THE TRAY'S WIDTH, and the gutter it reserves, from ONE value so the two
+      can never disagree. MEASURED at 800x800: a flat 34rem tray took 68% of the
+      viewport and squeezed the shelf to 216px, which is narrower than one jewel
+      card. The foundry's own cap is min(26rem, 100vw - 3rem); this is the same
+      idea sized for a Detail stage that carries a hero wheel and a hero meter.
+    */
+    --mea-tray-w: clamp(20rem, 42vw, 34rem);
+    transition: --mea-tray-w 420ms var(--cd-ease-settle);
+
+    /* the back-etch: parallel facet lines at 22deg (ch.16 §2) */
+    --mea-etch: repeating-linear-gradient(
+      22deg,
+      #ffffff00 0px,
+      #ffffff12 1px,
+      #00000012 2px,
+      #ffffff00 5px
+    );
+
+    /*
+      THE SCOPE ROOT PAINTS NOTHING AND CLIPS NOTHING, and that is structural
+      rather than tidy. MEASURED on the first render: `clip-path` establishes a
+      containing block for fixed-position descendants, so the Tray nested inside
+      a chamfered scene root stopped being viewport-fixed — it laid out against
+      the 899px scene instead of the 987px viewport and ran 248px past the fold,
+      clipped by the scene's own corner cut. The ground below carries the
+      material and the chamfer; the tray is its sibling.
+    */
+    position: relative;
+    display: block;
+    color: var(--cd-ink);
+    font-family: var(--cd-font-ui);
+  }
+
+  .mea-ground {
+    display: flex;
+    flex-direction: column;
+    /*
+      THE GROUND IS EXACTLY THE FOLD, not a minimum.
+
+      It must REACH the fold or the legacy workspace's cream field shows beneath
+      this world's gunmetal on the same screen. It must not EXCEED it either:
+      MEASURED at 390x844, a min-height ground grew to 865px when the shelf's
+      own content ran past its box, the page gained 109px of scroll, and the
+      day's dinner and snack cards ended up permanently behind the tray. A tray
+      may float over the workspace; nothing may be parked under it out of reach.
+      Fixed height, min-block-size:0 down the chain, and the shelf takes an
+      internal scroll if a day's plates ever need one.
+    */
+    block-size: calc(100dvh - 2rem);
+    /*
+      THE TRAY'S GUTTER. MEASURED at 1280x800: with the ground laid out full
+      width, the tray covered the shelf's whole right column and two of the
+      day's four plates were unreachable behind it. A tray is allowed to float
+      over the workspace; it is not allowed to take half of it away, and
+      II.3.30's "the workspace beneath stays live and TOUCHABLE" is the clause
+      that decides it. The ground's MATERIAL still runs full width beneath the
+      tray, so the tray casts its ambient onto this world's own gunmetal — only
+      the CONTENT is held clear.
+    */
+    padding: calc(var(--cd-module) * 1.5);
+    padding-inline-end: calc(var(--mea-tray-w) + var(--cd-module) * 2);
+    background-color: var(--cd-field);
+    background-image:
+      var(--mea-etch),
+      /* one broad facet catch across the upper third — a cut plane turned
+         toward the 138deg sun, hard-edged rather than a soft sweep */
+      linear-gradient(
+        var(--cd-light-axis),
+        #ffffff1a 0%,
+        #ffffff08 31%,
+        #00000000 32%,
+        #00000000 100%
+      ),
+      linear-gradient(var(--cd-light-axis), #4a4d54 0%, var(--cd-field) 58%, #2f3238 100%);
+    box-shadow:
+      inset 0 1px 0 #ffffff26, /* rim light — the machined top edge catching the sun */
+      inset 0 -1px 0 #00000052, /* lip — the lower edge turning away */
+      0 1px 0 #00000066, /* contact — the faceplate bolted to the chassis */
+      0 24px 56px #00000029; /* ambient — the deepest throw on the panel */
+    clip-path: var(--mea-cut-card);
+  }
+
+  /*
+    THE FRAME. Two properties and two only: `opacity` carries the luminance
+    tier at screencraft/01's 4000ms linear, and `translate` carries the burn-in
+    orbit, moving the whole composition AS ONE RIGID FRAME so nothing can drift
+    against anything else.
+  */
+  /* the error branch mounts no tray, so it reserves no gutter for one */
+  .mea[data-mea-notray="true"] .mea-ground {
+    padding-inline-end: calc(var(--cd-module) * 1.5);
+  }
+
+  .mea-frame {
+    flex: 1;
+    min-block-size: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--cd-module);
+    opacity: var(--mea-lux);
+    translate: var(--mea-orbit-x, 0px) var(--mea-orbit-y, 0px);
+    transition:
+      opacity 4000ms linear,
+      translate 4000ms linear;
+  }
+
+  .mea[data-mea-trophy="true"] {
+    --mea-lux: 0.55; /* Ambient — screencraft/01's second tier */
+  }
+
+  /* screencraft/01's Night tier, 0.20. DECLARED AND NEVER ENTERED: there is no
+     ambient light sensor in this environment and guessing darkness from the
+     clock would be invented data. See useTrophy.ts. */
+  .mea[data-mea-power="night"] {
+    --mea-lux: 0.2;
+  }
+
+  /* Trophy withdrawal. "What enlarges is the answer; what quiets is the reach."
+     Controls leave rather than shrink, and come back on the 240ms any input
+     buys — the exit is faster than the 420ms enter, deliberately. */
+  .mea [data-mea-hidden="true"] {
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 240ms var(--cd-ease-settle),
+      visibility 0s linear 240ms;
+    pointer-events: none;
+  }
+
+  /* ===================================================================== */
+  /* 2 · THE TRAY — travels its own size, over a live workspace            */
+  /* ===================================================================== */
+  /*
+    II.3.30 and the owner ruling together: no scrim, no focus trap, an explicit
+    exit that names the room it returns to, the rail reachable throughout.
+
+    The foundry's own width cap is min(26rem, 100vw - 3rem). This tray carries a
+    hero wheel, a hero meter, a register and a spec sheet, so it takes the
+    Detail archetype's wider stage — and the strip of live workspace it must
+    never cover grows with it, to 6rem.
+  */
+  .mea-tray[data-cd-edge="inline-end"] {
+    inline-size: var(--mea-tray-w);
+  }
+
+  .mea-tray[data-cd-edge="block-end"] {
+    /* the rail moves to block-end below 48rem, so the tray stops short of it */
+    --cd-tray-offset: 0px;
+    inset-block-end: var(--fd5-rail-footprint, 3.5rem);
+    /*
+      MEASURED at 390x844: a 30rem tray left the ground 260px of content box
+      while the shelf's own two rows plus its head wanted 304px, so the ground
+      grew past the fold and the day's dinner and snack cards sat UNDER the
+      tray, unreachable. 26rem is the height at which both rows clear it.
+    */
+    block-size: min(26rem, calc(62dvh - var(--fd5-rail-footprint, 3.5rem)));
+    transform: translateY(calc(100% + var(--fd5-rail-footprint, 3.5rem)));
+    inline-size: auto;
+  }
+
+  .mea-tray[data-cd-edge="block-end"][data-cd-open="true"] {
+    transform: none;
+  }
+
+  .mea-tray .cd-tray-head {
+    /* the head is a WELL cut into the tray's own faceplate, which is also what
+       seats the exit key's focus ring on 4.04:1 rather than 3.00:1 */
+    background: var(--cd-well);
+    align-items: flex-start;
+    flex-wrap: wrap;
+    row-gap: calc(var(--cd-module) / 2);
+    padding: var(--cd-module) calc(var(--cd-module) * 1.25);
+  }
+
+  .mea-tray .cd-tray-title {
+    flex: 1 1 12rem;
+    min-inline-size: 0;
+    font-size: var(--cd-size-4);
+    line-height: 1.15;
+    letter-spacing: var(--cd-track-body);
+    text-transform: none;
+    color: var(--cd-ink);
+  }
+
+  .mea-tray-slot {
+    flex: 0 0 auto;
+  }
+
+  .mea-tray .cd-tray-exit {
+    flex: 0 0 auto;
+    clip-path: none; /* the ring is Floor and outranks the corner geometry */
+  }
+
+  .mea-tray .cd-tray-body {
+    /*
+      THE TRAY IS ITS OWN CONTEXT, not the viewport's.
+
+      MEASURED at 800x900: the tray resolves to 336px there, and the wheelset's
+      two-column layout put a 4.25rem hero figure beside a 7rem ring inside it —
+      "0.70 — 1.30" and the figure's last digit were both cut off at the tray's
+      edge, and a clipped value is a lie however good the material is. A media
+      query cannot see this, because the tray's width is a fraction of the
+      viewport rather than the viewport itself. A container query can.
+    */
+    container-type: inline-size;
+    container-name: mea-tray;
+    gap: calc(var(--cd-module) * 1.25);
+    padding: calc(var(--cd-module) * 1.25);
+    background-color: var(--cd-field);
+    background-image: var(--mea-etch);
+  }
+
+  .mea-tray-fold {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--cd-module) * 1.25);
+  }
+
+  /* ===================================================================== */
+  /* 3 · THE WHEEL SET — the Signature                                     */
+  /* ===================================================================== */
+
+  /*
+    ch.16's Hero Screen splits 56/44, "art above, command below". That is also
+    the layout that survives a narrow tray, so it is the DEFAULT here and the
+    side-by-side arrangement is what the container query buys when there is room
+    for it — never the other way round.
+  */
+  .mea-wheelset[data-cd-encl] {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "head"
+      "mount"
+      "word"
+      "readout"
+      "seats";
+    justify-items: center;
+    align-items: center;
+    gap: calc(var(--cd-module) / 2) var(--cd-module);
+    padding: var(--cd-module);
+    clip-path: var(--mea-cut-card);
+  }
+
+  .mea-wheelset-head,
+  .mea-wheel-readout,
+  .mea-wheel-seats {
+    justify-self: stretch;
+  }
+
+  @container mea-tray (min-width: 27rem) {
+    .mea-row {
+      grid-template-areas:
+        "name grams unit"
+        "stock hint hint";
+    }
+
+    .mea-wheel-readout {
+      align-items: flex-start;
+    }
+
+    .mea-wheelset[data-cd-encl] {
+      grid-template-columns: auto minmax(0, 1fr);
+      grid-template-areas:
+        "head head"
+        "mount readout"
+        "word  readout"
+        "seats seats";
+      justify-items: start;
+    }
+
+    .mea-wheel-mount {
+      justify-self: center;
+    }
+  }
+
+  .mea-wheelset-head {
+    grid-area: head;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cd-module);
+  }
+
+  .mea-wheelset-range {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .mea-wheel-mount {
+    grid-area: mount;
+    position: relative;
+    inline-size: var(--mea-ring);
+    block-size: var(--mea-ring);
+    display: grid;
+    place-items: center;
+    justify-self: center;
+  }
+
+  /* --------------------------------------------------------------------- */
+  /* 3a · THE COVER RING — the one licensed emissive, on a categorical fact */
+  /* --------------------------------------------------------------------- */
+  /*
+    II.2.17's emissive grammar and II.3.24's lamp, laid as ONE conic track so
+    the 336/24 geometry cannot drift between the two lamps, then cut to an
+    annulus with a radial mask. The lens rims sit on top at each lamp's own hot
+    value: four of the five format cores in this world measure under the 3:1
+    graphical floor against the well they mount in, and the rim is what carries
+    the pair. The ring also prints its word, so colour never travels alone.
+  */
+  .mea-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    display: block;
+    pointer-events: none;
+  }
+
+  /* the annulus mask: a 0.5rem track, the ring's own body */
+  .mea-ring-track,
+  .mea-ring-flame {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    mask: radial-gradient(
+      closest-side,
+      #00000000 calc(100% - 0.5rem),
+      #000000ff calc(100% - 0.5rem + 1px)
+    );
+  }
+
+  /* BOTH arcs at their committed dim prints — this layer never blooms, because
+     an unlit lamp that glowed would be reporting something it does not know */
+  .mea-ring-track {
+    background-image: var(--mea-ring-dim);
+  }
+
+  /* ONLY the lit arc, and the three bloom shells at r / 4r / 12r with alpha
+     80% / 40% / 16%, hue held constant across all three (II.2.17). The layer is
+     separate precisely so the bloom cannot leak onto the dim lamp. */
+  .mea-ring-flame {
+    background-image: var(--mea-ring-lit);
+    filter:
+      drop-shadow(0 0 var(--cd-bloom-r) color-mix(in srgb, var(--mea-ring-hue) 80%, transparent))
+      drop-shadow(0 0 var(--cd-bloom-4r) color-mix(in srgb, var(--mea-ring-hue) 40%, transparent))
+      drop-shadow(0 0 var(--cd-bloom-12r) color-mix(in srgb, var(--mea-ring-hue) 16%, transparent));
+    transition:
+      background-image var(--cd-settle-light) var(--cd-ease-settle),
+      filter var(--cd-settle-light) var(--cd-ease-settle);
+  }
+
+  /* the lens rims, 1px each at the lamps' OWN hot values and present in BOTH
+     states — measured 6.57:1 (her) and 5.89:1 (him) against the well, which is
+     what carries the pair when the cores measure 4.09 and 3.42 */
+  .mea-ring-rim {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background-image: var(--mea-ring-rims);
+    mask: radial-gradient(closest-side, #00000000 calc(100% - 1px), #000000ff calc(100% - 1px));
+  }
+
+  /*
+    The ring's own well and outer cut, laid OVER the arcs rather than under
+    them — a pseudo-element declared as ::before paints beneath its element's
+    children, so the cut and the well shading were both hidden behind the two
+    conic layers. As ::after they read as the glass the lamps sit behind, which
+    is what II.2.17's "off: a dark well behind glass" describes.
+  */
+  .mea-ring::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    box-shadow:
+      inset 0 0 0 1px #00000080, /* the ring's outer cut */
+      inset 0 0 0 0.5rem #00000026; /* the well the track sits in */
+  }
+
+  .mea-ring-word {
+    grid-area: word;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: calc(var(--cd-module) / 2);
+    margin: 0;
+    font-size: var(--cd-size-1);
+    letter-spacing: var(--cd-track-label);
+  }
+
+  .mea-ring-word-value {
+    color: var(--cd-ink);
+    font-weight: 500;
+  }
+
+  /* --------------------------------------------------------------------- */
+  /* 3b · THE COLLAR — 0.375rem of recess, and the reason the guard holds   */
+  /* --------------------------------------------------------------------- */
+  /*
+    ch.16 §9, "guard erosion": "The wheel's recessed collar fills in, leaving it
+    flush like an ordinary control. Earliest sign: the wheel sitting LEVEL with
+    the panel instead of inside its well. Repair: restore the 0.375rem recess
+    and the Weighted spring together."
+  */
+  .mea-collar {
+    inline-size: var(--mea-collar);
+    block-size: var(--mea-collar);
+    border-radius: 50%;
+    background: var(--cd-well);
+    box-shadow:
+      inset 0 2px 6px #00000080, /* the 0.375rem recess itself */
+      inset 0 -1px 0 #ffffff1a; /* the lit lip where the cut edge catches */
+    display: grid;
+    place-items: center;
+  }
+
+  .mea-wheel {
+    --cd-stack:
+      inset 0 -1px 0 #00000066, /* lip */
+      0 1px 0 #00000066, /* contact — glues the wheel to its collar */
+      0 3px 8px #00000040, /* core — the wheel's own mass */
+      0 10px 24px #00000030; /* ambient — the one control eligible for tier 3 */
+    position: relative;
+    inline-size: var(--mea-cap);
+    block-size: var(--mea-cap);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    box-shadow: var(--cd-stack);
+    cursor: ns-resize;
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mea-wheel[aria-disabled="true"] {
+    cursor: default;
+    filter: grayscale(0.6);
+  }
+
+  /* THE CARRIER. No transform of its own, ever — the facet ring, the index and
+     the porthole disc are SIBLINGS beneath it, each reading the one commit
+     angle independently. src/cd/physics/rotation.ts asserts this in DEV. */
+  .mea-wheel-carrier {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+  }
+
+  /*
+    THE FACET RING — the Signature. Sixteen planes at a 22.5deg pitch, which is
+    the detent pitch itself, so exactly ONE PLANE passes the fixed catch per
+    committed seat. Written out rather than generated, because the chapter's own
+    conic is written out and a loop would hide the arithmetic.
+
+    Each plane: 20.5deg of mirror, then a 2deg seam. Adjacent planes alternate
+    between this world's two hard-mirror stops (#C7CBCD facing the sun,
+    #9FA4A7 turned away), which is what a cut solid actually does under one
+    light and what the flat conic in ch.16 §3 approximates with eight.
+  */
+  .mea-wheel-facets {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    transform: rotate(var(--cd-assembly-angle, 0deg));
+    transition: transform var(--mea-seat-ms) var(--cd-ease-snap);
+    background: conic-gradient(
+      #c7cbcd 0deg 20.5deg, #3e4148 20.5deg 22.5deg,
+      #9fa4a7 22.5deg 43deg, #3e4148 43deg 45deg,
+      #c7cbcd 45deg 65.5deg, #3e4148 65.5deg 67.5deg,
+      #9fa4a7 67.5deg 88deg, #3e4148 88deg 90deg,
+      #c7cbcd 90deg 110.5deg, #3e4148 110.5deg 112.5deg,
+      #9fa4a7 112.5deg 133deg, #3e4148 133deg 135deg,
+      #c7cbcd 135deg 155.5deg, #3e4148 155.5deg 157.5deg,
+      #9fa4a7 157.5deg 178deg, #3e4148 178deg 180deg,
+      #c7cbcd 180deg 200.5deg, #3e4148 200.5deg 202.5deg,
+      #9fa4a7 202.5deg 223deg, #3e4148 223deg 225deg,
+      #c7cbcd 225deg 245.5deg, #3e4148 245.5deg 247.5deg,
+      #9fa4a7 247.5deg 268deg, #3e4148 268deg 270deg,
+      #c7cbcd 270deg 290.5deg, #3e4148 290.5deg 292.5deg,
+      #9fa4a7 292.5deg 313deg, #3e4148 313deg 315deg,
+      #c7cbcd 315deg 335.5deg, #3e4148 335.5deg 337.5deg,
+      #9fa4a7 337.5deg 358deg, #3e4148 358deg 360deg
+    );
+  }
+
+  /* the engraved index, cut into the cap and turning with it (II.2.4: texture
+     rotates, light holds) */
+  /*
+    The index rotates as a FULL-SIZE layer about its own centre, with the
+    visible bar drawn by a ::before at the top. Written this way for one
+    measured reason: a bar positioned near the rim and rotated about a computed
+    origin has to recompute that origin whenever the cap resizes, and the cap
+    resizes in Trophy Mode and again at phone width. A layer that is always the
+    cap's own size has an origin of 50% 50% at every diameter.
+  */
+  .mea-wheel-index {
+    position: absolute;
+    inset: 0;
+    transform: rotate(var(--cd-assembly-angle, 0deg));
+    transition: transform var(--mea-seat-ms) var(--cd-ease-snap);
+  }
+
+  .mea-wheel-index::before {
+    content: "";
+    position: absolute;
+    inset-block-start: 6%;
+    inset-inline-start: calc(50% - 1.5px);
+    inline-size: 3px;
+    block-size: 30%;
+    border-radius: 1.5px;
+    background: var(--cd-black-edition);
+    box-shadow: 0 1px 0 #ffffff59; /* the cut's thrown edge, catching the sun */
+  }
+
+  /*
+    THE CATCH — the hard-mirror specular, FIXED to the world's own sun. It is
+    deliberately NOT inside the carrier: II.2.4's split ("texture rotates, the
+    specular lobe, rim-light and all shadows stay FIXED to the environment")
+    is, in the chapter's words, what "carries most of the illusion of a real
+    part". One hard 4deg wedge at the 138deg light axis, plus the rim it throws.
+  */
+  .mea-wheel-catch {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    background:
+      conic-gradient(
+        from 135deg,
+        var(--cd-mirror-hot) 0deg,
+        var(--cd-mirror-hot) 4deg,
+        #00000000 4deg,
+        #00000000 360deg
+      ),
+      radial-gradient(circle at 34% 28%, #ffffff40 0%, #ffffff00 52%);
+    box-shadow:
+      inset 0 1px 0 #ffffffa6, /* rim light — the hardest rim on the panel */
+      inset 0 -2px 3px #00000059; /* the cap's lower edge turning away */
+  }
+
+  /* --------------------------------------------------------------------- */
+  /* 3c · THE PORTHOLE — one tooth per committed seat                       */
+  /* --------------------------------------------------------------------- */
+  /*
+    CD-BRIEF ruling 6: a mechanism attaches only to a value whose change is
+    user-caused or clock-continuous. The portion is turned by hand, so the disc
+    is honest. It is geared 2:1 — 45deg of disc per 22.5deg of wheel — so one
+    tooth passes the aperture per seat and the steps a portion has taken can be
+    COUNTED off the mechanism rather than inferred from the figure.
+
+    Its cumulative turn lives in `dataset` (see PortionWheel.tsx): geared 2:1 it
+    crosses the computed matrix's +/-180deg wrap after four seats, and reading
+    the angle back off getComputedStyle would silently lose every revolution.
+  */
+  .mea-porthole {
+    position: absolute;
+    inline-size: 1.125rem;
+    block-size: 1.125rem;
+    border-radius: 50%;
+    overflow: hidden;
+    inset-block-end: 12%;
+    background: var(--cd-black-edition);
+    box-shadow:
+      inset 0 1px 2px #000000a6, /* the aperture is CUT, so its shadow enters high */
+      inset 0 -1px 0 #ffffff1f, /* the lit lower lip of the cut */
+      0 0 0 1px #00000073;
+  }
+
+  .mea-porthole-disc {
+    position: absolute;
+    inset: -25%;
+    border-radius: 50%;
+    transform: rotate(var(--cd-turn-angle, 0deg));
+    transition: transform var(--mea-seat-ms) var(--cd-ease-snap);
+    /* eight teeth at a 45deg pitch — one passes the aperture per detent */
+    background: repeating-conic-gradient(
+      var(--mea-mirror-low) 0deg 22.5deg,
+      #2b2d31 22.5deg 45deg
+    );
+  }
+
+  .mea-porthole-glass {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    background: linear-gradient(var(--cd-light-axis), #ffffff2e 0%, #ffffff00 46%);
+  }
+
+  /* --------------------------------------------------------------------- */
+  /* 3d · THE PRINTED SEAT SCALE AND THE HERO FIGURE                        */
+  /* --------------------------------------------------------------------- */
+
+  .mea-wheel-seats {
+    grid-area: seats;
+    display: flex;
+    justify-content: space-between;
+    gap: calc(var(--cd-module) / 2);
+    margin: 0;
+    padding: calc(var(--cd-module) / 2) calc(var(--cd-module) / 2) 0;
+    list-style: none;
+    border-block-start: 1px solid #00000059;
+    box-shadow: 0 -1px 0 #ffffff14 inset; /* the engraved rule: dark over light */
+  }
+
+  .mea-wheel-seat {
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+    letter-spacing: var(--cd-track-body);
+  }
+
+  .mea-wheel-seat[data-mea-seated="true"] {
+    color: var(--cd-ink);
+    font-weight: 600;
+  }
+
+  .mea-wheel-readout {
+    grid-area: readout;
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--cd-module) / 4);
+    align-items: center;
+    padding: calc(var(--cd-module) / 2) var(--cd-module);
+    clip-path: var(--mea-cut);
+  }
+
+  .mea-wheel-figure-line {
+    display: flex;
+    align-items: baseline;
+    gap: 0.1em;
+    margin: 0;
+  }
+
+  .mea-wheel-times {
+    font-family: var(--cd-font-data);
+    font-size: var(--cd-size-5);
+    color: var(--cd-muted-ink);
+  }
+
+  /* II.6.20's reserved top step, spent HERE and nowhere else on this screen */
+  .mea-wheel-figure {
+    color: var(--cd-ink);
+    font-weight: 500;
+  }
+
+  /* MEASURED: at a 4px gap "seat 7 of 13" and "22.5° pitch" abutted and read
+     as "of 1322.5" — two figures fused into a third that means nothing. */
+  .mea-wheel-seat-line {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--cd-module);
+    margin: 0;
+    font-size: var(--cd-size-1);
+  }
+
+  .mea-wheel-pitch::before {
+    content: "· ";
+    color: var(--cd-muted-ink);
+  }
+
+  .mea-wheel-pitch {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* II.1.14 — the at-limit state. The value clamps DEAD: 0px of give, 0%
+     overshoot, and the stop holds 60ms before further input reads as travel
+     away from it. Nothing bounces, because nothing gave. */
+  .mea-wheel[data-mea-limit] .mea-wheel-catch {
+    box-shadow:
+      inset 0 1px 0 #ffffffa6,
+      inset 0 -2px 3px #00000059,
+      inset 0 0 0 2px var(--cd-role-danger-zone-dark);
+  }
+
+  /* ===================================================================== */
+  /* 4 · THE STOCK METER — II.3.19, a filled shape before it is a digit    */
+  /* ===================================================================== */
+
+  .mea-stock[data-cd-encl] {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--cd-module) / 2);
+    padding: var(--cd-module);
+    clip-path: var(--mea-cut-card);
+  }
+
+  .mea-stock-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cd-module);
+    flex-wrap: wrap;
+  }
+
+  .mea-stock-threshold {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /*
+    The bar. Zones live ON THE TRACK, printed, so their geometry never moves as
+    the level does; the unlit cover hides the unfilled region. The 100% mark is
+    a printed keyline, not a lamp (II.7.8 — zones are printed, lamps are lit).
+  */
+  .mea-stock-bar {
+    position: relative;
+    block-size: 1.25rem; /* II.3.19's own casting width, laid horizontally */
+    border-radius: calc(var(--cd-module) / 4);
+    background: var(--cd-well);
+    box-shadow: var(--cd-shadow-well);
+    overflow: hidden;
+  }
+
+  .mea-stock-track {
+    position: absolute;
+    inset: 0;
+    /*
+      The two printed zones. MEASURED at 26% the pale short band and the pale
+      part band were indistinguishable from each other on the well at 1:1, so
+      the geometry the meter is built on was invisible — a zone that cannot be
+      read is not a zone. Raised to 44%, where the two bands measure 1.71:1
+      against each other and the boundary at 60% is a visible edge. They are
+      still PRINTED (II.7.8: zones are printed, lamps are lit) — nothing here
+      generates light, and the state word carries the reading regardless.
+    */
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--cd-role-danger-zone-dark) 44%, transparent) 0%,
+      color-mix(in srgb, var(--cd-role-danger-zone-dark) 44%, transparent) 60%,
+      color-mix(in srgb, var(--cd-role-warning) 44%, transparent) 60%,
+      color-mix(in srgb, var(--cd-role-warning) 44%, transparent) 100%
+    );
+  }
+
+  /* the filled travel, painted at the ACTIVE zone's own full value */
+  .mea-stock-track::after {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: calc(var(--mea-fill, 0) * 100%);
+    background: var(--mea-zone-hue, var(--cd-role-warning));
+    transition:
+      inline-size var(--mea-seat-ms) var(--cd-ease-snap),
+      background var(--cd-settle-light) var(--cd-ease-settle);
+  }
+
+  .mea-stock-bar[data-mea-zone="short"] {
+    --mea-zone-hue: var(--cd-role-danger-zone-dark);
+  }
+  .mea-stock-bar[data-mea-zone="partial"] {
+    --mea-zone-hue: var(--cd-role-warning);
+  }
+  .mea-stock-bar[data-mea-zone="covered"] {
+    --mea-zone-hue: var(--cd-role-success);
+  }
+
+  /* the unlit cover: 20 segment gaps cut through everything beneath, so the
+     bar reads as a bar of real segments rather than a progress fill */
+  .mea-stock-cover {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(20, 1fr);
+    gap: 0.125rem; /* II.3.19's own gap */
+    pointer-events: none;
+  }
+
+  .mea-stock-seg {
+    background: transparent;
+    box-shadow:
+      -0.125rem 0 0 var(--cd-well),
+      inset 0 1px 0 #ffffff0f;
+  }
+
+  /* the 100% keyline — printed, at the mirror value, 6.26:1 on the field */
+  .mea-stock-full {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    inline-size: 2px;
+    background: var(--cd-mirror);
+  }
+
+  .mea-stock-readout {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    gap: calc(var(--cd-module) / 4) var(--cd-module);
+    padding: calc(var(--cd-module) / 2) var(--cd-module);
+    clip-path: var(--mea-cut);
+  }
+
+  .mea-stock-figure-line {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: baseline;
+    gap: calc(var(--cd-module) / 2);
+    margin: 0;
+  }
+
+  .mea-stock-figure {
+    font-family: var(--cd-font-data);
+    font-size: var(--cd-size-6);
+    line-height: var(--cd-leading-tight);
+    color: var(--cd-ink);
+  }
+
+  .mea-stock-unit {
+    font-size: var(--cd-size-4);
+  }
+
+  .mea-stock-word {
+    margin-inline-start: auto;
+    font-family: var(--cd-font-ui);
+    font-size: var(--cd-size-1);
+    font-weight: 600;
+    letter-spacing: var(--cd-track-label);
+    padding: calc(var(--cd-module) / 4) calc(var(--cd-module) / 2);
+    clip-path: var(--mea-cut);
+    background: var(--cd-black-edition);
+  }
+
+  .mea-stock-word[data-mea-zone="short"] {
+    color: var(--cd-role-danger-ink-dark);
+  }
+  .mea-stock-word[data-mea-zone="partial"] {
+    color: var(--cd-role-warning-ink-dark);
+  }
+  .mea-stock-word[data-mea-zone="covered"] {
+    color: var(--cd-role-success-ink-dark);
+  }
+
+  .mea-stock-count,
+  .mea-stock-age {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: calc(var(--cd-module) / 2);
+    margin: 0;
+    font-size: var(--cd-size-1);
+  }
+
+  /* the age line is NEVER dimmed: when a reading is stale, its age is the most
+     load-bearing thing on the instrument */
+  .mea-stock-age[data-mea-stale="true"] .mea-stock-stale-word {
+    color: var(--cd-role-warning-ink-dark);
+    font-weight: 600;
+  }
+
+  /* the recovery action's slot exists whether or not the action is offered, so
+     the control never moves under a hand reaching for it */
+  .mea-stock-action {
+    grid-column: 1 / -1;
+    display: flex;
+    min-block-size: var(--cd-target-min);
+    align-items: center;
+  }
+
+  .mea-stock-key {
+    clip-path: none; /* the focus ring is Floor; it outranks the corner cut */
+  }
+
+  /* ===================================================================== */
+  /* 5 · THE PLATE REGISTER, AND THE DRUM OVER IT                          */
+  /* ===================================================================== */
+
+  .mea-plate[data-cd-encl] {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--cd-module) / 2);
+    padding: var(--cd-module);
+    clip-path: var(--mea-cut-card);
+  }
+
+  .mea-plate-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cd-module);
+  }
+
+  .mea-plate-weight {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.15em;
+  }
+
+  /* --- the drum ------------------------------------------------------- */
+  /*
+    CORRECTIONARY 5.3's own named instrument. Four wheels, because the widest
+    real plate in the dataset (a-d3d, him, 878g) is 1141g at the wheel's upper
+    stop. The strip translates by whole digit heights on the seat's own timing,
+    so the number ARRIVES rather than being replaced — and it moves only when
+    the hand moves the value.
+  */
+  .mea-drum {
+    display: inline-flex;
+    gap: 1px;
+    padding: 2px 3px;
+    background: var(--cd-black-edition);
+    box-shadow:
+      inset 0 1px 3px #000000a6, /* the drum sits IN the plate: shadow enters high */
+      inset 0 -1px 0 #ffffff14;
+    clip-path: var(--mea-cut);
+  }
+
+  .mea-drum-wheel {
+    position: relative;
+    display: block;
+    inline-size: 0.72em;
+    block-size: 1.25em;
+    overflow: hidden;
+    font-family: var(--cd-font-data);
+    font-size: var(--cd-size-4);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    background: linear-gradient(
+      180deg,
+      #00000073 0%,
+      #00000000 26%,
+      #00000000 74%,
+      #00000073 100%
+    );
+  }
+
+  .mea-drum-strip {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: 0;
+    display: block;
+    transform: translateY(calc(var(--mea-digit, 0) * -1.25em));
+    transition: transform var(--mea-seat-ms) var(--cd-ease-snap);
+  }
+
+  .mea-drum-digit {
+    display: block;
+    block-size: 1.25em;
+    line-height: 1.25em;
+    text-align: center;
+    color: var(--cd-ink);
+  }
+
+  .mea-plate-unit {
+    font-size: var(--cd-size-2);
+  }
+
+  /* --- the register lids ---------------------------------------------- */
+
+  .mea-register .cd-register-group {
+    background: var(--cd-well);
+    border-radius: 0;
+    clip-path: var(--mea-cut);
+  }
+
+  .mea-register .cd-register-head {
+    border-radius: 0;
+    text-transform: lowercase;
+    letter-spacing: var(--cd-track-body);
+    font-size: var(--cd-size-2);
+  }
+
+  .mea-register .cd-register-rows {
+    gap: 0;
+  }
+
+  /* --- one plate row --------------------------------------------------- */
+  /*
+    II.6.13's Standard band, 2.75rem, which is also the Floor's own 44px. Rows
+    keep ONE band; nothing here is promoted or demoted per row.
+    II.6.15 — numerals right, text left.
+  */
+  /*
+    MEASURED at a 336px tray: "about three-quarters" and the household hint
+    shared one 300px line and broke mid-word into the column beside them. The
+    second line is now the row's full width and the hint takes a third line
+    below it until the container is wide enough to seat both — a wrapped
+    ingredient name is survivable, two readings interleaved is not.
+  */
+  .mea-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-areas:
+      "name grams unit"
+      "stock stock stock"
+      "hint hint hint";
+    align-items: center;
+    column-gap: calc(var(--cd-module) / 2);
+    min-block-size: var(--cd-row-standard);
+    padding: calc(var(--cd-module) / 2) calc(var(--cd-module) / 2);
+    border-block-start: 1px solid #00000047;
+    box-shadow: inset 0 1px 0 #ffffff0a; /* the engraved rule, dark over light */
+  }
+
+  .mea-row-name {
+    grid-area: name;
+    min-inline-size: 0;
+    font-size: var(--cd-size-2);
+    color: var(--cd-ink);
+    /* the longest real ingredient name in the dataset is 72 characters
+       ("Suya spice (ground roasted peanut, ...)") — it wraps rather than
+       clipping, because a clipped ingredient name is a shopping error */
+    overflow-wrap: anywhere;
+  }
+
+  .mea-row-grams {
+    grid-area: grams;
+    font-size: var(--cd-size-2);
+    color: var(--cd-ink);
+  }
+
+  .mea-row-unit {
+    grid-area: unit;
+  }
+
+  .mea-row-hint {
+    grid-area: hint;
+    justify-self: end;
+    flex-wrap: wrap;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.25em;
+    min-block-size: 1em;
+    font-family: var(--cd-font-ui);
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+  }
+
+  /* the estimate mark: glyph + dotted underline + the words, never colour */
+  .mea-approx {
+    text-decoration: underline dotted from-font;
+    text-underline-offset: 2px;
+  }
+
+  .mea-row-stock {
+    grid-area: stock;
+    display: inline-flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: calc(var(--cd-module) / 2);
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+  }
+
+  .mea-row-glyph {
+    font-size: var(--cd-size-2);
+    color: var(--cd-role-success-ink-dark);
+  }
+
+  .mea-row[data-mea-out="true"] .mea-row-glyph {
+    color: var(--cd-role-danger-ink-dark);
+  }
+
+  .mea-row-stock[data-mea-level="pantry"] .mea-row-glyph {
+    color: var(--cd-muted-ink);
+  }
+
+  .mea-row-age[data-mea-stale="true"] {
+    color: var(--cd-role-warning-ink-dark);
+  }
+
+  /* --- a method step --------------------------------------------------- */
+
+  .mea-step {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: calc(var(--cd-module) / 2) var(--cd-module);
+    padding: calc(var(--cd-module) / 2);
+    border-block-start: 1px solid #00000047;
+    box-shadow: inset 0 1px 0 #ffffff0a;
+  }
+
+  .mea-step-n {
+    font-size: var(--cd-size-2);
+    color: var(--cd-muted-ink);
+  }
+
+  .mea-step-body {
+    min-inline-size: 0;
+  }
+
+  .mea-step-text {
+    margin: 0;
+    font-size: var(--cd-size-2);
+    line-height: 1.45;
+    color: var(--cd-ink);
+  }
+
+  .mea-step-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(var(--cd-module) / 2);
+    margin: calc(var(--cd-module) / 2) 0 0;
+  }
+
+  .mea-tag {
+    font-size: var(--cd-size-1);
+    padding: 1px calc(var(--cd-module) / 2);
+    background: var(--cd-black-edition);
+    clip-path: var(--mea-cut);
+  }
+
+  /* --- the batch draw -------------------------------------------------- */
+
+  .mea-batch-take,
+  .mea-batch-yield {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: calc(var(--cd-module) / 2);
+    padding: calc(var(--cd-module) / 2);
+    border-block-start: 1px solid #00000047;
+    box-shadow: inset 0 1px 0 #ffffff0a;
+  }
+
+  .mea-batch-line {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: calc(var(--cd-module) / 2);
+    margin: 0;
+    font-size: var(--cd-size-4);
+  }
+
+  .mea-batch-split,
+  .mea-batch-qty {
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+  }
+
+  .mea-batch-component {
+    font-size: var(--cd-size-2);
+  }
+
+  /* ===================================================================== */
+  /* 6 · THE SPEC PLATE — II.3.31's inspector                              */
+  /* ===================================================================== */
+
+  .mea-spec[data-cd-encl] {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--cd-module) / 2);
+    padding: var(--cd-module);
+    clip-path: var(--mea-cut-card);
+  }
+
+  .mea-spec-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--cd-module);
+  }
+
+  /* the unit-pair: two co-dependent numbers as ONE value, the trailing half at
+     40% of the value's size (II.6.6, ch.16 §2's own 24BIT/192KHZ grammar) */
+  .mea-spec-pair {
+    font-size: var(--cd-size-4);
+    color: var(--cd-ink);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+  }
+
+  .mea-spec-pair-unit {
+    font-size: calc(1em * var(--cd-unit-scale));
+    color: var(--cd-muted-ink);
+  }
+
+  .mea-spec-macros {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(4.5rem, 1fr));
+    gap: calc(var(--cd-module) / 2) var(--cd-module);
+    margin: 0;
+    padding: calc(var(--cd-module) * 0.75) var(--cd-module);
+    clip-path: var(--mea-cut);
+  }
+
+  .mea-spec-macro {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-inline-size: 0;
+  }
+
+  .mea-spec-label {
+    font-size: var(--cd-size-1);
+  }
+
+  .mea-spec-value {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    font-size: var(--cd-size-4);
+    color: var(--cd-ink);
+  }
+
+  .mea-spec-sheet {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--cd-module) / 4);
+    margin: 0;
+    padding: calc(var(--cd-module) * 0.75) var(--cd-module);
+    clip-path: var(--mea-cut);
+  }
+
+  .mea-spec-line {
+    display: grid;
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+    align-items: baseline;
+    gap: var(--cd-module);
+    font-size: var(--cd-size-1);
+  }
+
+  .mea-spec-line dt {
+    font-size: var(--cd-size-1);
+  }
+
+  .mea-spec-line dd {
+    margin: 0;
+    font-size: var(--cd-size-1);
+    overflow-wrap: anywhere;
+  }
+
+  .mea-spec-line[data-mea-note] dd {
+    color: var(--cd-role-warning-ink-dark);
+  }
+
+  /* --- provenance: the signature hue, spent once ---------------------- */
+
+  .mea-provenance {
+    display: flex;
+    align-items: center;
+    gap: var(--cd-module);
+    padding: calc(var(--cd-module) / 2) var(--cd-module);
+    background: var(--cd-well);
+    clip-path: var(--mea-cut);
+    box-shadow: var(--cd-shadow-well);
+  }
+
+  /*
+    The lamp's OWN well, re-keyed to this world's committed DSD dim print
+    #4A2E56 rather than the product default's red-tinted well. ch.16 §2: dim
+    "mixes 40% into the field rather than toward black, so an idling DSD file
+    still holds a trace in the room". Unlit it is still a lamp — and its lens
+    rim, at 4.73:1 against the well, is what carries the 3:1 channel the
+    #8E44AD core cannot (2.35:1, measured).
+  */
+  .mea-provenance .cd-lamp {
+    --cd-lamp-off: radial-gradient(closest-side, #5c3a6b 0%, #4a2e56 78%, #38213f 100%);
+    --cd-lamp-size: 1rem;
+  }
+
+  .mea-provenance .cd-lamp::after {
+    box-shadow: inset 0 0 0 1px var(--cd-fmt-dsd-rim);
+  }
+
+  .mea-provenance-note {
+    margin: 0;
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+  }
+
+  /* ===================================================================== */
+  /* 7 · THE TRANSPORT ROW — three keys, one gap, one guard                */
+  /* ===================================================================== */
+
+  .mea-transport {
+    display: flex;
+    align-self: flex-start; /* a socket strip, sized to the three keys it holds */
+    align-items: stretch;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 0.875rem; /* ch.16 §3's fixed gap — the press-shortened shadow of one
+                      key never touches its neighbour's rim */
+    padding: calc(var(--cd-module) / 2);
+    background: var(--cd-well); /* every focusable seats in the well: 4.04:1 */
+    box-shadow: var(--cd-shadow-well);
+    clip-path: var(--mea-cut);
+  }
+
+  .mea-key.cd-key,
+  .mea-key .cd-key {
+    min-block-size: 3.25rem; /* ch.16 §3's own cap height, kept exactly */
+    min-inline-size: var(--cd-target-min); /* the Floor, on the other axis */
+    border-radius: 0;
+    background: linear-gradient(
+      170deg,
+      #4a4d54 0%,
+      #3e4148 38%,
+      #4a4d54 39%,
+      #2b2d31 100%
+    ); /* ch.16 §3's own key gradient, verbatim */
+    font-size: var(--cd-size-2);
+  }
+
+  /* The chamfer is painted on a ::before rather than clipped off the button
+     box: clip-path clips outline and outer box-shadow alike, and the two-tone
+     focus ring is Floor, which outranks corner geometry. */
+  .mea-key.cd-key::before,
+  .mea-key .cd-key::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    clip-path: var(--mea-cut);
+    box-shadow: inset 0 0 0 1px #00000059;
+    pointer-events: none;
+  }
+
+  .mea-key--cover.cd-key {
+    flex: 0 0 auto;
+  }
+
+  /*
+    The keys are sized to their words and no wider. MEASURED at 1280x800 with
+    the cook key stretched to the row: ch.16's own cap gradient — a 170deg ramp
+    with hard stops at 38% and 39% — is cast for a 2.25rem-wide cap, and across
+    a 20rem key the same stops read as one enormous diagonal wash rather than a
+    machined face. The gradient is the chapter's; the key has to stay the
+    chapter's size for it to be true.
+  */
+  .mea-key--cook {
+    flex: 0 0 auto;
     display: flex;
   }
 
-  .scr-meal-cover-grid {
-    grid-template-columns: 1fr;
+  .mea-key--cook.cd-key {
+    flex: 0 0 auto;
   }
 
-  .scr-meal-cover:not([data-primary]) {
-    display: none;
+  /* the seated cover key sits DOWN in its socket and keeps its ink lit — a
+     positional state, never a colour-only one */
+  .mea-key--cover[data-mea-seated="true"].cd-key {
+    --cd-stack: var(--cd-shadow-t2-press);
+    transform: translateY(1px);
+    color: var(--cd-ink);
+    background: linear-gradient(170deg, #2b2d31 0%, #34373d 62%, #23252a 100%);
   }
-}
 
-/* ---------------------------------------------------------------------- */
-/* Reduced motion / forced colors                                          */
-/* ---------------------------------------------------------------------- */
+  .mea-key--cover[data-mea-seated="false"].cd-key {
+    color: var(--cd-muted-ink);
+  }
 
-/* The knob has no mechanical motion (the index dot repositions instantly by
-   design — see PortionKnob.tsx's header comment) so there's nothing for
-   [data-motion] to catch; the one cosmetic transition added by Phase 3
-   polish (the rim bevel's box-shadow on hover/press) is silenced directly,
-   same convention tokens.css itself uses for `.fd5-control`. */
-@media (prefers-reduced-motion: reduce) {
-  .mk-knob {
+  /* the guard, only while a program is actually running */
+  .mea-key--guarded {
+    flex: 0 1 auto;
+  }
+
+  .mea-key--guarded .cd-guard-fill {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: calc(var(--cd-guard-progress, 0) * 100%);
+    background: var(--cd-role-danger-zone-dark);
+    opacity: 0.42;
+    pointer-events: none;
+    /* linear, because progress is DATA and data does not ease (II.3.16) */
     transition: none;
   }
-}
 
-@media (forced-colors: active) {
-  .mk-knob {
-    box-shadow: none;
+  .mea-key--guarded .cd-field-note {
+    margin: calc(var(--cd-module) / 4) 0 0;
+    font-family: var(--cd-font-ui);
+    font-size: var(--cd-size-1);
+    color: var(--cd-role-warning-ink-dark);
+    max-inline-size: var(--cd-prose-measure);
   }
-  .mk-knob:active {
-    box-shadow: none;
+
+  /* ===================================================================== */
+  /* 8 · THE DAY BENCH — jewel cards on a shelf                            */
+  /* ===================================================================== */
+
+  /*
+    THE SHELF FILLS THE GROUND. A row of four small cards under a column of bare
+    gunmetal is CORRECTIONARY 5.5's own failure — "Density is confidence ... Empty
+    space is a deliberate framing device used sparingly, not a default politeness
+    applied everywhere." MEASURED on the first render: 337px of bare field
+    between the shelf's foot and the tray's head at 729x987. The shelf takes the
+    ground's whole remaining height and the cards grow into it.
+  */
+  .mea-bench[data-cd-encl] {
+    flex: 1;
+    min-block-size: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--cd-module);
+    padding: var(--cd-module);
+    clip-path: var(--mea-cut-card);
+    transition: opacity 240ms var(--cd-ease-settle);
   }
-  .mk-knob::before,
-  .mk-knob::after {
-    background: none;
+
+  .mea-bench-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cd-module);
+    flex-wrap: wrap;
   }
-  .mk-body {
-    fill: Canvas;
-    fill-opacity: 1;
-    stroke: ButtonText;
+
+  /*
+    THE SHELF'S COLUMN COUNT FOLLOWS THE BOX IT IS GIVEN, and the box inverts
+    between the two layouts: with the tray at the inline-end edge the bench is a
+    TALL NARROW column, so four plates stack; with the tray at the block-end edge
+    the bench is a SHORT WIDE strip, so they sit two by two. Measured at 800x900
+    with a 2-up grid in the tall box: each card ran 300px tall around ~90px of
+    content, which is CORRECTIONARY 5.5's bare field wearing a card's frame.
+  */
+  .mea-bench-shelf {
+    flex: 1;
+    min-block-size: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: minmax(0, 1fr);
+    gap: var(--cd-module);
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
-  .mk-tick {
-    stroke: ButtonText;
-    filter: none;
+
+  .mea-bench-slot {
+    display: flex;
+    min-block-size: 0;
   }
-  .mk-tick[data-active] {
-    stroke: Highlight;
-    filter: none;
+
+  /*
+    ch.16 §3's Jewel Card: every corner chamfered at 0.75rem, the format badge
+    fixed at the lower-right so a shelf prints its constellation before any text
+    is read.
+
+    DECLARED DEPARTURE: the chapter fixes the card at 12 x 12.5rem. Here that
+    near-square is a FLOOR rather than a fixed size — the shelf stretches the
+    cards to fill the ground, because a fixed 192px card in a 700px column
+    leaves the bare field CORRECTIONARY 5.5 forbids, and a fixed 192px card at
+    390px width overflows the strip of workspace the tray must never cover.
+  */
+  .mea-card {
+    --cd-stack:
+      inset 0 1px 0 #4a4d5480, /* rim-light — one facet catching the sun */
+      0 2px 4px #00000040, /* contact */
+      0 6px 14px #00000034, /* core — the card's own mass */
+      0 10px 24px #00000026; /* ambient */
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--cd-module) / 2);
+    min-inline-size: 0;
+    min-block-size: 7.5rem;
+    padding: var(--cd-module);
+    background-color: var(--cd-field);
+    background-image: var(--mea-etch); /* the back-etch, on the card's reverse */
+    box-shadow: var(--cd-stack);
+    clip-path: var(--mea-cut-card);
+    color: var(--cd-ink);
+    text-decoration: none;
+    transition:
+      transform var(--cd-contact-release) var(--cd-ease-settle),
+      box-shadow var(--cd-contact-release) var(--cd-ease-settle);
   }
-  .mk-index-dot {
-    fill: Highlight;
+
+  .mea-card:active {
+    /* tap-to-open, the same contact as the transport keys: one frame down */
+    --cd-stack:
+      inset 0 1px 0 #4a4d5480,
+      0 1px 2px #00000040,
+      0 8px 20px #00000026;
+    transform: translateY(1px);
+    transition:
+      transform var(--cd-contact-down) linear,
+      box-shadow var(--cd-contact-down) linear;
   }
-  .scr-meal-hero {
-    box-shadow: none;
+
+  .mea-card[data-mea-current="true"] {
+    /* the plate the tray is reporting. A POSITION first, never a hue alone: the
+       card is seated down in the shelf and its cut edge takes the mirror. */
+    --cd-stack:
+      inset 0 0 0 1px var(--cd-mirror),
+      inset 0 1px 0 #4a4d5480,
+      0 1px 2px #00000040;
+    transform: translateY(1px);
+  }
+
+  /*
+    ch.16 §3's Jewel Card, Signature rung: "replaces the flat face of whichever
+    card is ACTUALLY PLAYING with a rendering of the ring's own live lamp blown
+    up to fill the card, so PRESENCE, not selection, gets its own material."
+
+    Here the ring's lit lamp is the cover code, so the plate in the tray wears
+    that cover's own hue as a broad lamp wash across its face. It reports
+    presence — which plate the tray is holding — and it is bound to exactly the
+    same fact as the ring, so the two can never disagree.
+  */
+  .mea-card[data-mea-current="true"] .mea-card-face {
+    background-image: radial-gradient(
+      120% 90% at 22% 0%,
+      color-mix(in srgb, var(--mea-badge-hue, var(--cd-fmt-24)) 34%, transparent) 0%,
+      color-mix(in srgb, var(--mea-badge-hue, var(--cd-fmt-24)) 10%, transparent) 46%,
+      #00000000 100%
+    );
+  }
+
+  .mea-card--cut[data-cd-encl] {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--cd-module) / 2);
+    min-inline-size: 0;
+    min-block-size: 7.5rem;
+    padding: var(--cd-module);
+    clip-path: var(--mea-cut-card);
+  }
+
+  .mea-card-slot {
+    font-size: var(--cd-size-1);
+  }
+
+  .mea-card-face {
+    flex: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "name read"
+      "name meter";
+    align-content: center;
+    align-items: center;
+    gap: calc(var(--cd-module) / 4) var(--cd-module);
+    padding: calc(var(--cd-module) / 2) var(--cd-module);
+    clip-path: var(--mea-cut);
+    overflow: hidden;
+  }
+
+  .mea-card-name {
+    grid-area: name;
+  }
+
+  .mea-card--cut .mea-card-face {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "word"
+      "reason";
+    align-content: center;
+  }
+
+  .mea-card-name {
+    font-family: var(--cd-font-ui);
+    font-size: var(--cd-size-2);
+    line-height: 1.25;
+    color: var(--cd-plate-ink);
+    /* the longest real meal name is 40 characters; it wraps to three lines
+       inside an 11rem card rather than clipping */
+    overflow-wrap: anywhere;
+  }
+
+  .mea-card-cut-word {
+    font-family: var(--cd-font-ui);
+    font-weight: 700;
+    font-size: var(--cd-size-2);
+    letter-spacing: var(--cd-track-label);
+    color: var(--cd-role-warning-ink-dark);
+  }
+
+  .mea-card-cut-reason {
+    font-size: var(--cd-size-1);
+    line-height: 1.35;
+    color: var(--cd-muted-ink);
+    overflow-wrap: anywhere;
+  }
+
+  .mea-card-read {
+    grid-area: read;
+    display: flex;
+    align-items: baseline;
+    gap: var(--cd-module);
+    font-family: var(--cd-font-data);
+    font-size: var(--cd-size-4);
+    color: var(--cd-plate-ink);
+  }
+
+  .mea-card-figure {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.15em;
+  }
+
+  /* the shelf's own miniature of the tray's hero meter: same casting, same
+     zones, same committed hexes — a plate is comparable to its neighbours or
+     the shelf is just four links */
+  .mea-card-meter {
+    grid-area: meter;
+    min-inline-size: 8rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    block-size: 0.875rem;
+    padding-inline-end: calc(var(--cd-module) / 2);
+    border-radius: calc(var(--cd-module) / 4);
+    background: var(--cd-black-edition);
+    box-shadow: var(--cd-shadow-well);
+    overflow: hidden;
+  }
+
+  .mea-card-meter-fill {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: calc(var(--mea-fill, 0) * 100%);
+    background: var(--mea-zone-hue, var(--cd-role-warning));
+    transition: inline-size var(--mea-seat-ms) var(--cd-ease-snap);
+  }
+
+  .mea-card-meter[data-mea-zone="short"] {
+    --mea-zone-hue: var(--cd-role-danger-zone-dark);
+  }
+  .mea-card-meter[data-mea-zone="partial"] {
+    --mea-zone-hue: var(--cd-role-warning);
+  }
+  .mea-card-meter[data-mea-zone="covered"] {
+    --mea-zone-hue: var(--cd-role-success);
+  }
+
+  /* the exact figure rides the meter — the analogue form never travels alone */
+  .mea-card-meter-figure {
+    position: relative;
+    font-size: var(--cd-size-1);
+    color: var(--cd-ink);
+    text-shadow: 0 1px 2px #000000cc;
+  }
+
+  .mea-card-here {
+    color: var(--cd-mirror);
+  }
+
+  .mea-card-foot {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--cd-module) / 2);
+    padding-inline-end: 1.25rem; /* the badge's own corner */
+    font-size: var(--cd-size-1);
+  }
+
+  .mea-card-swap {
+    color: var(--cd-role-warning-ink-dark);
+  }
+
+  /* the format badge — the ring's own code at reduced diameter, and the one
+     true circle inside an otherwise chamfered card */
+  .mea-card-badge {
+    position: absolute;
+    inset-inline-end: 0.5rem;
+    inset-block-end: 0.5rem;
+    inline-size: 0.75rem;
+    block-size: 0.75rem;
+    border-radius: 50%;
+    background: var(--mea-badge-hue, var(--cd-fmt-24));
+    box-shadow:
+      inset 0 0 0 1px var(--mea-badge-rim, var(--cd-fmt-24-rim)),
+      0 1px 2px #00000073;
+  }
+
+  .mea-bench-total {
+    display: inline-flex;
+    align-items: baseline;
+    gap: calc(var(--cd-module) / 2);
+    padding: calc(var(--cd-module) / 4) calc(var(--cd-module) * 0.75);
+    background: var(--cd-well);
+    clip-path: var(--mea-cut);
+    box-shadow: var(--cd-shadow-well);
+    font-size: var(--cd-size-1);
+  }
+
+  .mea-bench-kcal {
+    font-family: var(--cd-font-data);
+    font-size: var(--cd-size-4);
+    color: var(--cd-ink);
+  }
+
+  /* ===================================================================== */
+  /* 9 · OFF STATES — a blanked station, never a fabricated plate          */
+  /* ===================================================================== */
+
+  /* A blanked-off station takes the whole bay it is blanking. Leaving 500px of
+     bare field beneath a three-line panel would be the default politeness
+     CORRECTIONARY 5.5 forbids; a deliberately empty bay is a framing device. */
+  .cd-tray-body > .mea-void[data-cd-encl],
+  .mea-ground > .mea-void[data-cd-encl] {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .mea-void[data-cd-encl] {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: calc(var(--cd-module) * 0.75);
+    padding: calc(var(--cd-module) * 1.5);
+    clip-path: var(--mea-cut-card);
+  }
+
+  .mea-void-face {
+    align-self: stretch;
+    padding: calc(var(--cd-module) * 0.75) var(--cd-module);
+    clip-path: var(--mea-cut);
+  }
+
+  .mea-void-note {
+    display: flex;
+    gap: calc(var(--cd-module) / 2);
+    margin: 0;
+    font-size: var(--cd-size-1);
+  }
+
+  .mea-void-key {
+    clip-path: none;
+  }
+
+  /* ===================================================================== */
+  /* 10 · TROPHY MODE — survivors enlarge, the reach withdraws             */
+  /* ===================================================================== */
+  /*
+    Owner ruling: 3-5 survivors at 2x, age at 1.21875rem and the exact figure at
+    1.75rem always visible, others disappear rather than shrink.
+
+    Four survive, and ch.16's own Trophy variant names two of them outright:
+    "the LIT FORMAT LAMP itself, since the whole language's argument is that the
+    ring never lies", and every survivor's own age.
+      1  the wheel, at 2x, its facet pattern intact at full diameter
+      2  the hero figure, the committed portion
+      3  the cover ring's lit lamp and its printed word
+      4  the stock meter, with its age and its state word
+  */
+  /* The survivors' stage. The tray's own width is driven by the registered
+     property above, so it interpolates instead of freezing at its old used
+     value; nothing here transitions `inline-size` directly. */
+  .mea[data-mea-trophy="true"] {
+    --mea-tray-w: clamp(20rem, 62vw, 46rem);
+    --mea-collar: 10.5rem; /* 2x */
+    --mea-cap: 9rem; /* 2x */
+    --mea-ring: 14rem; /* 2x — ch.16's Dense Dashboard ring, at full diameter */
+  }
+
+  .mea[data-mea-trophy="true"] .mea-porthole {
+    inline-size: 2.25rem;
+    block-size: 2.25rem;
+  }
+
+  .mea[data-mea-trophy="true"] .mea-wheelset[data-cd-encl] {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "head"
+      "mount"
+      "word"
+      "readout";
+    justify-items: center;
+  }
+
+  /* the printed seat scale is a reach affordance, not an answer: it leaves */
+  .mea[data-mea-trophy="true"] .mea-wheel-seats,
+  .mea[data-mea-trophy="true"] .mea-wheel-seat-line {
+    display: none;
+  }
+
+  /* the exact figures and ages that must stay visible, at their committed
+     Trophy sizes */
+  .mea[data-mea-trophy="true"] .mea-stock-figure {
+    font-size: var(--cd-size-6);
+  }
+
+  .mea[data-mea-trophy="true"] .mea-stock-age,
+  .mea[data-mea-trophy="true"] .mea-stock-count,
+  .mea[data-mea-trophy="true"] .mea-ring-word {
+    font-size: var(--mea-trophy-age);
+  }
+
+  .mea[data-mea-trophy="true"] .mea-stock-word {
+    font-size: var(--cd-size-5);
+  }
+
+  .mea[data-mea-trophy="true"] .mea-stock-action {
+    display: none; /* the reach withdraws; the reading stays */
+  }
+
+  /* ===================================================================== */
+  /* 11 · NARROW — the tray moves to the edge the rail left                */
+  /* ===================================================================== */
+
+  @media (max-width: 47.99rem) {
+    .mea-ground {
+      padding: var(--cd-module);
+      /* the tray moved to block-end with the rail, so the gutter does too */
+      padding-inline-end: var(--cd-module);
+      padding-block-end: calc(min(26rem, 62dvh - var(--fd5-rail-footprint, 3.5rem)) + var(--cd-module));
+      block-size: calc(100dvh - 2rem - var(--fd5-rail-footprint, 3.5rem));
+    }
+
+
+    .mea-spec-line {
+      grid-template-columns: 4.5rem minmax(0, 1fr);
+    }
+
+    .mea-bench-shelf {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .mea-card,
+    .mea-card--cut[data-cd-encl] {
+      min-block-size: 4rem;
+    }
+
+    .mea-bench-head {
+      gap: calc(var(--cd-module) / 2);
+    }
+
+    /* the shelf's rows size to their content and the shelf scrolls if a day
+       ever needs more than the strip above the tray */
+    .mea-bench-shelf {
+      grid-auto-rows: min-content;
+    }
+
+    .mea-card-face {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        "name"
+        "read"
+        "meter";
+      align-content: start;
+      gap: calc(var(--cd-module) / 4);
+      padding: calc(var(--cd-module) / 2);
+    }
+
+    .mea-card-meter {
+      min-inline-size: 0;
+    }
+
+    /* Trophy at phone width: the tray takes the whole workspace above the
+       rail, because at 390px there is no strip of bench worth preserving from
+       across a room. */
+    .mea[data-mea-trophy="true"] .mea-tray[data-cd-edge="block-end"] {
+      block-size: calc(96dvh - var(--fd5-rail-footprint, 3.5rem));
+    }
+
+    .mea[data-mea-trophy="true"] {
+      --mea-collar: 8.75rem;
+      --mea-cap: 7.5rem;
+      --mea-ring: 11.5rem;
+    }
+  }
+
+  /* ===================================================================== */
+  /* 12 · REDUCED MOTION — II.4.26, translate, never delete                */
+  /* ===================================================================== */
+
+  @media (prefers-reduced-motion: reduce) {
+    .mea {
+      /* the seat still MOVES: position is semantic and the semantic layer is
+         not negotiable. 80ms linear (--cd-reduced-position), never a 0ms flash.
+         --cd-ease-snap is already `linear` under this query (tokens/motion.css). */
+      --mea-seat-ms: var(--cd-reduced-position);
+    }
+
+    .mea-frame {
+      /* the burn-in orbit is a physical guard, not decoration — it still moves,
+         at the same slow linear rate, because a pixel that never moves burns in
+         whatever the operator's motion preference is */
+      transition:
+        opacity 4000ms linear,
+        translate 4000ms linear;
+    }
+
+    .mea-card,
+    .mea-card:active,
+    .mea-stock-track::after,
+    .mea-drum-strip,
+    .mea-wheel-facets,
+    .mea-wheel-index,
+    .mea-porthole-disc {
+      transition-duration: var(--cd-reduced-position);
+      transition-timing-function: linear;
+    }
+
+    .mea[data-mea-trophy="true"] .mea-tray[data-cd-edge="inline-end"] {
+      transition-duration: var(--cd-reduced-fade);
+    }
+  }
+
+  /* ===================================================================== */
+  /* 13 · FORCED COLOURS — the material argument is the OS's to discard    */
+  /* ===================================================================== */
+  /*
+    Every gradient, bloom and shadow above is decoration the OS is entitled to
+    throw away. What must survive is: the BOUNDARY of each housing, the POSITION
+    of the wheel's index, the WORD on every lamp and zone, and the focus ring.
+  */
+  @media (forced-colors: active) {
+    .mea {
+      background: Canvas;
+      color: CanvasText;
+      box-shadow: none;
+      border: 1px solid CanvasText;
+      clip-path: none;
+    }
+
+    .mea-wheelset[data-cd-encl],
+    .mea-stock[data-cd-encl],
+    .mea-plate[data-cd-encl],
+    .mea-spec[data-cd-encl],
+    .mea-bench[data-cd-encl],
+    .mea-void[data-cd-encl],
+    .mea-card,
+    .mea-card--cut[data-cd-encl],
+    .mea-transport,
+    .mea-provenance,
+    .mea-drum,
+    .mea-tag {
+      background: Canvas;
+      color: CanvasText;
+      box-shadow: none;
+      border: 1px solid CanvasText;
+      clip-path: none;
+      background-image: none;
+    }
+
+    .mea-wheel {
+      border: 2px solid CanvasText;
+      box-shadow: none;
+    }
+
+    /* the facet ring loses its mirror, so the INDEX is the whole report — it
+       keeps its rotation, because the angle is the value */
+    .mea-wheel-facets,
+    .mea-wheel-catch,
+    .mea-porthole-glass {
+      background: Canvas;
+      box-shadow: none;
+      forced-color-adjust: none;
+    }
+
+    .mea-wheel-index {
+      background: Highlight;
+      box-shadow: none;
+      forced-color-adjust: none;
+    }
+
+    .mea-porthole,
+    .mea-porthole-disc {
+      background: Canvas;
+      border: 1px solid CanvasText;
+      forced-color-adjust: none;
+    }
+
+    /* The ring loses its hue entirely — the OS owns the palette now — so the
+       LIT arc is the only one drawn and the printed word carries the cover.
+       This is exactly why II.7.7 makes the word compulsory rather than a nicety. */
+    .mea-ring-track,
+    .mea-ring-rim,
+    .mea-ring::after {
+      background: Canvas;
+      background-image: none;
+      box-shadow: none;
+      forced-color-adjust: none;
+    }
+
+    /*
+      The LIT arc keeps its own paint. `forced-color-adjust: none` is spent here
+      deliberately and exactly once: this arc's GEOMETRY is the report — one arc
+      of two, lit — and a system colour applied to the layer would fill the whole
+      annulus and claim both covers at once, which is worse than keeping the
+      author's hue. The printed word beneath it is the channel that survives
+      regardless, which is why II.7.7 makes it compulsory rather than a nicety.
+      The bloom goes: a drop-shadow in forced colours is noise.
+    */
+    .mea-ring-flame {
+      filter: none;
+      forced-color-adjust: none;
+    }
+
+    .mea-stock-track,
+    .mea-stock-track::after,
+    .mea-stock-full {
+      background: Highlight;
+      forced-color-adjust: none;
+    }
+
+    .mea-stock-seg {
+      box-shadow: -0.125rem 0 0 Canvas;
+    }
+
+    .mea-stock-word,
+    .mea-card-cut-word,
+    .mea-card-swap,
+    .mea-row-glyph,
+    .mea-row-age[data-mea-stale="true"] {
+      color: CanvasText;
+      background: Canvas;
+    }
+
+    .mea-card-badge {
+      background: Highlight;
+      box-shadow: none;
+      forced-color-adjust: none;
+    }
+
+    .mea-key.cd-key,
+    .mea-key .cd-key {
+      background: ButtonFace;
+      color: ButtonText;
+      border: 1px solid ButtonText;
+      forced-color-adjust: none;
+    }
+
+    .mea-key.cd-key::before,
+    .mea-key .cd-key::before {
+      content: none;
+    }
+
+    .mea-key--cover[data-mea-seated="true"].cd-key {
+      background: Highlight;
+      color: HighlightText;
+    }
   }
 }
