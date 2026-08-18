@@ -82,7 +82,20 @@ page-length scrolling — grouped accordion, one section open at a time.
   its own** after discovering it had measured a backgrounded tab, where transitions do
   not advance. Gates verified independently: tsc clean · 520/520 · 1.378 MB · 0 contrast
   failures measured in the running page · 0 nodes under 11px · 0 targets under 44px.
-- **COOK (REEL LOGIC) BUILT AND GREEN, BUT NOT LANDED** (`da530ea`) — the builder was
+- **COOK (REEL LOGIC) COMPLETE** (`da530ea` + `23782ee`) — the builder was killed by a
+  session limit mid-handoff, resumed, and delivered the full report: **19 findings over
+  six rounds.** Its worst, caught by its own sound audit on the final truth re-run: **the
+  alarm SOUNDED for a look-ahead** — holding the scrub rocker forward 1.6s fired 65
+  tritone bursts at a step that was not due, because the audible warning read the same
+  preview-shifted boolean the pixels do. The picture keeps the look-ahead (the preview
+  plate captions it); the tritone cannot, so it now gates on the unshifted condition.
+  **The Signature was answered straight:** the builder built the claim (transport keys
+  gone, the three keys seated in the reel's own collar) and **declined the mechanism**
+  (tap-centre / radial-flick / hold all require a grab), drawing and refusing them by
+  name in the ladder artifact. **Never-grab verified by me, not taken on trust:** exactly
+  two `onPointerDown` handlers exist in the whole folder, both on the rocker ends;
+  `Reel.tsx` has zero. A guard test now pins it.
+  *Superseded note (the pre-report state was recorded here as)* (`da530ea`) — the builder was
   killed by a session limit mid-handoff. Work and ladder artifact survived; **the report
   did not.** Verified by me: tsc clean, 23 COOK tests inside 520/520, build under amber,
   ladder artifact complete, R5 confirmed. **NOT established:** the five-pass findings,
