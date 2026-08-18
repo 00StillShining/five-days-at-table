@@ -20,8 +20,11 @@ functional spine does not move.
 **Execution model for this phase (supersedes PLAN §7 / D12):** builders are **Opus**
 agents, one per surface, each self-critiquing with the mandatory five-pass protocol
 before handoff. **No intermediate design reviews.** Exactly **one Fable review after
-everything is built**, walking screen-to-screen as a whole product — and **its findings
-are planned, never applied**. What to build from that plan is a separate owner decision.
+everything is built**, walking screen-to-screen as a whole product.
+**OWNER REVISION 2026-08-18: the review's findings ARE to be actioned.** The original
+ruling was that they be planned and not built; the owner has lifted it — *"you're free
+to action the fable reviewer's instructions when that stage happens."* Timing is
+unchanged: still one review, still at the very end, still no mid-build design gates.
 The orchestrator verifies mechanical facts at every landing; a failure there is a build
 defect returned immediately, not a review finding.
 
@@ -100,7 +103,7 @@ page-length scrolling — grouped accordion, one section open at a time.
   unless `fd5.v1.cdMuted` is explicitly `"0"`. **Production is unchanged.** To run a
   sound audit: `localStorage.setItem("fd5.v1.cdMuted", "0")`.
 - **Next:** **wave 2 in risk order** — STORES → LIST → PLAN → MEAL → SHOP. Then deploy,
-  then the single Fable review, whose findings are **planned and not built**.
+  then the single Fable review — **and action its findings** (owner revision, 2026-08-18).
 
 ### Carried defects — fix when the owning screen is rebuilt
 
