@@ -1,521 +1,2770 @@
 /*
-  STORES — register + fuzzy inventory (PLAN §6.7). Scoped entirely under
-  .scr-stores per PHASE2-CONTRACT ("colocate your own screen CSS scoped by
-  screen-root class"). Uses only the real Sol/PHASE2-CONTRACT custom
-  properties defined in src/tokens.css (--sol-*, --fd-*, --fd5-target-list) —
-  no new global tokens invented here.
+  src/screens/stores/stores.css — 10 CLEAR LID, on the 65-row register.
 
-  "The most purely playful screen" (PLAN §6.0): flat colour blocks, silkscreen
-  lowercase labels everywhere EXCEPT the wheel hero, which is where Phase 3
-  polish (PLAN §6.7 attach point) lives — "fuzzy/friendly, playful-technical
-  lean — machined but toy-serious, not luxury" (not the SP3000/Pagani
-  precision-industrial treatment MEAL/COOK get). The wheel's ridge texture is
-  now a light+shadow repeating-linear-gradient (edge-on ridge rhythm implying
-  the five click-stops) plus a vertical light-falloff on the housing (barrel
-  curvature) and a soft backlight glow on the checked detent — all
-  background-image/box-shadow layers, still no gradient anywhere else on the
-  screen. Nothing in this file uses a transition on the detents themselves,
-  so reduced-motion has nothing to disable (PLAN: "reduced-motion: no roll
-  animation, instant detent" is the default, not a special case, even with
-  the richer texture). Local custom properties (none needed here beyond
-  `color-mix()` reading the existing --sol-* tokens directly) stay
-  screen-local per Phase 3 law — nothing added to tokens.css.
+  Every value below is committed and names the clause it came from. A duration
+  that exists only as a feeling is a craft defect (CD-BRIEF, the craft pass).
+
+  ---------------------------------------------------------------------------
+  THE THESIS
+  ---------------------------------------------------------------------------
+  A register is ONE MACHINED OBJECT with rows milled into it, not sixty-five
+  little cases. CLEAR LID names the failure by itself (section 9):
+
+    "LID INFLATION. Every card on a dashboard earns its own full lid rather
+     than sharing one hierarchy. Warning sign: the screen reads as a cabinet of
+     specimen cases with no leading object."
+
+  So the grooves between rows are painted into the PLATE's own background (one
+  repeating gradient, sixty-five grooves, one paint); the level and life scales
+  are two MILLED CHANNELS drawn as bands in that same background (two more
+  gradient layers, not a hundred and thirty elements); and the lid is TWO
+  acrylic panes that cut open at the addressed row rather than sixty-five panes
+  that toggle.
+
+  CLEAR LID's own repair for lid inflation is II.2.5's one-hero rule, which
+  CORRECTIONARY 3.1 REVOKES. What is kept here is the STRUCTURAL half — one
+  plate, one construction hierarchy — never the rationing half: the screen
+  carries six hero-grade instruments, all at full treatment, which 3.1 calls the
+  normal condition.
+
+  ---------------------------------------------------------------------------
+  DECLARED CHAPTER DELTAS (CORRECTIONARY 6.5 — stated, never silent)
+  ---------------------------------------------------------------------------
+  1. LIGHT AXIS. CLEAR LID section 2 puts its sun at 128deg. CD-BRIEF product
+     ruling 2 is "One sun at 138deg, shadow ratio 1:2, every screen", and
+     tokens/world.css ships --cd-light-axis: 138deg. The product ruling wins;
+     the chapter's 128 appears nowhere in this file.
+  2. ROW HEIGHT. CLEAR LID section 4's List/Browser bands are Dense 1.5rem /
+     Standard 2rem / Comfortable 2.5rem. Every row here is an operable control
+     and the Floor's 44px on BOTH axes is non-negotiable (CORRECTIONARY 4), so
+     rows are 2.75rem. The Floor outranks the band table.
+  3. WHEEL SEATS. The chapter's fenestrated knob adapts the Foundry's thirteen
+     seats at 22.5deg to THREE at 30deg. The inventory level is five-valued, so
+     this is FIVE seats at the chapter's own 30deg pitch over 120deg of sweep.
+     Pitch, hysteresis (12%) and seat time (110ms) are the chapter's, unchanged.
+  4. FOCUS RING OFFSET. CD-BRIEF repair 3 commits "2px #4C8FD1 + 1px #141414
+     keyline, OFFSET 3px". A register row is full-bleed inside a plate that
+     clips, so an OUTSET ring loses its left and right sides and renders as two
+     floating bars. The two tones, their widths and their measured 5.40:1
+     pairing are unchanged; only the offset is inverted, so the whole ring lands
+     inside the row and stays visible.
+
+  ---------------------------------------------------------------------------
+  CASCADE NOTES, both of them load-bearing
+  ---------------------------------------------------------------------------
+  * THE --cd-stack GOTCHA. `.cd-focusable:focus-visible` lives in
+    @layer cd.material; a control's own `box-shadow` written here in
+    @layer cd.screen silently overwrites the ring's dark keyline. foundry.css
+    solves it by composing `var(--cd-stack)`; every machined control below
+    publishes --cd-stack and sets `box-shadow: var(--cd-stack)` for the same
+    reason. The one exception is `.str-row`, which needs an INSET ring (delta 4)
+    and therefore restates the whole ring itself, at (0,2,1) so it wins.
+  * THE (0,1,1) TRAP. An element carrying `data-cd-encl` is styled by the
+    foundry at `.cd-encl[data-cd-encl="hero"]`, which is (0,2,0) — the same
+    weight as a two-class screen rule. Every override of an Enclosure below is
+    written `.str .cd-encl[...]` at (0,3,0) so it wins by specificity rather
+    than by which stylesheet a bundler happened to emit last.
 */
 
-.scr-stores {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  max-width: 56rem;
-  margin: 0 auto;
-}
-
-/* ---- header + status line ---------------------------------------------- */
-
-.scr-stores-header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.scr-stores-title {
-  margin: 0;
-  font-size: 1.25rem;
-  text-transform: lowercase;
-}
-
-.scr-stores-status {
-  margin: 0;
-  font-family: var(--sol-font-data);
-  font-size: var(--sol-text-label);
-}
-
-.scr-stores-status--expired {
-  color: var(--sol-danger);
-}
-.scr-stores-status--expiring {
-  color: var(--sol-warning);
-}
-.scr-stores-status--fresh {
-  color: var(--sol-success);
-}
-
-/* ---- empty (first-run) state ------------------------------------------- */
-
-.scr-stores-empty {
-  background: var(--sol-panel);
-  border: 1px solid var(--sol-border);
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  align-items: flex-start;
-}
-
-.scr-stores-empty-title {
-  margin: 0;
-  font-size: 1.1rem;
-  font-weight: 700;
-  text-transform: lowercase;
-}
-
-.scr-stores-empty-body {
-  margin: 0;
-  color: var(--sol-text-muted);
-}
-
-.scr-stores-empty-cta {
-  padding-inline: 1.25rem;
-  font-weight: 600;
-}
-
-/* ---- register + wheel body --------------------------------------------- */
-
-.scr-stores-body {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;
-}
-
-.scr-stores-register {
-  flex: 1 1 auto;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.scr-stores-group-h {
-  margin: 0 0 0.375rem;
-  font-size: var(--sol-text-label);
-  text-transform: lowercase;
-  color: var(--sol-text-muted);
-  border-bottom: 1px solid var(--sol-border);
-  padding-bottom: 0.25rem;
-}
-
-.scr-stores-row-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.375rem;
-}
-
-.scr-stores-row {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  text-align: left;
-  min-block-size: 2.75rem; /* 44px house target */
-}
-
-.scr-stores-row--armed {
-  box-shadow: inset 0 0 0 2px var(--sol-focus);
-}
-
-.scr-stores-row-name {
-  flex: 1 1 auto;
-  min-width: 8ch;
-  overflow-wrap: anywhere;
-}
-
-.scr-stores-pips {
-  flex: 0 0 auto;
-  display: inline-flex;
-  gap: 2px;
-}
-
-.scr-stores-pip {
-  width: 0.5rem;
-  height: 0.9rem;
-  background: var(--sol-bg);
-  border: 1px solid var(--sol-border);
-}
-
-.scr-stores-pip--on {
-  background: var(--sol-text);
-  border-color: var(--sol-text);
-}
-
-.scr-stores-row-countdown {
-  flex: 0 0 auto;
-  font-family: var(--sol-font-data);
-  font-variant-numeric: tabular-nums;
-  min-width: 3ch;
-  text-align: right;
-}
-
-.scr-stores-row-glyph {
-  margin-right: 0.25rem;
-}
-
-.scr-stores-row--expired .scr-stores-row-countdown {
-  color: var(--sol-danger);
-}
-.scr-stores-row--expiring .scr-stores-row-countdown {
-  color: var(--sol-warning);
-}
-.scr-stores-row--low-confidence .scr-stores-row-countdown,
-.scr-stores-row--frozen .scr-stores-row-countdown,
-.scr-stores-row--empty .scr-stores-row-countdown {
-  color: var(--sol-text-muted);
-}
-
-/* ---- leftover rows (distinct tag, PLAN §6.7) --------------------------- */
-
-.scr-stores-leftover {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  min-block-size: 2.75rem;
-  background: var(--sol-panel);
-  border: 1px dashed var(--sol-border);
-}
-
-.scr-stores-leftover-tag {
-  font-family: var(--sol-font-data);
-  font-size: 0.6875rem; /* 11px, nonessential-engraving band */
-  text-transform: lowercase;
-  border: 1px solid var(--sol-border);
-  padding: 0.0625rem 0.375rem;
-  color: var(--sol-text-muted);
-}
-
-.scr-stores-leftover .scr-stores-row-name {
-  flex: 1 1 auto;
-  min-width: 8ch;
-}
-
-.scr-stores-leftover .scr-stores-row-countdown {
-  font-family: var(--sol-font-data);
-}
-
-.scr-stores-leftover.scr-stores-row--expired .scr-stores-row-countdown {
-  color: var(--sol-danger);
-}
-
-.scr-stores-leftover-used {
-  padding-inline: 0.75rem;
-  font-size: var(--sol-text-label);
-}
-
-/* ---- the thumbwheel (hero) ---------------------------------------------- */
-
-.scr-stores-wheel {
-  position: sticky;
-  top: 0.5rem;
-  flex: 0 0 auto;
-  width: 4.75rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.375rem;
-}
-
-.scr-stores-wheel-caption {
-  margin: 0;
-  font-size: 0.6875rem;
-  color: var(--sol-text-muted);
-  text-transform: lowercase;
-  text-align: center;
-}
-
-.scr-stores-wheel-strip {
-  border: 1px solid var(--sol-border);
-  background-color: var(--sol-panel);
-  /* Edge-on thumbwheel housing: a light+shadow ridge pair every 9px (the
-     click-stop rhythm) over a vertical light-falloff (barrel curvature —
-     the housing reads darker at the top/bottom, lighter through the
-     middle, like a cylinder lit from the front). Both layers are technical
-     stripes/falloff, not a tonal "shine" gradient. */
-  background-image:
-    repeating-linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0.5) 0px,
-      rgba(255, 255, 255, 0.5) 1px,
-      rgba(0, 0, 0, 0.16) 1px,
-      rgba(0, 0, 0, 0.16) 2px,
-      transparent 2px,
-      transparent 9px
-    ),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.16) 0%, transparent 16%, transparent 84%, rgba(0, 0, 0, 0.16) 100%);
-  padding: 0.25rem;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  width: 100%;
-}
-
-.scr-stores-wheel-strip:disabled {
-  opacity: 0.6;
-}
-
-.scr-stores-detent {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-  width: 100%;
-  min-block-size: 2.75rem;
-  padding: 0.25rem;
-  background-color: var(--sol-panel);
-  /* Same ridge rhythm as the housing (.scr-stores-wheel-strip) so each
-     detent reads as part of one continuous machined surface, not a flat
-     block sitting on top of it. */
-  background-image: repeating-linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.4) 0px,
-    rgba(255, 255, 255, 0.4) 1px,
-    rgba(0, 0, 0, 0.12) 1px,
-    rgba(0, 0, 0, 0.12) 2px,
-    transparent 2px,
-    transparent 9px
-  );
-}
-
-.scr-stores-detent input {
-  width: 1rem;
-  height: 1rem;
-  margin: 0;
-  accent-color: var(--sol-focus);
-}
-
-.scr-stores-detent-glyph {
-  font-family: var(--sol-font-data);
-  font-size: 0.75rem;
-}
-
-.scr-stores-detent[data-checked] {
-  background-color: var(--sol-text);
-  color: var(--sol-bg);
-  /* The checked detent, softly backlit — a glow in the cursor-blue family
-     (--sol-focus), the same semantic channel used everywhere else in the
-     app to mark "this is the current position" (PHASE2-CONTRACT §6.1).
-     color-mix() degrades gracefully to no glow (still a fully accessible
-     solid-invert block) on engines that don't support it. */
-  box-shadow:
-    inset 0 0 0 1px var(--sol-bg),
-    0 0 9px 2px color-mix(in srgb, var(--sol-focus) 55%, transparent);
-}
-
-.scr-stores-detent:focus-within {
-  outline: var(--sol-focus-width) solid var(--sol-focus);
-  outline-offset: 2px;
-}
-
-.scr-stores-wheel-announce {
-  margin: 0;
-  font-size: 0.6875rem;
-  text-align: center;
-  min-height: 2.2em; /* reserve space so the announcement appearing doesn't jump layout */
-  color: var(--sol-text-muted);
-}
-
-/* ---- generic sections ---------------------------------------------------- */
-
-.scr-stores-section {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.scr-stores-h {
-  margin: 0;
-  font-size: var(--sol-text-label);
-  text-transform: lowercase;
-  color: var(--sol-text-muted);
-}
-
-.scr-stores-muted {
-  margin: 0;
-  color: var(--sol-text-muted);
-}
-
-/* ---- cook-from-stock strip ------------------------------------------------ */
-
-.scr-stores-cookstock-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.scr-stores-cookstock-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  text-decoration: none;
-}
-
-.scr-stores-cookstock-pct {
-  font-family: var(--sol-font-data);
-  color: var(--sol-text-muted);
-}
-
-/* ---- restock queue + waste log entry point -------------------------------- */
-
-.scr-stores-footer-row {
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-.scr-stores-restock {
-  flex: 1 1 auto;
-  min-width: 12rem;
-}
-
-.scr-stores-restock-list {
-  margin: 0;
-  font-family: var(--sol-font-data);
-}
-
-.scr-stores-wastelog-btn {
-  padding-inline: 1rem;
-}
-
-/* ---- log dinner ------------------------------------------------------------ */
-
-.scr-stores-logdinner-name {
-  margin: 0;
-  font-weight: 600;
-}
-
-.scr-stores-logdinner-actions,
-.scr-stores-logdinner-portions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.scr-stores-logdinner-btn {
-  padding-inline: 1rem;
-}
-
-.scr-stores-logdinner-cancel {
-  padding-inline: 1rem;
-  color: var(--sol-text-muted);
-}
-
-.scr-stores-logdinner-status {
-  margin: 0;
-  min-height: 1.5em;
-  font-family: var(--sol-font-data);
-  font-size: var(--sol-text-label);
-}
-
-/* ---- waste sheet ------------------------------------------------------------ */
-
-.scr-stores-waste-month {
-  margin: 0 0 0.75rem;
-  font-family: var(--sol-font-data);
-  font-weight: 700;
-}
-
-.scr-stores-waste-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.scr-stores-waste-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.125rem;
-  border-bottom: 1px solid var(--sol-border);
-  padding-bottom: 0.5rem;
-}
-
-.scr-stores-waste-ref {
-  font-weight: 600;
-}
-
-.scr-stores-waste-meta {
-  font-family: var(--sol-font-data);
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-}
-
-.scr-stores-waste-note {
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-}
-
-/* ---- responsive: mobile 390×844, wheel stays right-edge, no h-scroll ------- */
-
-@media (max-width: 700px) {
-  .scr-stores-wheel {
-    width: 3.75rem;
+@layer cd.screen {
+  /* =====================================================================
+     0 · the scene root — a material ground under one light (CORRECTIONARY 5.4)
+     ===================================================================== */
+
+  /*
+    The plate's arithmetic is EXACT: a groove painted at a 44px pitch has to
+    land on a row that is 44px, padding included. Content-box would put every
+    padded, width:100% element past its own column and the pointers would read
+    against the wrong scale. This is not a preference; it is the condition under
+    which the milled channels line up with the rows at all.
+  */
+  .str,
+  .str *,
+  .str *::before,
+  .str *::after {
+    box-sizing: border-box;
   }
 
-  .scr-stores-detent-glyph {
-    font-size: 0.6875rem;
+  .str {
+    /* geometry — CLEAR LID section 2: 0.5rem module, 0.75rem panel radius,
+       0.25rem control cap radius, "the geometry of a specimen case" */
+    --str-row: 2.75rem; /* 44px — the Floor, delta 2 above */
+    --str-scale-w: 7rem; /* the level channel — mechanism, under the lid */
+    --str-life-w: 4rem; /* the life channel  — mechanism, under the lid */
+    --str-fig-w: 3rem; /* the printed level word — chassis, outside the lid */
+    --str-ink-w: 4.5rem; /* the printed countdown — chassis. 4.5rem and not 4:
+                            "✕ expired" is the longest real token this column
+                            ever prints and it measures 70px in the data voice
+                            at 13px. A column sized to the second-longest token
+                            is a column that will be overrun by real data. */
+    --str-age-w: 3rem; /* the printed stocktake age — chassis */
+    --str-pad: 0.75rem; /* the plate's own margin at its cut edge */
+    --str-gap: 0.625rem; /* between columns */
+    --str-spine: 2.25rem; /* the elm hinge spine */
+    /* the printed life zone's own band edges — a printed zone, never a spinning
+       anything (CD-BRIEF ruling 6). This is the only place the two numbers
+       live, and the two places that draw the zone both read them. */
+    --str-life-danger: 22%;
+    --str-life-warn: 46%;
+    /*
+      THE BAY WINDOW'S HEIGHT, derived rather than guessed. The register is one
+      band of a four-band panel, so its window is what the viewport has left
+      after the masthead, the operating column's own committed height and the
+      ledger — clamped so it never collapses below four rows and never grows
+      past a comfortable drawer on a very tall screen. At 1280x800 this
+      resolves to 384px (8.7 rows visible of the longest group's 22); the
+      ceiling is 28rem so that on a tall screen the register and the instrument
+      column beside it stay the same height instead of the bay running on past
+      a column of empty cream.
+    */
+    --str-bay-h: clamp(11rem, calc(100dvh - 26rem), 28rem);
+
+    /* every offset below is the distance from the plate's RIGHT edge to that
+       column's own right edge; the plate's background bands read the same
+       numbers the row grid does, so print and pointer cannot disagree */
+    --str-off-age: var(--str-pad);
+    --str-off-ink: calc(var(--str-off-age) + var(--str-age-w) + var(--str-gap));
+    --str-off-fig: calc(var(--str-off-ink) + var(--str-ink-w) + var(--str-gap));
+    --str-off-life: calc(var(--str-off-fig) + var(--str-fig-w) + var(--str-gap));
+    --str-off-scale: calc(var(--str-off-life) + var(--str-life-w) + var(--str-gap));
+
+    --str-lux: 1; /* Trophy's Active tier — screencraft/01 */
+
+    position: relative;
+    display: block;
+    min-block-size: 100%;
+    padding: var(--cd-module);
+    color: var(--cd-ink);
+    font-family: var(--cd-font-ui);
+    /*
+      CLEAR LID section 2: cream painted steel follows the lacquer/enamel recipe
+      of II.2.12 — "a near-flat body, its whole story told in one hard reflection
+      ellipse". The body barely travels; the ellipse is .str::before.
+
+      THE GROUND NEVER GOES DARKER THAN THE WORLD'S OWN FACE. Every contrast
+      figure tokens/world.css measured for this world was measured against
+      #EDE8DE; a gradient running below it would quietly invalidate all of them.
+      The face is the FLOOR of the gradient and the light travels upward from it.
+    */
+    background: linear-gradient(var(--cd-light-axis), #f2eee6 0%, #efeae1 58%, #ede8de 100%);
   }
 
-  .scr-stores-row-name {
-    min-width: 6ch;
+  /* II.2.12's one ellipse, at the recipe's own 8%/7% origin, 34% x 26%.
+     "The window is fixed to the sun and does not travel on press." */
+  .str::before {
+    content: "";
+    position: absolute;
+    left: var(--cd-lacquer-window-x);
+    top: var(--cd-lacquer-window-y);
+    width: var(--cd-lacquer-window-w);
+    height: var(--cd-lacquer-window-h);
+    border-radius: 50%;
+    pointer-events: none;
+    background: var(--cd-lacquer-window);
+    z-index: 0;
   }
-}
 
-/* ---- forced-colors -------------------------------------------------------- */
+  /* CORRECTIONARY 3.3 — "visible, felt texture ... at whatever strength reads
+     as real material". Paint grain on enamelled steel at the foundation's own
+     0.06, three times the bible's revoked 2% cap. It renders BENEATH every row
+     of type, never over it — CD-BRIEF ruling 5, the ink-plate law. */
+  .str::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: var(--cd-noise);
+    opacity: var(--cd-grain-strength);
+    mix-blend-mode: overlay;
+    z-index: 0;
+  }
 
-@media (forced-colors: active) {
-  .scr-stores-row--armed {
+  /*
+    THE FRAME. Two properties and two only:
+    - `opacity` carries the luminance tier at screencraft/01's 4000ms linear.
+    - `translate` carries the burn-in orbit, moving every instrument AS ONE
+      RIGID FRAME so no element can drift against another.
+  */
+  .str-frame {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--cd-module);
+    opacity: var(--str-lux);
+    translate: var(--str-orbit-x, 0px) var(--str-orbit-y, 0px);
+    transition:
+      opacity 4000ms linear,
+      translate 4000ms linear;
+  }
+
+  .str-masthead,
+  .str-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 23rem);
+    gap: var(--cd-module);
+    align-items: stretch;
+  }
+
+  /* the ledger runs the full width of the panel: it is one band, not a column */
+  .str-footer {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .str-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cd-module);
+    min-inline-size: 0;
+  }
+
+  /* =====================================================================
+     1 · the housings — cream painted steel, not the foundry's neutral field
+     ===================================================================== */
+  /*
+    (0,3,0) so it beats the foundry's own (0,2,0) by specificity rather than by
+    stylesheet order. See the cascade note at the head of this file.
+  */
+  .str .cd-encl[data-cd-encl="hero"],
+  .str .cd-encl[data-cd-encl="pod"],
+  .str .cd-encl[data-cd-encl="faceplate"] {
+    background-color: #e4dfd4; /* the gradient's darkest stop, declared too */
+    background-image: linear-gradient(var(--cd-light-axis), #f5f1ea 0%, #ede8de 58%, #e4dfd4 100%);
+    border-radius: var(--cd-radius-panel);
+  }
+
+  /* tier 3 — the resolved hero's full stack with the deepest ambient.
+     CORRECTIONARY 3.1: tier 3 is a construction SET here, not a ration. */
+  .str .cd-encl[data-cd-encl="hero"] {
+    box-shadow:
+      inset 0 1px 0 #ffffff9e, /* rim light — the machined top edge */
+      inset 0 -1px 0 #00000038, /* lip — the edge turning from the light */
+      0 1px 0 #00000047, /* contact — glues the housing to the field */
+      0 4px 8px #00000029, /* core — the hero's own mass */
+      0 24px 56px #0000001f; /* ambient — the deepest throw on the panel */
+  }
+
+  .str .cd-encl[data-cd-encl="pod"] {
+    box-shadow:
+      inset 0 1px 0 #ffffff8c,
+      inset 0 -1px 0 #00000030,
+      0 1px 0 #00000047,
+      0 3px 6px #00000024;
+  }
+
+  /* every machined key in this world is a GREY CONTROL plate (section 2:
+     "knob caps, button faces, escutcheon plates"), never the cream field */
+  /*
+    THE DECLARED GROUND IS THE PAINTED GROUND'S OWN FLOOR, on the keys as on the
+    plate. Without the explicit colour, a key's computed background-color stays
+    transparent and every contrast figure taken on it silently resolves to
+    whatever surface is behind it — which is how the two alert-slip inks were
+    measured at 4.98:1 when their real ground put them at 3.63:1.
+  */
+  .str .cd-key {
+    background-color: #a5a59c;
+    --cd-stack:
+      inset 0 1px 0 #ffffff73, /* rim light — the moulded top edge */
+      inset 0 -1px 0 #00000052, /* lip */
+      0 1px 0 #00000066, /* contact */
+      0 3px 6px #0000003d, /* core */
+      0 10px 24px #00000021; /* ambient */
+    background-image: linear-gradient(var(--cd-light-axis), #c3c3ba 0%, #b7b7ae 58%, #a5a59c 100%);
+    color: #2f2c26; /* 5.61:1 on the gradient's darkest stop #A5A59C, measured */
+    border-radius: var(--cd-radius-cap);
+  }
+
+  .str .cd-key[data-cd-pressed="true"] {
+    /* II.2.6 / II.4.3 — the down-stroke lands in one frame, linear, no easing.
+       The 1px contact line NEVER moves; core and ambient tighten; no box
+       dimension changes, because layout is untouchable. */
+    --cd-stack:
+      inset 0 1px 0 #ffffff33,
+      inset 0 -1px 0 #00000052,
+      0 1px 0 #00000066,
+      0 1px 2px #0000003d,
+      0 4px 10px #00000021;
+  }
+
+  .str .cd-key[disabled] {
+    color: #4a453c;
+  }
+
+  /* the engraved naming plate: cut INTO cream steel (II.6.7) */
+  .str .cd-escutcheon {
+    background: transparent;
+    color: #2f2c26;
     box-shadow: none;
-    outline: 2px solid Highlight;
-    outline-offset: -2px;
+    padding-inline: 0;
+    text-shadow:
+      0 -1px 0 #00000038, /* the cut's shadowed shoulder */
+      0 1px 0 #ffffff8c; /* the thrown edge catching the same sun */
   }
-  .scr-stores-wheel-strip,
-  .scr-stores-detent {
-    background-image: none;
+
+  /* the ink plate — CD-BRIEF ruling 5's own surface, in this world's paper */
+  .str .cd-plate-mount {
+    background: var(--cd-face);
+    color: var(--cd-ink);
+    border-radius: 0.125rem;
+    box-shadow:
+      inset var(--cd-shadow-x) var(--cd-shadow-y) 4px #00000024,
+      inset 0 -1px 0 #ffffff8c,
+      0 1px 0 #00000029;
   }
-  .scr-stores-detent[data-checked] {
-    forced-color-adjust: none;
-    background: Highlight;
-    color: HighlightText;
+
+  /* =====================================================================
+     2 · THE ANNUNCIATOR — the arbiter's one act, plus the two alert lamps
+     ===================================================================== */
+
+  .str-annun {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "name  name  name"
+      "bank  slot  act"
+      "rail  rail  rail";
+    align-items: center;
+    align-content: start;
+    gap: 0.5rem var(--cd-module);
+    padding: 0.625rem 0.75rem;
+  }
+
+  .str-annun__name {
+    grid-area: name;
+    margin: 0;
+    font-size: var(--cd-size-1);
+  }
+
+  .str-annun__bank {
+    grid-area: bank;
+    display: grid;
+    grid-auto-flow: column;
+    gap: 0.75rem;
+    padding: 0.375rem 0.625rem;
+    border-radius: var(--cd-radius-cap);
+    /* the lamps sit in a grey control plate, the way a real annunciator does */
+    background-color: #a5a59c; /* the gradient's own darkest stop, DECLARED as
+                                  well as painted, so every contrast figure
+                                  taken on this plate is taken on its floor */
+    background-image: linear-gradient(var(--cd-light-axis), #c3c3ba 0%, #b7b7ae 58%, #a5a59c 100%);
+    box-shadow:
+      inset 0 1px 0 #ffffff73,
+      inset 0 -1px 0 #00000052,
+      0 1px 0 #00000066,
+      0 3px 6px #0000003d;
+  }
+
+  .str-annun__cell {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+    align-items: center;
+    column-gap: 0.375rem;
+  }
+
+  .str-annun__cell .cd-lamp-set {
+    grid-row: 1 / 3;
+  }
+
+  .str-annun__figure {
+    font-size: var(--cd-size-5); /* 1.75rem */
+    line-height: var(--cd-leading-tight);
+    color: #2f2c26; /* measured 5.03:1 on the grey control plate */
+  }
+
+  .str-annun__label {
+    font-size: var(--cd-size-1);
+    color: #2f2c26;
+    text-transform: uppercase;
+    letter-spacing: var(--cd-track-label);
+  }
+
+  /* II.4.12 — warning presentation is NEVER shed, at any stage, and II.4.14 —
+     it lands within one frame of the crossing, phase-locked to the 2Hz flash. */
+  .str-annun__cell[data-role="danger"][data-on="true"] .cd-lamp {
+    animation: str-warn 500ms steps(1, end) infinite;
+  }
+
+  @keyframes str-warn {
+    0%,
+    50% {
+      opacity: 1;
+    }
+    50.01%,
+    100% {
+      opacity: 0.4;
+    }
+  }
+
+  .str-annun__slot {
+    grid-area: slot;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.5rem;
+    min-block-size: var(--str-row);
+    padding: 0.375rem 0.625rem;
+  }
+
+  .str-annun__duty {
+    font-size: var(--cd-size-2);
+    color: var(--cd-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .str-annun__queue {
+    font-size: var(--cd-size-2);
+    color: var(--cd-muted-ink);
+    white-space: nowrap;
+  }
+
+  .str-annun__act {
+    grid-area: act;
+    min-inline-size: var(--cd-target-min);
+    min-block-size: var(--cd-target-min);
+    display: inline-block;
+  }
+
+  /* ---- the slip rail: every alert NAMED, and one press from its row ---- */
+
+  .str-annun__rail {
+    grid-area: rail;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.375rem;
+    min-block-size: var(--cd-target-min);
+  }
+
+  .str .str-annun__slip {
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.5rem;
+    max-inline-size: 15rem;
+    text-align: start;
+  }
+
+  /* the SHAPE channel. Plain ink, because the hue is the lamp's job now —
+     #2F2C26 measures 5.61:1 on the control plate's darkest stop #A5A59C. */
+  .str-annun__slip-glyph {
+    font-size: var(--cd-size-1);
+    font-weight: 700;
+    color: #2f2c26;
+  }
+
+  .str .str-annun__slip .cd-lamp-set {
+    inline-size: auto;
+  }
+
+  .str-annun__slip-name {
+    font-size: var(--cd-size-1);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .str-annun__slip-fig {
+    font-size: var(--cd-size-1);
+    font-weight: 700;
+  }
+
+  .str-annun__clear {
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+  }
+
+  .str-annun__more {
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+  }
+
+  /* =====================================================================
+     3 · THE LARDER GAUGE — fill, count, age, and the printed threshold
+     ===================================================================== */
+
+  /*
+    A STACK, NOT A TWO-COLUMN GRID. Rendered and measured: the first build put
+    the lamp scale and the count plate side by side in `auto minmax(0,1fr)`, and
+    the figures row's own min-content pushed column 1 to 250px inside a 368px
+    housing — the plate collapsed to 44px against a 133px min-content and the
+    whole screen gained 71px of horizontal overflow. A column of full-width
+    bands cannot do that at any width.
+  */
+  .str-gauge {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "name"
+      "scale"
+      "face"
+      "foot";
+    align-content: start;
+    gap: 0.375rem;
+    padding: 0.625rem 0.75rem;
+  }
+
+  .str-gauge__name {
+    grid-area: name;
+    margin: 0;
+    font-size: var(--cd-size-1);
+  }
+
+  .str-gauge > .str-lampscale {
+    grid-area: scale;
+    inline-size: 100%;
+  }
+
+  /* the figures and the recovery slot share ONE row, so the plate's height is
+     the same whether or not an action is offered. Flex rather than fixed
+     tracks: at 390px two figure plates plus a key exceed the housing, and a
+     row that overflows its own enclosure is worse than one that wraps. */
+  .str-gauge__foot {
+    grid-area: foot;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  .str-gauge__face {
+    grid-area: face;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    align-items: baseline;
+    column-gap: 0.5rem;
+    padding: 0.375rem 0.625rem;
+  }
+
+  .str-gauge__value {
+    grid-row: 1 / 3;
+    align-self: center;
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-size: var(--cd-size-5); /* 1.75rem */
+    line-height: var(--cd-leading-tight);
+    color: var(--cd-ink);
+  }
+
+  .str-gauge__of {
+    font-size: var(--cd-size-2);
+    color: var(--cd-muted-ink);
+  }
+
+  .str-gauge__meta {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .str-gauge__age {
+    font-size: var(--cd-size-1);
+    color: var(--cd-ink);
+  }
+
+  .str-gauge__threshold {
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+    letter-spacing: var(--cd-track-micro);
+  }
+
+  /* the state word, PRINTED. Reserved so the plate keeps its height when a
+     reading crosses the threshold (II.7.7 — colour never travels alone). */
+  .str-gauge__word {
+    grid-column: 2;
+    min-block-size: 1em;
+    font-size: var(--cd-size-1);
+    font-weight: 700;
+    letter-spacing: var(--cd-track-micro);
+    color: var(--cd-role-warning-ink-light); /* #8D5E1E — 4.58:1 on cream steel */
+  }
+
+  .str-gauge__fig {
+    display: flex;
+    align-items: baseline;
+    gap: 0.375rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .str-gauge__fig .cd-data {
+    font-size: var(--cd-size-4);
+    color: var(--cd-ink);
+  }
+
+  .str-gauge__fig .cd-silkscreen {
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+  }
+
+  /* the recovery action at a FIXED position: the slot exists either way, so the
+     control never moves under a hand that is reaching for it */
+  .str-gauge__recover {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-inline-start: auto;
+    min-block-size: var(--cd-target-min);
+  }
+
+  .str-gauge__recover--empty {
+    display: block;
+    min-block-size: var(--cd-target-min);
+  }
+
+  /* =====================================================================
+     4 · THE LAMP SCALE — CLEAR LID's own signature readout (section 3)
+     ===================================================================== */
+
+  .str-lampscale {
+    position: relative;
+    display: block;
+    block-size: 2rem;
+    inline-size: 9rem;
+    overflow: hidden;
+    border-radius: 0.125rem;
+    background: var(--cd-face); /* printed paper ground, II.2.14 */
+    box-shadow:
+      inset var(--cd-shadow-x) var(--cd-shadow-y) 4px #00000047, /* the well */
+      inset 0 -1px 0 #ffffff8c; /* lip — the cut edge catching light */
+  }
+
+  /* II.2.19 — "light enters at one edge and dies within 26% of the panel's own
+     width". CLEAR LID: the lamp is this world's ONE emissive source. */
+  .str-lampscale__lamp {
+    position: absolute;
+    inset: 0 auto 0 0;
+    inline-size: var(--cd-edgelight-falloff); /* 26% */
+    pointer-events: none;
+    background: linear-gradient(90deg, var(--cd-lamp-lit) 0%, transparent 100%);
+    opacity: var(--str-lamp-charge, 0.34); /* II.2.18's standing 34% floor */
+    transition: opacity var(--str-lamp-ms, 120ms) linear;
+  }
+
+  /* the printed scale, silkscreened on the paper (II.6.8), inset by the same
+     2px the pointer's own travel is inset by so print and needle share a zero */
+  .str-lampscale__print {
+    position: absolute;
+    inset: 0 2px;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      90deg,
+      #00000000 0,
+      #00000000 calc(10% - 1px),
+      #3a362e4d calc(10% - 1px),
+      #3a362e4d 10%
+    );
+  }
+
+  .str-lampscale[data-divisions="5"] .str-lampscale__print {
+    background: repeating-linear-gradient(
+      90deg,
+      #00000000 0,
+      #00000000 calc(20% - 1px),
+      #3a362e4d calc(20% - 1px),
+      #3a362e4d 20%
+    );
+  }
+
+  /*
+    THE POINTER READS BY ITS KEYLINE.
+
+    Measured: lamp hot #FFC868 against the paper it travels on, #EDE8DE, is
+    1.21:1 — the instrument, invisible. CLEAR LID is a LIGHT world and its one
+    emissive hue sits near the luminance of its own paper; amber is legible as a
+    lamp glowing in a dark well, which is how the source object spends it, never
+    as a mark printed on cream.
+
+    The repair is already precedented in this product: tokens/world.css does the
+    same for RESTOMOD — "the pinned livery orange measures 2.89:1 on ivory, below
+    the 3:1 graphical floor, so the needle reads by its KEYLINE". Here the
+    pointer is 4px of printed ink with the lamp's amber running down its centre.
+    Ink #3A362E on the paper measures 9.84:1, and the amber stays what it always
+    was: light, inside the mark, not the mark itself.
+  */
+  .str-lampscale__pointer {
+    position: absolute;
+    inset: 0 auto 0 0;
+    inline-size: 4px;
+    margin-inline-start: -2px;
+    background: linear-gradient(
+      90deg,
+      #3a362e 0 1px, /* keyline — 9.84:1 on the paper */
+      var(--cd-lamp-hot) 1px 3px, /* the lamp's own light, inside the mark */
+      #3a362e 3px 4px
+    );
+    box-shadow:
+      0 0 var(--cd-bloom-r) #ffc868cc, /* bloom 1 — r, 80% (II.2.17) */
+      0 0 var(--cd-bloom-4r) #ffc86866, /* bloom 2 — 4r, 40% */
+      0 0 var(--cd-bloom-12r) #ffc86829; /* bloom 3 — 12r, 16% */
+    transform: translateX(var(--str-scale-x, 0px));
+    transition: transform var(--str-scale-ms, 80ms) linear; /* a RATE, II.4.8 */
+  }
+
+  .str-lampscale__figure {
+    position: absolute;
+    inset-inline-end: 0.375rem;
+    inset-block-start: 50%;
+    transform: translateY(-50%);
+    font-size: var(--cd-size-1);
+    color: var(--cd-ink);
+  }
+
+  /* =====================================================================
+     5 · THE REGISTER BAY — the specimen case, its elm spine, and its hood
+     ===================================================================== */
+
+  .str-bay {
+    display: grid;
+    grid-template-columns: var(--str-spine) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  /* CLEAR LID section 2: "Elm is confined to rails, tray linings, and trim — it
+     never becomes a field." Its job here is structural, not decorative: every
+     lid in the register hinges off this spine. */
+  .str-bay__spine {
+    grid-area: 1 / 1 / 3 / 2;
+    position: relative;
+    /* II.2.16 — wood: grain with IRREGULAR stops, never metronomic. Band
+       spacing 2/9/21px inside one 24px period, re-keyed to elm #D8BD8E. */
+    background:
+      repeating-linear-gradient(
+        93deg,
+        #00000000 0px,
+        #00000030 2px,
+        #00000000 3px,
+        #00000000 9px,
+        #00000022 11px,
+        #00000000 12px,
+        #00000000 21px,
+        #00000036 22px,
+        #00000000 24px
+      ),
+      linear-gradient(var(--cd-light-axis), #e2caa0 0%, #d8bd8e 46%, #c4a674 100%);
+    box-shadow:
+      inset 0 1px 0 #ffffff2e, /* oiled rim — never varnish glare (II.2.16) */
+      1px 0 0 #00000052, /* lip — the edge turning from the light */
+      3px 0 8px #00000029; /* core — the spine's own mass */
+  }
+
+  /* the hinge knuckles: real hardware, evenly pitched down the spine */
+  .str-bay__spine::after {
+    content: "";
+    position: absolute;
+    inset: 0.75rem 0.4375rem;
+    border-radius: 0.125rem;
+    background: repeating-linear-gradient(
+      180deg,
+      #00000000 0px,
+      #00000000 18px,
+      #0000004d 18px,
+      #0000004d 20px,
+      #ffffff59 20px,
+      #ffffff59 21px,
+      #00000000 21px,
+      #00000000 40px
+    );
+  }
+
+  .str-bay__inner {
+    grid-area: 1 / 2 / 2 / 3;
+    position: relative;
+    min-block-size: 0;
+    padding: var(--cd-module);
+    /* the recess the register sits in — II.2.3's inverted pair, the one place
+       the full 1:2 cast vector is spent */
+    background: var(--cd-field);
+    box-shadow: var(--cd-shadow-well);
+  }
+
+  /*
+    THE HOOD — CLEAR LID's own defining gesture (section 3, the lid tray):
+    "the tray is hinged along its top edge and rotates open rather than sliding
+    flat, carrying the acrylic tint as it lifts ... a true perspective rather
+    than an affine flatten: without one, rotateX crossing 90deg mirrors the
+    panel upside-down instead of turning it away from the hand."
+
+    0 -> 96 degrees over 340ms at Panel mass, spring(1.6, 240, 30) — the
+    chapter's own --cd-clearlid-spring-lid. It plays on every lid change,
+    because in this world one specimen case closing IS the next one opening
+    (section 6). The element is keyed by the open group's id so it genuinely
+    remounts and the hinge genuinely replays.
+  */
+  .str-bay__hood {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    transform-origin: top center;
+    backface-visibility: hidden;
+    background: var(--cd-acrylic-reveal);
+    box-shadow:
+      inset 0 1px 0 #ffffff8c, /* edge-light: the polished top edge (II.2.10) */
+      inset 0 0 0 1px #ffffff2e; /* wall — the slab's own thickness */
+    animation: str-hood var(--cd-settle-panel) var(--cd-ease-settle) both;
+  }
+
+  @keyframes str-hood {
+    from {
+      transform: perspective(60rem) rotateX(0deg);
+      opacity: 1;
+    }
+    to {
+      transform: perspective(60rem) rotateX(-96deg);
+      opacity: 0;
+    }
+  }
+
+  .str .str-register {
+    gap: calc(var(--cd-module) / 2);
+    block-size: 100%;
+    min-block-size: 0;
+  }
+
+  .str .cd-register-group {
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    min-block-size: 0;
+  }
+
+  .str .cd-register-group[data-cd-open="true"] {
+    flex: 1 1 auto;
+  }
+
+  /* THE LID HANDLE — a grey control plate (section 2, "escutcheon plates")
+     carrying an engraved label, the group's lamp scale, and its own count. */
+  .str .cd-register-head {
+    --cd-stack:
+      inset 0 1px 0 #ffffff73,
+      inset 0 -1px 0 #00000052,
+      0 1px 0 #00000066,
+      0 3px 6px #0000003d,
+      0 10px 24px #00000021;
+    display: grid;
+    grid-template-columns: minmax(4.5rem, 8rem) auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--cd-module);
+    min-block-size: var(--str-row);
+    padding: 0.25rem 0.625rem;
+    border-radius: var(--cd-radius-cap);
+    background-color: #a5a59c;
+    background-image: linear-gradient(var(--cd-light-axis), #c3c3ba 0%, #b7b7ae 58%, #a5a59c 100%);
+    color: #2f2c26;
+    text-transform: none;
+    letter-spacing: var(--cd-track-body);
+  }
+
+  .str .cd-register-group[data-cd-open="true"] > .cd-register-head {
+    --cd-stack:
+      inset 0 1px 0 #ffffff9e,
+      inset 0 -1px 0 #00000052,
+      0 1px 0 #00000066,
+      0 4px 8px #0000003d,
+      0 14px 28px #00000021;
+    background-color: #adada4;
+    background-image: linear-gradient(var(--cd-light-axis), #cfcfc6 0%, #bfbfb6 58%, #adada4 100%);
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+  }
+
+  /* II.6.7 — engraved: glyph darker than the plate, carrying the one light's
+     own dual shadow. CLEAR LID puts engraving on the grey control plates. */
+  .str .cd-register-label {
+    font-size: var(--cd-size-3);
+    font-weight: 500;
+    letter-spacing: var(--cd-track-label);
+    color: #2f2c26;
+    text-shadow:
+      0 -1px 0 #00000038,
+      0 1px 0 #ffffff8c;
+  }
+
+  .str .cd-register-head .str-lampscale {
+    inline-size: 7rem;
+    block-size: 1.5rem;
+  }
+
+  .str .cd-register-count {
+    grid-column: 4;
+    color: #2f2c26;
+    font-size: var(--cd-size-1);
+  }
+
+  /* MEASURED: #4A453C on the OPEN lid's darkest stop #ADADA4 is 4.21:1, under
+     the text floor. Every other glyph on a grey control plate in this world is
+     #2F2C26, which reads 6.15:1 there — the unit takes the same ink rather
+     than a dimmer one it has not earned. */
+  .str .cd-register-count .cd-unit {
+    color: #2f2c26;
+  }
+
+  /*
+    THE BAY WINDOW. The panel the plate slides in — a fixed-height machined
+    recess. See the declared departure in index.tsx: R7's accordion bounds the
+    register to one group, but one group is still twenty-two rows, so the plate
+    slides inside its own drawer and the clip confesses its remainder as a
+    number in three parts.
+  */
+  .str .cd-register-group > div {
+    min-block-size: 0;
+  }
+
+  /*
+    THE BAY IS AS TALL AS THE INSTRUMENT COLUMN BESIDE IT, and the plate takes
+    whatever is left. Not a magic number: `.str-body` stretches both grid items
+    to the taller of the two, the register flexes to fill the bay, and the open
+    panel takes the remainder with `min-block-size: 0` so it can actually
+    shrink. What does not fit is confessed as a number rather than hidden.
+  */
+  .str .cd-register-group[data-cd-open="true"] > div {
+    flex: 1 1 auto;
+    min-block-size: 11rem;
+    max-block-size: var(--str-bay-h);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cd-border) var(--cd-field);
+    box-shadow: var(--cd-shadow-well);
+    border-end-start-radius: var(--cd-radius-cap);
+    border-end-end-radius: var(--cd-radius-cap);
+  }
+
+  /* =====================================================================
+     6 · THE MILLED PLATE — one object, sixty-five engraved rows
+     ===================================================================== */
+
+  .str .cd-register-rows {
+    position: relative;
+    display: block;
+    padding: 0;
+    gap: 0;
+    /*
+      THE DECLARED GROUND IS THE PAINTED GROUND'S OWN FLOOR.
+      MEASURED, and it was a real failure: with only a background-IMAGE
+      declared, the plate's computed background-color stayed transparent, so
+      every printed figure on it resolved its ground to the bay's recess well
+      #DCD4C4 — where danger ink #BD372D and warning ink #8D5E1E both measure
+      3.80:1, under the 4.5:1 text floor. The enamel gradient's own darkest
+      stop is #EDE8DE, where the same two inks measure 4.59:1 and 4.58:1, so
+      the colour is declared as well as painted and the worst case and the
+      declared case are now the same case.
+    */
+    background-color: #ede8de;
+    /*
+      EIGHT LAYERS, ONE PAINT. The two milled channels and every one of the
+      sixty-five grooves are gradient bands in this single background, so the
+      register costs one paint no matter how many rows it holds — the measured
+      performance law's own conclusion turned into geometry.
+    */
+    background-image:
+      /* 1 · the level channel's printed five-seat scale */
+      repeating-linear-gradient(
+        90deg,
+        #00000000 0,
+        #00000000 calc(20% - 1px),
+        #3a362e59 calc(20% - 1px),
+        #3a362e59 20%
+      ),
+      /* 2 · the level channel's milled well — shadow enters HIGH, lit lip closes LOW (II.2.3) */
+      linear-gradient(180deg, #00000047 0 1px, #00000000 1px calc(100% - 1px), #ffffff5e calc(100% - 1px) 100%),
+      /* 3 · the level channel's well floor */
+      linear-gradient(#dcd4c4, #dcd4c4),
+      /* 4 · the life channel's printed zones — a printed band, never a spinning disc */
+      linear-gradient(
+        90deg,
+        #c2392e3d 0 var(--str-life-danger),
+        #a26d2333 var(--str-life-danger) var(--str-life-warn),
+        #00000000 var(--str-life-warn) 100%
+      ),
+      /* 5 · the life channel's milled well */
+      linear-gradient(180deg, #00000047 0 1px, #00000000 1px calc(100% - 1px), #ffffff5e calc(100% - 1px) 100%),
+      /* 6 · the life channel's well floor */
+      linear-gradient(#dcd4c4, #dcd4c4),
+      /* 7 · the engraved row grooves, at exactly the row pitch */
+      repeating-linear-gradient(
+        180deg,
+        #00000000 0,
+        #00000000 calc(100% - 2px),
+        #0000002e calc(100% - 2px),
+        #0000002e calc(100% - 1px),
+        #ffffff8c calc(100% - 1px),
+        #ffffff8c 100%
+      ),
+      /* 8 · the enamel body — never darker than the world's own face */
+      linear-gradient(var(--cd-light-axis), #f2eee6 0%, #efeae1 58%, #ede8de 100%);
+    background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat, no-repeat;
+    background-size:
+      var(--str-scale-w) 100%,
+      var(--str-scale-w) 100%,
+      var(--str-scale-w) 100%,
+      var(--str-life-w) 100%,
+      var(--str-life-w) 100%,
+      var(--str-life-w) 100%,
+      100% var(--str-row),
+      100% 100%;
+    background-position:
+      right var(--str-off-scale) top 0,
+      right var(--str-off-scale) top 0,
+      right var(--str-off-scale) top 0,
+      right var(--str-off-life) top 0,
+      right var(--str-off-life) top 0,
+      right var(--str-off-life) top 0,
+      left top,
+      left top;
+    animation: cd-register-reveal var(--cd-reveal) var(--cd-ease-settle) both;
+  }
+
+  /* the row wrapper the foundry supplies is structural only; the row itself is
+     the flex item, so the groove pitch is the row's own height and nothing else */
+  .str .cd-register-row {
+    display: contents;
+  }
+
+  /*
+    THE LID, BUILT THE WAY THE SENTENCE READS.
+
+    CLEAR LID section 1: "Every value sits visible under a cool tint at rest;
+    operating it costs the one gesture that clears the tint away."
+
+    The naive build lays a LIT pane over the addressed row. Measured in the
+    spike, that put the row the operator is actually working on at 2.66:1 — the
+    least legible thing on the screen — and dropped the amber pointer to 1.03:1
+    under it. A tint over type reduces contrast at every intensity; there is no
+    tuning that fixes it.
+
+    So the pane covers the MECHANISM, not the printing — which is also what the
+    source object does: the hood sits over the platter and the tuning scale, and
+    the chassis markings are outside it. TWO panes, above and below the addressed
+    row, leave exactly one row of mechanism standing bare. Nothing is lit; the
+    lid is CUT AWAY at the row the hand is on.
+
+    Two pseudo-elements per plate, positioned by one custom property. Never
+    sixty-five.
+  */
+  .str .cd-register-rows::before,
+  .str .cd-register-rows::after {
+    content: "";
+    position: absolute;
+    inset-inline-end: var(--str-off-life);
+    inline-size: calc(var(--str-life-w) + var(--str-gap) + var(--str-scale-w));
+    pointer-events: none;
+    z-index: 2;
+    /*
+      II.2.10's glass, at pane scale: the resting glance tint under one hard
+      rake down the sun's own axis, so the slab catches light rather than
+      merely tinting. The chapter's 14px backdrop blur belongs to a hero pane
+      over a large field; at 4mm over a needle it would smear the instrument it
+      exists to protect, so the blur is cut to the thickness this pane actually
+      claims — enough that the mechanism reads as being UNDER something.
+    */
+    background:
+      linear-gradient(var(--cd-light-axis), #ffffff2e 0%, #ffffff00 26%, #ffffff00 100%),
+      var(--cd-acrylic-glance);
+    backdrop-filter: blur(0.5px) saturate(0.92);
+    -webkit-backdrop-filter: blur(0.5px) saturate(0.92);
+    box-shadow:
+      inset 0 1px 0 #ffffff8c, /* edge-light: the polished top edge (II.2.10) */
+      inset 0 0 0 1px #ffffff2e; /* wall — the slab's own thickness */
+    /* the cut travels on a focus-shift (II.4.10 — 160ms, one ring, one journey) */
+    transition:
+      inset-block-start var(--cd-focus-shift) var(--cd-ease-settle),
+      block-size var(--cd-focus-shift) var(--cd-ease-settle);
+  }
+
+  /* nothing addressed: one pane covers the whole mechanism */
+  .str .cd-register-rows::before {
+    inset-block-start: 0;
+    block-size: calc(var(--str-rows, 0) * var(--str-row));
+  }
+
+  .str .cd-register-rows::after {
+    inset-block-start: calc(var(--str-rows, 0) * var(--str-row));
+    block-size: 0;
+  }
+
+  /* a row is addressed: the lid parts across exactly that row */
+  .str[data-str-armed="true"] .cd-register-rows::before {
+    block-size: calc(var(--str-armed-i, 0) * var(--str-row));
+  }
+
+  .str[data-str-armed="true"] .cd-register-rows::after {
+    inset-block-start: calc((var(--str-armed-i, 0) + 1) * var(--str-row));
+    block-size: calc((var(--str-rows, 0) - var(--str-armed-i, 0) - 1) * var(--str-row));
+  }
+
+  /* =====================================================================
+     7 · ONE ENGRAVED ROW
+     ===================================================================== */
+
+  .str-row {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 1fr)
+      var(--str-scale-w)
+      var(--str-life-w)
+      var(--str-fig-w)
+      var(--str-ink-w)
+      var(--str-age-w);
+    align-items: center;
+    gap: var(--str-gap);
+    inline-size: 100%;
+    block-size: var(--str-row); /* fixed pitch — the grooves are painted to it */
+    padding: 0 var(--str-pad);
+    border: 0;
+    background: transparent; /* the PLATE is the surface; the row is milled INTO it */
+    box-shadow: none;
+    color: var(--cd-ink);
+    font: inherit;
+    text-align: start;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    /* II.4.27 — hover carries no primitive: one low-cost report, no travel. */
+    transition: filter 80ms var(--cd-ease-settle);
+  }
+
+  .str-row:hover {
+    filter: brightness(1.03);
+  }
+
+  /*
+    THE ADDRESSED ROW reads as addressed WITHOUT any tint over it: the plate's
+    own cream lifts one step, which is a value change on a face rather than a
+    film over type. This is also why the row's own background is legal — it is
+    the plate's surface finish at that row, not an enclosure.
+  */
+  .str-row[data-armed="true"] {
+    background-color: #f6f2e9;
+    background-image: linear-gradient(var(--cd-light-axis), #fbf8f2 0%, #f6f2e9 100%);
+    box-shadow:
+      inset 0 1px 0 #ffffff8c,
+      inset 0 -1px 0 #00000024;
+  }
+
+  /*
+    THE FOCUS RING, RESTATED AT (0,2,1) — see delta 4 and the cascade note.
+    Values are CD-BRIEF repair 3's, unchanged: 2px #4C8FD1 + 1px #141414. Only
+    the offset is inverted, because the plate clips and an outset ring loses its
+    left and right sides entirely.
+  */
+  .str .str-row:focus-visible {
+    outline: none;
+    box-shadow:
+      inset 0 0 0 var(--cd-focus-keyline-width) var(--cd-focus-keyline),
+      inset 0 0 0 calc(var(--cd-focus-keyline-width) + var(--cd-focus-width)) var(--cd-role-focus);
+  }
+
+  /* II.6.8 — silkscreen: flat paint, no shadow, no gradient. The register's row
+     labels are printed graphics on the plate; ink #3A362E measures 9.84:1 on
+     the cream face (tokens/world.css, measured). */
+  .str-row__name {
+    font-size: var(--cd-size-2);
+    letter-spacing: var(--cd-track-body);
+    color: var(--cd-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .str-row__suffix {
+    color: var(--cd-muted-ink); /* 5.61:1 on the cream face, measured */
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums slashed-zero;
+  }
+
+  .str-row__tag {
+    display: inline-block;
+    margin-inline-end: 0.375rem;
+    padding: 0.0625rem 0.3125rem;
+    border-radius: 0.125rem;
+    /* the elm inlay — this world's one warm substance (section 2) */
+    background-color: #d8bd8e;
+    background-image: linear-gradient(var(--cd-light-axis), #e2caa0 0%, #d8bd8e 100%);
+    box-shadow:
+      inset 0 1px 0 #ffffff59,
+      0 1px 0 #00000038;
+    color: #2f2c26; /* measured 6.03:1 on #D8BD8E */
+    font-size: var(--cd-micro-ceiling);
+    letter-spacing: var(--cd-track-micro);
+    text-transform: uppercase;
+  }
+
+  /* the level POINTER — CLEAR LID section 3's lamp-scale pointer, unrolled from
+     an arc into a straight line, travelling at a fixed RATE (340px/s, floored
+     at 80ms — II.4.8). The duration is written per move by the component; this
+     is only its shape. */
+  .str-row__scale {
+    position: relative;
+    block-size: 1.125rem;
+    align-self: center;
+  }
+
+  .str-row__pointer {
+    position: absolute;
+    inset: 0 auto 0 0;
+    inline-size: 4px;
+    margin-inline-start: -2px;
+    /* the keyline law — see the note on .str-lampscale__pointer */
+    background: linear-gradient(
+      90deg,
+      #3a362e 0 1px,
+      var(--cd-lamp-hot) 1px 3px,
+      #3a362e 3px 4px
+    );
+    box-shadow:
+      0 0 var(--cd-bloom-r) #ffc868cc,
+      0 0 var(--cd-bloom-4r) #ffc86866,
+      0 0 var(--cd-bloom-12r) #ffc86829;
+    transform: translateX(var(--str-pointer-x, 0px));
+    transition: transform var(--str-pointer-ms, 80ms) linear;
+  }
+
+  /*
+    An unstocked row's pointer sits on a physical stop and does NOT glow:
+    II.4.16, stable data, stable instrument — and "a dead needle sitting proudly
+    at zero is more this project than a fake one dancing" (CORRECTIONARY 4).
+  */
+  .str-row[data-level="0"] .str-row__pointer,
+  .str-row[data-counted="false"] .str-row__pointer {
+    background: #7c7768;
     box-shadow: none;
   }
-  .scr-stores-pip--on {
-    forced-color-adjust: none;
-    background: ButtonText;
+
+  /*
+    AND AN UNCOUNTED ROW'S NEEDLE IS AGAINST THE WALL, not on the first seat.
+    The component parks it at x=0; this makes it read as the rest stop it is —
+    2px hard against the well's own left wall, where no printed seat sits. A
+    needle ON seat 0 is a reading of "empty"; this is the absence of a reading.
+  */
+  .str-row[data-counted="false"] .str-row__pointer {
+    inline-size: 2px;
+    margin-inline-start: 0;
+  }
+
+
+  /* the leftover row's own rest stop — an absent reading states its absence */
+  .str-row__stop {
+    position: absolute;
+    inset: 0 auto 0 0;
+    inline-size: 2px;
+    background: #7c7768;
+  }
+
+  /* the exact figure. CORRECTIONARY 5.3: an instrument PLUS its exact figure. */
+  .str-row__figure {
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums slashed-zero;
+    font-size: var(--cd-size-1);
+    text-align: end;
+    /* printed on the plate's own face, never in the well and never under the
+       pane — measured 7.24:1 on the darkest stop of the body gradient */
+    color: #4a453c;
+    white-space: nowrap;
+  }
+
+  .str-row[data-counted="false"] .str-row__figure {
+    color: var(--cd-muted-ink);
+    font-style: italic;
+  }
+
+  /* the life MARKER — an engraved index on the printed life zone. A marker over
+     a printed band, never a disc that spins for a value that changes once a day
+     (CD-BRIEF ruling 6). */
+  .str-row__life {
+    position: relative;
+    block-size: 1.125rem;
+    align-self: center;
+  }
+
+  .str-row__marker {
+    position: absolute;
+    inset: 0.0625rem auto 0.0625rem 0;
+    inline-size: 3px;
+    margin-inline-start: -1.5px;
+    border-radius: 1px;
+    background: #3a362e;
+    box-shadow:
+      0 -1px 0 #ffffff59, /* the engraved index's own dual light (II.6.7) */
+      0 1px 0 #00000047;
+    transform: translateX(var(--str-marker-x, 0px));
+    /*
+      NO TRANSITION, deliberately. A life index is day-granular: on the scene's
+      60s clock it moves about a twentieth of a pixel an hour, so an 80ms ease
+      would be a duration nothing can ever spend. It relocates when the level
+      changes (a new anchor) and otherwise it is still — II.4.16, stable data,
+      stable instrument. The first build carried a `--str-marker-ms` variable
+      that nothing ever wrote, which is a committed value with no value in it.
+    */
+  }
+
+  .str-row__countdown,
+  .str-row__age {
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums slashed-zero;
+    font-size: var(--cd-size-1);
+    text-align: end;
+    color: var(--cd-muted-ink);
+    white-space: nowrap;
+    /* the backstop: a column is sized for its longest REAL token, and if a
+       future one ever exceeds it the figure clips inside its own cell rather
+       than printing through the reading beside it */
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .str-row__age {
+    font-size: var(--cd-micro-ceiling);
+    letter-spacing: var(--cd-track-micro);
+  }
+
+  /* II.7.7 — colour never travels alone. Every status prints a glyph as well. */
+  .str-row[data-status="expired"] .str-row__countdown {
+    color: var(--cd-role-danger-ink-light); /* #BD372D — 4.59:1 on cream steel */
+    font-weight: 700;
+  }
+
+  .str-row[data-status="expiring"] .str-row__countdown {
+    color: var(--cd-role-warning-ink-light); /* #8D5E1E — 4.58:1 on cream steel */
+    font-weight: 700;
+  }
+
+  /* a stale row HOLDS its value at 55% ink and prints the class's own word in
+     its age cell — the value never moves (II.3.18) */
+  .str-row[data-stale="true"] .str-row__age {
+    color: var(--cd-role-warning-ink-light);
+    font-weight: 700;
+  }
+
+  /* --- the leftover row ------------------------------------------------- */
+
+  /*
+    THE LEFTOVER ROW, at desk width. Six columns, and the two milled channels sit
+    at exactly the widths the ingredient rows give them so the plate's painted
+    bands run straight through both row types.
+
+    DEFECT FOUND BY RENDERING: the first build gave this row FIVE columns and
+    then placed the countdown at column 5 and the age at column 6 — a column
+    that did not exist. The age opened an implicit sixth track, the countdown
+    landed in the 48px age column, and `✕ expired` printed straight through the
+    figure beside it. Every child now has a declared column, and the key's own
+    column is `auto` so its cap sets it rather than a guess.
+  */
+  /*
+    THE LEFTOVER ROW, at desk width. The "used up" key takes a column of its own
+    at the END OF THE NAME, so every column after it is one of the ingredient
+    row's own committed widths and lands at exactly the same x.
+
+    That is not tidiness, it is calibration. The two milled channels are painted
+    into the PLATE's background at fixed offsets from its right edge, so a row
+    whose cells sit anywhere else puts its needle and its index on printed scales
+    they do not belong to. MEASURED before this repair: the leftover's channels
+    sat at 307-419 and 429-493 while the plate's printed wells were at 336-448
+    and 458-522 — every leftover reading was 29px off its own scale.
+
+    The level-word column stays empty on this row on purpose: a leftover has no
+    level, and the absence is stated by the column being bare rather than by the
+    row shuffling its other readings leftward into it.
+  */
+  .str-row--leftover {
+    cursor: default;
+    grid-template-columns:
+      minmax(0, 1fr)
+      auto
+      var(--str-scale-w)
+      var(--str-life-w)
+      var(--str-fig-w)
+      var(--str-ink-w)
+      var(--str-age-w);
+  }
+
+  .str-row--leftover .str-row__name {
+    grid-column: 1;
+  }
+
+  .str-row--leftover .str-row__used {
+    grid-column: 2;
+  }
+
+  .str-row--leftover .str-row__scale {
+    grid-column: 3;
+  }
+
+  .str-row--leftover .str-row__life {
+    grid-column: 4;
+  }
+
+  .str-row--leftover .str-row__countdown {
+    grid-column: 6;
+  }
+
+  .str-row--leftover .str-row__age {
+    grid-column: 7;
+  }
+
+  .str .str-row__used {
+    min-block-size: 2.25rem;
+    block-size: 2.25rem;
+    padding-inline: 0.5rem;
+    font-size: var(--cd-size-1);
+  }
+
+  /*
+    THE FLOOR, DECLARED WHERE IT IS BENT. The "used up" key's painted profile is
+    36px tall because the row pitch is 44px and a 44px key inside it would sit
+    flush against both grooves. II.3.8's own remedy applies: the casting ships
+    its own >=44px hit region behind a smaller painted profile — the key stays
+    visually small, the TARGET never does.
+  */
+  .str .str-row__used::after {
+    content: "";
+    position: absolute;
+    inset: 50% auto auto 50%;
+    inline-size: max(2.75rem, 100%);
+    block-size: 2.75rem;
+    transform: translate(-50%, -50%);
+  }
+
+  /* =====================================================================
+     8 · THE BAY CUT — II.6.24's confession, measured rather than asserted
+     ===================================================================== */
+
+  .str-cut {
+    grid-area: 2 / 2 / 3 / 3;
+    padding: var(--cd-module);
+    padding-block-start: 0;
+    background: var(--cd-field);
+  }
+
+  .str-cut__plate {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 0.375rem 0.625rem;
+  }
+
+  .str-cut__fig {
+    font-size: var(--cd-size-2);
+    color: var(--cd-ink);
+  }
+
+  .str-cut__fig .cd-unit {
+    color: var(--cd-muted-ink);
+  }
+
+  /* =====================================================================
+     9 · THE THUMBWHEEL — the fenestrated knob (CLEAR LID section 3)
+     ===================================================================== */
+
+  .str-pod {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      "name  addr"
+      "knob  stack";
+    align-items: start;
+    gap: 0.375rem 0.75rem;
+    padding: 0.625rem 0.75rem;
+  }
+
+  .str-pod__name {
+    grid-area: name;
+    margin: 0;
+    font-size: var(--cd-size-1);
+  }
+
+  .str-knob {
+    grid-area: knob;
+    position: relative;
+    inline-size: 5.5rem;
+    block-size: 5.5rem;
+    border: 0;
+    padding: 0;
+    border-radius: 50%;
+    background: transparent;
+    cursor: grab;
+    touch-action: none;
+    align-self: center;
+    --cd-stack: none;
+  }
+
+  .str-knob:active {
+    cursor: grabbing;
+  }
+
+  .str-knob[data-disabled="true"] {
+    opacity: 0.55;
+    cursor: default;
+  }
+
+  /*
+    II.2.4 — TEXTURE ROTATES, LIGHT HOLDS. "The single most load-bearing split
+    in the whole material chapter." The grip carries the knurl tile and the turn
+    mark and is the only layer that rotates; the lighting plate above it holds
+    the specular, the rim-light and the whole shadow triad, so the one light at
+    138 degrees never swings with the hand.
+
+    FOUNDATION FINDING, worked around here rather than edited there.
+    src/cd/material/textures.ts paints `knurl` with hard-coded neutral hexes
+    (#34373D base, #4A4E56/#2C2F35 hub) and takes no palette argument, so a
+    CLEAR LID cap rendered from that tile comes out in another world's dark grey
+    instead of this world's grey control #B7B7AE. II.2's own rule is that "a
+    language re-keys hue and value to its own palette WITHOUT TOUCHING
+    STRUCTURE", and there is no seam to re-key through. The workaround takes the
+    tile's LUMINANCE as tooth structure and this world's colour as the body, by
+    compositing with `overlay` over --cd-control. It is correct here and it is
+    NOT a substitute for the texture factory growing a palette parameter, which
+    is reported as a needed change.
+  */
+  .str-knob__grip {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background-color: var(--cd-control);
+    background-image: var(--str-knurl, none);
+    background-size: 100% 100%;
+    background-blend-mode: overlay;
+    transform: rotate(var(--str-knob-deg, 0deg));
+    transition: transform 110ms var(--cd-ease-snap); /* the chapter's own seat */
+  }
+
+  .str-knob__grip::after {
+    content: "";
+    position: absolute;
+    inset-block-start: 0.3rem;
+    inset-inline-start: 50%;
+    inline-size: 3px;
+    block-size: 0.6rem;
+    margin-inline-start: -1.5px;
+    border-radius: 1px;
+    background: var(--cd-ink); /* the ONE mark that actually turns */
+  }
+
+  .str-knob__light {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    pointer-events: none; /* the room does not turn, and the room is not clickable */
+    background: var(--cd-rotary-light);
+    box-shadow: var(--cd-rotary-light-shadow);
+  }
+
+  /* THE FENESTRATION: a window no wider than the digit it shows, sharp ONLY at
+     a detent, blurred whenever the hand is mid-turn. */
+  .str-knob__window {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    display: grid;
+    place-items: center;
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
+    border-radius: 0.125rem;
+    background: var(--cd-face);
+    box-shadow:
+      inset var(--cd-shadow-x) var(--cd-shadow-y) 4px #00000047,
+      inset 0 -1px 0 #ffffff8c;
+    color: var(--cd-ink);
+    font-size: var(--cd-size-2);
+    filter: blur(var(--str-window-blur, 0px));
+    /* section 3's Signature escalation: the window sharpens 24ms BEHIND the
+       cap's arrival, so the hand feels the seat and reads the confirming digit
+       a beat after — motion and figure never arriving in the same frame. */
+    transition: filter 140ms var(--cd-ease-settle) 24ms;
+    pointer-events: none;
+  }
+
+  .str-pod__stack {
+    grid-area: stack;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    min-inline-size: 0;
+  }
+
+  .str-pod__name {
+    align-self: center;
+  }
+
+  .str-pod__addressed {
+    grid-area: addr;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.3125rem 0.5rem;
+  }
+
+  .str-pod__row-name {
+    font-size: var(--cd-size-2);
+    color: var(--cd-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .str-pod__row-age {
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+    white-space: nowrap;
+  }
+
+  .str-detents {
+    display: grid;
+    gap: 2px;
+  }
+
+  .str-detent {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-block-size: var(--cd-target-min); /* 44px — the Floor, both axes */
+    min-inline-size: var(--cd-target-min);
+    padding: 0 0.75rem;
+    border-radius: var(--cd-radius-cap);
+    background-color: #a5a59c;
+    background-image: linear-gradient(var(--cd-light-axis), #c3c3ba 0%, #b7b7ae 58%, #a5a59c 100%);
+    box-shadow:
+      inset 0 1px 0 #ffffff73,
+      inset 0 -1px 0 #00000052,
+      0 1px 0 #00000066,
+      0 2px 4px #00000030;
+    color: #2f2c26;
+    font-size: var(--cd-size-1);
+    letter-spacing: var(--cd-track-label);
+    cursor: pointer;
+    transition:
+      transform var(--cd-contact-release) var(--cd-ease-settle),
+      box-shadow var(--cd-contact-release) var(--cd-ease-settle);
+  }
+
+  .str-detent:active {
+    transform: translateY(1px);
+    transition-duration: var(--cd-contact-down);
+    transition-timing-function: linear;
+    box-shadow:
+      inset 0 1px 0 #ffffff33,
+      inset 0 -1px 0 #00000052,
+      0 1px 0 #00000066,
+      0 1px 2px #00000030;
+  }
+
+  .str-detent:has(input:focus-visible) {
+    outline: var(--cd-focus-width) solid var(--cd-role-focus);
+    outline-offset: var(--cd-focus-offset);
+    box-shadow: 0 0 0
+      calc(var(--cd-focus-offset) + var(--cd-focus-width) + var(--cd-focus-keyline-width))
+      var(--cd-focus-keyline);
+  }
+
+  .str-detent input {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .str-detent__word {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* the seated detent's own window, lit by the lamp — the reveal button's
+     fingertip-scale echo of the big lid (CLEAR LID section 3) */
+  .str-detent__win {
+    inline-size: 0.625rem;
+    block-size: 0.625rem;
+    border-radius: 50%;
+    background: #8f8f86;
+    box-shadow: inset 0 1px 2px #000000a6;
+    transition: background 140ms var(--cd-ease-settle);
+  }
+
+  .str-detent[data-seated="true"] .str-detent__win {
+    background: var(--cd-lamp-lit);
+    box-shadow:
+      inset 0 1px 1px #00000059,
+      0 0 var(--cd-bloom-r) #e8a23acc,
+      0 0 var(--cd-bloom-4r) #e8a23a66,
+      0 0 var(--cd-bloom-12r) #e8a23a29;
+  }
+
+  /* =====================================================================
+     10 · THE TUNING SCALE — the signature instrument
+     ===================================================================== */
+
+  .str-tune {
+    display: grid;
+    gap: 0.375rem;
+    padding: 0.625rem 0.75rem;
+  }
+
+  .str-tune__name {
+    margin: 0;
+    font-size: var(--cd-size-1);
+  }
+
+  .str-tune__scale {
+    position: relative;
+    block-size: 2.75rem;
+    overflow: hidden;
+    border-radius: 0.125rem;
+    background: var(--cd-face); /* the printed paper ground (II.2.14) */
+    box-shadow:
+      inset var(--cd-shadow-x) var(--cd-shadow-y) 4px #00000047, /* the well */
+      inset 0 -1px 0 #ffffff8c; /* lip */
+  }
+
+  .str-tune__lamp {
+    position: absolute;
+    inset: 0 auto 0 0;
+    inline-size: var(--cd-edgelight-falloff);
+    pointer-events: none;
+    background: linear-gradient(90deg, var(--cd-lamp-lit) 0%, transparent 100%);
+    opacity: var(--str-lamp-charge, 0.34);
+    transition: opacity var(--str-lamp-ms, 120ms) linear;
+  }
+
+  /*
+    The printed calibration — quarters full height, twentieths half height,
+    silkscreened on the paper (II.6.8). Inset by the SAME 2px the pointer's own
+    travel is inset by (model.ts's `coveragePx`), so the printed 0 and the
+    needle's own zero are the same place. A scale whose print and needle
+    disagree by two pixels is a calibration error, not a rounding one.
+  */
+  .str-tune__print {
+    position: absolute;
+    inset: 0 2px;
+    pointer-events: none;
+    background-image:
+      /* the 0% tick, which a repeating gradient starting at 0 never draws */
+      linear-gradient(90deg, #3a362e73 0 1px, #00000000 1px 100%),
+      repeating-linear-gradient(
+        90deg,
+        #00000000 0,
+        #00000000 calc(25% - 1px),
+        #3a362e73 calc(25% - 1px),
+        #3a362e73 25%
+      ),
+      repeating-linear-gradient(
+        90deg,
+        #00000000 0,
+        #00000000 calc(5% - 1px),
+        #3a362e33 calc(5% - 1px),
+        #3a362e33 5%
+      );
+    background-size:
+      100% 100%,
+      100% 100%,
+      100% 45%;
+    background-position:
+      left top,
+      left top,
+      left bottom;
+    background-repeat: no-repeat;
+  }
+
+  /* the station marks — engraved indices at each meal's REAL coverage */
+  .str-tune__station {
+    position: absolute;
+    inset-block: 0.25rem auto;
+    inset-inline-start: 0;
+    inline-size: 2px;
+    block-size: 0.75rem;
+    margin-inline-start: -1px;
+    background: #3a362e;
+    box-shadow:
+      0 -1px 0 #ffffff59,
+      0 1px 0 #00000047;
+    transform: translateX(var(--str-station-x, 0px));
+  }
+
+  .str-tune__station[data-tuned="true"] {
+    block-size: 1.25rem;
+    inline-size: 3px;
+    margin-inline-start: -1.5px;
+  }
+
+  /* the same keyline law as every other pointer in this world */
+  .str-tune__pointer {
+    position: absolute;
+    inset: 0 auto 0 0;
+    inline-size: 4px;
+    margin-inline-start: -2px;
+    background: linear-gradient(90deg, #3a362e 0 1px, var(--cd-lamp-hot) 1px 3px, #3a362e 3px 4px);
+    box-shadow:
+      0 0 var(--cd-bloom-r) #ffc868cc,
+      0 0 var(--cd-bloom-4r) #ffc86866,
+      0 0 var(--cd-bloom-12r) #ffc86829;
+    transform: translateX(var(--str-tune-x, 0px));
+    transition: transform var(--str-tune-ms, 80ms) linear;
+  }
+
+  /* parked on its stop: an unlit needle at zero, not a lit one that means
+     nothing (CORRECTIONARY 4 — "drama never lies") */
+  .str-tune__pointer[data-parked="true"] {
+    background: #7c7768;
+    box-shadow: none;
+  }
+
+  .str-tune__legend {
+    position: relative;
+    block-size: 0.875rem;
+    margin-inline: 2px; /* the same 2px inset the pointer's own travel uses */
+    font-family: var(--cd-font-data);
+    font-variant-numeric: tabular-nums slashed-zero;
+    font-size: var(--cd-micro-ceiling);
+    letter-spacing: var(--cd-track-micro);
+    color: var(--cd-muted-ink);
+  }
+
+  .str-tune__legend > span {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: var(--str-legend-p, 0%);
+    transform: translateX(-50%);
+    line-height: 1;
+  }
+
+  .str-tune__legend > span[data-edge="start"] {
+    transform: none;
+  }
+
+  .str-tune__legend > span[data-edge="end"] {
+    transform: translateX(-100%);
+  }
+
+  .str-tune__face {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 0.5rem;
+    padding: 0.375rem 0.625rem;
+    min-block-size: var(--str-row);
+  }
+
+  .str-tune__meal {
+    grid-column: 1 / -1;
+    font-size: var(--cd-size-3);
+    color: var(--cd-ink);
+    text-decoration-color: var(--cd-border);
+    text-underline-offset: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-block-size: var(--cd-target-min);
+    display: flex;
+    align-items: center;
+  }
+
+  .str-tune__figure {
+    grid-row: 2;
+    grid-column: 2;
+    font-size: var(--cd-size-4);
+    color: var(--cd-ink);
+    white-space: nowrap;
+  }
+
+  .str-tune__detail {
+    grid-row: 2;
+    grid-column: 1;
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+  }
+
+  .str-tune__off {
+    grid-column: 1 / -1;
+    font-size: var(--cd-size-2);
+    color: var(--cd-muted-ink);
+  }
+
+  .str-tune__bank {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 9.5rem), 1fr));
+    gap: 2px;
+  }
+
+  .str-tune__seat {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 0.375rem;
+    min-block-size: var(--cd-target-min);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--cd-radius-cap);
+    background-color: #a5a59c;
+    background-image: linear-gradient(var(--cd-light-axis), #c3c3ba 0%, #b7b7ae 58%, #a5a59c 100%);
+    box-shadow:
+      inset 0 1px 0 #ffffff73,
+      inset 0 -1px 0 #00000052,
+      0 1px 0 #00000066,
+      0 2px 4px #00000030;
+    color: #2f2c26;
+    cursor: pointer;
+  }
+
+  .str-tune__seat[data-tuned="true"] {
+    background-color: #b3b3aa;
+    background-image: linear-gradient(var(--cd-light-axis), #d5d5cc 0%, #c5c5bc 58%, #b3b3aa 100%);
+    box-shadow:
+      inset 0 1px 0 #ffffff9e,
+      inset 0 -1px 0 #00000052,
+      0 1px 0 #00000066,
+      0 3px 6px #0000003d,
+      inset 3px 0 0 var(--cd-lamp-lit); /* the seated station's own ink bar */
+  }
+
+  .str-tune__seat input {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .str-tune__seat:has(input:focus-visible) {
+    outline: var(--cd-focus-width) solid var(--cd-role-focus);
+    outline-offset: var(--cd-focus-offset);
+    box-shadow: 0 0 0
+      calc(var(--cd-focus-offset) + var(--cd-focus-width) + var(--cd-focus-keyline-width))
+      var(--cd-focus-keyline);
+  }
+
+  .str-tune__seat-name {
+    font-size: var(--cd-size-1);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .str-tune__seat-fig {
+    font-size: var(--cd-size-1);
+  }
+
+  .str-tune__more {
+    grid-column: 1 / -1;
+    align-self: center;
+    padding-block-start: 0.125rem;
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+  }
+
+  /* the tester's own mark. #4A453C measures 3.83:1 on this plate's darkest
+     stop; #2F2C26 measures 5.61:1, and a variant marking is a reading. */
+  .str-tune__seat-cut {
+    grid-column: 1 / -1;
+    font-size: var(--cd-micro-ceiling);
+    letter-spacing: var(--cd-track-micro);
+    color: #2f2c26;
+  }
+
+  /* =====================================================================
+     11 · THE DINNER LEDGER
+     ===================================================================== */
+
+  .str-ledger {
+    display: grid;
+    grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
+    grid-template-areas:
+      "name   name"
+      "face   keys"
+      "status status";
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+    padding: 0.625rem 0.75rem;
+    align-content: start;
+  }
+
+  .str-ledger__name {
+    grid-area: name;
+    margin: 0;
+    font-size: var(--cd-size-1);
+  }
+
+  .str-ledger__face {
+    grid-area: face;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 0.5rem;
+    padding: 0.375rem 0.625rem;
+  }
+
+  .str-ledger__meal {
+    font-size: var(--cd-size-3);
+    color: var(--cd-ink);
+  }
+
+  .str-ledger__lamp {
+    grid-row: 1 / 3;
+    grid-column: 2;
+    align-self: center;
+  }
+
+  .str-ledger__meta {
+    grid-column: 1;
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+  }
+
+  /*
+    `minmax(min(100%, 9rem), 1fr)` and not `minmax(9rem, 1fr)`.
+    MEASURED at 390px: the plain form makes every track demand 9rem whatever the
+    container is, so the ledger's own `minmax(0,20rem) 1fr` split handed the key
+    column 0px and four 144px keys ran 126px past the housing's right edge. The
+    `min(100%, …)` form lets a track fall below its own preferred width when the
+    container is narrower than one track, which is the only reason the preferred
+    width was ever a preference.
+  */
+  .str-ledger__keys,
+  .str-ledger__portions {
+    grid-area: keys;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+    align-items: stretch;
+    gap: 0.375rem;
+  }
+
+  .str .str-portion {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: start;
+    align-content: center;
+    gap: 0.125rem;
+    padding: 0.375rem 0.625rem;
+    text-align: start;
+  }
+
+  /* the printed fill mark — the fraction as an engraved zone, static print, not
+     motion: a portion is a stable value (CD-BRIEF ruling 6) */
+  .str-portion__mark {
+    position: relative;
+    inline-size: 100%;
+    block-size: 0.375rem;
+    border-radius: 1px;
+    background: #9c9c93;
+    box-shadow:
+      inset 0 1px 2px #00000059,
+      inset 0 -1px 0 #ffffff33;
+    overflow: hidden;
+  }
+
+  .str-portion__mark::after {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    inline-size: calc(var(--str-portion-f, 1) * 100%);
+    background: linear-gradient(var(--cd-light-axis), #4a453c 0%, #3a362e 100%);
+  }
+
+  .str-portion__word {
+    font-size: var(--cd-size-1);
+    font-weight: 600;
+    letter-spacing: var(--cd-track-label);
+  }
+
+  .str-portion__fig {
+    font-size: var(--cd-micro-ceiling);
+    letter-spacing: var(--cd-track-micro);
+    color: #3a362e;
+  }
+
+  .str-ledger__status {
+    grid-area: status;
+    min-block-size: 1.25rem;
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+  }
+
+  /* =====================================================================
+     12 · THE RECORDS DRAWER KEY, and the waste tray it opens
+     ===================================================================== */
+
+  .str-ledger__drawer {
+    display: flex;
+    align-items: stretch;
+    gap: 0.375rem;
+  }
+
+  .str-ledger__drawer-fig {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .str-ledger__drawer-fig .cd-data {
+    font-size: var(--cd-size-4);
+    color: var(--cd-ink);
+  }
+
+  .str-ledger__drawer-fig .cd-silkscreen {
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+  }
+
+  /*
+    THE WASTE DRAWER. Elm lining (section 2 — "rails, TRAY LININGS, secondary
+    panels"), cream ink plates inside it, and held off the rail's own footprint
+    at both breakpoints so the exit from the room is never covered by a drawer
+    belonging to one screen inside it.
+  */
+  .str .cd-tray.str-waste {
+    --cd-tray-offset: 0px;
+    background:
+      repeating-linear-gradient(
+        93deg,
+        #00000000 0px,
+        #00000026 2px,
+        #00000000 3px,
+        #00000000 9px,
+        #0000001a 11px,
+        #00000000 12px,
+        #00000000 21px,
+        #0000002e 22px,
+        #00000000 24px
+      ),
+      linear-gradient(var(--cd-light-axis), #e2caa0 0%, #d8bd8e 46%, #c4a674 100%);
+    color: #2f2c26;
+    box-shadow:
+      inset 0 1px 0 #ffffff5e,
+      0 0 0 1px #00000047,
+      0 4px 8px #00000029,
+      0 24px 56px #0000001f;
+  }
+
+  .str .str-waste .cd-tray-head {
+    background: linear-gradient(var(--cd-light-axis), #c3c3ba 0%, #b7b7ae 58%, #a5a59c 100%);
+    box-shadow:
+      inset 0 1px 0 #ffffff73,
+      inset 0 -1px 0 #00000052,
+      0 1px 0 #00000066;
+  }
+
+  .str .str-waste .cd-tray-title {
+    color: #2f2c26;
+    font-size: var(--cd-size-2);
+    text-shadow:
+      0 -1px 0 #00000038,
+      0 1px 0 #ffffff8c;
+  }
+
+  .str-waste__head {
+    font-size: var(--cd-size-1);
+    color: #2f2c26;
+  }
+
+  .str-waste__total {
+    display: grid;
+    gap: 0.125rem;
+    padding: 0.5rem 0.625rem;
+  }
+
+  .str-waste__figure {
+    font-size: var(--cd-size-5);
+    color: var(--cd-ink);
+  }
+
+  .str-waste__sub {
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+  }
+
+  .str-waste__empty {
+    padding: 0.625rem;
+  }
+
+  .str-waste__list {
+    display: grid;
+    gap: 0.375rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .str-waste__item {
+    display: grid;
+    gap: 0.125rem;
+    padding: 0.375rem 0.625rem;
+  }
+
+  .str-waste__ref {
+    font-size: var(--cd-size-2);
+    color: var(--cd-ink);
+  }
+
+  .str-waste__meta {
+    font-size: var(--cd-size-1);
+    color: var(--cd-muted-ink);
+  }
+
+  .str-waste__note {
+    font-size: var(--cd-micro-ceiling);
+    letter-spacing: var(--cd-track-micro);
+    color: var(--cd-muted-ink);
+  }
+
+  /* =====================================================================
+     13 · TROPHY MODE
+     ---------------------------------------------------------------------
+     "3-5 survivors at 2x card scale; age at 1.21875rem and the exact figure at
+     1.75rem ALWAYS VISIBLE; everything else disappears rather than shrinking."
+
+     FOUR SURVIVE: the annunciator, the larder gauge, the tuning scale and the
+     dinner ledger's readout — alerts, freshness and exact values pierce the
+     composition at both distances, and "is tonight logged" is the one thing
+     worth reading from across a kitchen. The register plate and the thumbwheel
+     LEAVE: what enlarges is the answer, what quiets is the reach.
+     ===================================================================== */
+
+  .str[data-str-trophy="true"] {
+    --str-lux: 0.55; /* Ambient — screencraft/01's second tier */
+  }
+
+  /* screencraft/01's Night tier. DECLARED AND NEVER ENTERED: no ambient light
+     sensor exists in this environment, and inferring darkness from the clock
+     would be invented data. See useTrophy.ts. */
+  .str[data-str-power="night"] {
+    --str-lux: 0.2;
+  }
+
+  /*
+    TROPHY WITHDRAWAL. Controls do not shrink and do not stay in the tab order —
+    they LEAVE, and they come back on the same 240ms any input buys.
+
+    `position: absolute` is doing structural work, not decoration: a withdrawn
+    instrument left in flow still holds its own GRID CELL, and rendered at
+    1280x1100 that put the register's empty column beside the survivors as a
+    400px hole. Out of flow, the surviving four close up.
+  */
+  .str [data-str-hidden="true"] {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inline-size: 0;
+    block-size: 0;
+    min-block-size: 0;
+    overflow: hidden;
+    padding: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity var(--cd-peer-out) var(--cd-ease-settle),
+      visibility 0s linear var(--cd-peer-out);
+  }
+
+  /*
+    The three bands dissolve so the SURVIVORS compose directly, rather than
+    each keeping the seat its working layout gave it. II.4.23's 420ms enter and
+    240ms exit are carried by what withdraws across them.
+  */
+  .str[data-str-trophy="true"] .str-masthead,
+  .str[data-str-trophy="true"] .str-body,
+  .str[data-str-trophy="true"] .str-footer,
+  .str[data-str-trophy="true"] .str-column {
+    display: contents;
+  }
+
+  .str[data-str-trophy="true"] .str-frame {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+    align-content: start;
+    gap: var(--cd-module);
+  }
+
+  /* the ledger's key column is gone in Trophy, so its face takes the housing */
+  .str[data-str-trophy="true"] .str-ledger {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "name"
+      "face"
+      "status";
+  }
+
+  /* 1.21875rem: the functional-label floor of 0.8125rem carried through
+     Trophy's own 1.5x re-cut (II.6.10) — an age that never disappears. */
+  .str[data-str-trophy="true"] .str-gauge__age,
+  .str[data-str-trophy="true"] .str-gauge__threshold,
+  .str[data-str-trophy="true"] .str-tune__detail {
+    font-size: 1.21875rem;
+    letter-spacing: var(--cd-track-body);
+  }
+
+  /* 1.75rem: the exact figure, printed beneath each enlarged instrument at all
+     times, never omitted. */
+  .str[data-str-trophy="true"] .str-gauge__value,
+  .str[data-str-trophy="true"] .str-annun__figure,
+  .str[data-str-trophy="true"] .str-tune__figure,
+  .str[data-str-trophy="true"] .str-lampscale__figure {
+    font-size: var(--cd-size-5); /* 1.75rem */
+  }
+
+  .str[data-str-trophy="true"] .str-lampscale,
+  .str[data-str-trophy="true"] .str-tune__scale {
+    block-size: 4rem; /* ~2x the instrument's working scale */
+  }
+
+  .str[data-str-trophy="true"] .str-gauge__word {
+    font-size: var(--cd-size-4);
+  }
+
+  /* =====================================================================
+     14 · RESPONSIVE — 1280x800 desk, 390x844 hand
+     ===================================================================== */
+
+  @media (max-width: 68rem) {
+    .str-masthead,
+    .str-body,
+    .str-footer {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .str-ledger {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        "name"
+        "face"
+        "keys"
+        "status";
+    }
+
+    .str {
+      --str-bay-h: 24rem;
+    }
+  }
+
+  /*
+    THE NARROW PLATE — the same object, cut for a phone.
+
+    DEFECT FOUND BY RENDERING AT THE REAL TARGET, in the spike before this
+    build: at 390px the wide row's fixed columns starve `minmax(0, 1fr)` and
+    every ingredient name collapses to zero width — the register renders as
+    instruments with nothing named, a total failure of the screen's job, and
+    invisible at 1280px.
+
+    The repair is not a reflow into a list. It is the same plate CUT NARROWER:
+    the row becomes two engraved lines at a 4rem pitch — the name and its exact
+    figures on the upper line, the two instruments on the lower — and the milled
+    channel print moves from the plate's shared bands onto the instrument cells'
+    own backgrounds. Element count is unchanged and no shadow layer is added:
+    the wells are drawn as gradient hairlines, which is how a milled groove is
+    drawn anyway (II.2.3, the inverted recess pair).
+  */
+  @media (max-width: 40rem) {
+    .str {
+      --str-row: 4rem;
+      --str-life-w: 4rem;
+      --str-ink-w: 3.5rem;
+      --str-age-w: 2.25rem;
+      --str-fig-w: 2.5rem;
+      --str-pad: 0.5rem;
+      --str-gap: 0.375rem;
+      --str-spine: 1rem;
+      --str-bay-h: 24rem;
+    }
+
+    /* the two shared channel bands do not apply to a two-line row */
+    .str .cd-register-rows {
+      background-image:
+        repeating-linear-gradient(
+          180deg,
+          #00000000 0,
+          #00000000 calc(100% - 2px),
+          #0000002e calc(100% - 2px),
+          #0000002e calc(100% - 1px),
+          #ffffff8c calc(100% - 1px),
+          #ffffff8c 100%
+        ),
+        linear-gradient(var(--cd-light-axis), #f2eee6 0%, #efeae1 58%, #ede8de 100%);
+      background-repeat: repeat, no-repeat;
+      background-size: 100% var(--str-row), 100% 100%;
+      background-position: left top, left top;
+    }
+
+    .str-row {
+      grid-template-columns: minmax(0, 1fr) var(--str-fig-w) var(--str-ink-w) var(--str-age-w);
+      grid-template-rows: 1.625rem 1.5rem;
+      align-content: center;
+      column-gap: var(--str-gap);
+      row-gap: 0.125rem;
+    }
+
+    .str-row__name {
+      grid-row: 1;
+      grid-column: 1;
+    }
+
+    /* all three printed figures ride the upper line, on the plate's own face;
+       the lower line is mechanism only, so the lid can cover it without
+       covering a single glyph */
+    .str-row__figure {
+      grid-row: 1;
+      grid-column: 2;
+      align-self: center;
+    }
+
+    .str-row__countdown {
+      grid-row: 1;
+      grid-column: 3;
+      align-self: center;
+    }
+
+    .str-row__age {
+      grid-row: 1;
+      grid-column: 4;
+      align-self: center;
+    }
+
+    .str-row__scale {
+      grid-row: 2;
+      grid-column: 1;
+      block-size: 1.375rem;
+      /* the milled channel, per cell: well floor, printed five-seat scale, and
+         the recess pair as hairlines (shadow enters high, lit lip closes low) */
+      background-color: #dcd4c4;
+      background-image:
+        linear-gradient(180deg, #00000047 0 1px, #00000000 1px calc(100% - 1px), #ffffff5e calc(100% - 1px) 100%),
+        repeating-linear-gradient(
+          90deg,
+          #00000000 0,
+          #00000000 calc(20% - 1px),
+          #3a362e59 calc(20% - 1px),
+          #3a362e59 20%
+        );
+    }
+
+    .str-row__life {
+      grid-row: 2;
+      grid-column: 2 / 5;
+      block-size: 1.375rem;
+      background-color: #dcd4c4;
+      background-image:
+        linear-gradient(180deg, #00000047 0 1px, #00000000 1px calc(100% - 1px), #ffffff5e calc(100% - 1px) 100%),
+        linear-gradient(
+          90deg,
+          #c2392e3d 0 var(--str-life-danger),
+          #a26d2333 var(--str-life-danger) var(--str-life-warn),
+          #00000000 var(--str-life-warn) 100%
+        );
+    }
+
+    /*
+      THE LEFTOVER ROW IS CUT TO ITS OWN CONTENT AT PHONE WIDTH.
+      MEASURED: sharing the ingredient row's four fixed columns put the word
+      `expired` — 70px of tabular mono — inside the 36px age column, and with
+      `white-space: nowrap` and no clip it ran 26px past the plate and grew the
+      bay a horizontal scrollbar. A leftover carries different readings from an
+      ingredient (no level, a declared 3-day window rather than a shelf life),
+      so it gets a template sized to those readings rather than one borrowed
+      from a row that holds different facts. Nothing is dropped and nothing is
+      clipped; the columns are `auto`, so the longest real token sets them.
+    */
+    .str-row--leftover {
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      grid-template-rows: 1.625rem 1.5rem;
+    }
+
+    .str-row--leftover .str-row__name {
+      grid-area: 1 / 1;
+    }
+
+    .str-row--leftover .str-row__countdown {
+      grid-area: 1 / 2;
+      align-self: center;
+    }
+
+    .str-row--leftover .str-row__age {
+      grid-area: 1 / 3;
+      align-self: center;
+    }
+
+    /* a leftover has no level, so it has no level channel to print — the
+       absence is stated by the row not carrying the instrument at all */
+    .str-row--leftover .str-row__scale {
+      display: none;
+    }
+
+    .str-row--leftover .str-row__life {
+      grid-area: 2 / 1;
+      inline-size: auto;
+    }
+
+    .str .str-row--leftover .str-row__used {
+      grid-area: 2 / 2 / 3 / 4;
+      justify-self: end;
+      block-size: 1.5rem;
+      min-block-size: 1.5rem;
+    }
+
+    /*
+      The lid, BANDED. At phone width the row is two engraved lines and the
+      mechanism is the lower one, so the pane runs the plate's full width but
+      paints its tint only across that band — one repeating gradient aligned to
+      the row pitch, covering instruments and never type. The two panes still
+      cut open at the addressed row exactly as they do at desk width.
+    */
+    .str .cd-register-rows::before,
+    .str .cd-register-rows::after {
+      inset-inline: var(--str-pad);
+      inline-size: auto;
+      /*
+        MEASURED, not guessed. The row is 4rem with two grid lines of 1.625rem
+        and 1.5rem and a 0.125rem row gap, centred: content 3.25rem, so the
+        offset is 0.375rem and the mechanism line runs 2.125rem -> 3.625rem.
+        A band drawn on a round number tints the bottom of the printed line
+        above it, which is the one thing the ink-plate law forbids.
+      */
+      background: repeating-linear-gradient(
+        180deg,
+        #00000000 0,
+        #00000000 2.125rem,
+        var(--cd-acrylic-glance) 2.125rem,
+        var(--cd-acrylic-glance) 3.625rem,
+        #00000000 3.625rem,
+        #00000000 var(--str-row)
+      );
+      box-shadow: none;
+    }
+
+    .str .cd-register-head {
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-rows: auto auto;
+      row-gap: 0.25rem;
+    }
+
+    .str .cd-register-head .str-lampscale {
+      grid-row: 2;
+      grid-column: 1 / -1;
+      inline-size: 100%;
+    }
+
+    .str .cd-register-count {
+      grid-row: 1;
+      grid-column: 2;
+    }
+
+    .str-pod {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    /*
+      EVERY CHILD MUST HAVE AN AREA IN EVERY TEMPLATE. Rendered at 390px, the
+      first build's narrow template omitted the slip rail's own `rail` area, so
+      that one child fell back to auto-placement, which opened an implicit
+      column and threw the act key on top of the expired lamp. A named-area
+      grid with one unnamed child is not a partly-placed grid; it is a
+      differently-placed grid.
+    */
+    .str-annun {
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas:
+        "name name"
+        "bank bank"
+        "slot act"
+        "rail rail";
+    }
+
+    .str-annun__bank {
+      justify-content: start;
+      grid-auto-columns: max-content;
+    }
+
+
+    /* the waste drawer stops short of the rail, which has moved to block-end */
+    .str .cd-tray.str-waste {
+      --cd-tray-inset-block-end: 3.5rem;
+    }
+  }
+
+  /* =====================================================================
+     15 · REDUCED MOTION — II.4.26, a TRANSLATION and never a deletion
+     ===================================================================== */
+
+  @media (prefers-reduced-motion: reduce) {
+    /* Travel, rotation and overshoot go. POSITION THAT CARRIES MEANING STILL
+       CHANGES, because position is semantic: the pointers still relocate and
+       the lid still parts — all at the reduced dialect's 80ms linear. */
+    .str-row__pointer,
+    .str-row__marker,
+    .str-lampscale__pointer,
+    .str-tune__pointer {
+      transition-duration: var(--cd-reduced-position) !important;
+      transition-timing-function: linear !important;
+    }
+
+    .str .cd-register-rows::before,
+    .str .cd-register-rows::after {
+      transition-duration: var(--cd-reduced-position);
+      transition-timing-function: linear;
+    }
+
+    /* the hood's ROTATION is travel and goes; the tint clearing is the MEANING
+       and stays, as a 120ms opacity translation — never a 0ms flash, which
+       II.4.26 calls "the one move worse than the motion it replaced" */
+    .str-bay__hood {
+      animation: str-hood-reduced var(--cd-reduced-fade) linear both;
+    }
+
+    @keyframes str-hood-reduced {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+
+    .str-knob__grip {
+      transition-duration: var(--cd-reduced-position);
+      transition-timing-function: linear;
+    }
+
+    /* the warning's COLOUR half survives (II.4.26 Pushed); the flash does not */
+    .str-annun__cell[data-role="danger"][data-on="true"] .cd-lamp {
+      animation: none;
+      opacity: 1;
+    }
+
+    /*
+      The luminance tier is a MEANING (the wall is dimmer than the desk), so it
+      survives as the reduced dialect's 120ms fade rather than as a 0ms swap of
+      a screen-sized region — II.4.26 calls that "the one move worse than the
+      motion it replaced". The burn-in orbit's 2px step keeps happening and
+      stops being animated: 2px once every 240 seconds is a guard against a
+      dead pixel, not motion anyone can perceive, and deleting it would trade a
+      real hardware protection for nothing.
+    */
+    .str-frame {
+      transition: opacity var(--cd-reduced-fade) linear;
+    }
+  }
+
+  /* =====================================================================
+     16 · FORCED COLOURS — the material argument is the OS's to discard;
+        the readings, the ring and the instruments are not.
+     ===================================================================== */
+
+  @media (forced-colors: active) {
+    .str::before,
+    .str::after {
+      content: none;
+    }
+
+    .str .cd-register-rows {
+      background-image: none;
+      background-color: Canvas;
+    }
+
+    .str-row {
+      border-block-end: 1px solid CanvasText;
+      color: CanvasText;
+    }
+
+    .str-row__scale,
+    .str-row__life {
+      border: 1px solid CanvasText;
+      background: Canvas;
+    }
+
+    .str .cd-register-rows::before,
+    .str .cd-register-rows::after,
+    .str-bay__hood {
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .str-row__pointer,
+    .str-lampscale__pointer,
+    .str-tune__pointer,
+    .str-row__marker,
+    .str-tune__station {
+      background: Highlight;
+      box-shadow: none;
+      forced-color-adjust: none;
+    }
+
+    .str-row__stop,
+    .str-tune__pointer[data-parked="true"] {
+      background: GrayText;
+      forced-color-adjust: none;
+    }
+
+    .str-lampscale,
+    .str-tune__scale {
+      border: 1px solid CanvasText;
+      background: Canvas;
+    }
+
+    .str-lampscale__lamp,
+    .str-tune__lamp,
+    .str-lampscale__print,
+    .str-tune__print {
+      display: none;
+    }
+
+    .str-detent,
+    .str-tune__seat,
+    .str-annun__bank,
+    .str-portion__mark {
+      background: ButtonFace;
+      color: ButtonText;
+      border: 1px solid ButtonText;
+      box-shadow: none;
+      forced-color-adjust: none;
+    }
+
+    .str-detent[data-seated="true"] .str-detent__win,
+    .str-portion__mark::after {
+      background: Highlight;
+      forced-color-adjust: none;
+    }
+
+    .str-knob__grip {
+      background: ButtonFace;
+      border: 1px solid ButtonText;
+      forced-color-adjust: none;
+    }
+
+    .str-knob__light {
+      box-shadow: none;
+      background: none;
+    }
+  }
+
+  /*
+    THE UNIT'S OWN FLOOR. II.6.6 trails a unit at 40% of its value's size, which
+    is right for a 44px hero figure (17.6px) and illegible for a 13px one
+    (5.2px). II.6.11 is the harder law — "below 0.6875rem type is texture, never
+    information" — so the unit takes whichever is larger. MEASURED: the register
+    lid's own "rows" and the bay cut's "above / below the cut" both rendered at
+    5.2-5.6px before this rule, which is not small type, it is a smudge.
+  */
+  .str .cd-unit {
+    font-size: max(var(--cd-micro-ceiling), calc(1em * var(--cd-unit-scale)));
+    letter-spacing: var(--cd-track-micro);
+  }
+
+  /* the visually-hidden helper, in this screen's own namespace */
+  .str-vh {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
   }
 }

@@ -1,0 +1,726 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FD-5 STORES — the escalation ladder</title>
+<!--
+  docs/ladder/stores-ladder.html — 10 CLEAR LID on STORES, four rungs kept.
+
+  EVERY RUNG ON THIS PAGE RUNS. The Simple rung's state selector really drives
+  it — all nine states, not nine drawings of states. The Pushed studies really
+  respond: study A really builds sixty-five enclosures beside one milled plate
+  and counts the nodes; study B measures its own contrast with the WCAG formula
+  in the page; study E's window really blurs off the pointer's angular velocity.
+  The Signature rung is the shipped linkage: turn its knob and the level seats,
+  the row's needle sweeps at 340px/s, and the tuning pointer walks the station
+  scale because the coverage genuinely changed.
+
+  REAL DATA THROUGHOUT, read off the running screen on 2026-08-18 against the
+  real 65-row register:
+    register ............. 65 rows — fridge 19, freezer 20, counter 4, cupboard 22
+    longest name ......... "Chipotles in adobo sauce, chopped 200g"
+    expired .............. Pineapple chunks 260g, counted 5d ago
+    expiring ............. Cottage cheese, natural — "today", counted 4d ago
+    never counted ........ Courgettes ×5, Eggs ×12, Little gem lettuce 250g
+    no life figure ....... Parmesan ×16 — "low"
+    larder ............... 56/65 counted · 51% fill · 21 at or below ¼ · 12 frozen
+    the cut .............. 0 above · 7 below the cut · 46 under shut lids
+    from stock (full) .... Jerk-roasted chickpeas with skyr 96% … Greek yoghurt 74%
+    from stock (tester) .. Halal cart chicken over rice 78% … Jerk salmon 55%
+    tonight .............. Chicken katsu curry · 1193g plated · ≈£3.67 · NOT LOGGED
+  No image assets, no WebGL, no network. Open it in a browser.
+-->
+<style>
+  :root {
+    color-scheme: light;
+    --ui: "Space Grotesk", system-ui, sans-serif;
+    --data: "JetBrains Mono", ui-monospace, monospace;
+    /* the Simple rung's entire palette — the doctrine's own grayscale ramp */
+    --g0:#141414; --g1:#1f1f1f; --g2:#2c2c2c; --g3:#4a4a4a; --g4:#6d6d6d;
+    --g5:#8f8f8f; --g6:#b4b4b4; --g7:#dcdcdc; --g8:#F2F2F2;
+    /* CLEAR LID's committed section-2 registry, for every rung above Simple */
+    --face:#EDE8DE; --well:#DCD4C4; --elm:#D8BD8E; --control:#B7B7AE;
+    --ink:#3A362E; --muted:#5F5A50; --border:#7C7768;
+    --acrylic-glance:#C8CCC64C; --acrylic-reveal:#C8CCC685; --acrylic-hot:#C8CCC6E0;
+    --lamp-dim:#8C6220; --lamp-lit:#E8A23A; --lamp-hot:#FFC868; --lamp-ink:#7A551C;
+    /* the product-wide reserved roles (world.css), which supersede ch.10's own */
+    --danger:#C2392E; --danger-ink:#BD372D; --warn-zone:#A26D23; --warn-ink:#8D5E1E;
+    --success-ink:#2B7548; --focus:#4C8FD1; --keyline:#141414;
+    --axis:138deg; --module:.5rem;
+    --settle:cubic-bezier(.16,1,.30,1); --snap:cubic-bezier(.60,0,.10,1);
+    --heavy:cubic-bezier(.32,0,.12,1);
+  }
+  * { box-sizing:border-box }
+  body { margin:0; background:#0c0c0c; color:var(--g7); font-family:var(--ui); line-height:1.55 }
+  main { max-width:78rem; margin:0 auto; padding:2rem 1.25rem 6rem }
+  h1 { font-size:1.5rem; letter-spacing:.02em; margin:0 0 .25rem }
+  h2 { font-size:1.05rem; letter-spacing:.12em; text-transform:uppercase; margin:3.5rem 0 .25rem; color:var(--g8) }
+  h3 { font-size:.8125rem; letter-spacing:.12em; text-transform:uppercase; margin:1.75rem 0 .5rem; color:var(--g5) }
+  p { max-width:64ch; color:var(--g6); font-size:.9375rem }
+  .claim { border-left:2px solid var(--g4); padding-left:.75rem; font-size:.875rem; color:var(--g7); max-width:64ch }
+  .vs { font-family:var(--data); font-size:.8125rem; color:var(--g5); margin:.35rem 0 0; max-width:70ch }
+  .bench { display:flex; gap:1.25rem; flex-wrap:wrap; align-items:flex-start; margin-top:1rem }
+  .plinth { background:#101010; border:1px solid var(--g2); border-radius:.5rem; padding:1rem }
+  .plinth > figcaption { font-family:var(--data); font-size:.75rem; color:var(--g5); margin-bottom:.75rem }
+  table { border-collapse:collapse; font-size:.8125rem; margin-top:.75rem }
+  td,th { border:1px solid var(--g2); padding:.35rem .6rem; text-align:left; vertical-align:top }
+  th { color:var(--g8); font-weight:600 }
+  td.k { color:#9ec98a } td.x { color:#d98f88 }
+  code { font-family:var(--data); font-size:.8125rem; color:var(--g6) }
+  select,button { font-family:var(--ui); font-size:.8125rem }
+  .key { border:1px solid var(--g4); background:var(--g2); color:var(--g7); padding:.35rem .6rem; cursor:pointer; border-radius:3px }
+  .key[aria-pressed="true"] { background:var(--g6); color:var(--g0) }
+
+  /* ==================== RUNG 1 · SIMPLE ==================== */
+  /* Grayscale ramp only. No gradient, no shadow stack, no bloom, no texture,
+     no spring. Values snap frame to frame. The TASK must still complete:
+     read a level, read a use-by, read how old the count is, set a level. */
+  .s { width:44rem; max-width:100%; background:var(--g1); border:1px solid var(--g3); padding:.75rem; font-size:.8125rem }
+  .s-head { display:flex; gap:1rem; justify-content:space-between; border:1px solid var(--g4); padding:.4rem .5rem; margin-bottom:.5rem }
+  .s-lbl { color:var(--g5); font-size:.75rem; text-transform:uppercase; letter-spacing:.1em }
+  .s-val { font-family:var(--data); font-size:1.25rem; color:var(--g8) }
+  .s-rows { margin:0; padding:0; list-style:none; font-family:var(--data) }
+  .s-rows li { display:grid; grid-template-columns:minmax(0,1fr) 3rem 4rem 3rem; gap:.5rem;
+    border-top:1px solid var(--g2); padding:.3rem 0; align-items:center }
+  .s-rows .n { color:var(--g7); overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+  .s-rows .v,.s-rows .c,.s-rows .a { text-align:right; color:var(--g6) }
+  .s-note { color:var(--g5); font-family:var(--data); font-size:.75rem; margin-top:.5rem }
+  .s-wheel { display:flex; gap:.35rem; margin-top:.5rem; flex-wrap:wrap }
+
+  /* ==================== RUNG 2 · PUSHED ==================== */
+  /* Five studies, ONE axis each. Everything not on that study's axis stays at
+     the Simple rung, so each claim is testable on its own. */
+
+  /* study A — STRUCTURE only (still grayscale) */
+  .pa { display:flex; gap:1rem; flex-wrap:wrap }
+  .pa-col { width:19rem }
+  .pa-cases { display:flex; flex-direction:column; gap:2px }
+  .pa-case { height:2.75rem; display:flex; align-items:center; padding:0 .5rem; border-radius:.5rem;
+    background:linear-gradient(var(--axis),#2f2f2f 0%,#242424 58%,#1c1c1c 100%);
+    box-shadow: inset 0 1px 0 #ffffff26, inset 0 -1px 0 #00000052, 0 1px 0 #00000066,
+                0 3px 6px #0000003d, 0 10px 24px #00000021;
+    font-family:var(--data); font-size:.75rem; color:var(--g7) }
+  .pa-plate { position:relative; border-radius:.25rem; overflow:hidden;
+    background-image:
+      repeating-linear-gradient(180deg,#00000000 0,#00000000 calc(100% - 2px),
+        #0000005c calc(100% - 2px),#0000005c calc(100% - 1px),#ffffff1f calc(100% - 1px),#ffffff1f 100%),
+      linear-gradient(var(--axis),#2a2a2a 0%,#232323 58%,#1d1d1d 100%);
+    background-repeat:repeat,no-repeat; background-size:100% 2.75rem,100% 100%;
+    box-shadow: inset 0 1px 0 #ffffff26, inset 0 -1px 0 #00000047, 0 1px 0 #00000066,
+                0 4px 8px #00000040, 0 24px 56px #00000029 }
+  .pa-plate div { height:2.75rem; display:flex; align-items:center; padding:0 .5rem;
+    font-family:var(--data); font-size:.75rem; color:var(--g7) }
+
+  /* study B — THE LID's position only (real CLEAR LID acrylic, grey mechanism) */
+  .pb { width:21rem; border-radius:.25rem; overflow:hidden; position:relative;
+    background:linear-gradient(var(--axis),#f2eee6 0%,#efeae1 58%,#ede8de 100%) }
+  .pb-row { height:2.75rem; display:grid; grid-template-columns:minmax(0,1fr) 6rem 3rem;
+    gap:.5rem; align-items:center; padding:0 .625rem; position:relative; z-index:1;
+    font-family:var(--data); font-size:.75rem; color:var(--ink) }
+  .pb-mech { position:relative; height:1.125rem; background:var(--well);
+    box-shadow: inset 1px 2px 4px #00000047, inset 0 -1px 0 #ffffff5e }
+  .pb-mech i { position:absolute; top:0; bottom:0; width:4px; margin-left:-2px;
+    background:linear-gradient(90deg,var(--ink) 0 1px,var(--lamp-hot) 1px 3px,var(--ink) 3px 4px);
+    box-shadow:0 0 2px #ffc868cc,0 0 8px #ffc86866,0 0 24px #ffc86829 }
+  .pb-fig { text-align:right }
+  .pb[data-mode="over"] .pb-row[data-armed="1"]::after { content:""; position:absolute; inset:0;
+    background:var(--acrylic-reveal); box-shadow: inset 0 1px 0 #ffffff8c, inset 0 0 0 1px #ffffff2e }
+  .pb[data-mode="cut"] .pb-pane { position:absolute; right:3.625rem; width:6rem; pointer-events:none;
+    background:linear-gradient(var(--axis),#ffffff2e 0%,#ffffff00 26%,#ffffff00 100%),var(--acrylic-glance);
+    box-shadow: inset 0 1px 0 #ffffff8c, inset 0 0 0 1px #ffffff2e }
+  .pb[data-mode="over"] .pb-pane { display:none }
+
+  /* study C — THE POINTER's keyline only */
+  .pc-well { position:relative; width:14rem; height:1.75rem; background:var(--well);
+    box-shadow: inset 1px 2px 4px #00000047, inset 0 -1px 0 #ffffff5e }
+  .pc-well i { position:absolute; top:.25rem; bottom:.25rem; width:4px; margin-left:-2px }
+  .pc-bare { background:var(--lamp-hot); box-shadow:0 0 2px #ffc868cc,0 0 8px #ffc86866 }
+  .pc-keyed { background:linear-gradient(90deg,var(--ink) 0 1px,var(--lamp-hot) 1px 3px,var(--ink) 3px 4px);
+    box-shadow:0 0 2px #ffc868cc,0 0 8px #ffc86866,0 0 24px #ffc86829 }
+
+  /* study D — DENSITY only */
+  .pd { background:var(--face); border-radius:.25rem; overflow:hidden; width:17rem }
+  .pd li { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:.5rem;
+    padding:0 .5rem; border-bottom:1px solid #00000014; font-family:var(--data);
+    font-size:.75rem; color:var(--ink) }
+  .pd ul { margin:0; padding:0; list-style:none }
+  .pd[data-band="dense"] li { height:1.5rem }
+  .pd[data-band="standard"] li { height:2rem }
+  .pd[data-band="floor"] li { height:2.75rem }
+  .pd b { display:inline-flex; align-items:center; justify-content:center;
+    min-width:2.75rem; height:2.75rem; border-radius:.25rem; font-weight:500;
+    background:linear-gradient(var(--axis),#c3c3ba 0%,#b7b7ae 58%,#a5a59c 100%);
+    box-shadow: inset 0 1px 0 #ffffff73, inset 0 -1px 0 #00000052, 0 1px 0 #00000066 }
+
+  /* study E — MOTION only: the fenestrated window */
+  .pe { display:flex; gap:1.25rem; align-items:center }
+  .pe-knob { position:relative; width:5.5rem; height:5.5rem; border:0; padding:0; background:transparent;
+    border-radius:50%; cursor:grab; touch-action:none }
+  .pe-grip { position:absolute; inset:0; border-radius:50%; background:var(--control);
+    background-image:repeating-conic-gradient(#00000024 0deg 3deg,#ffffff21 3deg 6deg);
+    transform:rotate(var(--deg,0deg)); transition:transform 110ms var(--snap) }
+  .pe-grip::after { content:""; position:absolute; top:.3rem; left:50%; width:3px; height:.6rem;
+    margin-left:-1.5px; border-radius:1px; background:var(--ink) }
+  .pe-light { position:absolute; inset:0; border-radius:50%; pointer-events:none;
+    background:linear-gradient(var(--axis),#ffffff38 0%,#ffffff0a 34%,#00000000 50%,#00000045 100%);
+    box-shadow: inset 0 1px 0 #ffffff4d, 0 1px 0 #00000066, 0 4px 8px #00000040, 0 14px 32px #00000026 }
+  .pe-win { position:absolute; inset:0; margin:auto; width:1.5rem; height:1.5rem; border-radius:.125rem;
+    display:grid; place-items:center; background:var(--face); color:var(--ink);
+    font-family:var(--data); font-size:.875rem; pointer-events:none;
+    box-shadow: inset 1px 2px 4px #00000047, inset 0 -1px 0 #ffffff8c;
+    filter:blur(var(--blur,0px)); transition:filter 140ms var(--settle) 24ms }
+  .pe-read { font-family:var(--data); font-size:.75rem; color:var(--g5) }
+
+  /* ==================== RUNG 4 · SIGNATURE ==================== */
+  .sig { background:linear-gradient(var(--axis),#f2eee6 0%,#efeae1 58%,#ede8de 100%);
+    border-radius:.75rem; padding:1rem; display:grid; gap:.75rem;
+    grid-template-columns:minmax(0,1fr) 17rem;
+    box-shadow: inset 0 1px 0 #ffffff9e, inset 0 -1px 0 #00000038, 0 1px 0 #00000047,
+                0 4px 8px #00000029, 0 24px 56px #0000001f }
+  .sig-plate { position:relative; border-radius:.25rem; overflow:hidden; background-color:#ede8de;
+    background-image:
+      repeating-linear-gradient(90deg,#00000000 0,#00000000 calc(20% - 1px),#3a362e59 calc(20% - 1px),#3a362e59 20%),
+      linear-gradient(180deg,#00000047 0 1px,#00000000 1px calc(100% - 1px),#ffffff5e calc(100% - 1px) 100%),
+      linear-gradient(#dcd4c4,#dcd4c4),
+      repeating-linear-gradient(180deg,#00000000 0,#00000000 calc(100% - 2px),
+        #0000002e calc(100% - 2px),#0000002e calc(100% - 1px),#ffffff8c calc(100% - 1px),#ffffff8c 100%),
+      linear-gradient(var(--axis),#f2eee6 0%,#efeae1 58%,#ede8de 100%);
+    background-repeat:no-repeat,no-repeat,no-repeat,repeat,no-repeat;
+    background-size:7rem 100%,7rem 100%,7rem 100%,100% 2.75rem,100% 100%;
+    background-position:right 6.5rem top 0,right 6.5rem top 0,right 6.5rem top 0,left top,left top;
+    box-shadow: inset 0 1px 0 #ffffff9e, 0 1px 0 #00000047, 0 4px 8px #00000029 }
+  .sig-row { height:2.75rem; display:grid; grid-template-columns:minmax(0,1fr) 7rem 3rem 3rem;
+    gap:.5rem; align-items:center; padding:0 .625rem; position:relative; z-index:1;
+    font-family:var(--data); font-size:.8125rem; color:var(--ink) }
+  .sig-row[data-armed="1"] { background:linear-gradient(var(--axis),#fbf8f2 0%,#f6f2e9 100%);
+    box-shadow: inset 0 1px 0 #ffffff8c, inset 0 -1px 0 #00000024 }
+  .sig-scale { position:relative; height:1.125rem }
+  .sig-needle { position:absolute; top:0; bottom:0; width:4px; margin-left:-2px;
+    background:linear-gradient(90deg,var(--ink) 0 1px,var(--lamp-hot) 1px 3px,var(--ink) 3px 4px);
+    box-shadow:0 0 2px #ffc868cc,0 0 8px #ffc86866,0 0 24px #ffc86829;
+    transform:translateX(var(--x,0px)); transition:transform var(--ms,80ms) linear }
+  .sig-fig,.sig-cd { text-align:right; color:#4a453c }
+  .sig-tune { position:relative; height:2.75rem; border-radius:.125rem; background:var(--face);
+    box-shadow: inset 1px 2px 4px #00000047, inset 0 -1px 0 #ffffff8c; overflow:hidden }
+  .sig-lamp { position:absolute; inset:0 auto 0 0; width:26%;
+    background:linear-gradient(90deg,var(--lamp-lit) 0%,transparent 100%);
+    opacity:var(--charge,.34); transition:opacity var(--lampms,120ms) linear }
+  .sig-print { position:absolute; inset:0 2px; background:
+    linear-gradient(90deg,#3a362e73 0 1px,#00000000 1px 100%),
+    repeating-linear-gradient(90deg,#00000000 0,#00000000 calc(25% - 1px),#3a362e73 calc(25% - 1px),#3a362e73 25%) }
+  .sig-station { position:absolute; top:.25rem; width:2px; height:.75rem; margin-left:-1px; background:var(--ink);
+    box-shadow:0 -1px 0 #ffffff59,0 1px 0 #00000047; transform:translateX(var(--sx,0px));
+    transition:transform 160ms var(--settle) }
+  .sig-tuneneedle { position:absolute; top:0; bottom:0; width:4px; margin-left:-2px;
+    background:linear-gradient(90deg,var(--ink) 0 1px,var(--lamp-hot) 1px 3px,var(--ink) 3px 4px);
+    box-shadow:0 0 2px #ffc868cc,0 0 8px #ffc86866,0 0 24px #ffc86829;
+    transform:translateX(var(--tx,0px)); transition:transform var(--tms,80ms) linear }
+  .sig-face { background:var(--face); color:var(--ink); border-radius:.125rem; padding:.375rem .625rem;
+    box-shadow: inset 1px 2px 4px #00000024, inset 0 -1px 0 #ffffff8c, 0 1px 0 #00000029;
+    font-family:var(--data); font-size:.8125rem }
+  .sig-log { font-family:var(--data); font-size:.75rem; color:var(--muted); min-height:3.2rem;
+    background:var(--face); border-radius:.125rem; padding:.375rem .625rem;
+    box-shadow: inset 1px 2px 4px #00000024 }
+  .sig-detents { display:grid; gap:2px; margin-top:.5rem }
+  .sig-detent { display:flex; align-items:center; gap:.5rem; min-height:2.75rem; padding:0 .75rem;
+    border:0; border-radius:.25rem; color:#2f2c26; font-family:var(--ui); font-size:.8125rem;
+    letter-spacing:.12em; cursor:pointer; text-align:left;
+    background:linear-gradient(var(--axis),#c3c3ba 0%,#b7b7ae 58%,#a5a59c 100%);
+    box-shadow: inset 0 1px 0 #ffffff73, inset 0 -1px 0 #00000052, 0 1px 0 #00000066, 0 2px 4px #00000030 }
+  .sig-detent span.w { width:.625rem; height:.625rem; border-radius:50%; background:#8f8f86;
+    box-shadow: inset 0 1px 2px #000000a6; transition:background 140ms var(--settle) }
+  .sig-detent[aria-checked="true"] span.w { background:var(--lamp-lit);
+    box-shadow: inset 0 1px 1px #00000059,0 0 2px #e8a23acc,0 0 8px #e8a23a66,0 0 24px #e8a23a29 }
+  @media (prefers-reduced-motion: reduce) {
+    .sig-needle,.sig-tuneneedle,.pe-grip,.pb-pane { transition-duration:80ms !important; transition-timing-function:linear !important }
+    .sig-station { transition-duration:120ms; transition-timing-function:linear }
+  }
+</style>
+</head>
+<body>
+<main>
+
+<h1>FD-5 · STORES — the escalation ladder</h1>
+<p><strong>10 CLEAR LID.</strong> Four rungs, each kept as a working artifact rather than a picture of
+one. Real data throughout, read off the running screen on 2026-08-18 against the real 65-row
+register. No image assets, no WebGL, no network.</p>
+
+<!-- ============================================================ -->
+<h2>Rung 1 · Simple</h2>
+<p>The doctrine's own grayscale ramp, <code>#141414</code> to <code>#F2F2F2</code>. No gradient, no
+shadow stack, no bloom, no texture, no spring — values snap frame to frame and only contact
+acknowledges a touch. This rung exists to prove one thing: <strong>the task completes with the
+material argument entirely absent.</strong> Every state below is DRIVEN, not drawn: the selector
+changes what the component is given and the component renders whatever that is.</p>
+
+<div class="bench">
+<figure class="plinth" style="flex:1;min-width:min(100%,44rem)">
+  <figcaption>
+    state:
+    <select id="sState">
+      <option value="full">full — a real stocktake, 56 of 65 counted</option>
+      <option value="empty">empty — counted, and the shelf is bare</option>
+      <option value="loading">loading — the store has not hydrated</option>
+      <option value="partial">partial — one group counted, three never</option>
+      <option value="overflow">overflowing — 22 rows, 8 under the cut</option>
+      <option value="error">error — a row references an unknown ingredient</option>
+      <option value="stale">stale — the newest count is 5 days old</option>
+      <option value="disabled">disabled — no row addressed, the wheel is dead</option>
+      <option value="firstrun">first run — nothing has ever been counted</option>
+    </select>
+  </figcaption>
+
+  <div class="s">
+    <div class="s-head">
+      <span><span class="s-lbl">counted</span><br><span class="s-val" id="sCount">56/65</span></span>
+      <span><span class="s-lbl">age</span><br><span class="s-val" id="sAge">1h</span></span>
+      <span><span class="s-lbl">expired</span><br><span class="s-val" id="sExp">1</span></span>
+      <span><span class="s-lbl">expiring</span><br><span class="s-val" id="sExpg">1</span></span>
+      <span><span class="s-lbl">fill</span><br><span class="s-val" id="sFill">51%</span></span>
+    </div>
+    <ul class="s-rows" id="sRows"></ul>
+    <div class="s-note" id="sCut"></div>
+    <div class="s-wheel" id="sWheel"></div>
+    <div class="s-note" id="sAnn"></div>
+  </div>
+</figure>
+</div>
+
+<p class="vs">Verified on this rung: sixty-five real rows grouped by location, the longest real name,
+an expired row, an expiring row, rows that have NEVER been counted printing <code>never</code> rather
+than <code>0</code>, a row whose shelf life carries no number printing <code>low</code>, the clipped
+remainder confessed as a figure, and a five-seat wheel that sets the addressed row. Everything above
+this rung buys a better report of the same facts — never a different fact.</p>
+
+<!-- ============================================================ -->
+<h2>Rung 2 · Pushed</h2>
+<p>Five studies. <strong>Each moves exactly one axis</strong> and leaves the others at the Simple
+rung, so each claim can be tested on its own rather than as part of a general improvement.</p>
+
+<h3>Study A — the plate (structure)</h3>
+<p class="claim"><strong>Claim.</strong> A register is ONE MACHINED OBJECT with rows milled into it,
+not sixty-five little cases. CLEAR LID names the alternative as its own failure mode — section 9,
+<em>&ldquo;LID INFLATION … the screen reads as a cabinet of specimen cases with no leading
+object&rdquo;</em> — and a 65-row register is the exact shape that invites it. Structure only; both
+sides stay grayscale and carry the identical text.</p>
+<div class="bench">
+  <figure class="plinth"><figcaption>A1 · sixty-five enclosures, each with its own four-layer stack</figcaption>
+    <div class="pa-col"><div class="pa-cases" id="paCases"></div></div>
+  </figure>
+  <figure class="plinth"><figcaption>A2 · one milled plate, sixty-five engraved grooves</figcaption>
+    <div class="pa-col"><div class="pa-plate" id="paPlate"></div></div>
+  </figure>
+  <figure class="plinth"><figcaption>counted in the page</figcaption>
+    <div class="pe-read" id="paCount">…</div>
+  </figure>
+</div>
+<p class="vs">Against Simple: Simple has no container at all, so it cannot fail this way and cannot
+pass it either. A1 is not merely busier — it is a different claim about what the thing IS: sixty-five
+separately-lit objects sitting near each other. A2 says one object, and the grooves are painted into
+the plate's own background, so <strong>sixty-five rows cost one paint and no shadow layers at
+all</strong> (the figure beside them is counted off computed style in this page, not asserted).
+<strong>A2 kept</strong>, and it is the structure the Signature rung is built on.</p>
+
+<h3>Study B — the lid (where the tint sits)</h3>
+<p class="claim"><strong>Claim.</strong> CLEAR LID section 1 is <em>&ldquo;every value sits visible
+under a cool tint at rest; operating it costs the one gesture that clears the tint away&rdquo;</em> —
+so the addressed row must be the one WITHOUT tint over it. The naive reading lays a LIT pane over the
+addressed row, which puts the row the operator is working on under the most film on screen. One axis:
+where the acrylic is. Both sides use the same committed hexes.</p>
+<div class="bench">
+  <figure class="plinth"><figcaption>B1 · a LIT pane over the addressed row</figcaption>
+    <div class="pb" data-mode="over" id="pbOver"></div>
+  </figure>
+  <figure class="plinth"><figcaption>B2 · the lid CUT AWAY at the addressed row</figcaption>
+    <div class="pb" data-mode="cut" id="pbCut"><span class="pb-pane" id="pbPaneA"></span><span class="pb-pane" id="pbPaneB"></span></div>
+  </figure>
+  <figure class="plinth"><figcaption>measured in the page, WCAG 2.x</figcaption>
+    <div class="pe-read" id="pbRead">…</div>
+  </figure>
+</div>
+<p class="vs">Against Simple: Simple's addressed row is a border and reads at the plate's own
+contrast. B1 costs contrast exactly where the task is — the figures measured beside it are computed
+in this page by compositing the committed tint over the committed ground, not quoted. B2 costs
+nothing, because <strong>the pane covers the MECHANISM and never the printing</strong>, which is also
+what the source object does: the hood sits over the platter and the scale, and the chassis markings
+are outside it. <strong>B2 kept.</strong></p>
+
+<h3>Study C — the pointer (colour)</h3>
+<p class="claim"><strong>Claim.</strong> CLEAR LID is a LIGHT world whose one emissive hue sits at
+almost exactly the luminance of its own paper, so amber cannot be the mark — it has to be the light
+INSIDE the mark. Colour only; the geometry, the well and the bloom stack are identical on both.</p>
+<div class="bench">
+  <figure class="plinth"><figcaption>C1 · lamp hot #FFC868 alone</figcaption>
+    <div class="pc-well"><i class="pc-bare" style="left:62%"></i></div>
+  </figure>
+  <figure class="plinth"><figcaption>C2 · printed-ink keyline, amber core</figcaption>
+    <div class="pc-well"><i class="pc-keyed" style="left:62%"></i></div>
+  </figure>
+  <figure class="plinth"><figcaption>measured in the page</figcaption>
+    <div class="pe-read" id="pcRead">…</div>
+  </figure>
+</div>
+<p class="vs">Against Simple: Simple's pointer is <code>#F2F2F2</code> on <code>#2c2c2c</code> and
+reads at 11:1 without trying — a grayscale world has no such problem. In CLEAR LID the bare amber
+measures barely above its own well and the instrument disappears. The repair is precedented in this
+product: <code>tokens/world.css</code> does the same for RESTOMOD (<em>&ldquo;the pinned livery
+orange measures 2.89:1 on ivory … so the needle reads by its KEYLINE&rdquo;</em>).
+<strong>C2 kept</strong>, on every pointer on the screen.</p>
+
+<h3>Study D — the band (density)</h3>
+<p class="claim"><strong>Claim.</strong> CLEAR LID section 4's List/Browser bands are Dense 1.5rem,
+Standard 2rem, Comfortable 2.5rem. Every row on this screen is an OPERABLE CONTROL, and the Floor's
+44px on both axes is non-negotiable, so the row is 2.75rem and the band table is overruled. Density
+only; the material is identical across all three.</p>
+<div class="bench">
+  <figure class="plinth"><figcaption>D1 · dense 1.5rem</figcaption><div class="pd" data-band="dense" id="pdA"></div></figure>
+  <figure class="plinth"><figcaption>D2 · standard 2rem</figcaption><div class="pd" data-band="standard" id="pdB"></div></figure>
+  <figure class="plinth"><figcaption>D3 · the Floor, 2.75rem</figcaption><div class="pd" data-band="floor" id="pdC"></div></figure>
+</div>
+<p class="vs">Against Simple: Simple's rows are whatever the text makes them, so a long name is
+taller than a short one and the list has no pitch at all — which also means the milled grooves have
+nothing to be painted to. Watch D1 and D2: the 44px seat plate <strong>overflows its own row</strong>
+and the grooves stop lining up, which is the band table failing in public rather than in an argument.
+<strong>D3 kept</strong>, and it is what makes one repeating gradient able to engrave sixty-five
+rows.</p>
+
+<h3>Study E — the window (motion)</h3>
+<p class="claim"><strong>Claim.</strong> CLEAR LID section 3: the fenestrated cap's window is
+<em>&ldquo;sharp only when the knob rests on a detent, blurred whenever the hand is mid-turn, so the
+eye is never asked to overread a number the hand has not finished choosing&rdquo;</em>, and its
+Signature escalation delays the sharpening by 24ms behind the seat so the hand feels the detent
+before the eye reads the figure. Motion only; the cap is the same part as everywhere else.</p>
+<div class="bench">
+  <figure class="plinth"><figcaption>E · drag the cap, or focus it and press ← / → / Home / End</figcaption>
+    <div class="pe">
+      <button class="pe-knob" id="peKnob" role="slider" aria-valuemin="0" aria-valuemax="4"
+              aria-valuenow="2" aria-valuetext="about half" aria-label="level">
+        <span class="pe-grip" id="peGrip"></span><span class="pe-light"></span>
+        <span class="pe-win" id="peWin">½</span>
+      </button>
+      <div class="pe-read" id="peRead">seat 2 · 60° · blur 0.00px</div>
+    </div>
+  </figure>
+</div>
+<p class="vs">Against Simple: Simple's five keys change a value with no travel at all, so a committed
+seat and a mis-tap look identical. Here the cap seats in 110ms on the snap curve, the window's blur
+tracks REAL angular velocity (<code>min(3, ω/40)</code>px), and the figure sharpens 24ms after the
+cap arrives. Turn it fast and the digit is deliberately unreadable mid-throw — which is the point.
+<strong>Kept, with the delta declared:</strong> the chapter re-cuts the Foundry's thirteen seats at
+22.5° to THREE at 30°; the inventory level is five-valued, so this is FIVE seats at the chapter's own
+30° pitch over 120°. Pitch, hysteresis (12%) and seat time (110ms) are unchanged.</p>
+
+<!-- ============================================================ -->
+<h2>Rung 3 · Refined — the re-authored rung</h2>
+<p>CD-BRIEF ruling 4 replaces the doctrine's own Refined rung, which would have undone the push:
+<em>&ldquo;subtract jobless elements; keep every survivor at full material strength.&rdquo;</em> The
+ledger asks one question of each element — <strong>does it state a value, or let the hand do
+something?</strong> — and never <em>is it the hero?</em></p>
+<table>
+  <tr><th>element</th><th>states a value?</th><th>lets the hand act?</th><th>ruling</th></tr>
+  <tr><td>register plate + 65 engraved rows</td><td class="k">65 levels, 65 lives, 65 ages</td><td class="k">address and set any row</td><td class="k">kept</td></tr>
+  <tr><td>the two milled channels</td><td class="k">the level scale and the life zone</td><td>no — they are the wells the needles run in</td><td class="k">kept — structure, not ornament</td></tr>
+  <tr><td>thumbwheel + five detent plates</td><td class="k">the addressed row's level</td><td class="k">seats it, by hand or by key</td><td class="k">kept</td></tr>
+  <tr><td>annunciator (lamps + slip rail)</td><td class="k">what expired, what expires today, and the arbiter's rank-1</td><td class="k">one press addresses the row</td><td class="k">kept</td></tr>
+  <tr><td>larder gauge</td><td class="k">fill, counted/total, age, the 72h threshold, low, frozen</td><td class="k">the recovery key when stale</td><td class="k">kept</td></tr>
+  <tr><td>tuning scale + station bank</td><td class="k">what tonight could be cooked, exactly</td><td class="k">tune to a station; open the meal</td><td class="k">kept</td></tr>
+  <tr><td>dinner ledger</td><td class="k">tonight's plate, its grams, its cost, whether it was logged</td><td class="k">eaten / leftover / binned, and the waste drawer</td><td class="k">kept</td></tr>
+  <tr><td>four lid lamp scales</td><td class="k">each location's own fill</td><td class="k">the lid handle itself</td><td class="k">kept</td></tr>
+  <tr><td>elm hinge spine + knuckles</td><td>no</td><td class="k">it is the joint every lid hinges on</td><td class="k">kept — one structural member, 2.25rem, not a full-width band</td></tr>
+  <tr><td>a separate RECORDS pod holding one key</td><td class="x">no</td><td class="x">one key, already in the ledger</td><td class="x">SUBTRACTED — folded into the dinner ledger</td></tr>
+  <tr><td>a restock-queue list of names</td><td class="x">no — every one of those rows already prints its own level</td><td class="x">no</td><td class="x">SUBTRACTED; the COUNT survives on the gauge as &ldquo;21 at or below ¼&rdquo;</td></tr>
+  <tr><td>a spinning disc on the level</td><td class="x">no — a daily stock level is not a live process</td><td class="x">no</td><td class="x">NEVER BUILT (CD-BRIEF ruling 6)</td></tr>
+  <tr><td>a lid per row</td><td class="x">no</td><td class="x">no</td><td class="x">SUBTRACTED at Pushed (study A)</td></tr>
+  <tr><td>an empty <code>&lt;span&gt;</code> for the tuning ticks</td><td class="x">no</td><td class="x">no</td><td class="x">SUBTRACTED — the ticks are printed in the scale's own background</td></tr>
+</table>
+<p class="vs">Exit condition met: <strong>six hero-grade instruments survive</strong> — plate,
+thumbwheel, annunciator, larder gauge, tuning scale, dinner ledger — each with a job stateable in one
+sentence, and every survivor keeps its full four-layer stack, its specular and its texture. Nothing
+was demoted to plain competence, because CORRECTIONARY 3.1 abolished that register.</p>
+
+<!-- ============================================================ -->
+<h2>Rung 4 · Signature</h2>
+<p><strong>The tuning scale is geared to the thumbwheel.</strong> Every other product renders
+&ldquo;what can I cook from stock&rdquo; as five chips with a percentage each. This screen renders it
+as the radio it is — meals are printed STATIONS along one scale, the amber lamp edge-lights it from
+26% of its width, and the pointer parks on the station you are tuned to. And it MOVES WHEN YOU COUNT,
+because changing what is in the house genuinely changes what tonight could be.</p>
+<p>Set a level below and watch the order: the seat commits at once, the row's needle sweeps at the
+committed 340px/s, and the station marks and the tuning needle travel to wherever the coverage
+actually moved to. <strong>Nothing waits on anything</strong> — all three are reports of the same one
+commit, and the log prints the real arithmetic rather than the claim.</p>
+
+<div class="sig">
+  <div>
+    <div class="sig-plate" id="sigPlate"></div>
+    <div style="margin-top:.75rem" class="sig-tune" id="sigTune">
+      <span class="sig-lamp" id="sigLamp"></span>
+      <span class="sig-print"></span>
+      <span class="sig-tuneneedle" id="sigNeedle"></span>
+    </div>
+    <div class="sig-face" style="margin-top:.375rem" id="sigFace">…</div>
+  </div>
+  <div>
+    <div class="sig-face"><b id="sigRow">Chicken breast</b><br><span id="sigRowAge">counted 1h ago</span></div>
+    <div class="sig-detents" id="sigDetents" role="radiogroup" aria-label="set the addressed row's level"></div>
+    <div class="sig-log" style="margin-top:.5rem" id="sigLog">set a level — the log prints what actually moved</div>
+  </div>
+</div>
+<p class="vs">CD-BRIEF ruling 6 is satisfied by construction: <strong>this motion is
+user-caused.</strong> Leave the page alone and the scale is dead still — the lamp decays from its
+120ms charge to a standing 34% ember over 6000ms and nothing else moves, because
+&ldquo;a stable station, a stable speed, produces a stable screen&rdquo; (II.4.16). There is no idle
+spin, no hover animation and no reveal with nothing behind it.</p>
+
+<h3>What this rung is not allowed to do</h3>
+<p class="vs">The station marks may only move when the coverage arithmetic moves. They are computed
+here from the same shape the frozen selector uses — a grams-weighted coverage in which each
+ingredient's contribution is capped at 100%, so a surplus of one cannot mask a shortage of another —
+and the pointer's travel time is distance over a stated rate with an 80ms floor, never a fixed tween.
+A geometry change (a resize, a first measurement) relocates every needle in one frame instead,
+because a sweep is a report of a VALUE change and of nothing else.</p>
+
+<script>
+/* ===================== REAL DATA, read off the running screen ============= */
+const ROWS = [
+  { n:"Apples",                              lv:0, cd:"—",       st:"empty",   age:"4h"   },
+  { n:"Carrots 1kg",                          lv:2, cd:"24d",     st:"ok",      age:"3h"   },
+  { n:"Chestnut mushrooms 465g",              lv:1, cd:"5d",      st:"ok",      age:"1h"   },
+  { n:"Chipotles in adobo sauce, chopped 200g",lv:1,cd:"13d",     st:"ok",      age:"5h"   },
+  { n:"Cottage cheese, natural",              lv:3, cd:"today",   st:"expiring",age:"4d", stale:1 },
+  { n:"Courgettes ×5",                        lv:null, cd:"—",    st:"never",   age:"never"},
+  { n:"Cucumber 300g",                        lv:1, cd:"8d",      st:"ok",      age:"5h"   },
+  { n:"Eggs ×12",                             lv:null, cd:"—",    st:"never",   age:"never"},
+  { n:"Fat-free Greek yoghurt 1kg (yoghurt)", lv:1, cd:"5d",      st:"ok",      age:"1h"   },
+  { n:"Fat-free Greek yoghurt 1kg (skyr)",    lv:4, cd:"5d",      st:"ok",      age:"2h"   },
+  { n:"Jerk paste, wet marinade ×13",         lv:0, cd:"—",       st:"empty",   age:"4h"   },
+  { n:"Little gem lettuce 250g",              lv:null, cd:"—",    st:"never",   age:"never"},
+  { n:"Parmesan ×16",                         lv:1, cd:"low",     st:"low",     age:"5h"   },
+  { n:"Pineapple chunks 260g",                lv:2, cd:"expired",  st:"expired", age:"5d"   },
+  { n:"Red cabbage 700g",                     lv:1, cd:"26d",     st:"ok",      age:"1h"   },
+];
+const WORD = ["empty","¼","½","¾","full"];
+const GLYPH = ["0","¼","½","¾","1"];
+const SPOKEN = ["empty","a quarter","about half","three quarters","full"];
+
+/* ===================== RUNG 1 · SIMPLE — nine states, really driven ====== */
+const sState=document.getElementById('sState');
+function simpleModel(state){
+  const base={count:"56/65",age:"1h",exp:1,expg:1,fill:"51%",rows:ROWS.slice(0,10),
+    cut:"0 above · 7 below the cut · 46 under shut lids",wheel:2,ann:"Chestnut mushrooms 465g: a quarter",dead:false};
+  switch(state){
+    case 'empty':  return {...base,count:"65/65",fill:"0%",exp:0,expg:0,
+      rows:ROWS.slice(0,10).map(r=>({...r,lv:0,cd:"—",st:"empty",age:"2h"})),
+      cut:"0 above · 7 below the cut · 46 under shut lids",ann:"every counted row is empty"};
+    case 'loading':return {...base,count:"—/65",age:"—",exp:0,expg:0,fill:"—",rows:[],
+      cut:"the register has not hydrated — nothing is claimed",wheel:null,dead:true,ann:"no reading yet"};
+    case 'partial':return {...base,count:"19/65",fill:"53%",
+      rows:ROWS.slice(0,5).concat(ROWS.slice(0,5).map(r=>({...r,lv:null,cd:"—",st:"never",age:"never"}))),
+      cut:"0 above · 11 below the cut · 46 under shut lids",ann:"fridge counted; three lids never opened"};
+    case 'overflow':return{...base,rows:ROWS.concat(ROWS.slice(0,7)),
+      cut:"0 above · 14 below the cut · 43 under shut lids",ann:"cupboard is 22 rows; 8 sit under the cut"};
+    case 'error': return {...base,rows:ROWS.slice(0,6).concat([{n:"unknown_ing_id",lv:null,cd:"—",st:"error",age:"never"}]).concat(ROWS.slice(6,9)),
+      ann:"one row references an id the dataset does not carry"};
+    case 'stale': return {...base,age:"5d",ann:"the newest count is 5 days old — UNCOUNTED",
+      rows:ROWS.slice(0,10).map(r=>({...r,age:r.age==="never"?"never":"5d",stale:r.age!=="never"}))};
+    case 'disabled':return{...base,wheel:null,ann:"no row addressed — the wheel is dead",dead:true};
+    case 'firstrun':return{...base,count:"0/65",age:"never",exp:0,expg:0,fill:"0%",
+      rows:ROWS.slice(0,10).map(r=>({...r,lv:null,cd:"—",st:"never",age:"never"})),
+      cut:"0 above · 9 below the cut · 46 under shut lids",wheel:null,dead:true,
+      ann:"nothing has ever been counted — NEVER, not zero"};
+    default: return base;
+  }
+}
+function drawSimple(){
+  const m=simpleModel(sState.value);
+  sCount.textContent=m.count; sAge.textContent=m.age; sExp.textContent=m.exp;
+  sExpg.textContent=m.expg; sFill.textContent=m.fill;
+  sRows.innerHTML = m.rows.length===0
+    ? '<li><span class="n" style="color:var(--g5)">no rows — the store has not answered</span><span></span><span></span><span></span></li>'
+    : m.rows.map(r=>`<li><span class="n">${r.n}</span>`+
+        `<span class="v"${r.lv===null?' style="font-style:italic;color:var(--g5)"':''}>${r.lv===null?"never":WORD[r.lv]}</span>`+
+        `<span class="c">${r.st==="expired"?"✕ ":r.st==="expiring"?"△ ":r.st==="error"?"? ":""}${r.cd}</span>`+
+        `<span class="a"${r.stale?' style="color:var(--g8)"':''}>${r.age}</span></li>`).join('');
+  sCut.textContent = m.cut;
+  sAnn.textContent = m.ann;
+  sWheel.innerHTML = [4,3,2,1,0].map(i=>
+    `<button class="key" data-seat="${i}" aria-pressed="${m.wheel===i}"${m.dead?' disabled':''}>${WORD[i]}</button>`).join('');
+  sWheel.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+    const seat=+b.dataset.seat;
+    sWheel.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(+x.dataset.seat===seat)));
+    sAnn.textContent=`Chestnut mushrooms 465g: ${SPOKEN[seat]}`;
+  });
+}
+sState.onchange=drawSimple; drawSimple();
+
+/* ===================== RUNG 2 · study A — count it, do not claim it ====== */
+const LABELS = ROWS.slice(0,8).map(r=>r.n.length>26?r.n.slice(0,25)+"…":r.n);
+paCases.innerHTML = LABELS.map(l=>`<div class="pa-case">${l}</div>`).join('');
+paPlate.innerHTML = LABELS.map(l=>`<div>${l}</div>`).join('');
+function layers(v){ if(!v||v==='none') return 0; let d=0,n=1; for(const c of v){ if(c==='(')d++; else if(c===')')d--; else if(c===','&&d===0)n++; } return n; }
+function census(root){ let nodes=0,sl=0; for(const el of root.querySelectorAll('*')){ nodes++; sl+=layers(getComputedStyle(el).boxShadow); }
+  sl+=layers(getComputedStyle(root).boxShadow); return {nodes:nodes+1, shadowLayers:sl}; }
+{ const a=census(paCases), b=census(paPlate);
+  paCount.innerHTML = `A1 &nbsp;${a.nodes} nodes &nbsp;${a.shadowLayers} shadow layers<br>`+
+    `A2 &nbsp;${b.nodes} nodes &nbsp;${b.shadowLayers} shadow layers<br>`+
+    `<span style="color:var(--g6)">at the real 65 rows that is ${Math.round(a.shadowLayers/LABELS.length*65)} versus ${b.shadowLayers}</span>`; }
+
+/* ===================== RUNG 2 · study B — measure the tint ================ */
+function mix(fg,a,bg){ return fg.map((c,i)=>Math.round(c*a+bg[i]*(1-a))); }
+function ch(c){const s=c/255;return s<=0.03928?s/12.92:Math.pow((s+0.055)/1.055,2.4);}
+function lum(c){return 0.2126*ch(c[0])+0.7152*ch(c[1])+0.0722*ch(c[2]);}
+function ratio(a,b){const la=lum(a),lb=lum(b),hi=Math.max(la,lb),lo=Math.min(la,lb);return ((hi+0.05)/(lo+0.05)).toFixed(2);}
+const INK=[58,54,46], PLATE=[237,232,222], WELL=[220,212,196], AMBER=[255,200,104], TINT=[200,204,198];
+function bRows(armed){ return ROWS.slice(0,5).map((r,i)=>
+  `<div class="pb-row" data-armed="${i===armed?1:0}"><span>${r.n.length>20?r.n.slice(0,19)+"…":r.n}</span>`+
+  `<span class="pb-mech"><i style="left:${(( (r.lv??0)+0.5)/5*100)}%"></i></span>`+
+  `<span class="pb-fig">${r.lv===null?"never":WORD[r.lv]}</span></div>`).join(''); }
+pbOver.innerHTML = bRows(2);
+pbCut.insertAdjacentHTML('beforeend', bRows(2));
+{ const rowH=44;
+  pbPaneA.style.cssText+=`top:0px;height:${2*rowH}px`;
+  pbPaneB.style.cssText+=`top:${3*rowH}px;height:${2*rowH}px`; }
+{ const inkOverPlate=ratio(INK,PLATE);
+  const inkUnderLit=ratio(mix(TINT,0.52,INK), mix(TINT,0.52,PLATE));
+  const amberOnWell=ratio(AMBER,WELL);
+  const amberUnderLit=ratio(mix(TINT,0.52,AMBER), mix(TINT,0.52,WELL));
+  pbRead.innerHTML =
+   `printed ink on the plate<br>&nbsp;bare &nbsp;<b style="color:var(--g8)">${inkOverPlate}:1</b>`+
+   `&nbsp; under a lit pane &nbsp;<b style="color:#d98f88">${inkUnderLit}:1</b><br><br>`+
+   `amber needle in its well<br>&nbsp;bare &nbsp;${amberOnWell}:1`+
+   `&nbsp; under a lit pane &nbsp;${amberUnderLit}:1`; }
+
+/* ===================== RUNG 2 · study C — the keyline ==================== */
+pcRead.innerHTML =
+  `amber #FFC868 on the well #DCD4C4<br>&nbsp;<b style="color:#d98f88">${ratio(AMBER,WELL)}:1</b> — under the 3:1 graphical floor<br><br>`+
+  `ink #3A362E on the well<br>&nbsp;<b style="color:#9ec98a">${ratio(INK,WELL)}:1</b> — the keyline carries the mark`;
+
+/* ===================== RUNG 2 · study D — the three bands ================ */
+const dRows = ROWS.slice(0,4).map(r=>`<li><span>${r.n.length>18?r.n.slice(0,17)+"…":r.n}</span><b>${r.lv===null?"never":WORD[r.lv]}</b></li>`).join('');
+for (const el of [pdA,pdB,pdC]) el.innerHTML = `<ul>${dRows}</ul>`;
+
+/* ===================== RUNG 2 · study E — the fenestrated window ========= */
+const PITCH=30, BAND=0.12, SEATS=5;
+let seat=2, dragging=null;
+function quantise(travel, seated){
+  const inD=travel/PITCH; let next=seated;
+  if(inD>seated+0.5+BAND/2) next=Math.floor(inD+0.5-BAND/2);
+  else if(inD<seated-0.5-BAND/2) next=Math.ceil(inD-0.5+BAND/2);
+  return Math.min(SEATS-1,Math.max(0,next));
+}
+function seatTo(n,blur){
+  seat=n; peGrip.style.setProperty('--deg', (n*PITCH)+'deg');
+  peWin.textContent=GLYPH[n];
+  peKnob.setAttribute('aria-valuenow',String(n));
+  peKnob.setAttribute('aria-valuetext',SPOKEN[n]);
+  peWin.style.setProperty('--blur',(blur||0).toFixed(2)+'px');
+  peRead.textContent = `seat ${n} · ${n*PITCH}° · blur ${(blur||0).toFixed(2)}px`;
+}
+function angleOf(e){ const r=peKnob.getBoundingClientRect();
+  return Math.atan2(e.clientY-(r.top+r.height/2), e.clientX-(r.left+r.width/2))*180/Math.PI; }
+peKnob.addEventListener('pointerdown',e=>{ peKnob.setPointerCapture(e.pointerId);
+  dragging={start:seat,unwrapped:0,last:angleOf(e),t:performance.now()}; });
+peKnob.addEventListener('pointermove',e=>{ if(!dragging) return;
+  const a=angleOf(e), now=performance.now(), dt=Math.max(1,now-dragging.t)/1000;
+  const d=((a-dragging.last+540)%360)-180;
+  dragging.unwrapped+=d; dragging.last=a; dragging.t=now;
+  const blur=Math.min(3,Math.abs(d)/dt/40);
+  seatTo(quantise((dragging.start+dragging.unwrapped/PITCH)*PITCH, seat), blur); });
+function endDrag(e){ if(!dragging) return; dragging=null; seatTo(seat,0); }
+peKnob.addEventListener('pointerup',endDrag);
+peKnob.addEventListener('pointercancel',endDrag);
+peKnob.addEventListener('keydown',e=>{ let n=null;
+  if(e.key==='ArrowRight'||e.key==='ArrowUp') n=Math.min(4,seat+1);
+  else if(e.key==='ArrowLeft'||e.key==='ArrowDown') n=Math.max(0,seat-1);
+  else if(e.key==='Home') n=0; else if(e.key==='End') n=4;
+  if(n===null) return; e.preventDefault(); seatTo(n,0); });
+seatTo(2,0);
+
+/* ===================== RUNG 4 · SIGNATURE — the geared linkage ============ */
+/* The one addressed row and the meals its stock actually feeds. Coverage is
+   grams-weighted with each ingredient capped at 100%, exactly the shape the
+   frozen selector uses, so a surplus of one cannot mask a shortage of another. */
+const SIG_ROWS=[
+  {id:"chicken", n:"Chicken breast 1kg", lv:1, cd:"3d", age:"1h"},
+  {id:"rice",    n:"Basmati rice 1kg",   lv:2, cd:"low",age:"1h"},
+  {id:"yog",     n:"Fat-free Greek yoghurt 1kg", lv:0, cd:"—", age:"1h"},
+];
+const MEALS=[
+  {id:"katsu", name:"Chicken katsu curry",      need:{chicken:380, rice:260, yog:0}},
+  {id:"halal", name:"Halal cart chicken over rice", need:{chicken:340, rice:240, yog:120}},
+  {id:"shawa", name:"Chicken shawarma bowl",    need:{chicken:300, rice:0,   yog:180}},
+];
+const UNIT={chicken:1000, rice:1000, yog:1000};
+let armed=0, lampTimer=null;
+function coverage(m){ let need=0, have=0;
+  for(const [k,g] of Object.entries(m.need)){ if(!g) continue;
+    const lv=SIG_ROWS.find(r=>r.id===k).lv; need+=g; have+=Math.min(g,(lv/4)*UNIT[k]); }
+  return need? have/need : 1; }
+function px(f,w){ return 2+Math.max(0,Math.min(1,f))*Math.max(0,w-4); }
+function drawPlate(){
+  sigPlate.innerHTML = SIG_ROWS.map((r,i)=>
+    `<div class="sig-row" data-armed="${i===armed?1:0}"><span>${r.n}</span>`+
+    `<span class="sig-scale"><i class="sig-needle" data-i="${i}"></i></span>`+
+    `<span class="sig-fig">${WORD[r.lv]}</span><span class="sig-cd">${r.cd}</span></div>`).join('');
+  sigPlate.querySelectorAll('.sig-needle').forEach((el,i)=>{
+    const w=el.parentElement.getBoundingClientRect().width||112;
+    el.style.setProperty('--ms','0ms');
+    el.style.setProperty('--x', (((SIG_ROWS[i].lv+0.5)/5)*w).toFixed(2)+'px');
+    el.dataset.x=(((SIG_ROWS[i].lv+0.5)/5)*w).toFixed(2);
+  });
+  sigRow.textContent=SIG_ROWS[armed].n; sigRowAge.textContent=`counted ${SIG_ROWS[armed].age} ago`;
+}
+function drawStations(instant){
+  const w=sigTune.getBoundingClientRect().width;
+  sigTune.querySelectorAll('.sig-station').forEach(n=>n.remove());
+  const ranked=[...MEALS].map(m=>({m,c:coverage(m)})).sort((a,b)=>b.c-a.c);
+  for(const {c} of ranked){ const s=document.createElement('span'); s.className='sig-station';
+    s.style.setProperty('--sx', px(c,w).toFixed(2)+'px'); sigTune.appendChild(s); }
+  const top=ranked[0];
+  const to=px(top.c,w), from=parseFloat(sigNeedle.dataset.x||'0');
+  const ms = instant? 0 : Math.max(80, Math.abs(to-from)/340*1000);
+  sigNeedle.style.setProperty('--tms', ms.toFixed(0)+'ms');
+  sigNeedle.style.setProperty('--tx', to.toFixed(2)+'px');
+  sigNeedle.dataset.x=to.toFixed(2);
+  sigFace.innerHTML=`<b>${top.m.name}</b> &nbsp;<span style="font-size:1.05rem">${Math.round(top.c*100)}</span>% covered`;
+  return {ms, to, from, name:top.m.name, pct:Math.round(top.c*100)};
+}
+function charge(){ // II.2.18 — 120ms charge, 6000ms decay to the 34% floor
+  clearTimeout(lampTimer);
+  sigLamp.style.setProperty('--lampms','120ms'); sigLamp.style.setProperty('--charge','1');
+  lampTimer=setTimeout(()=>{ sigLamp.style.setProperty('--lampms','6000ms');
+    sigLamp.style.setProperty('--charge','0.34'); },120);
+}
+function drawDetents(){
+  sigDetents.innerHTML=[4,3,2,1,0].map(i=>
+    `<button class="sig-detent" role="radio" data-seat="${i}" aria-checked="${SIG_ROWS[armed].lv===i}">`+
+    `<span class="w"></span>${WORD[i]}</button>`).join('');
+  sigDetents.querySelectorAll('button').forEach(b=>b.onclick=()=>setLevel(+b.dataset.seat));
+}
+function setLevel(n){
+  const t0=performance.now();
+  const row=SIG_ROWS[armed]; const before=row.lv; row.lv=n;   // 1 · SEMANTIC COMMIT
+  const commitMs=performance.now()-t0;
+  // 2 · the reports, all scheduled after the value is already true
+  const needle=sigPlate.querySelector(`.sig-needle[data-i="${armed}"]`);
+  const w=needle.parentElement.getBoundingClientRect().width||112;
+  const to=((n+0.5)/5)*w, from=parseFloat(needle.dataset.x||'0');
+  const nms=Math.max(80, Math.abs(to-from)/340*1000);
+  needle.style.setProperty('--ms', nms.toFixed(0)+'ms');
+  needle.style.setProperty('--x', to.toFixed(2)+'px'); needle.dataset.x=to.toFixed(2);
+  sigPlate.querySelectorAll('.sig-row')[armed].querySelector('.sig-fig').textContent=WORD[n];
+  const tune=drawStations(false); charge(); drawDetents();
+  sigLog.innerHTML =
+   `commit ${commitMs.toFixed(3)}ms — the level was ${WORD[before]}, it is ${WORD[n]}<br>`+
+   `row needle &nbsp;${Math.abs(to-from).toFixed(1)}px @ 340px/s → ${nms.toFixed(0)}ms<br>`+
+   `tuning needle ${Math.abs(tune.to-tune.from).toFixed(1)}px @ 340px/s → ${tune.ms.toFixed(0)}ms · now ${tune.name} at ${tune.pct}%`;
+}
+sigPlate.addEventListener('click',e=>{ const r=e.target.closest('.sig-row'); if(!r) return;
+  armed=[...sigPlate.children].indexOf(r); drawPlate(); drawDetents(); });
+drawPlate(); drawDetents(); drawStations(true);
+addEventListener('resize',()=>{ drawPlate(); drawStations(true); });
+</script>
+</main>
+</body>
+</html>

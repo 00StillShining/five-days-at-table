@@ -1,295 +1,643 @@
-// STORES — register + fuzzy inventory (PLAN §6.7 / D7). "The 54-row register
-// fused with live inventory: how much do we have, how long does it last."
-// Phase 2 wave 1 (docs/PHASE2-CONTRACT.md): this folder is self-contained per
-// the ownership rule — no other screen folder imports from it, and it
-// imports only components/engine/state/data, never another screen.
-//
-// KEY FACT (PLAN §5 / state/selectors.ts module doc): the executing
-// fortnight is ALWAYS Week A, twice (D5) — `prefs.week` is a browsing toggle
-// for PLAN/MEAL, not "which week is being cooked". Tonight's dinner lookup
-// below resolves through `effectiveMealForSlot` (swaps-aware, P2-PLAN-001 —
-// wave-1-fix item 2: a committed swap must change what "log dinner" offers,
-// same as it already changes TODAY's tonight card and start-by time) but
-// stays hard-coded to week "A" — the executing week — independent of the
-// week paddle. Cook-from-stock is the one deliberate exception to Week-A-
-// only: it ranks meals from BOTH weeks via `coverageForAllMeals(inventory,
-// cover, ["A", "B"])`, since Week B is the swap/variety pool (D5) and "what
-// can I cook from what's in the fridge" is a real question about Week B
-// dishes too.
-import { useRef, useState } from "react";
+/**
+ * src/screens/stores/index.tsx — STORES, in 10 CLEAR LID.
+ *
+ * THE QUESTION THIS SCREEN ANSWERS: what have we actually got, how long does it
+ * last, and how do I say so?
+ *
+ * ---------------------------------------------------------------------------
+ * THE OBJECT
+ * ---------------------------------------------------------------------------
+ * A specimen case for a larder. Cream painted steel, a pale elm hinge spine,
+ * grey control plates, and one milled register plate with sixty-five rows
+ * ENGRAVED INTO IT under a single acrylic pane — not sixty-five little cases.
+ * CLEAR LID names that failure by itself (section 9, LID INFLATION: "every card
+ * on a dashboard earns its own full lid ... the screen reads as a cabinet of
+ * specimen cases with no leading object"), and this is a screen structurally
+ * designed to invite it. One plate. One lid. One hierarchy of construction.
+ *
+ * SIX HERO-GRADE INSTRUMENTS, which is the NORMAL condition here and not a
+ * budget breach (CORRECTIONARY 3.1). Each one's job in one sentence — the exit
+ * test CD-BRIEF ruling 4's re-authored Refined rung sets:
+ *
+ *   REGISTER PLATE   the sixty-five levels and lives, read and set.
+ *   THUMBWHEEL       the hand that seats a level.
+ *   ANNUNCIATOR      what has expired, what expires within a day, and the one
+ *                    act the arbiter ranks first.
+ *   LARDER GAUGE     how full the house is, how much of the register has been
+ *                    counted, and how old that count is.
+ *   TUNING SCALE     what tonight can be cooked from what is in the house.
+ *   DINNER LEDGER    whether tonight's plate was logged, and what it left.
+ *
+ * ---------------------------------------------------------------------------
+ * THE 16ms ACK IS STRUCTURAL (CD-BRIEF's measured performance law, binding)
+ * ---------------------------------------------------------------------------
+ * "A React `dispatch` alone does NOT satisfy the Floor's 16ms acknowledgement,
+ * because the reducer runs during the NEXT render — the model is still stale
+ * when your handler returns. Keep the model in a ref, apply the frozen reducer
+ * inline at the input event, and let setState be only the request to re-render.
+ * Measured: ack commit 0.01-0.9ms while the visible report takes 12-39ms."
+ *
+ * `modelRef` is that ref. `commitLevel` applies the FROZEN reducer to it in the
+ * input's own task, then writes the addressed row's needle position directly to
+ * its own element, and only then dispatches. The value is true, and the
+ * instrument has answered, before React has rendered anything.
+ *
+ * ---------------------------------------------------------------------------
+ * R7 — NO PAGE-LENGTH SCROLLING, AND THE OVERFLOW IS CONFESSED
+ * ---------------------------------------------------------------------------
+ * The register is the foundry's `Register`: four lids, exactly one open, driven
+ * through `useOpenSection` so the open lid survives navigation (R6) — a scene
+ * unmounts on every route change, so `useState` would lose it. A closed group
+ * renders `null`, which buys the measured law's largest single saving for free
+ * (767 -> 335 nodes, input->paint 39.0 -> 17.6ms): "R7 alone is insufficient —
+ * a collapsed drawer at grid-template-rows: 0fr is hidden from paint but NOT
+ * from React."
+ *
+ * DECLARED DEPARTURE (CORRECTIONARY 6.5). One open group can still be twenty-two
+ * rows, which is 968px — taller than the 800px the desk viewport has for it. So
+ * the bay is a fixed-height machined recess and the PLATE SLIDES INSIDE IT, and
+ * the clip states its remainder as a number in three parts, live: rows above the
+ * cut, rows below it, and rows under the shut lids (II.6.24 — "every clip states
+ * its remainder as a number. No fade curtains"). The page itself does not grow a
+ * scroll of its own at desk width; the register does, inside its own bay, the way
+ * a card index slides in its drawer.
+ *
+ * ---------------------------------------------------------------------------
+ * ONE COARSE CLOCK, ONE ISOLATED FAST ONE (measured law, rule 4)
+ * ---------------------------------------------------------------------------
+ * "A 1Hz age clock mounted above a 65-row list re-renders 65 rows per second
+ * forever ... give day-granularity countdowns a 60s clock, not a 1s one." Every
+ * reading in the register is day-granular, so the scene runs at 60s. The one
+ * per-second age on the screen — the larder gauge's — owns its own interval
+ * INSIDE the component that prints it, and nothing above it ticks.
+ *
+ * ---------------------------------------------------------------------------
+ * THE BRIDGE IS GONE
+ * ---------------------------------------------------------------------------
+ * This screen no longer depends on `.fd5[data-language="playful"]`, the legacy
+ * bridge selector in src/cd/tokens/world.css. Its root carries
+ * `data-cd-language="clear-lid"` and reads the CLEAR LID scope directly; no
+ * element here reads a `--sol-*` token or wears `.fd5-control`. The bridge
+ * itself must stay in world.css until the remaining legacy screens land.
+ */
+
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { SceneProps } from "../../app/router";
+import type { ScreenId } from "../../engine/arbiter";
 import { useStore } from "../../state/store";
-import type { InventoryLevel } from "../../state/store";
+import { reducer } from "../../state/reducer";
+import type { Action, AppState, InventoryLevel } from "../../state/types";
 import { arbiterFor } from "../../engine/arbiter";
-import { ArbiterSlot, type ArbiterDuty as SlotDuty } from "../../components/ArbiterSlot";
 import { activeVariant } from "../../data/variant";
 import { coverageForAllMeals, effectiveMealForSlot, todayInfo } from "../../state/selectors";
-import { londonDateIso } from "../../state/london";
+import { londonDateIso, londonParts } from "../../state/london";
 import { useNow } from "../../state/useNow";
 import { requireMeal } from "../../data";
-import { LOCATION_GROUP_LABEL, LOCATION_GROUP_ORDER, REGISTER_FLAT, REGISTER_GROUPS } from "./location";
+import { ageOf } from "../../cd/freshness/classes";
+import { setVoice } from "../../cd/sound/cues";
+import { useOpenPanel, useOpenSection } from "../../cd/chassis";
+import { Enclosure, Register, type RegisterGroup } from "../../cd/foundry";
+import { LOCATION_GROUP_LABEL, LOCATION_GROUP_ORDER, REGISTER_FLAT, REGISTER_GROUPS, type LocationGroup } from "./location";
 import { countdownForIngredient } from "./countdown";
 import { registerDisambiguator } from "./registerName";
 import { RegisterRow } from "./RegisterRow";
 import { LeftoverRow } from "./LeftoverRow";
-import { ThumbWheel, DETENT_ANNOUNCE } from "./wheel";
-import { LogDinnerCard } from "./logDinner";
-import { WasteSheet } from "./WasteSheet";
+import { Annunciator, BayCut, LampScale, LarderGauge, LID_SCALE_PX, ThumbWheel } from "./Instruments";
+import { TuningScale } from "./TuningScale";
+import { DinnerLedger } from "./logDinner";
+import { WasteTray } from "./WasteTray";
+import { censusOf, fillOf, latestStocktake, levelPx, LEVEL_ANNOUNCE, slewMs, type Station } from "./model";
+import { orbitOffset, useTrophy } from "./useTrophy";
 import "./stores.css";
 
-const RESTOCK_DISPLAY_CAP = 10;
+/** How many stations the tuning scale ranks. PLAN section 6.7's own five. */
+const STATION_COUNT = 5;
 
-interface Confirmation {
-  name: string;
-  level: InventoryLevel;
+/** Committed nominal cell widths, asserted at runtime by the plate's own
+ *  measurement below, which overrides them if the root font size differs. */
+const SCALE_PX_NOMINAL = 112; // 7rem
+const LIFE_PX_NOMINAL = 64; // 4rem
+
+function hhmm(iso: string): string {
+  const { hour, minute } = londonParts(new Date(iso));
+  return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+}
+
+interface Armed {
+  id: string;
+  index: number;
+  group: LocationGroup;
 }
 
 export default function StoresScene(_props: SceneProps) {
   const { state, dispatch } = useStore();
-  const now = useNow();
-  const [armedId, setArmedId] = useState<string | null>(null);
-  const [confirmation, setConfirmation] = useState<Confirmation | null>(null);
-  const [wasteOpen, setWasteOpen] = useState(false);
+
+  /* The coarse clock. Every countdown here is day-granular. */
+  const now = useNow(60_000);
+  const nowMs = now.getTime();
+
+  /* THE SHADOW MODEL. Assigned every render so it is never behind the store,
+     and advanced INLINE at every input so it is never behind the hand. */
+  const modelRef = useRef<AppState>(state);
+  modelRef.current = state;
+
+  const [armed, setArmed] = useState<Armed | null>(null);
+  const [announce, setAnnounce] = useState("tap a row to address it");
+  /** Bumped by a REAL write. The lamps answer activity, never a clock. */
+  const [activity, setActivity] = useState(0);
+
   const rowRefs = useRef(new Map<string, HTMLButtonElement>());
-  // Consumed by the very next `onArm` call after an auto-advance-triggered
-  // focus, so that call does NOT clear `confirmation` — see `commitLevel`.
-  const suppressNextArmClearRef = useRef(false);
+  const pointerRefs = useRef(new Map<string, HTMLSpanElement>());
+  const bayRef = useRef<HTMLDivElement | null>(null);
+  /** Consumed by the very next `onArm` after an auto-advance moves focus. */
+  const suppressArmAnnounceRef = useRef(false);
 
-  const todayIso = londonDateIso(now);
-  const info = todayInfo(now, state.prefs.cycleStartSaturday);
+  const trophyState = useTrophy();
+  const { trophy, orbit, power } = trophyState;
+
+  /* II.5.9 — one voice per world, claimed on arrival. Scenes unmount on
+     navigation, so each screen sets the voice it speaks in as it mounts. */
+  useEffect(() => setVoice("clear-lid"), []);
+
+  /* ------------------------------------------------------------ panel state */
+  /* R6 — these outlive a navigation and die on a reload. */
+  const [openId, setOpenId] = useOpenSection("register", "fridge");
+  const [tunedId, setTunedId] = useOpenPanel<string | null>("station", null);
+  const [wasteOpen, setWasteOpen] = useOpenPanel<boolean>("waste", false);
+
+  const openGroup = (LOCATION_GROUP_ORDER as string[]).includes(openId ?? "")
+    ? (openId as LocationGroup)
+    : null;
+
+  /* --------------------------------------------------------------- readings */
+
+  const { prefs, inventory } = state;
   const variant = activeVariant(state);
-  const dinner = typeof info.dayNo === "number" ? (effectiveMealForSlot("A", info.dayNo, "dinner", state) ?? null) : null;
-  const alreadyEaten = Boolean(state.eaten[todayIso]?.dinner);
+  const info = todayInfo(now, prefs.cycleStartSaturday);
+  const todayIso = londonDateIso(now);
+  const dinner =
+    typeof info.dayNo === "number" ? (effectiveMealForSlot("A", info.dayNo, "dinner", state) ?? null) : null;
+  const dinnerTick = state.eaten[todayIso]?.dinner ?? null;
 
-  const hasAnyInventory = Object.keys(state.inventory).length > 0;
-  const arbiter = arbiterFor("stores", state, now);
+  const countdownFor = useCallback(
+    (ing: Parameters<typeof countdownForIngredient>[0], entry: Parameters<typeof countdownForIngredient>[1]) =>
+      countdownForIngredient(ing, entry, new Date(nowMs)),
+    [nowMs]
+  );
+
+  const census = useMemo(() => censusOf(inventory, countdownFor), [inventory, countdownFor]);
+  const larder = useMemo(() => fillOf(REGISTER_FLAT, inventory), [inventory]);
+  const lastStocktake = useMemo(() => latestStocktake(REGISTER_FLAT, inventory), [inventory]);
+  const hasStock = larder.counted > 0;
+
+  const arbiter = useMemo(() => arbiterFor("stores", state, now), [state, now]);
   const rank1 = arbiter.rank1;
 
-  function registerEl(id: string, el: HTMLButtonElement | null) {
-    if (el) rowRefs.current.set(id, el);
-    else rowRefs.current.delete(id);
-  }
+  const activeLeftovers = useMemo(
+    () => state.leftovers.filter((l) => l.consumedAt == null),
+    [state.leftovers]
+  );
 
-  /** A genuine user-initiated arm (tap/Tab onto a row): always clears any
-   * stale confirmation so the wheel falls back to announcing THIS row's own
-   * level — UNLESS this call is the direct result of `commitLevel`'s
-   * auto-advance moving focus, in which case the confirmation of what was
-   * just set is exactly what should keep showing (wave-1-fix item 6). */
-  function handleArm(id: string) {
-    setArmedId(id);
-    if (suppressNextArmClearRef.current) {
-      suppressNextArmClearRef.current = false;
-    } else {
-      setConfirmation(null);
-    }
-  }
+  /*
+    docs/VARIANT-SPEC.md, binding: "coverage strip ranks kept meals first in
+    tester mode (others still listed, marked 'not this week')." A stable
+    partition — the kept meals keep their coverage-descending order among
+    themselves, and so do the rest; only the group boundary is new.
+  */
+  const ranking = useMemo(() => {
+    if (!hasStock) return { stations: [] as Station[], total: 0, cut: 0 };
+    const all = coverageForAllMeals(inventory, prefs.cover, ["A", "B"]);
+    const ranked = variant.isTester
+      ? [...all].sort((a, b) => Number(variant.isKeptMealId(b.mealId)) - Number(variant.isKeptMealId(a.mealId)))
+      : all;
+    const stations: Station[] = ranked.slice(0, STATION_COUNT).map((c) => ({
+      mealId: c.mealId,
+      name: requireMeal(c.mealId).name,
+      coverage: c.coverage,
+      inStock: c.byIngredient.filter((i) => i.ratio >= 1).length,
+      needed: c.byIngredient.length,
+      keptThisWeek: variant.isKeptMealId(c.mealId),
+    }));
+    return {
+      stations,
+      total: ranked.length,
+      cut: ranked.filter((c) => !variant.isKeptMealId(c.mealId)).length,
+    };
+  }, [hasStock, inventory, prefs.cover, variant]);
+  const stations = ranking.stations;
 
-  /** Arm a row and bring it on-screen — used by the empty-state "start
-   * stocktake" CTA and by the arbiter's expired/defrost-overdue deep links
-   * (both can be jumping from anywhere in a long, scrolled list). */
-  function armAndReveal(id: string) {
-    handleArm(id);
-    const el = rowRefs.current.get(id);
-    el?.scrollIntoView({ block: "center" });
-    el?.focus();
-  }
+  /* --------------------------------------------------- the plate's geometry */
+  /*
+    The channels are measured ONCE, and again only on resize — never per row and
+    never per frame (II.2.22's own budget discipline). They are read off the
+    first rendered row's own cells, so the printed scale and the pointer that
+    travels it can never disagree about how wide the scale is.
+  */
+  const [scalePx, setScalePx] = useState(SCALE_PX_NOMINAL);
+  const [lifePx, setLifePx] = useState(LIFE_PX_NOMINAL);
+  /* A leftover row carries a different template at phone width, so its life
+     channel is a different width. Measuring the ingredient row's and using it
+     for both would put every leftover's index at the wrong fraction of its own
+     scale — a miscalibrated instrument, not a layout nicety. */
+  const [leftoverLifePx, setLeftoverLifePx] = useState(LIFE_PX_NOMINAL);
+  /*
+    II.6.24's confession, measured HERE — in the same effect that resolves the
+    scrolling element — rather than in the component that prints it.
+
+    THE DEFECT THIS FIXES, found by rendering at 390px: the pitch was computed
+    as 2.75rem from the root font size, but a phone-width row is 4rem — the
+    narrow plate is two engraved lines, not one — so the bay printed "22 below
+    the cut" for a group holding 21 rows in total. A confession that over-states
+    is not a confession. The pitch is now read off a real row on every
+    measurement, so it is right at both widths and at any zoom.
+
+    Verified fronted (a backgrounded tab runs no rAF and freezes this, which is
+    a measuring artefact and not a defect): at 390px over 21 rows in a 384px
+    bay it reads 0/16 at the top, 15/0 at the foot, 3/13 at 192px.
+  */
+  const [cut, setCut] = useState({ above: 0, below: 0 });
+  const cutRef = useRef({ above: -1, below: -1 });
+
+  useLayoutEffect(() => {
+    const bay = bayRef.current;
+    if (!bay) return;
+    const scroller = bay.querySelector<HTMLElement>(".cd-register-group[data-cd-open='true'] > div");
+    if (!scroller) return;
+    let frame: number | null = null;
+
+    const read = (): void => {
+      const s = scroller.querySelector<HTMLElement>(".str-row:not(.str-row--leftover) .str-row__scale");
+      const l = scroller.querySelector<HTMLElement>(".str-row:not(.str-row--leftover) .str-row__life");
+      const lo = scroller.querySelector<HTMLElement>(".str-row--leftover .str-row__life");
+      if (s) setScalePx(s.getBoundingClientRect().width || SCALE_PX_NOMINAL);
+      if (l) setLifePx(l.getBoundingClientRect().width || LIFE_PX_NOMINAL);
+      setLeftoverLifePx(lo ? lo.getBoundingClientRect().width || LIFE_PX_NOMINAL : LIFE_PX_NOMINAL);
+    };
+
+    /* Only ever calls setState when an INTEGER changes: a scroll that moves the
+       plate four pixels without changing either figure costs one comparison and
+       no render at all (the measured law's own rule — budget renders). */
+    const measure = (): void => {
+      frame = null;
+      const row = scroller.querySelector<HTMLElement>(".str-row");
+      const pitch = (row && row.getBoundingClientRect().height) || 44;
+      const above = Math.floor(scroller.scrollTop / pitch + 0.001);
+      const hiddenBelow = Math.max(0, scroller.scrollHeight - scroller.clientHeight - scroller.scrollTop);
+      const below = Math.ceil(hiddenBelow / pitch - 0.001);
+      if (above === cutRef.current.above && below === cutRef.current.below) return;
+      cutRef.current = { above, below };
+      setCut({ above, below });
+    };
+
+    const schedule = (): void => {
+      if (frame === null) frame = requestAnimationFrame(measure);
+    };
+
+    read();
+    measure();
+    scroller.addEventListener("scroll", schedule, { passive: true });
+    const ro = new ResizeObserver(() => {
+      read();
+      schedule();
+    });
+    ro.observe(scroller);
+    return () => {
+      scroller.removeEventListener("scroll", schedule);
+      ro.disconnect();
+      if (frame !== null) cancelAnimationFrame(frame);
+    };
+  }, [openId]);
+
+  /* ----------------------------------------------------------- commit paths */
 
   /**
-   * The one place a level actually gets dispatched. `advance` distinguishes
-   * the wheel's ABSOLUTE detent picks (auto-advance to the next row, PLAN
-   * §6.7: "auto-advance to next row on set") from the register row's own
-   * RELATIVE arrow-key nudges (stay put — wave-1-fix item 3: auto-advancing
-   * on every relative step meant a keyboard user could never move a row past
-   * level 1, since the very first ArrowUp bounced them to the next row).
-   * Always records a confirmation of what was just set (item 6); when
-   * advancing, `suppressNextArmClearRef` keeps that confirmation alive
-   * through the focus move instead of it being immediately overwritten by
-   * the next row's own (usually "empty") level.
+   * II.1.1 — the division of labour, exactly: semantic 0ms, mechanical after.
+   * The value is true before any spring, any transition and any re-render.
    */
-  function commitLevel(id: string, level: InventoryLevel, advance: boolean) {
-    dispatch({ type: "inventory/set", ingId: id, level });
-    const ing = REGISTER_FLAT.find((i) => i.id === id);
-    if (ing) setConfirmation({ name: ing.name.short, level });
-    if (!advance) return;
-    const idx = REGISTER_FLAT.findIndex((i) => i.id === id);
-    const next = idx >= 0 ? REGISTER_FLAT[idx + 1] : undefined;
-    if (!next) return;
-    suppressNextArmClearRef.current = true;
-    setArmedId(next.id);
-    rowRefs.current.get(next.id)?.focus();
-  }
+  const commit = useCallback((action: Action): AppState => {
+    const next = reducer(modelRef.current, action);
+    modelRef.current = next;
+    return next;
+  }, []);
 
-  function handleRowAdjust(id: string, level: InventoryLevel) {
-    commitLevel(id, level, false);
-  }
+  const commitLevel = useCallback(
+    (id: string, level: InventoryLevel, _eventTs: number, advance: boolean) => {
+      const action: Action = { type: "inventory/set", ingId: id, level };
+      // 1 · SEMANTIC COMMIT — synchronous, this task, before any render work.
+      commit(action);
 
-  function handleWheelSet(level: InventoryLevel) {
-    if (armedId) commitLevel(armedId, level, true);
-  }
+      // 2 · MECHANICAL REPORT, also this task: the addressed row's needle is
+      //     retargeted off the COMMITTED level rather than off the store's
+      //     still-stale one, so the instrument has answered inside the Floor's
+      //     16ms. React's own render writes the identical values afterwards,
+      //     which is a no-op for a transition already running to that target.
+      const pointer = pointerRefs.current.get(id);
+      if (pointer) {
+        const from = Number(pointer.dataset.x ?? "0");
+        const to = levelPx(level, scalePx);
+        pointer.style.setProperty("--str-pointer-ms", `${slewMs(from, to).toFixed(0)}ms`);
+        pointer.style.setProperty("--str-pointer-x", `${to.toFixed(2)}px`);
+        pointer.dataset.x = String(to);
+      }
 
-  function handleArbiterActivate() {
+      // 3 · the request to re-render, and the store's own write.
+      dispatch(action);
+      setActivity((n) => n + 1);
+      const ing = REGISTER_FLAT.find((i) => i.id === id);
+      if (ing) setAnnounce(`${ing.name.short}: ${LEVEL_ANNOUNCE[level]}`);
+
+      if (!advance) return;
+      // PLAN section 6.7's own "auto-advance to next row on set", and ONLY for
+      // an absolute detent pick — see ThumbWheel's own note on why relative
+      // travel must not advance.
+      const idx = REGISTER_FLAT.findIndex((i) => i.id === id);
+      const next = REGISTER_FLAT[idx + 1];
+      if (!next) return;
+      const el = rowRefs.current.get(next.id);
+      if (!el) return;
+      suppressArmAnnounceRef.current = true;
+      el.focus();
+    },
+    [commit, dispatch, scalePx]
+  );
+
+  /**
+   * RELATIVE travel, resolved against the COMMITTED model. The row sends a
+   * delta rather than a destination precisely so this can read `modelRef` —
+   * the render's own `level` is one frame behind by construction, and two
+   * presses inside one frame would otherwise both compute the same seat and
+   * one of them would be silently dropped. Measured before the repair: six
+   * arrow presses in one task, one seat of travel.
+   */
+  const handleRowStep = useCallback(
+    (id: string, step: number | "min" | "max", eventTs: number) => {
+      const current = modelRef.current.inventory[id]?.level ?? 0;
+      const next =
+        step === "min" ? 0 : step === "max" ? 4 : Math.min(4, Math.max(0, current + step));
+      commitLevel(id, next as InventoryLevel, eventTs, false);
+    },
+    [commitLevel]
+  );
+
+  const handleArm = useCallback((id: string, index: number, _eventTs: number) => {
+    setArmed((prev) => (prev?.id === id ? prev : { id, index, group: groupOf(id) }));
+    if (suppressArmAnnounceRef.current) suppressArmAnnounceRef.current = false;
+  }, []);
+
+  const handleWheelSet = useCallback(
+    (level: InventoryLevel, eventTs: number, advance: boolean) => {
+      if (!armed) return;
+      commitLevel(armed.id, level, eventTs, advance);
+    },
+    [armed, commitLevel]
+  );
+
+  const consumeLeftover = useCallback(
+    (id: string) => {
+      const action: Action = { type: "leftovers/consume", id };
+      commit(action);
+      dispatch(action);
+      setActivity((n) => n + 1);
+    },
+    [commit, dispatch]
+  );
+
+  const registerEl = useCallback((id: string, el: HTMLButtonElement | null) => {
+    if (el) rowRefs.current.set(id, el);
+    else rowRefs.current.delete(id);
+  }, []);
+
+  const registerPointer = useCallback((id: string, el: HTMLSpanElement | null) => {
+    if (el) pointerRefs.current.set(id, el);
+    else pointerRefs.current.delete(id);
+  }, []);
+
+  /** Open the group a row lives in, address it, and bring it under the cut. */
+  const reveal = useCallback(
+    (ingId: string) => {
+      const group = groupOf(ingId);
+      setOpenId(group);
+      // The row may not exist yet if its lid was shut; the focus lands on the
+      // frame after the open group has mounted.
+      requestAnimationFrame(() => {
+        const el = rowRefs.current.get(ingId);
+        el?.scrollIntoView({ block: "center" });
+        el?.focus();
+      });
+    },
+    [setOpenId]
+  );
+
+  const go = useCallback((screen: ScreenId) => {
+    window.location.hash = `#/${screen}`;
+  }, []);
+
+  const handleArbiter = useCallback(() => {
     const target = rank1?.target;
     if (!target) return;
-    if (target.screen === "stores" && target.id) {
-      armAndReveal(target.id);
+    if (target.screen === "stores") {
+      if (target.id) reveal(target.id);
+      else {
+        const first = REGISTER_GROUPS[openGroup ?? "fridge"][0];
+        if (first) reveal(first.id);
+      }
       return;
     }
-    window.location.hash = `#/${target.screen}`;
-  }
+    go(target.screen);
+  }, [rank1, reveal, go, openGroup]);
 
-  let expiredCount = 0;
-  let expiringCount = 0;
-  for (const ing of REGISTER_FLAT) {
-    const status = countdownForIngredient(ing, state.inventory[ing.id], now).status;
-    if (status === "expired") expiredCount++;
-    else if (status === "expiring") expiringCount++;
-  }
+  const startStocktake = useCallback(() => {
+    const first = REGISTER_GROUPS[openGroup ?? "fridge"][0] ?? REGISTER_FLAT[0];
+    if (first) reveal(first.id);
+  }, [openGroup, reveal]);
 
-  const activeLeftovers = state.leftovers.filter((l) => l.consumedAt == null);
+  /* ------------------------------------------------------------ the register */
 
-  // Restock queue (wave-1-fix item 4): restrict to items that have actually
-  // been stocktaken at least once (an inventory ENTRY exists) — a never-
-  // touched staple defaults to level 0 same as a genuinely-just-ran-out one,
-  // but listing all 65 never-touched items as "needs restocking" before a
-  // first stocktake is noise, not signal. Capped with "+N more" so a long
-  // list still reads as a queue, not a wall.
-  const restockAll = REGISTER_FLAT.filter((ing) => {
-    const entry = state.inventory[ing.id];
-    return entry !== undefined && entry.level <= 1;
-  }).map((ing) => `${ing.name.short}${registerDisambiguator(ing)}`);
-  const restockShown = restockAll.slice(0, RESTOCK_DISPLAY_CAP);
-  const restockMoreCount = restockAll.length - restockShown.length;
+  const rowsOfOpenGroup = openGroup ? REGISTER_GROUPS[openGroup] : [];
+  const leftoversHere = openGroup === "fridge" ? activeLeftovers : [];
+  const openRowCount = rowsOfOpenGroup.length + leftoversHere.length;
+  const underLids = REGISTER_FLAT.length - rowsOfOpenGroup.length;
 
-  // docs/VARIANT-SPEC.md: "coverage strip ranks kept meals first in tester
-  // mode (others still listed, marked 'not this week')." Stable partition —
-  // kept meals keep their existing coverage-descending order among
-  // themselves, same for the rest; only the group boundary is new.
-  const cookFromStockAll = hasAnyInventory ? coverageForAllMeals(state.inventory, state.prefs.cover, ["A", "B"]) : [];
-  const cookFromStock = variant.isTester
-    ? [...cookFromStockAll].sort((a, b) => Number(variant.isKeptMealId(b.mealId)) - Number(variant.isKeptMealId(a.mealId))).slice(0, 5)
-    : cookFromStockAll.slice(0, 5);
+  const groups: RegisterGroup[] = LOCATION_GROUP_ORDER.map((group) => {
+    const rows = REGISTER_GROUPS[group];
+    const fill = fillOf(rows, inventory);
+    const leftovers = group === "fridge" ? activeLeftovers : [];
+    return {
+      id: group,
+      label: LOCATION_GROUP_LABEL[group],
+      lidSlot: (
+        <LampScale
+          fraction={fill.fraction}
+          widthPx={LID_SCALE_PX}
+          activity={activity}
+          divisions={5}
+          label={`${LOCATION_GROUP_LABEL[group]}: ${Math.round(fill.fraction * 100)} percent full across ${fill.counted} counted rows, ${fill.stocked} of ${rows.length} stocked`}
+          figure={`${Math.round(fill.fraction * 100)}%`}
+        />
+      ),
+      items: [
+        ...rows.map((ing, i) => () => (
+          <RegisterRow
+            ing={ing}
+            entry={inventory[ing.id]}
+            index={i}
+            armed={armed?.id === ing.id}
+            nowMs={nowMs}
+            scalePx={scalePx}
+            lifePx={lifePx}
+            onArm={handleArm}
+            onStep={handleRowStep}
+            registerEl={registerEl}
+            registerPointer={registerPointer}
+          />
+        )),
+        ...leftovers.map((lo, i) => () => (
+          <LeftoverRow
+            entry={lo}
+            index={rows.length + i}
+            now={now}
+            lifePx={leftoverLifePx}
+            dispatch={dispatch}
+            onConsume={consumeLeftover}
+          />
+        )),
+      ],
+    };
+  });
 
-  const armedIng = armedId ? (REGISTER_FLAT.find((i) => i.id === armedId) ?? null) : null;
-  const armedLevel: InventoryLevel | null = armedIng ? ((state.inventory[armedIng.id]?.level ?? 0) as InventoryLevel) : null;
+  /* ------------------------------------------------------------ the readings */
 
-  const announceText = confirmation
-    ? `${confirmation.name}: ${DETENT_ANNOUNCE[confirmation.level]}`
-    : armedIng && armedLevel != null
-      ? `${armedIng.name.short}: ${DETENT_ANNOUNCE[armedLevel]}`
-      : "tap a row to set its level";
+  const armedIng = armed ? (REGISTER_FLAT.find((i) => i.id === armed.id) ?? null) : null;
+  const armedEntry = armedIng ? inventory[armedIng.id] : undefined;
+  const armedLevel: InventoryLevel | null = armedIng ? ((armedEntry?.level ?? 0) as InventoryLevel) : null;
+  const armedAge = ageOf("stocktake", armedEntry?.updatedAt, nowMs);
+  const armedName = armedIng ? `${armedIng.name.short}${registerDisambiguator(armedIng)}` : null;
+  /** The index INSIDE the open group — the lid's cut reads this and nothing else. */
+  const armedIndexHere =
+    armed && openGroup ? rowsOfOpenGroup.findIndex((r) => r.id === armed.id) : -1;
 
-  const arbiterDuty: SlotDuty | null = rank1 ? { text: rank1.text, actionLabel: "act →", onActivate: handleArbiterActivate } : null;
+  const offset = orbitOffset(orbit);
 
   return (
-    <section className="scr-stores">
-      <ArbiterSlot rank1={arbiterDuty} count={arbiter.queued} />
+    <section
+      className="str"
+      data-cd-language="clear-lid"
+      data-str-trophy={trophy ? "true" : "false"}
+      data-str-power={power}
+      data-str-armed={armedIndexHere >= 0 ? "true" : "false"}
+      style={
+        {
+          // The burn-in orbit moves the WHOLE composition as one rigid frame.
+          "--str-orbit-x": `${offset.x}px`,
+          "--str-orbit-y": `${offset.y}px`,
+          // The lid's cut, in row units. Two panes, never sixty-five.
+          "--str-armed-i": String(Math.max(0, armedIndexHere)),
+          "--str-rows": String(openRowCount),
+        } as React.CSSProperties
+      }
+    >
+      <div className="str-frame">
+        <div className="str-masthead">
+          <Annunciator
+            duty={rank1?.text ?? null}
+            queued={arbiter.queued}
+            actionLabel={
+              rank1?.target ? (rank1.target.screen === "stores" ? "address →" : `${rank1.target.screen} →`) : null
+            }
+            onActivate={rank1?.target ? handleArbiter : null}
+            expired={census.expired}
+            expiring={census.expiring}
+            alerts={census.alerts}
+            onAddress={reveal}
+            trophy={trophy}
+          />
 
-      <header className="scr-stores-header">
-        <h1 className="scr-stores-title">stores</h1>
-        {hasAnyInventory && (
-          <p className={`scr-stores-status scr-stores-status--${expiredCount > 0 ? "expired" : expiringCount > 0 ? "expiring" : "fresh"}`}>
-            {expiredCount > 0
-              ? `✕ ${expiredCount} expired`
-              : expiringCount > 0
-                ? `△ ${expiringCount} expiring soon`
-                : "✓ all fresh · nothing expiring"}
-          </p>
-        )}
-      </header>
-
-      {!hasAnyInventory && (
-        <div className="scr-stores-empty" role="note">
-          <p className="scr-stores-empty-title">no stocktake yet</p>
-          <p className="scr-stores-empty-body">
-            set a level for what's actually in the fridge, freezer, counter and cupboard — {REGISTER_FLAT.length} items, about
-            two minutes with the wheel.
-          </p>
-          <button type="button" className="fd5-control scr-stores-empty-cta" onClick={() => REGISTER_FLAT[0] && armAndReveal(REGISTER_FLAT[0].id)}>
-            start stocktake →
-          </button>
-        </div>
-      )}
-
-      <div className="scr-stores-body">
-        <div className="scr-stores-register">
-          {LOCATION_GROUP_ORDER.map((group) => (
-            <section key={group} className="scr-stores-group" aria-labelledby={`scr-stores-group-${group}`}>
-              <h2 id={`scr-stores-group-${group}`} className="scr-stores-group-h">
-                {LOCATION_GROUP_LABEL[group]}
-              </h2>
-              <ul className="scr-stores-row-list">
-                {REGISTER_GROUPS[group].map((ing) => (
-                  <RegisterRow
-                    key={ing.id}
-                    ing={ing}
-                    entry={state.inventory[ing.id]}
-                    armed={armedId === ing.id}
-                    now={now}
-                    onArm={handleArm}
-                    onAdjust={handleRowAdjust}
-                    registerEl={registerEl}
-                  />
-                ))}
-                {group === "fridge" &&
-                  activeLeftovers.map((lo) => <LeftoverRow key={lo.id} entry={lo} now={now} dispatch={dispatch} />)}
-              </ul>
-            </section>
-          ))}
+          <LarderGauge
+            fraction={larder.fraction}
+            counted={larder.counted}
+            total={larder.total}
+            low={census.low}
+            frozen={census.frozen}
+            lastStocktake={lastStocktake}
+            activity={activity}
+            onCount={startStocktake}
+            trophy={trophy}
+          />
         </div>
 
-        <ThumbWheel armedName={armedIng?.name.short ?? null} level={armedLevel} onSet={handleWheelSet} announceText={announceText} />
+        <div className="str-body">
+          <Enclosure
+            variant="hero"
+            as="section"
+            className="str-bay"
+            aria-label="the register"
+            data-str-hidden={trophy ? "true" : undefined}
+          >
+            <div className="str-bay__spine" aria-hidden="true" />
+            <div className="str-bay__inner" ref={bayRef}>
+              {/* THE HOOD. Keyed by the open lid so it genuinely remounts and
+                  the hinge genuinely replays: in this world one specimen case
+                  closing IS the next one opening (CLEAR LID section 6). */}
+              <div className="str-bay__hood" key={openId ?? "shut"} aria-hidden="true" />
+              <Register
+                className="str-register"
+                groups={groups}
+                openId={openId}
+                onOpenChange={setOpenId}
+                label="stock register, grouped by location"
+                overflowWord="more"
+              />
+            </div>
+            <BayCut above={cut.above} below={cut.below} underLids={underLids} />
+          </Enclosure>
+
+          <div className="str-column">
+            <ThumbWheel
+              armedName={armedName}
+              level={armedLevel}
+              onSet={handleWheelSet}
+              announce={announce}
+              ageLabel={armedIng ? (armedAge.ms == null ? "never counted" : `counted ${armedAge.label} ago`) : "—"}
+              trophy={trophy}
+            />
+
+            <TuningScale
+              stations={stations}
+              rankedTotal={ranking.total}
+              cutTotal={ranking.cut}
+              tunedId={tunedId}
+              onTune={setTunedId}
+              activity={activity}
+              hasStock={hasStock}
+              trophy={trophy}
+            />
+          </div>
+        </div>
+
+        <div className="str-footer">
+          <DinnerLedger
+            dinner={dinner}
+            now={now}
+            alreadyEaten={Boolean(dinnerTick)}
+            eatenAt={dinnerTick ? hhmm(dinnerTick.at) : null}
+            dispatch={dispatch}
+            commit={commit}
+            wasteCount={state.waste.length}
+            onOpenWaste={() => setWasteOpen(true)}
+            trophy={trophy}
+          />
+        </div>
       </div>
 
-      <section className="scr-stores-section" aria-labelledby="scr-stores-cookstock-h">
-        <h2 id="scr-stores-cookstock-h" className="scr-stores-h">
-          from stock
-        </h2>
-        {!hasAnyInventory ? (
-          <p className="scr-stores-muted">stocktake to see this.</p>
-        ) : (
-          <ul className="scr-stores-cookstock-list">
-            {cookFromStock.map((c) => {
-              const meal = requireMeal(c.mealId);
-              const notThisWeek = variant.isTester && !variant.isKeptMealId(c.mealId);
-              return (
-                <li key={c.mealId}>
-                  <a className="fd5-control scr-stores-cookstock-chip" href={`#/meal/${c.mealId}`} data-not-this-week={notThisWeek || undefined}>
-                    <span>{meal.name}</span>
-                    {notThisWeek ? (
-                      <span className="scr-stores-cookstock-pct">not this week</span>
-                    ) : (
-                      <span className="scr-stores-cookstock-pct">~{Math.round(c.coverage * 100)}%</span>
-                    )}
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-        )}
-      </section>
-
-      <section className="scr-stores-section scr-stores-footer-row">
-        <div className="scr-stores-restock">
-          <h2 className="scr-stores-h">restock queue</h2>
-          {!hasAnyInventory ? (
-            <p className="scr-stores-muted">stocktake to see this.</p>
-          ) : restockShown.length === 0 ? (
-            <p className="scr-stores-muted">nothing needed.</p>
-          ) : (
-            <p className="scr-stores-restock-list">
-              {restockShown.join(" · ")}
-              {restockMoreCount > 0 ? ` · +${restockMoreCount} more` : ""}
-            </p>
-          )}
-        </div>
-        <button type="button" className="fd5-control scr-stores-wastelog-btn" onClick={() => setWasteOpen(true)}>
-          waste log ▸
-        </button>
-      </section>
-
-      <LogDinnerCard dinner={dinner} now={now} alreadyEaten={alreadyEaten} dispatch={dispatch} />
-
-      <WasteSheet open={wasteOpen} onClose={() => setWasteOpen(false)} waste={state.waste} now={now} />
+      <WasteTray open={wasteOpen} onClose={() => setWasteOpen(false)} waste={state.waste} now={now} />
     </section>
   );
+}
+
+/** Which group a register id belongs to. Computed from the frozen data. */
+function groupOf(id: string): LocationGroup {
+  for (const g of LOCATION_GROUP_ORDER) {
+    if (REGISTER_GROUPS[g].some((i) => i.id === id)) return g;
+  }
+  return "cupboard";
 }

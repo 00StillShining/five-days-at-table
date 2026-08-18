@@ -1,99 +1,267 @@
-// One register row (PLAN §6.7): name + level pips + use-by countdown, ≥44px,
-// tap-to-focus. "Focus" here is deliberately the SAME concept as real DOM
-// focus (Tab reaches every row in order; clicking a row also focuses it) —
-// one state, not two — so a keyboard-only stocktake never needs a separate
-// "arm" step distinct from normal tabbing. While a row has focus, ArrowUp/
-// ArrowDown adjust ITS level directly (no need to tab into the thumbwheel at
-// all); the wheel (wheel.tsx) is the same control's redundant fine-pointer
-// path, for mouse/touch users who want to jump straight to a detent.
-//
-// Wave-1-fix item 3: `onAdjust` (renamed from `onSetLevel`) is deliberately
-// the RELATIVE-only path — ArrowUp/Down nudge this row's level by ±1 and
-// stay on this row, never auto-advancing. Auto-advance is reserved for the
-// wheel's ABSOLUTE detent picks (index.tsx's `handleWheelSet`); before this
-// fix, every set (relative or absolute) auto-advanced, which meant a
-// keyboard user pressing ArrowUp on an "empty" row got bounced to the NEXT
-// row after the very first press — there was no way to arrow-key a row past
-// level 1. Multiple ArrowUp/Down presses here now walk 0..4 on the SAME row.
+/**
+ * src/screens/stores/RegisterRow.tsx — one row, MILLED INTO the plate.
+ *
+ * ---------------------------------------------------------------------------
+ * THE ROW OWNS NO ENCLOSURE, AND THAT IS THE WHOLE DESIGN
+ * ---------------------------------------------------------------------------
+ * CLEAR LID section 9 names this language's own structural failure by itself:
+ *
+ *   "LID INFLATION. Every card on a dashboard earns its own full lid rather
+ *    than sharing one hierarchy. Warning sign: the screen reads as a cabinet of
+ *    specimen cases with no leading object."
+ *
+ * A register of sixty-five rows is exactly the shape that invites it. So the
+ * row has no background, no shadow stack and no lid of its own: the PLATE
+ * underneath carries the material, its two milled channels are the wells, and
+ * ONE travelling acrylic pane covers the mechanism. Sixty-five rows, one
+ * machined object.
+ *
+ * (CLEAR LID's own repair for lid inflation is II.2.5's one-hero rule, which
+ * CORRECTIONARY 3.1 REVOKES. What survives here is the structural half — one
+ * plate, one construction hierarchy — never the rationing half. The screen
+ * still carries six hero-grade instruments at full treatment.)
+ *
+ * ---------------------------------------------------------------------------
+ * TWO INSTRUMENTS PER ROW, BOTH STABLE-DATA INSTRUMENTS
+ * ---------------------------------------------------------------------------
+ * CD-BRIEF ruling 6: "Portholes, rocker arms and spinning elements attach only
+ * to values whose change is user-caused or clock-continuous. A daily stock
+ * level gets a needle and a printed zone, not a spinning disc."
+ *
+ *   LEVEL  a pointer travelling a printed five-seat scale at a fixed RATE
+ *          (340px/s, floored at 80ms — II.4.8), plus its exact word.
+ *   LIFE   an engraved index over a printed life zone, plus its exact figure
+ *          in tabular days.
+ *
+ * Both are silent when the value holds (II.4.16 — stable data, stable
+ * instrument), and an unstocked row's pointer sits on a physical stop and does
+ * not glow, because a dead needle at zero is more honest than a lit one that
+ * means nothing.
+ *
+ * ---------------------------------------------------------------------------
+ * FRESHNESS, PER ROW
+ * ---------------------------------------------------------------------------
+ * Owner ruling: "stocktake threshold is 72h and each class prints its declared
+ * threshold on its own label ... An unrecorded reading is NEVER, never an age
+ * of zero." So a row that has never been counted prints `never` in its own age
+ * cell, its level word prints `uncounted` rather than `empty`, and its pointer
+ * parks on the rest stop. A row counted longer ago than the class's 72h HOLDS
+ * its value at 55% ink and prints the class's own word.
+ */
+
+import { memo, useEffect, useRef } from "react";
 import type { KeyboardEvent } from "react";
 import type { Ingredient } from "../../data/types";
-import type { InventoryEntry, InventoryLevel } from "../../state/store";
+import type { InventoryEntry, InventoryLevel } from "../../state/types";
+import { ageOf, FRESHNESS, STALE_INK_ALPHA } from "../../cd/freshness/classes";
 import { countdownForIngredient, type CountdownStatus } from "./countdown";
 import { registerDisambiguator, registerNameSuffix } from "./registerName";
-import { DETENT_LABELS } from "./wheel";
+import { LEVEL_WORD, levelPx, lifePxOf, sweepMs } from "./model";
 
-const PIP_COUNT = 4; // level 0..4 -> 0..4 filled of 4 (a standard 4-bar "signal strength" gauge)
-
-function Pips({ level }: { level: InventoryLevel }) {
-  return (
-    <span className="scr-stores-pips" aria-hidden="true">
-      {Array.from({ length: PIP_COUNT }, (_, i) => (
-        <span key={i} className={`scr-stores-pip${i < level ? " scr-stores-pip--on" : ""}`} />
-      ))}
-    </span>
-  );
-}
-
+/** II.7.7 — colour never travels alone; every status prints a glyph too. */
 const STATUS_GLYPH: Record<CountdownStatus, string> = {
-  expired: "✕",
-  expiring: "△",
+  expired: "✕ ",
+  expiring: "△ ",
+  frozen: "❄ ",
   "low-confidence": "",
-  frozen: "",
   ok: "",
   empty: "",
 };
 
+/** The stocktake class's own declared threshold, printed on the gauge's label. */
+export const STOCKTAKE_THRESHOLD = `${Math.round(FRESHNESS.stocktake.staleAfterMs / 3_600_000)}h`;
+
 export interface RegisterRowProps {
   ing: Ingredient;
   entry: InventoryEntry | undefined;
+  /** Position inside the OPEN group — drives the lid's cut, nothing else. */
+  index: number;
   armed: boolean;
-  now: Date;
-  onArm: (id: string) => void;
-  /** Relative-only: ArrowUp/Down nudge by ±1, no auto-advance. See file doc. */
-  onAdjust: (id: string, level: InventoryLevel) => void;
+  /** The coarse clock. Day-granularity countdowns never ride a 1Hz tick. */
+  nowMs: number;
+  /** Measured once per resize, never per row and never per frame. */
+  scalePx: number;
+  lifePx: number;
+  onArm: (id: string, index: number, eventTs: number) => void;
+  /**
+   * RELATIVE travel, resolved against the COMMITTED model rather than against
+   * this render's own `level`. See the note on `handleKeyDown`.
+   */
+  onStep: (id: string, step: number | "min" | "max", eventTs: number) => void;
   registerEl: (id: string, el: HTMLButtonElement | null) => void;
+  registerPointer: (id: string, el: HTMLSpanElement | null) => void;
 }
 
-export function RegisterRow({ ing, entry, armed, now, onArm, onAdjust, registerEl }: RegisterRowProps) {
-  const level: InventoryLevel = entry?.level ?? 0;
-  const countdown = countdownForIngredient(ing, entry, now);
-  const nameSuffix = `${registerNameSuffix(ing)}${registerDisambiguator(ing)}`;
+function RegisterRowBase({
+  ing,
+  entry,
+  index,
+  armed,
+  nowMs,
+  scalePx,
+  lifePx,
+  onArm,
+  onStep,
+  registerEl,
+  registerPointer,
+}: RegisterRowProps) {
+  const level: InventoryLevel = (entry?.level ?? 0) as InventoryLevel;
+  const countdown = countdownForIngredient(ing, entry, new Date(nowMs));
+  const suffix = `${registerNameSuffix(ing)}${registerDisambiguator(ing)}`;
+  const age = ageOf("stocktake", entry?.updatedAt, nowMs);
+  const counted = entry !== undefined;
 
+  const pointerRef = useRef<HTMLSpanElement | null>(null);
+  /*
+    AN UNCOUNTED ROW'S NEEDLE PARKS ON A PHYSICAL REST STOP, not on the "empty"
+    seat. II.3.18: "off state parks the needle 4 degrees BELOW the minimum tick,
+    against a physical rest stop." A needle sitting on the first seat is a
+    reading of EMPTY, which is a different claim from "nobody has looked" — and
+    printing `never` beside a needle that says `empty` is two channels
+    disagreeing about the same row.
+  */
+  const restStop = 0;
+  const shownRef = useRef<number>(counted ? levelPx(level, scalePx) : restStop);
+  const targetPx = counted ? levelPx(level, scalePx) : restStop;
+
+  /**
+   * The sweep is a compositor transition whose DURATION is derived per move
+   * from the slew rate — a rate expressed in CSS, never a fixed tween, and
+   * zero script per frame (the measured performance law's rule 6: "the
+   * cheapest sweep is a rate-derived CSS transition").
+   *
+   * The commit path also writes these two properties IMPERATIVELY, in the
+   * input's own task, so the needle answers inside the Floor's 16ms rather
+   * than waiting for React. When the render lands, this effect writes the
+   * identical values, which is a no-op for the transition.
+   */
+  const lastLevelRef = useRef(level);
+  const lastCountedRef = useRef(counted);
+  useEffect(() => {
+    const el = pointerRef.current;
+    if (!el) return;
+    // A sweep reports a LEVEL change; a re-measure of the channel is geometry
+    // and lands in one frame (model.ts's `sweepMs`, and the defect it names).
+    const changed = lastLevelRef.current !== level || lastCountedRef.current !== counted;
+    lastLevelRef.current = level;
+    lastCountedRef.current = counted;
+    el.style.setProperty("--str-pointer-ms", `${sweepMs(shownRef.current, targetPx, changed).toFixed(0)}ms`);
+    el.style.setProperty("--str-pointer-x", `${targetPx.toFixed(2)}px`);
+    el.dataset.x = String(targetPx);
+    shownRef.current = targetPx;
+  }, [targetPx, level, counted]);
+
+  /**
+   * KEYBOARD IS THE DETENT (II.3.4 — "keys are actuators"): one press seats one
+   * well, Home/End are the hard limits, and the ends are stops rather than
+   * wraps (II.3.6 — a detented control has physical limits).
+   *
+   * THE STEP IS SENT AS A DELTA, NOT AS A DESTINATION, and that is the same law
+   * the whole screen is built on rather than a style choice. `level` here is
+   * THIS RENDER'S level, and the measured performance law's own sentence is
+   * "the model is still stale when your handler returns". MEASURED on the live
+   * screen: six arrow presses inside one task moved the needle once, because
+   * every one of them computed `level + 1` from the same stale render. Sending
+   * the delta lets the scene resolve it against the committed model, so two
+   * presses inside one frame are two seats — which is what the hand did.
+   */
   function handleKeyDown(e: KeyboardEvent<HTMLButtonElement>) {
-    if (e.key === "ArrowUp") {
+    if (e.key === "ArrowUp" || e.key === "ArrowRight") {
       e.preventDefault();
-      onAdjust(ing.id, Math.min(4, level + 1) as InventoryLevel);
-    } else if (e.key === "ArrowDown") {
+      onStep(ing.id, 1, e.timeStamp);
+    } else if (e.key === "ArrowDown" || e.key === "ArrowLeft") {
       e.preventDefault();
-      onAdjust(ing.id, Math.max(0, level - 1) as InventoryLevel);
+      onStep(ing.id, -1, e.timeStamp);
+    } else if (e.key === "Home") {
+      e.preventDefault();
+      onStep(ing.id, "min", e.timeStamp);
+    } else if (e.key === "End") {
+      e.preventDefault();
+      onStep(ing.id, "max", e.timeStamp);
     }
   }
 
-  const accessibleName = `${ing.name.short}${nameSuffix}, level ${DETENT_LABELS[level]}, ${
-    countdown.status === "empty" ? "not stocked" : countdown.status === "frozen" ? "still frozen" : `use-by ${countdown.text}`
-  }`;
+  const lifeX = countdown.fraction === null ? null : lifePxOf(countdown.fraction, lifePx);
+  const levelText = counted ? LEVEL_WORD[level] : "never";
 
   return (
-    <li className="scr-stores-row-item">
-      <button
-        type="button"
-        ref={(el) => registerEl(ing.id, el)}
-        className={`fd5-control scr-stores-row${armed ? " scr-stores-row--armed" : ""} scr-stores-row--${countdown.status}`}
-        onFocus={() => onArm(ing.id)}
-        onClick={() => onArm(ing.id)}
-        onKeyDown={handleKeyDown}
-        aria-label={accessibleName}
-      >
-        <span className="scr-stores-row-name" aria-hidden="true">
-          {ing.name.short}
-          {nameSuffix}
-        </span>
-        <Pips level={level} />
-        <span className="scr-stores-row-countdown" aria-hidden="true">
-          {STATUS_GLYPH[countdown.status] && <span className="scr-stores-row-glyph">{STATUS_GLYPH[countdown.status]}</span>}
-          {countdown.text}
-        </span>
-      </button>
-    </li>
+    <button
+      type="button"
+      ref={(el) => {
+        registerEl(ing.id, el);
+      }}
+      className="str-row cd-focusable"
+      data-level={level}
+      data-status={countdown.status}
+      data-counted={counted ? "true" : "false"}
+      data-stale={age.stale && counted ? "true" : "false"}
+      data-armed={armed ? "true" : "false"}
+      style={{ ["--str-row-i" as string]: String(index) }}
+      onFocus={(e) => onArm(ing.id, index, e.timeStamp)}
+      onPointerDown={(e) => onArm(ing.id, index, e.timeStamp)}
+      onKeyDown={handleKeyDown}
+    >
+      {/*
+        WCAG 2.5.3, LABEL IN NAME. The accessible name STARTS with exactly the
+        words printed on the plate, so a voice-control user saying what they can
+        see reaches this control; the spoken elaboration is appended in a
+        visually-hidden span rather than replacing the visible text with an
+        aria-label that says something else.
+      */}
+      <span className="str-row__name">
+        {ing.name.short}
+        <span className="str-row__suffix">{suffix}</span>
+      </span>
+      <span className="str-vh">
+        {`, level ${levelText}, ${
+          countdown.status === "empty"
+            ? "not stocked"
+            : countdown.status === "frozen"
+              ? "still frozen"
+              : `use-by ${countdown.text}`
+        }, counted ${age.ms == null ? "never" : `${age.label} ago`}`}
+      </span>
+
+      {/* the mechanism, in the milled channels — under the lid */}
+      <span className="str-row__scale" aria-hidden="true">
+        <span
+          className="str-row__pointer"
+          ref={(el) => {
+            pointerRef.current = el;
+            registerPointer(ing.id, el);
+          }}
+        />
+      </span>
+
+      <span className="str-row__life" aria-hidden="true">
+        {lifeX !== null && (
+          <span className="str-row__marker" style={{ ["--str-marker-x" as string]: `${lifeX.toFixed(2)}px` }} />
+        )}
+      </span>
+
+      {/*
+        THE PRINTED FIGURES SIT OUTSIDE THE LID, ON THE CHASSIS — exactly as the
+        source object prints its markings on the cream steel rather than under
+        the hood. It is also a Floor requirement: the spike measured the level
+        word at 3.42:1 when it sat inside the channel under the glance pane, and
+        6.46:1 on the plate's own face. A tint over type lowers contrast at every
+        intensity; there is no tuning that fixes it.
+      */}
+      <span className="str-row__figure" aria-hidden="true" style={{ opacity: age.stale && counted ? STALE_INK_ALPHA : 1 }}>
+        {levelText}
+      </span>
+
+      <span className="str-row__countdown" aria-hidden="true">
+        {STATUS_GLYPH[countdown.status]}
+        {countdown.text}
+      </span>
+
+      {/* the age, always printed — honesty is not a stale-only courtesy */}
+      <span className="str-row__age" aria-hidden="true">
+        {age.ms == null ? "never" : age.label}
+      </span>
+    </button>
   );
 }
+
+export const RegisterRow = memo(RegisterRowBase);

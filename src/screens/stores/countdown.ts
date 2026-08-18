@@ -24,28 +24,43 @@ export type CountdownStatus = "empty" | "frozen" | "expired" | "expiring" | "low
 export interface Countdown {
   text: string;
   status: CountdownStatus;
+  /**
+   * Remaining life as a fraction of this ingredient's OPERATIVE life, 0..1, or
+   * null when the question does not apply — never stocked, still frozen, or a
+   * shelf-life prose string with no number behind it.
+   *
+   * The register's life channel reads this and NOTHING ELSE. It is null rather
+   * than 0 in the "does not apply" cases on purpose: an index parked at zero
+   * claims "this is out of life", which is a different (and false) statement
+   * from "there is no reading here". CORRECTIONARY 4 — no invented data.
+   */
+  fraction: number | null;
 }
 
 const EXPIRING_WINDOW_DAYS = 1; // matches dutyStack's own "remainingDays > 1 -> not yet expiring" cutoff
 
 export function countdownForIngredient(ing: Ingredient, entry: InventoryEntry | undefined, now: Date): Countdown {
-  if (!entry || entry.level === 0) return { text: "—", status: "empty" };
+  if (!entry || entry.level === 0) return { text: "—", status: "empty", fraction: null };
 
   const remainingDays = remainingLifeDays(ing, entry, now);
   if (remainingDays == null) {
     // Freezer-class stock, no thawedAt yet — still in the freezer; genuinely
     // no countdown applies (see state/selectors.ts remainingLifeDays doc).
-    return { text: "frozen", status: "frozen" };
+    return { text: "frozen", status: "frozen", fraction: null };
   }
 
+  const life = operativeLifeDays(ing);
   // Reuse: printing "low" instead of a false-precision "90d"/"365d" for
   // ingredients whose prose carries no number at all (bare "Months"/"Years")
   // — see data/lifeEstimate.ts's LifeConfidence doc.
-  if (operativeLifeDays(ing).confidence === "low") return { text: "low", status: "low-confidence" };
+  if (life.confidence === "low") return { text: "low", status: "low-confidence", fraction: null };
+
+  const fraction = life.days > 0 ? Math.max(0, Math.min(1, remainingDays / life.days)) : null;
 
   return {
     text: formatRemainingDays(remainingDays),
     status: remainingDays < 0 ? "expired" : remainingDays <= EXPIRING_WINDOW_DAYS ? "expiring" : "ok",
+    fraction,
   };
 }
 
@@ -56,10 +71,18 @@ export function countdownForIngredient(ing: Ingredient, entry: InventoryEntry | 
  * computed locally, but the TEXT comes from the same `formatRemainingDays`
  * every other countdown in the app uses, so the rounding rule can't drift
  * here either. */
-export function countdownForUseBy(useByIso: string, now: Date): Countdown {
+export function countdownForUseBy(useByIso: string, now: Date, totalDays = LEFTOVER_LIFE_DAYS): Countdown {
   const remainingDays = (new Date(`${useByIso}T23:59:59`).getTime() - now.getTime()) / 86_400_000;
   return {
     text: formatRemainingDays(remainingDays),
     status: remainingDays < 0 ? "expired" : remainingDays <= EXPIRING_WINDOW_DAYS ? "expiring" : "ok",
+    // A leftover's own life IS the window logDinner stamped on it, so the
+    // fraction is measured against that same declared span rather than against
+    // an ingredient shelf life this row does not have.
+    fraction: totalDays > 0 ? Math.max(0, Math.min(1, remainingDays / totalDays)) : null,
   };
 }
+
+/** logDinner.tsx's own COOKED_LEFTOVER_FRIDGE_DAYS, restated as the leftover
+ *  life channel's denominator so the two cannot drift apart. */
+export const LEFTOVER_LIFE_DAYS = 3;
