@@ -96,7 +96,18 @@
   /* II.6.6 — the unit follows the value on the baseline, dim ink, 40% */
   .cd-unit {
     font-family: var(--cd-font-data);
-    font-size: calc(1em * var(--cd-unit-scale));
+    /* ORCHESTRATOR REPAIR. II.6.6 sets the unit at 40% of its value; II.6.11
+       sets 0.6875rem as the floor below which type is texture, not
+       information. On a 13px figure, 40% renders 5.2px -- so II.6.6 alone
+       breaks II.6.11 on every small figure in the product.
+
+       THREE builders hit this INDEPENDENTLY and each patched it inside its own
+       screen: TODAY (31 units at 5.2-8px), COOK ("100 min" and "10 rows"
+       reading as ellipses) and STORES (a lid's "rows" and a bay cut's
+       "above/below" as smudges). Three local workarounds for one central
+       defect is the signal to fix the centre. The floor wins: a unit that
+       cannot be read is not a unit. */
+    font-size: max(var(--cd-micro-ceiling), calc(1em * var(--cd-unit-scale)));
     color: var(--cd-muted-ink);
     margin-inline-start: 0.25em;
   }

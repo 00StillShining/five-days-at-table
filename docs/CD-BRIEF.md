@@ -217,6 +217,34 @@ The shed ladder's trigger was repaired at `fe6a23e` — it had been measuring th
 *between* frames as though it were the cost *of* one, and escalated to stage 3 on any
 idle page within ~3s. If you are reading a pre-`fe6a23e` branch, that bug is live.
 
+## Contrast-audit integrity — READ BEFORE YOU MEASURE ANYTHING
+
+The STORES builder found this and it invalidates a measuring habit every builder on
+this project has used:
+
+> **A gradient surface declared with the `background` shorthand has
+> `background-color: transparent`.** A contrast walker that reads
+> `getComputedStyle(el).backgroundColor` therefore does NOT get the painted ground — it
+> falls through to whatever ancestor happens to have a colour. Measured on STORES: two
+> alert inks that read **4.98:1** against the walked ancestor were actually **3.63:1**
+> and **3.91:1** against their real painted plate. **A Floor failure hiding inside a
+> passing audit.**
+
+`.cd-key`, `.cd-register-head` and the `Enclosure` variants in `src/cd/foundry/foundry.css`
+are all declared this way (six surfaces). So:
+
+1. **When you measure, composite the actual painted gradient** — take its **darkest
+   stop** as the worst case — rather than trusting `backgroundColor`. Several screens
+   have reported "0 contrast failures" using the naive walk; **those figures are
+   suspect wherever the text sits on a gradient surface**, and the final review must
+   re-sweep them.
+2. **When you paint, declare `background-color` alongside `background-image`** at the
+   gradient's darkest stop, so the declared case and the worst case are the same case.
+   STORES does this throughout and it is the pattern to copy.
+3. The foundry itself is **not yet repaired** — it was left alone deliberately while
+   builders were mid-flight, since changing six shared surfaces under them was the worse
+   risk. Repair it once the last screen lands, then re-run every screen's contrast sweep.
+
 ## Reporting requirements
 
 Every builder's final report must contain: the committed values used (hexes, springs, durations, sizes) with the chapter clause each came from · **your five-pass critique with every finding in defect–evidence–repair form, and what you repaired** · the §6.6 checklist, seven lines, each answered · confirmation you **rendered and looked at it**, with what you actually saw · measured contrast and target sizes · anything you could not meet, stated plainly (§6.5).
