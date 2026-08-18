@@ -484,26 +484,48 @@ export function omissions(): Omission {
 /* reconciliation                                                      */
 /* ------------------------------------------------------------------ */
 
-export interface ReconcileState {
-  nominees: string[];
-  outstanding: string[];
-  done: string[];
-  errorDeg: number;
+/*
+  REMOVED, DELIBERATELY: `reconcileState`, which reported the arbiter's verify
+  nominees as a ring of their own.
+
+  The freshness layer's recovery action names the reconcile pad as the way to
+  fix a stale price sheet, and a pad holding only two or three nominees cannot
+  fix forty-four lines. So the pad holds every uncosted line (`uncostedLines`
+  above) and the crown beside it reports the basket's own costed state. A second
+  ring reporting a three-item subset would have been a ring whose truth had no
+  consequence — section 9's "Fake locks", one level up.
+*/
+
+export interface PadRow {
+  el: EffectiveLine;
+  reading: CostReading;
+  /** The arbiter nominated this one as the price most worth checking first. */
+  nominated: boolean;
 }
 
-export function reconcileState(nominees: readonly string[], priceChecks: PriceChecks): ReconcileState {
-  const outstanding = nominees.filter((id) => !priceChecks[id]);
-  const done = nominees.filter((id) => Boolean(priceChecks[id]));
-  return {
-    nominees: [...nominees],
-    outstanding,
-    done,
-    /* NO NOMINEES IS NOT A BROKEN RING. The tester's authored basket is
-       verified end to end and nominates nobody; a ring that could never read
-       true on that variant would be section 9's "Fake locks" exactly. An empty
-       nominee list is agreement, so the ring reads flush. */
-    errorDeg: nominees.length === 0 ? 0 : ringError(done.length, nominees.length),
-  };
+/**
+ * EVERY LINE THE PAD CAN ACTUALLY FIX, in the order it should be offered: the
+ * arbiter's own verify nominees first, then everything else that is not costed.
+ * The two are different claims — a nominee is "this is the price most worth
+ * checking", an uncosted line is "this price is not current" — and the pad
+ * prints both rather than collapsing one into the other.
+ */
+export function uncostedLines(
+  lines: EffectiveLine[],
+  ctx: CostContext,
+  nominees: readonly string[]
+): PadRow[] {
+  const nomSet = new Set(nominees);
+  const out: PadRow[] = [];
+  for (const el of lines) {
+    if (el.isDedupe || el.effectivePacks <= 0) continue;
+    const reading = costReading(el, ctx);
+    if (reading.costed) continue;
+    out.push({ el, reading, nominated: nomSet.has(el.line.ingId) });
+  }
+  /* A stable partition, not a sort by relevance: within each half the trip's own
+     order is preserved, because that order is the order of the shop. */
+  return [...out.filter((r) => r.nominated), ...out.filter((r) => !r.nominated)];
 }
 
 /* ------------------------------------------------------------------ */

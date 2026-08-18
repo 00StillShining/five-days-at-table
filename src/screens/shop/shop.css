@@ -296,7 +296,10 @@
 
     /* CORRECTIONARY 5.4 — the ground is a MATERIAL: the rosewood mass the band
        floats above, lit from the one sun. */
-    background-color: var(--cd-rosewood);
+    /* CD-BRIEF Contrast-audit integrity, point 2: the colour is declared AT THE
+       GRADIENT'S DARKEST STOP, so the declared case and the worst case are the
+       same case and no audit can read a lighter ancestor by accident. */
+    background-color: #3b221a;
     background-image: var(--shop-rosewood);
 
     /* IV.1's luminance tiers travel over 4000ms linear in BOTH directions, so
@@ -590,6 +593,7 @@
     position: relative;
     z-index: 1;
     padding: 0.3125rem;
+    background-color: #9a9c9e; /* the brushed gradient's own darkest stop */
     background-image: var(--shop-brushed);
     clip-path: var(--shop-cut);
     box-shadow:
@@ -706,6 +710,7 @@
 
   /* the Signature's second channel: the metal takes its anniversary dress */
   .shop[data-shop-horizon="true"] .shop-band {
+    background-color: #9c8462; /* the champagne dress's own darkest stop */
     background-image: var(--shop-brushed-champagne);
     box-shadow:
       inset 0 1px 0 #ffffffa6,
@@ -730,6 +735,29 @@
   }
 
   /* =====================================================================
+     THE --cd-stack GOTCHA, AND HOW THIS FILE ANSWERS IT
+     =====================================================================
+     `.cd-focusable:focus-visible` composes the two-tone ring's dark keyline as
+     `box-shadow: 0 0 0 6px #141414, var(--cd-stack)`, and it lives in
+     @layer cd.screen at (0,2,0). ANY rule in this file that declares
+     `box-shadow` at (0,2,0) or higher therefore REPLACES the composed value and
+     silently deletes the keyline.
+
+     MEASURED IN THE LIVE PAGE, on this build, before this repair: every one of
+     the five control families — crown, flush key, seat, cap key, register lid —
+     rendered `outline: 2px solid rgb(76,143,209)` at the correct 3px offset and
+     NO keyline at all, because each was written as `.shop .shop-key { box-shadow:
+     var(--cd-stack) }` at (0,2,0). The foundry's own `.cd-key` rule is (0,1,0),
+     which is exactly why the foundry composes correctly and this file did not.
+
+     THE RULE: set --cd-stack at whatever specificity you need — a custom
+     property has no bearing on which box-shadow declaration wins — and let the
+     foundry's own single-class rule do the painting. Declare `box-shadow`
+     yourself ONLY at single-class specificity, and only on controls the foundry
+     does not already paint (the two form fields below).
+     ===================================================================== */
+
+  /* =====================================================================
      5 · THE FLUSH KEY — section 3, cap inverted (declared delta 2)
      ===================================================================== */
 
@@ -747,7 +775,8 @@
     border-radius: 0;
     background: var(--cd-field);
     color: var(--cd-ink);
-    box-shadow: var(--cd-stack);
+    /* box-shadow is PAINTED BY THE FOUNDRY's own (0,1,0) `.cd-key` rule — see
+       the note above; declaring it here would delete the focus keyline */
     /* return: Standard mass, spring(1,320,26) */
     transition:
       transform var(--shop-select-settle) var(--cd-ease-settle),
@@ -769,7 +798,8 @@
     position: absolute;
     inset: 0;
     clip-path: var(--shop-cut);
-    background: linear-gradient(
+    background-color: #100f0e; /* the face gradient's own darkest stop */
+    background-image: linear-gradient(
       var(--cd-light-axis),
       #201f1d 0%,
       var(--cd-field) 58%,
@@ -860,14 +890,16 @@
     letter-spacing: var(--cd-track-label);
     text-transform: uppercase;
     text-align: start;
-    box-shadow: var(--cd-stack);
+    /* painted by the foundry's `.cd-key` — never re-declared here */
     transition:
       background var(--shop-select-settle) var(--cd-ease-snap),
       color var(--shop-select-settle) var(--cd-ease-snap);
   }
 
   .shop .shop-seat[aria-pressed="true"] {
-    background: #d6d9dd1a; /* the 10% wash — #292928 composited; 11.65:1 */
+    /* the 10% wash over a DECLARED base — composited #292928; 11.65:1 */
+    background-color: var(--cd-field);
+    background-image: linear-gradient(0deg, #d6d9dd1a, #d6d9dd1a);
     color: var(--cd-ink);
   }
 
@@ -907,7 +939,27 @@
     crown diameter).
   */
   .shop .shop-crown {
-    --cd-stack: none;
+    /*
+      THE CROWN IS SEATED IN A WELL, and the well is why this stack is real.
+
+      Section 3: "--cd-horizon-well: #161514 — the inset black the crown sits
+      inside". So the 44px control box is that well: an inset pair, not a
+      transparent nothing.
+
+      IT ALSO REPAIRS A MEASURED DEFECT. The first build gave this control
+      `--cd-stack: none`, which made the focus rule resolve to
+      `box-shadow: 0 0 0 6px #141414, none` — INVALID CSS, whole declaration
+      dropped, keyline gone. The obvious correction, `0 0 0 0 transparent`, is
+      valid but still wrong here: MEASURED in the live page with real keyboard
+      focus, the composed shadow held at `rgba(0,0,0,0) 0 0 0 0, rgba(0,0,0,0)
+      0 0 0 0` — `.cd-key`'s own 80ms box-shadow transition interpolating from a
+      ONE-layer value to a TWO-layer one, padding the shorter side with
+      transparent layers and never resolving. A stack with real layers has
+      nothing to pad, so the keyline arrives.
+    */
+    --cd-stack:
+      inset 0 1px 2px #00000059, /* the well the crown is seated in */
+      inset 0 -1px 0 #ffffff14; /* lip — the cut edge catching light */
     position: relative;
     display: grid;
     place-items: center;
@@ -917,8 +969,8 @@
     min-block-size: var(--cd-target-min);
     padding: 0;
     border-radius: 0;
-    background: transparent;
-    box-shadow: var(--cd-stack);
+    background-color: var(--cd-field);
+    /* painted by the foundry's `.cd-key` — never re-declared here */
   }
 
   .shop-crown-cap {
@@ -926,7 +978,8 @@
     inline-size: var(--shop-crown);
     block-size: var(--shop-crown);
     border-radius: 50%;
-    background: conic-gradient(from 90deg, #d2d3d4 0deg, var(--cd-horizon) 180deg, #aeb0b1 360deg);
+    background-color: #aeb0b1; /* the cap's own darkest stop */
+    background-image: conic-gradient(from 90deg, #d2d3d4 0deg, var(--cd-horizon) 180deg, #aeb0b1 360deg);
     box-shadow:
       inset 0 1px 0 #ffffff3d, /* rim light — the machined top edge */
       0 1px 0 #00000066, /* contact — glues the cap to its well */
@@ -1032,12 +1085,36 @@
      8 · THE DECK — the register, below the seam
      ===================================================================== */
 
+  /*
+    THE DECK IS A RECESS CUT INTO THE PLINTH, and that is a FLOOR REPAIR rather
+    than a finish.
+
+    MEASURED, compositing the real painted gradient rather than reading
+    `backgroundColor` (CD-BRIEF's Contrast-audit integrity section): the two-tone
+    focus ring's best tone against the rosewood's own LIGHTEST stop #5C3A2E is
+    2.93:1 — blue #4C8FD1 2.93, keyline #141414 1.84 — under the 3:1 control
+    floor. Every register lid is a focusable control, and a lid's 3px ring offset
+    lands outside the lid, which was rosewood.
+
+    world.css records the precedent: "FACETED VOLUME therefore seats every
+    focusable control in its own well #2B2D31". Same repair here — the deck is
+    the inset matte black plate section 2 already gives this world, and every
+    focusable control below the seam now sits inside it. Focus blue measures
+    5.70:1 on #0E0D0D. The rosewood keeps the whole plinth, which is where
+    section 4's Hero Screen puts it anyway.
+  */
   .shop-deck {
     display: grid;
     grid-template-rows: auto minmax(0, 1fr);
     gap: 0.25rem;
     min-block-size: 0;
-    padding: 0.375rem var(--shop-pad) 0.5rem;
+    margin: 0 var(--shop-pad) var(--shop-pad);
+    padding: 0.375rem 0.375rem 0.5rem;
+    background-color: #0e0d0d;
+    clip-path: var(--shop-cut);
+    box-shadow:
+      inset 1px 2px 6px #00000080, /* the well itself — the 1:2 cast vector */
+      inset 0 -1px 0 #ffffff14; /* lip — the milled edge catching the sun */
   }
 
   /* the one duty competing for the hand, on its own inset plate */
@@ -1115,11 +1192,12 @@
     min-block-size: var(--shop-lid);
     padding: 0.25rem 0.75rem;
     border-radius: 0;
-    background: linear-gradient(var(--cd-light-axis), #201f1d 0%, var(--cd-field) 100%);
+    background-color: var(--cd-field); /* the lid gradient's own darkest stop */
+    background-image: linear-gradient(var(--cd-light-axis), #201f1d 0%, var(--cd-field) 100%);
     color: var(--cd-ink);
     font-size: var(--cd-size-1);
     letter-spacing: var(--cd-track-label);
-    box-shadow: var(--cd-stack);
+    /* painted by the foundry's `.cd-register-head` (0,1,0) rule */
   }
 
   .shop .shop-register .cd-register-group[data-cd-open="true"] > .cd-register-head {
@@ -1128,7 +1206,11 @@
       inset 0 -1px 0 #00000052,
       0 1px 0 #00000066,
       0 3px 6px #0000003d;
-    background: #d6d9dd1a; /* the 10% wash: the open lid is the selected row */
+    /* the 10% wash of section 4's List/Browser, over a DECLARED base rather
+       than over whatever ancestor happens to be painted: composited #292928,
+       where strobe white measures 11.65:1 and muted ink 5.15:1 */
+    background-color: var(--cd-field);
+    background-image: linear-gradient(0deg, #d6d9dd1a, #d6d9dd1a);
     border-radius: 0;
   }
 
@@ -1223,22 +1305,37 @@
     display: contents;
   }
 
+  /*
+    THE ROW IS EXPLICIT, and it has to be. `.shop-meta` is `display: contents`,
+    so the DOM order reaching the grid is mark, name, price, qty, delta, word —
+    and grid's sparse auto-flow never walks BACKWARDS. Placing the price in
+    column 4 before the qty in column 3 pushed the whole second half onto a
+    second row at desk width: the register rendered in the narrow band's
+    two-line form at 1280px and nothing in the media query was involved.
+    Every slot therefore names its row as well as its column.
+  */
   .shop-mark {
+    grid-row: 1;
     grid-column: 1;
   }
   .shop-name {
+    grid-row: 1;
     grid-column: 2;
   }
   .shop-qty {
+    grid-row: 1;
     grid-column: 3;
   }
   .shop-price {
+    grid-row: 1;
     grid-column: 4;
   }
   .shop-delta {
+    grid-row: 1;
     grid-column: 5;
   }
   .shop-word {
+    grid-row: 1;
     grid-column: 6;
   }
 
@@ -1441,17 +1538,29 @@
 
   .shop .shop-input,
   .shop .shop-textarea {
+    --cd-stack:
+      inset 1px 2px 4px #00000073, /* the well itself */
+      inset 0 -1px 0 #ffffff14; /* lip — the cut edge catching light */
     flex: 1 1 auto;
     min-inline-size: 0;
     min-block-size: var(--cd-target-min);
     padding: 0.5rem;
     border: 0;
     border-radius: 0;
-    background: #0e0d0d;
+    background-color: #0e0d0d;
     color: var(--cd-ink);
     font-family: var(--cd-font-data);
     font-size: var(--cd-size-1);
-    box-shadow: inset 1px 2px 4px #00000073, inset 0 -1px 0 #ffffff14;
+  }
+
+  /*
+    The two controls the foundry does not paint, painted at SINGLE-CLASS
+    specificity so `.cd-focusable:focus-visible` at (0,2,0) still wins and the
+    keyline composes in front of the well.
+  */
+  .shop-input,
+  .shop-textarea {
+    box-shadow: var(--cd-stack);
   }
 
   .shop .shop-textarea {
@@ -1467,13 +1576,14 @@
     min-block-size: var(--cd-target-min);
     padding: 0.4rem 0.75rem;
     border-radius: 0;
-    background: linear-gradient(var(--cd-light-axis), #232220 0%, var(--cd-field) 100%);
+    background-color: var(--cd-field); /* the cap gradient's own darkest stop */
+    background-image: linear-gradient(var(--cd-light-axis), #232220 0%, var(--cd-field) 100%);
     color: var(--cd-ink);
     font-size: var(--cd-size-1);
     font-weight: 600;
     letter-spacing: var(--cd-track-label);
     text-transform: uppercase;
-    box-shadow: var(--cd-stack);
+    /* painted by the foundry's `.cd-key` — never re-declared here */
   }
 
   .shop .shop-cap-key[data-cd-pressed="true"] {
@@ -1591,6 +1701,7 @@
     min-block-size: 3rem;
     padding: 0.5rem 1rem;
     /* milled aluminium: concentric turning marks under the one sun */
+    background-color: #9a9c9e; /* the milled plate's own darkest stop */
     background-image:
       repeating-radial-gradient(
         circle at 24% 22%,
@@ -1858,6 +1969,7 @@
     .shop-qty,
     .shop-delta,
     .shop-word {
+      grid-row: auto;
       grid-column: auto;
     }
 
@@ -1918,6 +2030,15 @@
       color: CanvasText;
     }
 
+    /*
+      EVERY PAINTED GROUND INSIDE THIS SCOPE, and the list is EXHAUSTIVE by
+      measurement rather than by memory: with the block's own rules injected
+      unconditionally, a walker over `.shop, .shop *` reported three surfaces
+      still painting their own dark hex under system colours — `.shop-deck`,
+      `.cd-register-rows` and `.shop-select` — each one added to this build after
+      the block was first written. Black ink on a #0E0D0D ground is not a theme
+      mismatch, it is unreadable, so the sweep is the gate rather than the eye.
+    */
     .shop .shop-readout[data-cd-encl],
     .shop .shop-band,
     .shop .shop-band-track,
@@ -1927,6 +2048,9 @@
     .shop .shop-verify-row,
     .shop .shop-tray-head,
     .shop .shop-etch,
+    .shop .shop-deck,
+    .shop .shop-select,
+    .shop .shop-register .cd-register-rows,
     .shop .shop-mask {
       forced-color-adjust: none;
       background: Canvas;
@@ -1942,6 +2066,8 @@
       text-shadow: none;
     }
 
+    .shop .shop-verify-name,
+    .shop .cd-tray-title,
     .shop .shop-total,
     .shop .shop-census-fig,
     .shop .shop-legend-fig,
@@ -1963,8 +2089,24 @@
     .shop .shop-horizon-word,
     .shop .shop-position-read,
     .shop .shop-note,
+    .shop .shop-word,
+    .shop .shop-verify-prefix,
+    .shop .cd-overflow-count,
     .shop .shop-lid-overflow {
       color: GrayText;
+    }
+
+    /*
+      REPORTED UPWARD, and covered defensively here in the meantime: the
+      foundry's own forced-colours block repaints `.cd-tray` but not
+      `.cd-tray-head` or `.cd-tray-title`, so a tray head keeps its #161514
+      ground and its strobe-white title under system colours. This builder may
+      not write src/cd/**, so the two are restated inside this scope only.
+    */
+    .shop .cd-tray-head {
+      background: Canvas;
+      box-shadow: none;
+      border-block-end: 1px solid CanvasText;
     }
 
     .shop .shop-delta[data-shop-sign="up"],

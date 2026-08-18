@@ -91,12 +91,11 @@ import {
   money,
   omissions,
   positionOf,
-  reconcileState,
   ringError,
   seamBreak,
   sheetVerifiedOn,
   trackIndices,
-  PRICE_STALE_DAYS,
+  uncostedLines,
   type AisleGroup,
 } from "./model";
 import {
@@ -237,10 +236,32 @@ export default function ShopScene(_props: SceneProps) {
   const allLids = useMemo(() => lidOrder(live), [live]);
   const position = useMemo(() => positionOf(live, effectiveLid), [live, effectiveLid]);
 
-  const recon = useMemo(
-    () => reconcileState(trip.verifyNominees, state.priceChecks),
-    [trip.verifyNominees, state.priceChecks]
+  /*
+    THE PAD'S CONTENTS, AND THE RECOVERY THE FRESHNESS LAYER PROMISES.
+
+    The plinth's stale reading names this pad as its fixed-position recovery
+    action. A pad holding only the arbiter's two or three nominees could not fix
+    a sheet that went stale across forty-four lines, so it holds every line
+    without a current price, the arbiter's own nominees first and flagged.
+    "Worth checking first" and "not currently priced" are different claims and
+    the pad prints both.
+  */
+  const padRows = useMemo(
+    () => uncostedLines(lines, costCtx, trip.verifyNominees),
+    [lines, costCtx, trip.verifyNominees]
   );
+  const padDone = useMemo(
+    () =>
+      lines
+        .filter((el) => !el.isDedupe && el.effectivePacks > 0 && state.priceChecks[el.line.ingId])
+        .map((el) => ({ el, check: state.priceChecks[el.line.ingId] })),
+    [lines, state.priceChecks]
+  );
+
+  const openRecovery = useCallback(() => {
+    setActiveNominee(padRows[0]?.el.line.ingId ?? null);
+    setReconcileOpen(true);
+  }, [padRows, setActiveNominee, setReconcileOpen]);
 
   /* The price sheet's own verification age, READ OFF THE DATA rather than
      asserted: the newest verifiedOn any SKU in this basket carries. Real —
@@ -358,12 +379,12 @@ export default function ShopScene(_props: SceneProps) {
 
   const stepNominee = useCallback(
     (direction: 1 | -1) => {
-      const list = recon.nominees;
+      const list = padRows.map((r) => r.el.line.ingId);
       if (list.length === 0) return;
       const at = Math.max(0, list.indexOf(activeNominee ?? list[0]));
       setActiveNominee(list[Math.min(list.length - 1, Math.max(0, at + direction))]);
     },
-    [activeNominee, recon.nominees, setActiveNominee]
+    [activeNominee, padRows, setActiveNominee]
   );
 
   const seat = useCallback(
@@ -386,6 +407,11 @@ export default function ShopScene(_props: SceneProps) {
     if (rank1.kind === "verify-nominee") {
       setActiveNominee(rank1.target?.id ?? rank1.id);
       setReconcileOpen(true);
+      return;
+    }
+    if (rank1.kind === "over-band" || rank1.kind === "timer-due") {
+      /* not this screen's business — hand off rather than swallow the duty */
+      if (rank1.target) window.location.hash = `#/${rank1.target.screen}`;
       return;
     }
     if (rank1.target && rank1.target.screen !== "shop") {
@@ -484,14 +510,6 @@ export default function ShopScene(_props: SceneProps) {
   const offset = orbitOffset(orbit);
   const horizonWord = horizon ? "horizon · basket reconciled" : `${reading.uncosted} not yet costed`;
 
-  const nominees = recon.nominees.map((id) => {
-    const el = lines.find((l) => l.line.ingId === id);
-    return {
-      ingId: id,
-      name: el?.line.product ?? id,
-      sheet: el?.line.price ?? 0,
-    };
-  });
 
   return (
     <section
@@ -513,7 +531,16 @@ export default function ShopScene(_props: SceneProps) {
           kind={kindLabel(tripDay, variant.isTester)}
           census={reading}
           indices={indices}
-          etch={`fd-5 · shop · ${tripMeta.tripId} · priced ${pricedOn ?? "never"} · ${sheetAge.label} old · stale after ${PRICE_STALE_DAYS}d · £${money(wasteTotal)} binned this month`}
+          age={sheetAge}
+          pricedOn={pricedOn}
+          wasted={wasteTotal}
+          onRecover={openRecovery}
+          /* II.6.11 — micro-etch is TEXTURE: it repeats what a functional label
+             already states at or above the floor and never carries a fact alone.
+             The sheet's date, its age, its threshold and the month's binned
+             value moved onto the plate at the label step; what is left here is
+             the trip's own id, which the send tray prints at 0.8125rem. */
+          etch={`fd-5 · shop · ${tripMeta.tripId}`}
           trophy={trophy}
         />
 
@@ -560,11 +587,14 @@ export default function ShopScene(_props: SceneProps) {
           }))}
           stationValue={seated?.code ?? ""}
           onStation={seat}
-          reconcileLabel={recon.nominees.length === 0 ? "nothing to verify" : "reconcile"}
-          reconcileFigure={`${recon.done.length}/${recon.nominees.length} checked`}
-          reconcileError={recon.errorDeg}
+          reconcileLabel="reconcile"
+          reconcileFigure={`${reading.costed}/${reading.lines} costed`}
+          /* The ring reports what the pad can actually change: the whole
+             basket's costed state. The arbiter's nominees are a PRIORITY inside
+             the pad, not a lock, so they never drive this ring. */
+          reconcileError={ringError(reading.costed, reading.lines)}
           onReconcileStep={stepNominee}
-          onReconcileOpen={() => setReconcileOpen(true)}
+          onReconcileOpen={openRecovery}
           onSend={() => setSendOpen(true)}
           sendControls="shop-send-tray"
           sendOpen={sendOpen}
@@ -665,7 +695,8 @@ export default function ShopScene(_props: SceneProps) {
         id="shop-reconcile-tray"
         open={reconcileOpen}
         onClose={() => setReconcileOpen(false)}
-        nominees={nominees}
+        rows={padRows}
+        done={padDone}
         priceChecks={state.priceChecks}
         onSave={savePrice}
         activeId={activeNominee}

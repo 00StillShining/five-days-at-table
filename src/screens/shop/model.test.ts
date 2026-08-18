@@ -32,8 +32,8 @@ import {
   money,
   omissions,
   positionOf,
-  reconcileState,
   ringError,
+  uncostedLines,
   seamBreak,
   sheetVerifiedOn,
   signedMoney,
@@ -180,14 +180,53 @@ describe("the flush-check reports a live error", () => {
   it("an empty set is NOT TRUE — there is nothing to be true about", () => {
     expect(isLocked(ringError(0, 0))).toBe(false);
   });
+});
 
-  it("but an empty NOMINEE list is agreement, not a broken ring", () => {
-    /* Section 9's "Fake locks": a ring that can never read true on a whole
-       variant is a ring reporting a state nothing behind it holds. The tester
-       nominates nobody and its pad is genuinely done. */
-    expect(isLocked(reconcileState([], {}).errorDeg)).toBe(true);
-    expect(isLocked(reconcileState(["a"], {}).errorDeg)).toBe(false);
-    expect(isLocked(reconcileState(["a"], { a: { price: 1, on: "2026-08-18" } }).errorDeg)).toBe(true);
+describe("the recovery the freshness layer promises is a real one", () => {
+  it("the pad holds EVERY line without a current price, not just the nominees", () => {
+    const { trip, lines, ctx } = fullTrip();
+    const rows = uncostedLines(lines, ctx, trip.verifyNominees);
+    const c = census(lines, ctx);
+    expect(rows.length).toBe(c.uncosted);
+    expect(rows.length).toBe(24);
+    /* The arbiter nominates three. A pad holding only those could not fix a
+       sheet that went stale across the other twenty-one. */
+    expect(trip.verifyNominees.length).toBe(3);
+    expect(rows.length).toBeGreaterThan(trip.verifyNominees.length);
+  });
+
+  it("nominees are offered first, and the trip's own order survives inside each half", () => {
+    const { trip, lines, ctx } = fullTrip();
+    const rows = uncostedLines(lines, ctx, trip.verifyNominees);
+    const nominated = rows.filter((r) => r.nominated);
+    expect(nominated.length).toBe(3);
+    expect(rows.slice(0, 3).every((r) => r.nominated)).toBe(true);
+    const rest = rows.slice(3).map((r) => r.el.line.ingId);
+    const inTripOrder = lines
+      .filter((el) => !el.isDedupe && el.effectivePacks > 0)
+      .map((el) => el.line.ingId)
+      .filter((id) => rest.includes(id));
+    expect(rest).toEqual(inTripOrder);
+  });
+
+  it("a costed line never appears in the pad, and typing a price removes it", () => {
+    const { trip, lines, ctx } = fullTrip();
+    const first = uncostedLines(lines, ctx, trip.verifyNominees)[0];
+    const checks: PriceChecks = {
+      [first.el.line.ingId]: { price: 1.23, on: "2026-08-18" },
+    };
+    const after = uncostedLines(lines, { ...ctx, priceChecks: checks }, trip.verifyNominees);
+    expect(after.map((r) => r.el.line.ingId)).not.toContain(first.el.line.ingId);
+    expect(after.length).toBe(23);
+  });
+
+  it("on the tester's verified receipt the pad is empty and the ring reads true", () => {
+    const trip = tripBuild({}, 0, {}, TESTER);
+    const lines = effectiveLines(trip, new Set());
+    const ctx: CostContext = { ...CTX, basketVerifiedOn: TESTER.basket!.verifiedOn };
+    expect(uncostedLines(lines, ctx, trip.verifyNominees)).toEqual([]);
+    const c = census(lines, ctx);
+    expect(isLocked(ringError(c.costed, c.lines))).toBe(true);
   });
 });
 

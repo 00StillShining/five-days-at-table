@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FD-5 SHOP — the escalation ladder</title>
+<!--
+  docs/ladder/shop-ladder.html — 11 TANGENT HORIZON on SHOP, four rungs kept.
+
+  EVERY RUNG ON THIS PAGE RUNS. The Simple rung's state selector really drives
+  it — all nine states, not nine drawings of states. The Pushed studies really
+  respond, one axis each. The Refined rung is the subtraction ledger with its
+  survivors' own geometry. The Signature rung is the shipped mechanism: type a
+  price into the last uncosted line and the seam closes across the whole
+  composition, exactly as the screen does it.
+
+  REAL DATA THROUGHOUT, measured off the dataset on 2026-08-18:
+    full day-0 trip ...... 44 lines / £170.44 against an uncounted shelf
+                           (M 28 £81.08 · S 15 £85.86 · X 1 £3.50)
+    day-7 top-up ......... 7 lines / £11.03
+    morrisons-tester ..... 39 lines / £69.83, one retailer, all verified
+    costed true .......... 20 of 44 — 9 estimates, 15 never verified
+    aisles (Morrisons) ... Dairy 1 · Cupboard 13 · Protein 1 · Produce 12 · Freezer 1
+    longest product ...... "Morrisons chickpeas in water, 400 g tin
+                           (240 g drained), Price Match" — 68 characters
+    price sheet .......... verifiedOn 2026-08-11 on 23 of 85 priced SKUs,
+                           20 of the 44 day-0 lines; threshold 14 days
+    omitted on purpose ... 6 pantry-optional ingredients, 32 freebie seasonings
+  The running app shows 42 lines / £155.93 because this device's inventory has
+  a stocktake on it; both figures are real and neither is invented.
+
+  No image assets, no WebGL, no network. Open it in a browser.
+-->
+<style>
+  :root {
+    color-scheme: dark;
+    --ui: "Space Grotesk", system-ui, sans-serif;
+    --data: "JetBrains Mono", ui-monospace, monospace;
+    /* the Simple rung's entire palette — the doctrine's own grayscale ramp */
+    --g0:#141414; --g1:#1f1f1f; --g2:#2c2c2c; --g3:#4a4a4a; --g4:#6d6d6d;
+    --g5:#8f8f8f; --g6:#b4b4b4; --g7:#dcdcdc; --g8:#F2F2F2;
+    /* TANGENT HORIZON's committed section-2 registry, for every rung above Simple */
+    --alu:#C6C7C8; --rose:#4A2C22; --inset:#161514; --deck:#0E0D0D;
+    --ink:#E8E6DD; --muted:#9B9A92; --red:#C8272B; --red-dim:#5D1C1D; --red-hot:#DB7375;
+    --champagne:#CBB088; --oak:#D2B48C; --teak:#8B5A2B; --platter:#2C2D2F;
+    /* the product-wide reserved roles (world.css), which supersede ch.11's own */
+    --warn:#DAA254; --danger:#E59992; --success:#53C17E; --focus:#4C8FD1; --keyline:#141414;
+    --axis:138deg; --module:.5rem;
+    --settle:cubic-bezier(.16,1,.30,1); --snap:cubic-bezier(.60,0,.10,1);
+    --cut: polygon(3px 0,calc(100% - 3px) 0,100% 3px,100% calc(100% - 3px),calc(100% - 3px) 100%,3px 100%,0 calc(100% - 3px),0 3px);
+    --brushed:
+      repeating-linear-gradient(0deg,#ffffff00 0px,#ffffff1f 1px,#0000001f 2px,#ffffff00 3px),
+      linear-gradient(90deg,#a2a4a6 0%,#bcbdbe 26%,#dedfdf 47%,#c6c7c8 60%,#b0b1b2 80%,#9a9c9e 100%);
+    --champ:
+      repeating-linear-gradient(0deg,#ffffff00 0px,#ffffff1f 1px,#0000001f 2px,#ffffff00 3px),
+      linear-gradient(90deg,#a48d6c 0%,#c0a67f 26%,#e5d2ae 47%,#cbb088 60%,#b59b76 80%,#9c8462 100%);
+    --wood:
+      repeating-linear-gradient(93deg,#00000000 0px,#00000040 2px,#00000000 3px,#00000000 9px,
+        #00000024 11px,#00000000 12px,#00000000 21px,#00000047 22px,#00000000 24px),
+      linear-gradient(138deg,#5c3a2e 0%,#4a2c22 46%,#3b221a 100%);
+  }
+  * { box-sizing:border-box }
+  body { margin:0; background:#0c0c0c; color:var(--g7); font-family:var(--ui); line-height:1.55 }
+  main { max-width:78rem; margin:0 auto; padding:2rem 1.25rem 6rem }
+  h1 { font-size:1.5rem; letter-spacing:.02em; margin:0 0 .25rem }
+  h2 { font-size:1.05rem; letter-spacing:.12em; text-transform:uppercase; margin:3.5rem 0 .25rem; color:var(--g8) }
+  h3 { font-size:.8125rem; letter-spacing:.12em; text-transform:uppercase; margin:1.5rem 0 .5rem; color:var(--g5) }
+  p { max-width:64ch; color:var(--g6); font-size:.9375rem }
+  .claim { border-left:2px solid var(--g4); padding-left:.75rem; font-size:.875rem; color:var(--g7); max-width:64ch }
+  .vs { font-family:var(--data); font-size:.8125rem; color:var(--g5); margin:.35rem 0 0; max-width:66ch }
+  .bench { display:flex; gap:1.25rem; flex-wrap:wrap; align-items:flex-start; margin-top:1rem }
+  .plinth { background:#101010; border:1px solid var(--g2); border-radius:.5rem; padding:1rem }
+  .plinth > figcaption { font-family:var(--data); font-size:.75rem; color:var(--g5); margin-bottom:.75rem }
+  table { border-collapse:collapse; font-size:.8125rem; margin-top:.75rem }
+  td,th { border:1px solid var(--g2); padding:.35rem .6rem; text-align:left; vertical-align:top }
+  th { color:var(--g8); font-weight:600 }
+  td.k { color:#9ec98a } td.x { color:#d98f88 }
+  code { font-family:var(--data); font-size:.8125rem; color:var(--g6) }
+  select,button { font-family:var(--ui); font-size:.8125rem }
+
+  /* ==================== RUNG 1 · SIMPLE ==================== */
+  /* Grayscale ramp only. No gradient, no shadow stack, no texture, no spring.
+     Values cut frame to frame. The TASK must still complete: read what the trip
+     costs, read which lines are not costed, send it. */
+  .s { width:40rem; max-width:100%; background:var(--g1); border:1px solid var(--g3); padding:.75rem; font-size:.8125rem }
+  .s-top { display:flex; justify-content:space-between; gap:1rem; border:1px solid var(--g3); padding:.5rem; margin-bottom:.5rem }
+  .s-fig { font-family:var(--data); font-size:1.75rem; color:var(--g8) }
+  .s-cens { font-family:var(--data); color:var(--g6); text-align:right }
+  .s-track { height:1rem; border:1px solid var(--g3); position:relative; margin-bottom:.5rem }
+  .s-ix { position:absolute; top:0; bottom:0; width:2px; background:var(--g8) }
+  .s-list { margin:0; padding:0; list-style:none; font-family:var(--data) }
+  .s-list li { border-top:1px solid var(--g2); padding:.25rem 0; display:grid;
+    grid-template-columns:.75rem 1fr 5ch 6ch 6ch 5rem; gap:.5rem; align-items:center }
+  .s-mark { color:var(--g5) }
+  .s-note { color:var(--g5); font-family:var(--data); font-size:.75rem; margin-top:.5rem }
+  .s-keys { display:flex; gap:.35rem; flex-wrap:wrap; margin-top:.5rem }
+  .s-key { border:1px solid var(--g4); background:var(--g2); color:var(--g7); padding:.35rem .6rem; cursor:pointer }
+  .s-key[disabled] { color:var(--g4); cursor:default }
+
+  /* ==================== RUNG 2 · PUSHED ==================== */
+  /* Three studies, ONE axis each. Everything not on that study's axis stays at
+     the Simple rung, so each claim is testable on its own. */
+
+  /* study A — THE MATERIAL (finish only; geometry and data as Simple) */
+  .pa { display:flex; gap:1rem; flex-wrap:wrap }
+  .pa-tile { width:12rem; height:7rem; clip-path:var(--cut); position:relative;
+    display:grid; place-items:center; font-family:var(--data); font-size:.75rem }
+  .pa-alu { background-color:#9a9c9e; background-image:var(--brushed); color:#141414;
+    box-shadow: inset 0 1px 0 #ffffffa6, inset 0 -1px 0 #00000066 }
+  .pa-wood { background-color:#3b221a; background-image:var(--wood); color:var(--ink);
+    box-shadow: inset 0 1px 0 #ffffff1f, inset 0 -1px 0 #00000059 }
+  .pa-inset { background:var(--inset); color:var(--ink); box-shadow: inset 1px 2px 6px #00000073, inset 0 -1px 0 #ffffff1f }
+  .pa-champ { background-color:#9c8462; background-image:var(--champ); color:#141414;
+    box-shadow: inset 0 1px 0 #ffffffa6, inset 0 -1px 0 #00000066, inset 0 0 0 1px var(--oak) }
+
+  /* study B — THE FLUSH-CHECK (the confirmation device only) */
+  .pb { display:flex; gap:2rem; align-items:center; flex-wrap:wrap;
+    background:var(--inset); padding:1.25rem; clip-path:var(--cut) }
+  .pb-crown { position:relative; width:2.75rem; height:2.75rem; display:grid; place-items:center;
+    background:var(--inset); box-shadow: inset 0 1px 2px #00000059, inset 0 -1px 0 #ffffff14 }
+  .pb-cap { width:1.25rem; height:1.25rem; border-radius:50%;
+    background-color:#aeb0b1;
+    background-image:conic-gradient(from 90deg,#d2d3d4 0deg,var(--alu) 180deg,#aeb0b1 360deg);
+    box-shadow: inset 0 1px 0 #ffffff3d, 0 1px 0 #00000066, 0 2px 5px #00000040, 0 6px 14px #00000026 }
+  .pb-ticks { position:absolute; inset:.5rem; border-radius:50%;
+    background:repeating-conic-gradient(var(--alu) 0deg 1.2deg, transparent 1.2deg 15deg);
+    -webkit-mask:radial-gradient(circle, transparent 62%, #000 63%);
+    mask:radial-gradient(circle, transparent 62%, #000 63%);
+    transform:rotate(var(--off, 7.5deg));
+    transition:transform 120ms var(--snap) }
+  .pb-ticks[data-locked="true"] { background:repeating-conic-gradient(var(--red) 0deg 1.2deg, transparent 1.2deg 15deg) }
+  .pb-fix { position:absolute; top:.125rem; left:50%; width:1px; height:.3125rem; background:var(--ink); transform:translateX(-50%) }
+  .pb-read { font-family:var(--data); font-size:.8125rem; color:var(--ink) }
+  .pb-read small { color:var(--muted); display:block; font-size:.75rem }
+
+  /* study C — THE TRACK (position, versus the bar and the arc it replaces) */
+  .pc { display:grid; gap:1rem; background:var(--inset); padding:1.25rem; clip-path:var(--cut) }
+  .pc-win { position:relative; height:1.5rem; background-color:var(--inset);
+    background-image:repeating-linear-gradient(90deg, var(--ink) 0 1px, transparent 1px 2.381%);
+    background-size:100% 40%; background-position:center; background-repeat:repeat-x;
+    box-shadow: inset 0 2px 4px #00000059, inset 0 -1px 0 #ffffff14 }
+  .pc-ix { position:absolute; top:.125rem; width:.1875rem; height:1.25rem; background:var(--ink);
+    box-shadow:0 0 5px #e8e6dd99, 0 0 1px #ffffff66; transition:left var(--sweep,80ms) linear }
+  .pc-ix[data-locked="true"] { box-shadow:0 0 0 1px var(--red-dim), 0 0 3px #5d1c1d66 }
+  .pc-bar { height:1.5rem; background:#000; box-shadow:inset 0 2px 4px #00000059 }
+  .pc-bar i { display:block; height:100%; background:linear-gradient(90deg,#8f8f8f,#dcdcdc) }
+  .pc-legend { display:flex; justify-content:space-between; font-family:var(--data); font-size:.8125rem; color:var(--muted) }
+  .pc-legend b { color:var(--ink); font-weight:400 }
+
+  /* ==================== RUNG 3 · REFINED ==================== */
+  .r-ledger td:first-child { font-family:var(--data) }
+  .r-keep { color:#9ec98a } .r-cut { color:#d98f88 }
+
+  /* ==================== RUNG 4 · SIGNATURE ==================== */
+  .sig { background-color:#3b221a; background-image:var(--wood); padding:1rem; clip-path:var(--cut) }
+  .sig-plate { background:var(--inset); clip-path:var(--cut); padding:.5rem .75rem .625rem;
+    box-shadow: inset 1px 2px 6px #00000073, inset 0 -1px 0 #ffffff1f; margin-bottom:.75rem }
+  .sig-fig { font-family:var(--data); font-size:2.75rem; color:var(--ink); line-height:.95 }
+  .sig-band { position:relative; margin:0 2%; padding:.3125rem; clip-path:var(--cut);
+    background-color:#9a9c9e; background-image:var(--brushed);
+    box-shadow: inset 0 1px 0 #ffffffa6, inset 0 -1px 0 #00000066 }
+  .sig[data-horizon="true"] .sig-band { background-color:#9c8462; background-image:var(--champ);
+    box-shadow: inset 0 1px 0 #ffffffa6, inset 0 -1px 0 #00000066, inset 0 0 0 1px var(--oak) }
+  .sig-track { background:var(--inset); clip-path:var(--cut); padding:.375rem .5rem;
+    box-shadow: inset 1px 2px 5px #0000008c; display:flex; align-items:center; gap:1rem; flex-wrap:wrap }
+  .sig-seam { height:2px; margin:.5rem 2% 0;
+    background-image:repeating-linear-gradient(90deg, var(--muted) 0 calc(var(--dash,40%) * .28), transparent calc(var(--dash,40%) * .28) 1.75rem);
+    transition:background-image 320ms var(--snap) }
+  .sig[data-horizon="true"] .sig-seam { background-image:linear-gradient(90deg,var(--ink) 0 100%); box-shadow:0 0 6px #e8e6dd40 }
+  .sig-rows { margin:.75rem 0 0; padding:.375rem .5rem; list-style:none; background:var(--deck); clip-path:var(--cut);
+    box-shadow: inset 1px 2px 6px #00000080; display:grid; gap:0 .875rem; grid-template-columns:repeat(auto-fill,minmax(20rem,1fr)) }
+  .sig-rows li { display:grid; grid-template-columns:.875rem 1fr 6ch 5.25rem; gap:.5rem; align-items:center; height:2rem;
+    font-size:.8125rem; color:var(--ink) }
+  .sig-rows li:nth-child(even) { background:#ffffff05 }
+  .sig-mk { position:relative; height:.625rem }
+  .sig-mk::before,.sig-mk::after { content:""; position:absolute; left:0; right:0; height:1px; background:var(--muted);
+    transition:transform 120ms var(--snap) }
+  .sig-mk::before { top:.1875rem; transform:translateY(-.125rem) }
+  .sig-mk::after  { top:.3125rem; transform:translateY(.125rem) }
+  li[data-costed="true"] .sig-mk::before, li[data-costed="true"] .sig-mk::after { background:var(--ink); transform:translateY(0) }
+  .sig-word { font-family:var(--data); font-size:.75rem; color:var(--muted); text-align:right; letter-spacing:.06em }
+  li[data-costed="true"] .sig-word { color:var(--ink) }
+  .sig-num { font-family:var(--data); font-size:.8125rem; text-align:right; color:var(--ink) }
+  .sig-word2 { font-family:var(--ui); font-size:.75rem; letter-spacing:.12em; text-transform:uppercase; color:var(--muted) }
+  .sig[data-horizon="true"] .sig-word2 { color:var(--ink) }
+  .sig-in { width:5rem; background:var(--deck); border:0; color:var(--ink); font-family:var(--data);
+    padding:.35rem .4rem; box-shadow:inset 1px 2px 4px #00000073 }
+  .sig-btn { min-height:2.75rem; padding:.4rem .75rem; border:0; clip-path:var(--cut);
+    background:var(--inset); color:var(--ink); font-family:var(--ui); font-size:.75rem;
+    letter-spacing:.12em; text-transform:uppercase; cursor:pointer;
+    box-shadow: inset 0 1px 0 #ffffff29, 0 1px 0 #00000059, 0 2px 5px #00000038 }
+  @media (prefers-reduced-motion: reduce) {
+    .pb-ticks,.pc-ix,.sig-seam,.sig-mk::before,.sig-mk::after { transition-duration:80ms; transition-timing-function:linear }
+  }
+</style>
+</head>
+<body>
+<main>
+
+<h1>FD-5 SHOP — the escalation ladder</h1>
+<p>11 TANGENT HORIZON. Four rungs, every one of them running against the real
+day-0 trip: 44 costed lines, £170.44, three retailers, 20 lines costed true.</p>
+
+<!-- ============================================================ -->
+<h2>Rung 1 · Simple</h2>
+<p class="claim">The doctrine's own grayscale ramp, #141414 to #F2F2F2. No gradient,
+no shadow stack, no texture, no spring, no red. Values cut frame to frame. The
+task must still complete: read what the trip costs, read which lines are not
+costed, and send it.</p>
+<p class="vs">Every state below is DRIVEN, not drawn. The selector changes the
+data the same render path consumes.</p>
+
+<div class="bench">
+  <figure class="plinth">
+    <figcaption>
+      state:
+      <select id="s-state">
+        <option value="full">full — day-0, 44 lines, £170.44</option>
+        <option value="partial">partial — 20 of 44 costed</option>
+        <option value="day7">day-7 top-up — 7 lines, £11.03</option>
+        <option value="tester">tester — 39 lines, £69.83, all verified</option>
+        <option value="stale">stale — sheet 15 days old, past the 14-day threshold</option>
+        <option value="overflow">overflowing — 13-row aisle in a 4-row budget</option>
+        <option value="empty">empty — stocked up, nothing to buy</option>
+        <option value="firstrun">first run — no stocktake has happened</option>
+        <option value="error">error — trip larger than one QR can carry</option>
+        <option value="disabled">disabled — every lid shut, LIFT unavailable</option>
+        <option value="loading">loading — there is no loading state, and why</option>
+      </select>
+    </figcaption>
+    <div class="s" id="s-root"></div>
+  </figure>
+</div>
+
+<!-- ============================================================ -->
+<h2>Rung 2 · Pushed</h2>
+<p>Three studies. Each moves exactly one axis and leaves everything else at the
+Simple rung, so each claim can be falsified on its own.</p>
+
+<h3>Study A — the material axis</h3>
+<p class="claim"><b>Claim:</b> the four finishes of section 2 are distinguishable
+as materials at working distance with no label, and the ink-plate law is
+forced by the metal rather than chosen — no ink of any lightness reaches 4.5:1
+on brushed aluminium (best stop 2.20:1), while strobe white on the inset black
+reaches 14.58:1.</p>
+<p class="vs">vs Simple: Simple has one flat #1f1f1f for every surface, so the
+band, the plinth and the readout are the same object at three sizes.</p>
+<div class="pa">
+  <div class="pa-tile pa-alu">BRUSHED #C6C7C8<br>horizontal grain, 3px</div>
+  <div class="pa-tile pa-wood">ROSEWOOD #4A2C22<br>irregular 2/9/21 stops</div>
+  <div class="pa-tile pa-inset">INSET #161514<br>ink 14.58:1</div>
+  <div class="pa-tile pa-champ">CHAMPAGNE #CBB088<br>Signature dress + oak</div>
+</div>
+
+<h3>Study B — the confirmation axis</h3>
+<p class="claim"><b>Claim:</b> a broken ring reads as "not yet" before any label
+is read, and the seat is legible as a single event because it is Anchored with
+zero overshoot. Drag the slider: the offset is a live redraw of the error, never
+an idle animation.</p>
+<p class="vs">vs Simple: Simple prints "20/44 costed" and nothing else, which is
+true and requires reading. The ring is the same fact at a glance, and it is the
+same fact — it is driven by the same number.</p>
+<div class="pb">
+  <div class="pb-crown"><span class="pb-cap"></span><span class="pb-ticks" id="pb-t"></span><span class="pb-fix"></span></div>
+  <div class="pb-read" id="pb-r"></div>
+  <label style="font-size:.8125rem;color:var(--muted)">uncosted
+    <input id="pb-s" type="range" min="0" max="13" value="9" style="vertical-align:middle">
+    of 13</label>
+</div>
+
+<h3>Study C — the readout axis</h3>
+<p class="claim"><b>Claim:</b> position on a track answers "where is the money"
+in one reading; a filled bar answers "how much of the whole" and cannot be read
+for a third retailer at all. Section 9 names the failure — "a value that is
+really a position on a line is drawn as an angle instead" — and this is the same
+argument one dimension down.</p>
+<p class="vs">vs Simple: Simple has the three subtotals as three numbers in a
+column. The track adds the one thing the column cannot give — the distance
+between them.</p>
+<div class="pc">
+  <div>
+    <div class="pc-win" id="pc-w">
+      <span class="pc-ix" data-locked="true" style="left:47.6%"></span>
+      <span class="pc-ix" data-locked="true" style="left:97.9%"></span>
+      <span class="pc-ix" data-locked="true" style="left:100%"></span>
+    </div>
+    <div class="pc-legend"><span>cumulative · £0.00 →</span><span>mor <b>£81.08</b></span><span>sai <b>£85.86</b></span><span>mkt <b>£3.50</b></span></div>
+  </div>
+  <div>
+    <div class="pc-bar"><i style="width:47.6%"></i></div>
+    <div class="pc-legend"><span>the filled bar it replaces — Morrisons only, and the other two retailers have nowhere to go</span></div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<h2>Rung 3 · Refined</h2>
+<p>CD-BRIEF ruling 4's re-authored rung: <b>subtract jobless elements; keep every
+survivor at full material strength.</b> The ledger asks of each element
+<i>does it state a value, or let the hand do something?</i> — never <i>is it the
+hero?</i></p>
+
+<table class="r-ledger">
+  <tr><th>element</th><th>verdict</th><th>the one sentence</th></tr>
+  <tr><td>plinth readout + cost track</td><td class="r-keep">KEEP</td><td>states what the trip costs and where the money sits between the shops.</td></tr>
+  <tr><td>horizon band</td><td class="r-keep">KEEP</td><td>lets the hand reach every control on the screen without leaving the seam.</td></tr>
+  <tr><td>the seam</td><td class="r-keep">KEEP</td><td>states, across the whole composition, how much of the basket is still uncosted.</td></tr>
+  <tr><td>the register</td><td class="r-keep">KEEP</td><td>states which lines the trip is actually made of, one aisle at a time.</td></tr>
+  <tr><td>reconcile pad</td><td class="r-keep">KEEP</td><td>lets the hand give any uncosted line a current price.</td></tr>
+  <tr><td>send tray + QR</td><td class="r-keep">KEEP</td><td>lets the hand put the trip on a phone.</td></tr>
+  <tr><td>a ring on every register lid</td><td class="r-cut">CUT</td><td>a lid is not a control whose value drifts — it prints <code>9/13 costed</code> instead.</td></tr>
+  <tr><td>a ring on every row</td><td class="r-cut">CUT</td><td>44 rings is section 9's own Pushed failure, "busy with confirmation devices"; the row keeps the LAW as two dashes that close.</td></tr>
+  <tr><td>a third ring on the verify nominees</td><td class="r-cut">CUT</td><td>it reported a three-item subset whose truth had no consequence — a fake lock one level up.</td></tr>
+  <tr><td>trip id / priced-on / waste in micro-etch</td><td class="r-cut">CUT</td><td>II.6.11 forbids micro-type carrying a fact nothing else states; all three moved onto the plate at the label floor.</td></tr>
+  <tr><td>a spinning platter graphic</td><td class="r-cut">CUT</td><td>never built — CD-BRIEF ruling 6: a price is slow data and gets a printed figure and a mark, not a mechanism.</td></tr>
+</table>
+<p class="vs">Exit: six hero-grade instruments survive, each with a job named in
+one sentence. Nothing was stripped to plain competence to pay for them.</p>
+
+<!-- ============================================================ -->
+<h2>Rung 4 · Signature</h2>
+<p class="claim"><b>The one move only this language would make.</b> Section 7:
+"when every flush-check ring on the screen reads true at once — no pending value,
+no live error anywhere — every ring aligns in the same frame into one continuous
+unbroken line running across the whole composition, the horizon completing
+itself ... and it un-fires the instant any one value drifts again."</p>
+<p>Here it is as shipped, on four real Cupboard lines. Type a price into each
+uncosted line and press <i>save</i>. Watch the row's mark close, the seam's gaps
+narrow, and — on the last one — the seam become one line, the ring lock, and the
+band take its champagne dress. Press <i>expire one</i> and the horizon un-fires.</p>
+
+<div class="sig" id="sig" data-horizon="false">
+  <div class="sig-plate">
+    <span class="sig-fig" id="sig-total">£13.24</span>
+    <span class="sig-word2" id="sig-cens">2 of 4 costed</span>
+  </div>
+  <div class="sig-band">
+    <div class="sig-track">
+      <div class="pb-crown"><span class="pb-cap"></span><span class="pb-ticks" id="sig-ticks"></span><span class="pb-fix"></span></div>
+      <span class="sig-word2" id="sig-word">2 not yet costed</span>
+      <span style="flex:1"></span>
+      <input class="sig-in" id="sig-price" type="number" step="0.01" min="0" placeholder="0.00" aria-label="price">
+      <button class="sig-btn" id="sig-save">save</button>
+      <button class="sig-btn" id="sig-expire">expire one</button>
+    </div>
+  </div>
+  <div class="sig-seam" id="sig-seam" style="--dash:50%"></div>
+  <ul class="sig-rows" id="sig-rows"></ul>
+</div>
+
+<p class="vs">It fires only because the condition it reports has become true.
+The screen computes it as <code>census.lines &gt; 0 &amp;&amp; census.uncosted === 0</code>
+— an empty basket is absence, not agreement, and never closes the horizon.</p>
+
+<script>
+/* ---------------- REAL DATA, measured 2026-08-18 ---------------- */
+const TRIPS = {
+  full:    { kind:"full shop", lines:44, total:170.44, costed:20, est:9, never:15, cols:[["mor",81.08,28],["sai",85.86,15],["mkt",3.50,1]] },
+  partial: { kind:"full shop", lines:44, total:170.44, costed:20, est:9, never:15, cols:[["mor",81.08,28],["sai",85.86,15],["mkt",3.50,1]] },
+  day7:    { kind:"day-7 top-up", lines:7, total:11.03, costed:2, est:2, never:3, cols:[["mor",8.63,6],["mkt",2.40,1]] },
+  tester:  { kind:"morrisons starter", lines:39, total:69.83, costed:39, est:0, never:0, cols:[["mor",69.83,39]] },
+};
+const ROWS = [
+  ["Morrisons Savers porridge oats, 1 kg, Price Match", "1×1kg", 0.85, "VERIFIED", true],
+  ["Brown basmati rice, 1 kg",                          "2×1kg", 3.70, "NEVER",    false],
+  ["Morrisons chickpeas in water, 400 g tin (240 g drained), Price Match", "3×240g", 1.11, "VERIFIED", true],
+  ["Ground melon seed (egusi), 250 g",                  "1×250g", 7.58, "ESTIMATE", false],
+];
+
+/* ---------------- RUNG 1 — nine states, one render path ---------------- */
+const sel = document.getElementById("s-state"), root = document.getElementById("s-root");
+function renderSimple(state){
+  if (state === "empty") {
+    root.innerHTML = `<div class="s-top"><div><div class="s-fig">£0.00</div>stocked up</div></div>
+      <p class="s-note">everything this full shop needs is already covered by what is on the shelf. nothing to buy, nothing to send.</p>`;
+    return;
+  }
+  if (state === "loading") {
+    root.innerHTML = `<p class="s-note">THERE IS NO LOADING STATE ON THIS SCREEN, and inventing one would be progress
+      theatre. tripBuild() is a pure function over the frozen store; the trip exists in the same frame the scene mounts.
+      The only genuinely absent reading is a price that was never verified, and that prints NEVER rather than a spinner.</p>`;
+    return;
+  }
+  const t = TRIPS[state] || TRIPS.full;
+  const stale = state === "stale";
+  const firstrun = state === "firstrun";
+  const err = state === "error";
+  const budget = state === "overflow" ? 4 : ROWS.length;
+  const shown = ROWS.slice(0, budget);
+  const hidden = 13 - budget;
+  const costed = stale ? 0 : t.costed;
+  root.innerHTML = `
+   <div class="s-top">
+     <div><div class="s-fig">£${t.total.toFixed(2)}${stale ? " (held)" : ""}</div>${t.kind}${stale ? " · UNPRICED · 15d" : " · 7d"}</div>
+     <div class="s-cens">${t.lines} lines<br>${costed} costed<br>${t.est} estimated<br>${stale ? t.lines : t.never} unpriced</div>
+   </div>
+   <div class="s-track">${t.cols.map((c,i)=>{
+      const cum = t.cols.slice(0,i+1).reduce((s,x)=>s+x[1],0);
+      return `<span class="s-ix" style="left:${(cum/t.total*100).toFixed(1)}%"></span>`;}).join("")}</div>
+   <div class="s-cens" style="text-align:left">${t.cols.map(c=>`${c[0]} £${c[1].toFixed(2)} (${c[2]})`).join(" · ")}</div>
+   ${firstrun ? `<p class="s-note">no stocktake has happened on this device, so nothing is deduped: every line the plan
+      needs is on the trip. the have-list lid does not exist rather than rendering empty.</p>` : ""}
+   ${err ? `<p class="s-note">OVER QR CAPACITY — this trip's list is larger than a single code can carry
+      (2953 bytes at version 40 / level L). the link and the copy-list key still work.</p>` : ""}
+   <ul class="s-list">${shown.map(r=>{
+     const ok = stale ? false : r[4];
+     return `<li><span class="s-mark">${ok ? "=" : "–"}</span><span>${r[0]}</span>
+       <span>${r[1]}</span><span style="text-align:right">£${r[2].toFixed(2)}${r[3]==="ESTIMATE"?" ≈":""}</span>
+       <span style="text-align:right">—</span><span style="text-align:right">${stale ? "UNPRICED" : r[3]}</span></li>`;}).join("")}</ul>
+   ${state === "overflow" ? `<p class="s-note">+${hidden} still to check — the remainder is a number, never a fade.</p>` : ""}
+   <div class="s-keys">
+     <button class="s-key">« first</button>
+     <button class="s-key">‹ prev</button>
+     <button class="s-key" ${state==="disabled"?"disabled":""}>◇ lift</button>
+     <button class="s-key">next ›</button>
+     <button class="s-key">last »</button>
+     <button class="s-key">send</button>
+   </div>
+   ${state === "disabled" ? `<p class="s-note">every lid is shut, so LIFT has nothing to lift: it keeps its housing and
+      its target and loses only its readiness. never a vanishing control.</p>` : ""}`;
+}
+sel.addEventListener("change", () => renderSimple(sel.value));
+renderSimple("full");
+
+/* ---------------- RUNG 2B — the flush-check, driven by a live error ------- */
+const BREAK = 7.5;
+const pbS = document.getElementById("pb-s"), pbT = document.getElementById("pb-t"), pbR = document.getElementById("pb-r");
+function pb(){
+  const un = +pbS.value, total = 13, costed = total - un;
+  const err = un === 0 ? 0 : (un / total) * BREAK;
+  const locked = Math.abs(err) < 0.05;
+  pbT.style.setProperty("--off", (locked ? 0 : err) + "deg");
+  if (locked) pbT.setAttribute("data-locked","true"); else pbT.removeAttribute("data-locked");
+  pbR.innerHTML = `CUPBOARD <small>${costed}/${total} costed · error ${err.toFixed(2)}° · ${locked ? "TRUE" : "not yet"}</small>`;
+}
+pbS.addEventListener("input", pb); pb();
+
+/* ---------------- RUNG 4 — the Signature, as shipped --------------------- */
+const sig = document.getElementById("sig");
+const state = ROWS.map(r => ({ label:r[0], qty:r[1], price:r[2], word:r[3], costed:r[4] }));
+function renderSig(){
+  const costed = state.filter(r=>r.costed).length, total = state.length;
+  const uncosted = total - costed;
+  const horizon = total > 0 && uncosted === 0;
+  sig.dataset.horizon = String(horizon);
+  document.getElementById("sig-total").textContent = "£" + state.reduce((s,r)=>s+r.price,0).toFixed(2);
+  document.getElementById("sig-cens").textContent = costed + " of " + total + " costed";
+  document.getElementById("sig-word").textContent = horizon ? "horizon · basket reconciled" : uncosted + " not yet costed";
+  document.getElementById("sig-seam").style.setProperty("--dash", Math.round(uncosted/total*100) + "%");
+  const t = document.getElementById("sig-ticks");
+  const err = uncosted === 0 ? 0 : (uncosted/total) * BREAK;
+  t.style.setProperty("--off", err + "deg");
+  if (err === 0) t.setAttribute("data-locked","true"); else t.removeAttribute("data-locked");
+  document.getElementById("sig-rows").innerHTML = state.map(r=>
+    `<li data-costed="${r.costed}"><span class="sig-mk"></span><span>${r.label}</span>
+     <span class="sig-num">£${r.price.toFixed(2)}</span><span class="sig-word">${r.word}</span></li>`).join("");
+}
+document.getElementById("sig-save").addEventListener("click", () => {
+  const v = parseFloat(document.getElementById("sig-price").value);
+  const next = state.find(r=>!r.costed);
+  if (!next) return;
+  if (Number.isFinite(v) && v > 0) next.price = v;
+  next.costed = true; next.word = "CHECKED";
+  document.getElementById("sig-price").value = "";
+  renderSig();
+});
+document.getElementById("sig-expire").addEventListener("click", () => {
+  const last = [...state].reverse().find(r=>r.costed);
+  if (!last) return;
+  last.costed = false; last.word = "UNPRICED";
+  renderSig();
+});
+renderSig();
+</script>
+
+</main>
+</body>
+</html>
