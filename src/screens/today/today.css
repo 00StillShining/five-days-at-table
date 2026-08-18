@@ -117,7 +117,14 @@
 
     position: relative;
     display: block;
-    min-block-size: 100%;
+    /*
+      Measured at 1280x800 with the deck's lids shut: the panel ended at y=670
+      and 130px of the LEGACY workspace's cream ground showed beneath it —
+      another world's field, under this one's, on the same screen. `100%` was
+      resolving against an auto-height parent and doing nothing. `100dvh` minus
+      the scene's own 1rem padding pair is the height that actually exists.
+    */
+    min-block-size: calc(100dvh - 2rem);
     padding: calc(var(--cd-module) * 1.5);
     color: var(--cd-ink-panel);
     font-family: var(--cd-font-ui);
@@ -985,6 +992,14 @@
     font-weight: 600;
   }
 
+  /* the over-range confession: printed, never inferred from a parked needle */
+  .tdy-offscale {
+    font-size: var(--cd-micro-ceiling);
+    letter-spacing: var(--cd-track-micro);
+    text-transform: uppercase;
+    color: var(--cd-muted-ink); /* 4.51:1 on the cream readout face */
+  }
+
   /* --- the gated commit key (ch.05 section 3) --------------------------- */
   .tdy-gate {
     display: flex;
@@ -1372,15 +1387,28 @@
   /* ===================================================================== */
   /* 10 · THE DUTY DECK                                                     */
   /* ===================================================================== */
-  .tdy-deck {
+  /*
+    COGNAC AS A FIELD (CD-BRIEF: ch.05's 4% "cognac creep" cap dies). It never
+    lights hot and never takes a specular — a strap does not backlight — and it
+    is fenced from every warning band on this screen by the whole cluster row,
+    because cognac's hue sits 3.2deg from the warning amber and THAT adjacency,
+    not the redline, is the risk.
+
+    THE SELECTOR IS (0,2,0) FOR A MEASURED REASON. Written as `.tdy-deck` it is
+    (0,1,0) and loses to the foundry's own `.cd-encl[data-cd-encl="faceplate"]`
+    at (0,1,1): the computed backgroundImage came back as the foundry's carbon
+    gradient with no cognac layer in it at all, so the one place this project
+    licenses cognac as a field was rendering as plain chassis. Same family as
+    the `--cd-stack` gotcha the chassis builder documented — a screen rule
+    losing to a foundry rule, silently.
+  */
+  .tdy .tdy-deck {
     padding: var(--cd-module);
     display: flex;
     flex-direction: column;
     gap: calc(var(--cd-module) / 2);
-    /* COGNAC AS A FIELD (CD-BRIEF: ch.05's 4% cap dies). It never lights hot
-       and never takes a specular — a strap does not backlight — and it is
-       fenced from every warning band on the screen by the cluster row above. */
-    background:
+    background-color: var(--cd-field);
+    background-image:
       linear-gradient(0deg, #a6713f2e, #a6713f2e),
       linear-gradient(var(--cd-light-axis), #35383b 0%, var(--cd-field) 58%, #1e2023 100%);
   }
@@ -1839,6 +1867,9 @@
          keeps the engraved numerals clear of II.6.11's floor at 390px. */
       --tdy-dial: clamp(11rem, 62vw, 15rem);
       padding: calc(var(--cd-module) / 2);
+      /* the scene loses its padding here and the rail moves to the block end,
+         so the panel measures against the viewport directly */
+      min-block-size: 100dvh;
     }
 
     .tdy-cluster-row {
@@ -1995,11 +2026,57 @@
       border: 1px solid CanvasText;
     }
 
+    /*
+      `forced-color-adjust: none` INHERITS, so everything inside a key keeps the
+      hex it was given and the OS never forces it. Measured with the block
+      lifted out of its condition: the tick's HH:MM (#5C544B), the channel
+      labels and the register counts all survived into the forced palette at
+      1.2-2.3:1. Every one of them is restated in a system colour below —
+      explicitly, so the forced rendering is deterministic rather than trusting
+      a UA substitution this build cannot test.
+    */
     .tdy .cd-key {
       forced-color-adjust: none;
       background: ButtonFace;
       color: ButtonText;
       border: 1px solid ButtonText;
+    }
+
+    .tdy .cd-key .tdy-tick-state,
+    .tdy .cd-key .tdy-tick-label,
+    .tdy .cd-key .tdy-ladder-label,
+    .tdy .cd-key .cd-register-label,
+    .tdy .cd-key .cd-register-count,
+    .tdy .cd-key .cd-unit,
+    .tdy .cd-key .cd-lamp-word {
+      color: ButtonText;
+    }
+
+    /* everything OUTSIDE a key answers to Canvas */
+    .tdy .cd-lamp-word,
+    .tdy .tdy-tick-age,
+    .tdy .tdy-blank-label,
+    .tdy .tdy-blank-word,
+    .tdy .tdy-blank-reason,
+    .tdy .tdy-slip-text,
+    .tdy .tdy-slip-figure,
+    .tdy .tdy-slip-age,
+    .tdy .tdy-readout-word,
+    .tdy .tdy-readout-age,
+    .tdy .tdy-readout-target,
+    .tdy .tdy-face-label,
+    .tdy .tdy-face-unit,
+    .tdy .tdy-knob-seat,
+    .tdy .tdy-dateline-variant,
+    .tdy .tdy-tally-cut,
+    .tdy .tdy-tally-of,
+    .tdy .tdy-ladder-slash,
+    .tdy .tdy-ladder-target,
+    .tdy .tdy-deck-empty-note,
+    .tdy .cd-field-note,
+    .tdy .cd-overflow-count,
+    .tdy .cd-unit {
+      color: CanvasText;
     }
 
     .tdy .cd-key::before {
@@ -2043,10 +2120,12 @@
       box-shadow: none;
     }
 
+    /* The needle is the single most load-bearing mark on the face, so it takes
+       CanvasText — the one pair Windows HCM guarantees against Canvas. */
     .tdy-needle-tip,
     .tdy-needle-tail,
     .tdy-needle-boss {
-      background: Highlight;
+      background: CanvasText;
       mask: none;
       box-shadow: none;
     }
@@ -2059,6 +2138,7 @@
 
     .tdy-seg[data-tdy-seg="on"] {
       background: Highlight;
+      border-color: CanvasText; /* a lit segment is still a segment on any ground */
       box-shadow: none;
     }
 

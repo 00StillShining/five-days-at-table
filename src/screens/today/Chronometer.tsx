@@ -94,6 +94,14 @@ export function Chronometer({ mealName, startBy, minutesInHand, offReason, onCoo
   const state = chronoState(minutesInHand);
   const off = minutesInHand == null;
   const whole = minutesInHand == null ? null : Math.trunc(minutesInHand);
+  /*
+    II.1.14 — "the semantic value clamps at the limit the moment travel reaches
+    it; the overflow is display only, and truth never follows the rubber." The
+    needle parks on the stop, which is correct. But a needle sitting on 6 beside
+    a figure of "19h 06m" invites the needle to be read as the value, so the
+    dial SAYS it is off scale rather than leaving the two to disagree quietly.
+  */
+  const offScale = minutesInHand != null && minutesInHand > CHRONO_FULL_MIN;
 
   const targetAngle = useMemo(
     () => (minutesInHand == null ? REST_STOP_DEG : chronoAngle(Math.min(CHRONO_FULL_MIN, minutesInHand))),
@@ -175,7 +183,7 @@ export function Chronometer({ mealName, startBy, minutesInHand, offReason, onCoo
             aria-label={
               off
                 ? `start-by clock: off. ${offReason}`
-                : `start-by clock: ${figure} until ${startBy}, ${CHRONO_WORD[state].toLowerCase()}, full scale 6 hours`
+                : `start-by clock: ${figure} until ${startBy}, ${CHRONO_WORD[state].toLowerCase()}, full scale 6 hours${offScale ? ", needle parked at the stop, value is off scale" : ""}`
             }
           >
             {CHRONO_FACE}
@@ -204,6 +212,9 @@ export function Chronometer({ mealName, startBy, minutesInHand, offReason, onCoo
           <span className="tdy-readout-word" data-tdy-word={state}>
             {CHRONO_WORD[state]}
           </span>
+          {offScale && (
+            <span className="tdy-offscale cd-silkscreen">needle at the stop · dial reads to 6h</span>
+          )}
         </p>
         {off ? (
           <p className="tdy-readout-band cd-printed">{offReason}</p>

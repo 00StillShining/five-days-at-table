@@ -1,0 +1,631 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FD-5 TODAY — the escalation ladder</title>
+<!--
+  docs/ladder/today-ladder.html — 05 EXPOSED WORKS on TODAY, four rungs kept.
+
+  EVERY RUNG ON THIS PAGE RUNS. The Simple rung's state selector really drives
+  it — all nine states, not nine drawings of states. The Pushed studies really
+  animate and really respond. The Refined rung is the subtraction ledger with
+  the survivors' own geometry. The Signature rung is the shipped linkage: click
+  its knob and the rocker swings, the porthole turns one tooth, and the needle
+  answers afterwards, at the product's own 720 deg/s.
+
+  REAL DATA THROUGHOUT, read off the running app on 2026-08-17 in
+  morrisons-tester mode:
+    fortnight position ... pass 1, day 3 of 14, Monday, plan day 1
+    tonight .............. Chicken-crust pizza, start by 19:05
+    eaten so far ......... 426 kcal of 1427 planned, week band 916-1449
+    protein / fat ........ 27.5 of 102.2 g / 26.3 of 64.5 g
+    duties ............... 2 defrost moves, both overdue since 02 aug
+    the arbiter .......... "move Chicken breast fz -> fr", 2 behind
+    the cut slot ......... snack, "not part of the tester week - no snack
+                           ingredients appear in the 39-line Morrisons basket"
+  No image assets, no WebGL, no network. Open it in a browser.
+-->
+<style>
+  :root {
+    color-scheme: dark;
+    --ui: "Space Grotesk", system-ui, sans-serif;
+    --data: "JetBrains Mono", ui-monospace, monospace;
+    /* the Simple rung's entire palette — the doctrine's own grayscale ramp */
+    --g0:#141414; --g1:#1f1f1f; --g2:#2c2c2c; --g3:#4a4a4a; --g4:#6d6d6d;
+    --g5:#8f8f8f; --g6:#b4b4b4; --g7:#dcdcdc; --g8:#F2F2F2;
+    /* EXPOSED WORKS' committed section-2 registry, for every rung above Simple */
+    --field:#26282B; --billet:#C9CCCE; --mirror:#E3E5E7; --face:#EDE6D6;
+    --cognac:#A6713F; --panel:#3A3A3C; --ink:#221F1C; --muted:#70665C;
+    --inkpanel:#EDE6D6; --mutedpanel:#B0AAA0;
+    /* the product-wide reserved roles (world.css), which supersede ch.05's own */
+    --danger:#C2392E; --danger-ink:#BD372D; --warn-zone:#A26D23; --warn-ink:#8D5E1E;
+    --success:#3FAE6B; --success-fill:#318753; --focus:#4C8FD1; --keyline:#141414;
+    --axis:138deg; --module:.5rem;
+    --settle:cubic-bezier(.16,1,.30,1); --snap:cubic-bezier(.60,0,.10,1);
+    --heavy:cubic-bezier(.32,0,.12,1);
+    --cut: polygon(3px 0,calc(100% - 3px) 0,100% 3px,100% calc(100% - 3px),calc(100% - 3px) 100%,3px 100%,0 calc(100% - 3px),0 3px);
+  }
+  * { box-sizing:border-box }
+  body { margin:0; background:#0c0c0c; color:var(--g7); font-family:var(--ui); line-height:1.55 }
+  main { max-width:76rem; margin:0 auto; padding:2rem 1.25rem 6rem }
+  h1 { font-size:1.5rem; letter-spacing:.02em; margin:0 0 .25rem }
+  h2 { font-size:1.05rem; letter-spacing:.12em; text-transform:uppercase; margin:3.5rem 0 .25rem; color:var(--g8) }
+  h3 { font-size:.8125rem; letter-spacing:.12em; text-transform:uppercase; margin:1.5rem 0 .5rem; color:var(--g5) }
+  p { max-width:62ch; color:var(--g6); font-size:.9375rem }
+  .claim { border-left:2px solid var(--g4); padding-left:.75rem; font-size:.875rem; color:var(--g7); max-width:62ch }
+  .vs { font-family:var(--data); font-size:.8125rem; color:var(--g5); margin:.35rem 0 0; max-width:64ch }
+  .bench { display:flex; gap:1.25rem; flex-wrap:wrap; align-items:flex-start; margin-top:1rem }
+  .plinth { background:#101010; border:1px solid var(--g2); border-radius:.5rem; padding:1rem }
+  .plinth > figcaption { font-family:var(--data); font-size:.75rem; color:var(--g5); margin-bottom:.75rem }
+  table { border-collapse:collapse; font-size:.8125rem; margin-top:.75rem }
+  td,th { border:1px solid var(--g2); padding:.35rem .6rem; text-align:left; vertical-align:top }
+  th { color:var(--g8); font-weight:600 }
+  td.k { color:#9ec98a } td.x { color:#d98f88 }
+  code { font-family:var(--data); font-size:.8125rem; color:var(--g6) }
+  select,button { font-family:var(--ui); font-size:.8125rem }
+
+  /* ==================== RUNG 1 · SIMPLE ==================== */
+  /* Grayscale ramp only. No gradient, no shadow stack, no bloom, no texture,
+     no spring. Values snap frame to frame. The TASK must still complete:
+     read what is owed, read how long is left, log a plate. */
+  .s { width:34rem; max-width:100%; background:var(--g1); border:1px solid var(--g3); padding:.75rem; font-size:.8125rem }
+  .s-ann { border:1px solid var(--g4); padding:.4rem .5rem; margin-bottom:.5rem; display:flex; gap:.5rem; justify-content:space-between }
+  .s-row { display:flex; gap:1rem; margin-bottom:.5rem }
+  .s-cell { flex:1; border:1px solid var(--g3); padding:.4rem .5rem; min-height:5.5rem }
+  .s-lbl { color:var(--g5); font-size:.75rem; text-transform:uppercase; letter-spacing:.1em }
+  .s-val { font-family:var(--data); font-size:1.5rem; color:var(--g8) }
+  .s-sub { font-family:var(--data); color:var(--g6) }
+  .s-keys { display:flex; gap:.35rem; flex-wrap:wrap }
+  .s-key { border:1px solid var(--g4); background:var(--g2); color:var(--g7); padding:.35rem .6rem; cursor:pointer }
+  .s-key[aria-pressed="true"] { background:var(--g6); color:var(--g0) }
+  .s-key[disabled] { color:var(--g4); cursor:default }
+  .s-list { margin:.5rem 0 0; padding:0; list-style:none; font-family:var(--data) }
+  .s-list li { border-top:1px solid var(--g2); padding:.3rem 0; display:flex; justify-content:space-between; gap:1rem }
+  .s-note { color:var(--g5); font-family:var(--data); font-size:.75rem }
+
+  /* ==================== RUNG 2 · PUSHED ==================== */
+  /* Four studies, ONE axis each. Everything not on that study's axis stays at
+     the Simple rung, so each claim is testable on its own. */
+
+  /* study A — THE CLUSTER (geometry only, still grayscale) */
+  .pa { display:flex; gap:.75rem; align-items:flex-end; background:var(--g1); border:1px solid var(--g3); padding:1rem }
+  .pa-dial { width:9rem; height:9rem; border-radius:50%; border:2px solid var(--g5); position:relative; background:var(--g2) }
+  .pa-dial::after { content:""; position:absolute; left:50%; bottom:50%; width:2px; height:41%;
+    background:var(--g8); transform-origin:50% 100%; transform:translateX(-50%) rotate(var(--a,-82deg)) }
+  .pa-small { width:4.5rem; height:4.5rem; border-radius:50%; border:1px solid var(--g4); background:var(--g2) }
+
+  /* study B — THE REGISTER (density only) */
+  .pb { background:var(--g1); border:1px solid var(--g3); padding:1rem; width:24rem; max-width:100% }
+  .pb ul { margin:0; padding:0; list-style:none; font-family:var(--data); font-size:.8125rem }
+  .pb li { display:flex; justify-content:space-between; gap:1rem; border-top:1px solid var(--g2); align-items:center }
+  .pb[data-band="dense"] li { height:2rem }
+  .pb[data-band="standard"] li { height:2.75rem }
+  .pb[data-band="comfortable"] li { height:3.5rem }
+
+  /* study C — THE LEATHER SPINE (material only, geometry as Simple) */
+  .pc { display:flex; gap:1rem; flex-wrap:wrap }
+  .pc-tile { width:11rem; height:7rem; clip-path:var(--cut); position:relative;
+    display:grid; place-items:center; font-family:var(--data); font-size:.75rem; color:var(--g8) }
+  .pc-carbon { background-color:var(--field);
+    background-image:
+      repeating-linear-gradient(45deg,#ffffff14 0 16px,#00000000 16px 32px),
+      repeating-linear-gradient(-45deg,#ffffff08 0 16px,#0000001f 16px 32px),
+      linear-gradient(var(--axis),#2d2f33 0%,var(--field) 58%,#1e2023 100%);
+    box-shadow: inset 0 1px 0 #ffffff1f, inset 0 -1px 0 #00000052 }
+  .pc-billet { background-color:var(--billet); color:var(--ink);
+    background-image:
+      repeating-linear-gradient(90deg,#ffffff00 0,#ffffff26 1px,#00000021 2px,#ffffff00 3px),
+      linear-gradient(var(--axis),#e0e2e4 0%,var(--billet) 47%,#a9adaf 100%);
+    box-shadow: inset 0 1px 0 #ffffff8c, inset 0 -1px 0 #00000059;
+    filter: drop-shadow(0 1px 0 #00000066) drop-shadow(0 3px 6px #0000003d) }
+  .pc-cognac { background-color:var(--field);
+    background-image:
+      linear-gradient(0deg,#a6713f2e,#a6713f2e),
+      linear-gradient(var(--axis),#35383b 0%,var(--field) 58%,#1e2023 100%);
+    box-shadow: inset 0 1px 0 #ffffff14 }
+  .pc-face { background-color:var(--face); color:var(--ink); border-radius:50%; clip-path:none;
+    background-image:linear-gradient(var(--axis),#f5efe3 0%,var(--face) 52%,#dcd3bf 100%);
+    box-shadow: inset 1px 2px 6px #00000033, inset 0 -1px 0 #ffffff8c; width:7rem; height:7rem }
+  .pc-face::after { content:""; position:absolute; left:8%; top:7%; width:34%; height:26%; border-radius:50%;
+    background:radial-gradient(closest-side,#ffffff59 0%,#ffffff21 55%,#ffffff00 100%) }
+
+  /* study D — THE LINKAGE (motion only, grayscale geometry) */
+  .pd { display:flex; gap:2rem; align-items:center; background:var(--g1); border:1px solid var(--g3); padding:1rem }
+  .pd-assembly { position:relative; width:3.5rem; height:3.5rem }
+  .pd-cap { position:absolute; inset:.25rem; border-radius:50%; background:var(--g4); border:2px solid var(--g6);
+    transform:rotate(var(--pd-a,0deg)); transition:transform 110ms var(--snap) }
+  .pd-cap::after { content:""; position:absolute; left:50%; top:8%; width:3px; height:34%; translate:-50% 0; background:var(--g8) }
+  .pd-rocker { position:absolute; top:50%; left:100%; width:1.5rem; height:.25rem; background:var(--g6);
+    transform-origin:0% 50%; transform:rotate(var(--pd-a,0deg)); transition:transform 110ms var(--snap) 40ms }
+  .pd-readout { font-family:var(--data); font-size:.8125rem; color:var(--g6) }
+
+  /* ==================== RUNG 4 · SIGNATURE ==================== */
+  .sig { background-color:var(--field); padding:1.25rem; clip-path:var(--cut);
+    background-image:
+      repeating-linear-gradient(45deg,#ffffff14 0 16px,#00000000 16px 32px),
+      repeating-linear-gradient(-45deg,#ffffff08 0 16px,#0000001f 16px 32px),
+      linear-gradient(var(--axis),#2d2f33 0%,var(--field) 58%,#1e2023 100%);
+    display:flex; gap:1.25rem; flex-wrap:wrap; align-items:center }
+  .sig-bezel { padding:.5rem; border-radius:50%;
+    background:conic-gradient(from 138deg,#f4f5f6 0%,#c9ccce 26%,#8f9294 47%,#4d5052 48%,#6e7173 62%,#b6b9bb 63%,#eceeef 100%);
+    box-shadow: inset 0 1px 0 #ffffffa6, inset 0 -1px 0 #00000059;
+    filter: drop-shadow(0 1px 0 #00000066) drop-shadow(0 4px 10px #00000040) }
+  .sig-dial { position:relative; width:15rem; height:15rem; border-radius:50%; background-color:var(--face);
+    background-image:linear-gradient(var(--axis),#f5efe3 0%,var(--face) 52%,#dcd3bf 100%);
+    box-shadow: inset 1px 2px 6px #00000033, inset 0 -1px 0 #ffffff8c }
+  .sig-dial::after { content:""; position:absolute; left:8%; top:7%; width:34%; height:26%; border-radius:50%; z-index:4;
+    background:radial-gradient(closest-side,#ffffff59 0%,#ffffff21 55%,#ffffff00 100%); pointer-events:none }
+  .sig-face { position:absolute; inset:0; width:100%; height:100% }
+  .sig-face .t { stroke:var(--ink) }
+  .sig-lab { position:absolute; inset:0; pointer-events:none }
+  .sig-lab span { position:absolute; translate:-50% -50%; font-family:var(--data); font-size:11px; color:var(--ink) }
+  .sig-needle { position:absolute; inset:0; z-index:3; transform-origin:50% 50%;
+    transform:rotate(var(--sig-a,-135deg)); transition:transform var(--sig-ms,0ms) var(--heavy) }
+  .sig-tip { position:absolute; left:50%; bottom:50%; width:3px; height:41%; translate:-50% 0;
+    background:linear-gradient(90deg,#0e0c0a,var(--ink) 40%,#6b6459 62%,#17140f); box-shadow:1px 0 2px #00000066 }
+  .sig-tail { position:absolute; left:50%; top:50%; width:4px; height:9%; translate:-50% 0; background:var(--ink) }
+  .sig-boss { position:absolute; left:50%; top:50%; width:28px; height:28px; translate:-50% -50%; border-radius:50%;
+    background:conic-gradient(from 138deg,#f2f4f6,#9a9d9f 35%,#4c4f51 52%,#cfd2d4 78%,#f2f4f6);
+    mask:radial-gradient(circle,#00000000 0 10px,#000 10.5px); box-shadow:0 1px 2px #00000073 }
+  .sig-port { position:absolute; left:50%; top:50%; width:20px; height:20px; translate:-50% -50%; z-index:2;
+    border-radius:50%; overflow:hidden; box-shadow: inset 0 2px 3px #000000a6, inset 0 -1px 0 #ffffff29, 0 0 0 1px #00000047 }
+  .sig-disc { position:absolute; inset:-25%; border-radius:50%;
+    background:repeating-conic-gradient(from 0deg,var(--billet) 0 11.25deg,#6f7274 11.25deg 22.5deg);
+    transform:rotate(var(--sig-p,0deg)); transition:transform 110ms var(--snap) 40ms }
+  .sig-glass { position:absolute; inset:0; border-radius:50%; pointer-events:none;
+    background:linear-gradient(var(--axis),#ffffff59 0%,#ffffff0a 38%,#00000038 100%) }
+  .sig-knob { position:relative; width:3.5rem; height:3.5rem; border-radius:50%; border:0; cursor:grab;
+    background:radial-gradient(circle at 50% 50%,#16181a 0%,#202225 62%,#2c2e31 100%);
+    box-shadow: inset 0 1px 0 #ffffff40, inset 0 -1px 0 #00000052, 0 1px 0 #00000066, 0 3px 6px #0000003d, 0 10px 24px #00000021 }
+  .sig-knob:focus-visible { outline:2px solid var(--focus); outline-offset:3px;
+    box-shadow:0 0 0 6px var(--keyline), inset 0 1px 0 #ffffff40, 0 3px 6px #0000003d }
+  .sig-carrier { position:absolute; inset:0 }
+  .sig-cap { position:absolute; inset:.25rem; border-radius:50%; border:2px solid var(--mirror);
+    background:
+      repeating-conic-gradient(from 0deg at 50% 50%,#ffffff00 0 1.4deg,#00000021 1.4deg 2.8deg),
+      radial-gradient(circle at 40% 32%,#e2e4e6 0%,var(--billet) 46%,#a6a9ab 100%);
+    transform:rotate(var(--sig-k,0deg)); transition:transform 110ms var(--snap) }
+  .sig-cap i { position:absolute; left:50%; top:8%; width:3px; height:34%; translate:-50% 0; background:var(--ink); border-radius:1px }
+  .sig-rocker { position:absolute; top:50%; left:100%; width:1.5rem; height:.25rem; transform-origin:0% 50%;
+    background:linear-gradient(180deg,#e0e2e4,var(--billet) 50%,#909395);
+    transform:rotate(var(--sig-k,0deg)); transition:transform 110ms var(--snap) 40ms; box-shadow:0 1px 2px #00000073 }
+  .sig-plate { background:var(--face); color:var(--ink); clip-path:var(--cut); padding:.5rem .75rem; font-family:var(--data);
+    box-shadow: inset 0 -1px 0 #ffffff8c, inset 0 1px 3px #0000002e }
+  .sig-plate b { font-size:2.75rem; font-weight:400; letter-spacing:0 }
+  .sig-seats { display:flex; gap:.25rem; margin-top:.5rem }
+  .sig-seat { padding:3px 6px; font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    background:var(--panel); color:var(--mutedpanel); clip-path:var(--cut); font-family:var(--ui) }
+  .sig-seat[data-on="true"] { background:var(--face); color:var(--ink); font-weight:600 }
+  .sig-log { font-family:var(--data); font-size:.75rem; color:var(--g5); margin-top:.75rem; min-height:2.4rem }
+</style>
+</head>
+<body>
+<main>
+
+<h1>FD-5 · TODAY — the escalation ladder</h1>
+<p><strong>05 EXPOSED WORKS.</strong> Four rungs, each kept as a working artifact rather than a
+picture of one. Real data throughout, read off the running app on 2026-08-17 in
+<code>morrisons-tester</code> mode. No image assets, no WebGL, no network.</p>
+
+<!-- ============================================================ -->
+<h2>Rung 1 · Simple</h2>
+<p>The doctrine's own grayscale ramp, <code>#141414</code> to <code>#F2F2F2</code>. No gradient,
+no shadow stack, no bloom, no texture, no spring — values snap frame to frame and only contact
+acknowledges a touch. This rung exists to prove one thing: <strong>the task completes with the
+material argument entirely absent.</strong> Every state below is DRIVEN, not drawn — the selector
+really changes what the component is given, and the component renders whatever that is.</p>
+
+<div class="bench">
+<figure class="plinth" style="flex:1;min-width:min(100%,36rem)">
+  <figcaption>
+    state:
+    <select id="sState">
+      <option value="full">full — the normal day</option>
+      <option value="empty">empty — nothing owed, nothing logged</option>
+      <option value="loading">loading — the store has not hydrated</option>
+      <option value="partial">partial — one slot of three logged</option>
+      <option value="overflow">overflowing — 14 duties, 5 shown</option>
+      <option value="error">error — a duty references an unknown ingredient</option>
+      <option value="stale">stale — the newest tick is from yesterday</option>
+      <option value="disabled">disabled — the fortnight is not anchored</option>
+      <option value="firstrun">first run — no plan, no ticks, no stocktake</option>
+    </select>
+  </figcaption>
+
+  <div class="s">
+    <div class="s-ann"><span id="sAnn">move Chicken breast fz → fr</span><span id="sQueue">2 behind</span></div>
+    <div class="s-row">
+      <div class="s-cell">
+        <div class="s-lbl">tonight</div>
+        <div class="s-val" id="sChrono">-4h 50m</div>
+        <div class="s-sub" id="sChronoSub">Chicken-crust pizza · start by 19:05</div>
+      </div>
+      <div class="s-cell">
+        <div class="s-lbl">eaten so far</div>
+        <div class="s-val" id="sEaten">426</div>
+        <div class="s-sub" id="sEatenSub">of 1427 kcal · band 916–1449</div>
+      </div>
+    </div>
+    <div class="s-lbl">plate log</div>
+    <div class="s-keys" id="sKeys"></div>
+    <div class="s-lbl" style="margin-top:.6rem">duty deck</div>
+    <ul class="s-list" id="sDuties"></ul>
+    <div class="s-note" id="sNote"></div>
+  </div>
+</figure>
+</div>
+
+<p class="vs">Verified on this rung: the arbiter's one act-now line, the start-by figure, the eaten
+figure against its band, three tickable slots and one cut slot, the duty list with its overflow
+confessed as a number, and an age that says <code>never</code> rather than <code>0</code> when a
+reading was never taken. Everything above this rung buys a better report of the same facts — never
+a different fact.</p>
+
+<!-- ============================================================ -->
+<h2>Rung 2 · Pushed</h2>
+<p>Four studies. <strong>Each moves exactly one axis</strong> and leaves the other three at the
+Simple rung, so each claim can be tested on its own rather than as part of a general improvement.</p>
+
+<h3>Study A — the cluster (geometry)</h3>
+<p class="claim"><strong>Claim.</strong> Two primary dials with a subordinate row beneath them read
+faster than four equal cells, because rank is legible before any value is parsed. Geometry alone,
+still grayscale, still no material.</p>
+<div class="bench">
+  <figure class="plinth"><figcaption>A · two primaries + four subordinates</figcaption>
+    <div class="pa">
+      <div class="pa-dial" style="--a:-92deg"></div>
+      <div class="pa-dial" style="--a:-135deg"></div>
+      <div style="display:flex;gap:.5rem">
+        <div class="pa-small"></div><div class="pa-small"></div>
+        <div class="pa-small"></div><div class="pa-small"></div>
+      </div>
+    </div>
+  </figure>
+</div>
+<p class="vs">Against Simple: Simple's two cells are the same size and the same shape, so the eye
+has to read both before it knows which one is the answer. Here the ratio is legible at a glance and
+the subordinate row is visibly evidence. <strong>Kept</strong> — this is the composition that
+shipped, with the chronometer taking the first seat.</p>
+
+<h3>Study B — the register (density)</h3>
+<p class="claim"><strong>Claim.</strong> The duty deck belongs in II.6.13's Standard band, 2.75rem
+rows, because a duty is decided from rather than merely read, and because 2.75rem is also the
+Floor's 44px target — one number serving two laws.</p>
+<div class="bench">
+  <figure class="plinth"><figcaption>B · dense 2rem</figcaption><div class="pb" data-band="dense" id="pbA"></div></figure>
+  <figure class="plinth"><figcaption>B · standard 2.75rem</figcaption><div class="pb" data-band="standard" id="pbB"></div></figure>
+  <figure class="plinth"><figcaption>B · comfortable 3.5rem</figcaption><div class="pb" data-band="comfortable" id="pbC"></div></figure>
+</div>
+<p class="vs">Against Simple: Simple has no band at all — its rows are whatever the text makes them,
+so a row with a long ingredient name is taller than one without and the list has no rhythm. Dense
+2rem cannot hold a 44px key. Comfortable 3.5rem pushes the second lid off the fold at 800px.
+<strong>Standard kept.</strong></p>
+
+<h3>Study C — the leather spine (material)</h3>
+<p class="claim"><strong>Claim.</strong> Four materials, keyed to ch.05's section-2 registry and
+built from II.2's recipes, read as four different substances rather than four tints: carbon twill at
+a 32px cell, satin billet with 3px linear grain, a cognac-lined field, and cream lacquer whose whole
+story is one hard reflection ellipse. Geometry stays exactly as Simple's.</p>
+<div class="bench pc">
+  <div class="pc-tile pc-carbon">carbon weave<br>#26282B</div>
+  <div class="pc-tile pc-billet">satin billet<br>#C9CCCE</div>
+  <div class="pc-tile pc-cognac">cognac field<br>#A6713F @ 18%</div>
+  <div class="pc-tile pc-face" style="position:relative">cream lacquer</div>
+</div>
+<p class="vs">Against Simple: Simple's <code>#1f1f1f</code> and <code>#2c2c2c</code> are two values
+of one substance. These are four substances under one 138° sun, and the cognac field is the one this
+project had to un-cap — ch.05 fences cognac to trim, CD-BRIEF kills that cap by name.
+<strong>All four kept.</strong> The push that did NOT survive: a porthole on every ladder as well as
+both dials, which read as decoration the moment nothing was turning behind six of them.</p>
+
+<h3>Study D — the linkage (motion)</h3>
+<p class="claim"><strong>Claim.</strong> A rocker arm that swings the detent's own 22.5° pitch a
+beat behind the cap reports the click twice — once to the hand, once to the eye — and a mid-throw
+reversal must not compound it into 45°. Motion only; the parts stay grayscale.</p>
+<div class="bench">
+  <figure class="plinth"><figcaption>D · cap + rocker on ONE untransformed carrier</figcaption>
+    <div class="pd">
+      <div class="pd-assembly" id="pdAsm">
+        <div class="pd-cap"></div><div class="pd-rocker"></div>
+      </div>
+      <div>
+        <button class="s-key" id="pdDown">◀ back</button>
+        <button class="s-key" id="pdUp">forward ▶</button>
+        <div class="pd-readout" id="pdRead">seat 0 · commit angle -33.75°</div>
+      </div>
+    </div>
+  </figure>
+</div>
+<p class="vs">Against Simple: Simple's value snaps and nothing moves, so a click and a no-op look
+identical. Drive this one forward twice and back twice: the readout returns to exactly −33.75°,
+never −67.5°, because the cap and the rocker are <strong>siblings</strong> on a carrier that holds
+no transform of its own. Nest one inside the other and each click renders 45°.
+<strong>Kept, and it is the mechanism the Signature rung is built on.</strong></p>
+
+<!-- ============================================================ -->
+<h2>Rung 3 · Refined — the re-authored rung</h2>
+<p>CD-BRIEF ruling 4 replaces the doctrine's own Refined rung, which would have undone the push:
+<em>"subtract jobless elements; keep every survivor at full material strength."</em> The ledger asks
+one question of each element — <strong>does it state a value, or let the hand do something?</strong>
+— and never <em>is it the hero?</em></p>
+<table>
+  <tr><th>element</th><th>states a value?</th><th>lets the hand act?</th><th>ruling</th></tr>
+  <tr><td>arbiter annunciator</td><td class="k">which duty won, and how many queued</td><td class="k">acknowledge, and go</td><td class="k">kept</td></tr>
+  <tr><td>chronometer + escapement</td><td class="k">minutes before tonight must start</td><td class="k">the gated cook key</td><td class="k">kept</td></tr>
+  <tr><td>channel dial + porthole</td><td class="k">eaten so far against the band</td><td class="k">the linkage knob</td><td class="k">kept</td></tr>
+  <tr><td>plate log keys</td><td class="k">which slots are eaten, and when</td><td class="k">log and unlog</td><td class="k">kept</td></tr>
+  <tr><td>meter bridge</td><td class="k">all four channels at once</td><td class="k">second lever on the linkage</td><td class="k">kept</td></tr>
+  <tr><td>duty deck</td><td class="k">what is owed, with counts on shut lids</td><td class="k">the guarded thaw, and stores</td><td class="k">kept</td></tr>
+  <tr><td>masthead index</td><td class="k">fortnight position, days fully logged</td><td>no</td><td class="k">kept — promoted to instrument grade per CD-BRIEF</td></tr>
+  <tr><td>dot legend "filled · all slots logged"</td><td class="x">no</td><td class="x">no</td><td class="x">SUBTRACTED</td></tr>
+  <tr><td>a porthole on every ladder</td><td class="x">no — nothing turns behind it</td><td class="x">no</td><td class="x">SUBTRACTED at Pushed</td></tr>
+  <tr><td>confirm flash on a persisted tick</td><td class="x">no — it replays a past event</td><td class="x">no</td><td class="x">SUBTRACTED, event bound to this session</td></tr>
+</table>
+<p class="vs">Exit condition met: seven instruments survive, each with a job stateable in one
+sentence, and every survivor keeps its full four-layer stack, its specular and its texture. Nothing
+was demoted to plain competence, because CORRECTIONARY 3.1 abolished that register.</p>
+
+<!-- ============================================================ -->
+<h2>Rung 4 · Signature</h2>
+<p>ch.05 section 7: <em>"the hero gauge's own porthole disc is geared 1:1 to the same rocker arm
+that clicks the mode knob two panels away, so turning the knob makes the hero gauge's mechanism
+visibly answer BEFORE the needle finishes its sweep."</em> Built exactly that, and nothing else:
+<strong>one commit angle, written once</strong>, read independently by the cap, the rocker and the
+porthole's geared disc. The disc seats in 150ms — 110ms snap plus the rocker's own 40ms beat — and
+the needle takes up to 375ms at the project's 720°/s. <strong>The mechanism answers first by
+arithmetic, not by an animation ordered to look that way.</strong></p>
+
+<div class="sig">
+  <div class="sig-bezel">
+    <div class="sig-dial">
+      <svg class="sig-face" viewBox="0 0 200 200" aria-hidden="true"><g class="t" id="sigTicks"></g>
+        <g fill="none" stroke-width="6" id="sigZones"></g></svg>
+      <div class="sig-lab" id="sigLabels"></div>
+      <span class="sig-port"><span class="sig-disc" id="sigDisc"></span><span class="sig-glass"></span></span>
+      <span class="sig-needle" id="sigNeedle"><span class="sig-tip"></span><span class="sig-tail"></span><span class="sig-boss"></span></span>
+    </div>
+  </div>
+  <div>
+    <button class="sig-knob" id="sigKnob" aria-label="hero dial channel" role="slider"
+            aria-valuemin="0" aria-valuemax="3" aria-valuenow="0" aria-valuetext="energy">
+      <span class="sig-carrier" id="sigCarrier"><span class="sig-cap"><i></i></span><span class="sig-rocker"></span></span>
+    </button>
+    <div class="sig-seats" id="sigSeats"></div>
+    <div class="sig-plate" style="margin-top:.75rem">
+      <b id="sigVal">426</b> <span id="sigUnit">kcal</span><br>
+      <span id="sigBand" style="font-size:.75rem">under band · band 916–1449</span>
+    </div>
+    <div class="sig-log" id="sigLog">click the knob, or focus it and press ← / → / Home / End</div>
+  </div>
+</div>
+<p class="vs">Drive it and watch the order: the rocker leaves at once, the disc turns exactly one
+tooth per detent — the teeth are cut at 22.5°, the same pitch — and the needle sweeps at the
+product's fixed rate. The log beneath prints the real arithmetic rather than the claim: the disc
+seats at 150ms, the needle takes 80–375ms, so <strong>the mechanism finishes first whenever the
+value moves more than about 108° of arc, and below that the two are simultaneous.</strong> Both
+begin in the same task either way — nothing waits on anything.</p>
+
+<h3>What this rung is not allowed to do</h3>
+<p class="vs">The disc turns <strong>only</strong> while the value turns. There is no idle spin, no
+hover animation and no motion with nothing behind it — CD-BRIEF ruling 6 attaches portholes and
+rocker arms only to values whose change is user-caused or clock-continuous, and this one is
+user-caused. On the shipped screen the second porthole is an escapement that steps one tooth per
+minute consumed, and it steps for that reason and no other.</p>
+
+<script>
+/* ================= RUNG 1 · SIMPLE — nine states, really driven ========== */
+const SLOTS = [
+  { k:'bfast',  meal:'Bodega egg & cheese' },
+  { k:'lunch',  meal:'Jerk tray + rice' },
+  { k:'dinner', meal:'Chicken-crust pizza' },
+  { k:'snack',  meal:null, cut:'not part of the tester week — no snack ingredients appear in the 39-line Morrisons basket' },
+];
+const DUTIES = [
+  ['move Chicken breast fz → fr','overdue since 02 aug'],
+  ['move Chicken breast mince fz → fr','overdue since 02 aug'],
+];
+const MANY = Array.from({length:14},(_,i)=>['use today · ingredient '+(i+1), i<3?'expired':'today']);
+
+const STATES = {
+  full:     { ann:'move Chicken breast fz → fr', q:'2 behind', chrono:'-4h 50m', chronoSub:'Chicken-crust pizza · start by 19:05',
+              eaten:'426', eatenSub:'of 1427 kcal · band 916–1449', ticked:['bfast'], duties:DUTIES, note:'age: 23:45 · 9m' },
+  empty:    { ann:'nothing owed', q:'0 behind', chrono:'—', chronoSub:'no dinner is scheduled for today',
+              eaten:'0', eatenSub:'of 1427 kcal · band 916–1449', ticked:[], duties:[], note:'age: no ticks today' },
+  loading:  { ann:'—', q:'—', chrono:'—', chronoSub:'reading the store', eaten:'—', eatenSub:'—',
+              ticked:[], duties:[], note:'no reading has been taken yet — nothing is claimed', loading:true },
+  partial:  { ann:'move Chicken breast fz → fr', q:'2 behind', chrono:'-4h 50m', chronoSub:'Chicken-crust pizza · start by 19:05',
+              eaten:'426', eatenSub:'of 1427 kcal · band 916–1449', ticked:['bfast'], duties:DUTIES, note:'1 of 3 logged · 1 cut' },
+  overflow: { ann:'expired · spinach', q:'14 behind', chrono:'-4h 50m', chronoSub:'Chicken-crust pizza · start by 19:05',
+              eaten:'426', eatenSub:'of 1427 kcal · band 916–1449', ticked:['bfast'], duties:MANY, limit:5, note:'the clip states its remainder as a number' },
+  error:    { ann:'move Chicken breast fz → fr', q:'2 behind', chrono:'-4h 50m', chronoSub:'Chicken-crust pizza · start by 19:05',
+              eaten:'426', eatenSub:'of 1427 kcal · band 916–1449', ticked:['bfast'],
+              duties:[['unknown ingredient · sku_9931','cannot be counted']], note:'a row that cannot resolve names itself and does not vanish' },
+  stale:    { ann:'move Chicken breast fz → fr', q:'2 behind', chrono:'-4h 50m', chronoSub:'Chicken-crust pizza · start by 19:05',
+              eaten:'426', eatenSub:'of 1427 kcal · band 916–1449', ticked:['bfast'], duties:DUTIES,
+              note:'age: 08:12 · 27h · YESTERDAY — the value HOLDS, the word prints' },
+  disabled: { ann:'fortnight not anchored', q:'0 behind', chrono:'—',
+              chronoSub:'the fortnight has no start saturday yet, so no start-by time can be computed',
+              eaten:'426', eatenSub:'of 1427 kcal · band 916–1449', ticked:['bfast'], duties:[], disabled:true,
+              note:'the deck cannot be computed without an anchor; the plate log still can' },
+  firstrun: { ann:'set start saturday', q:'0 behind', chrono:'—', chronoSub:'no plan is anchored',
+              eaten:'0', eatenSub:'of 1427 kcal · band 916–1449', ticked:[], duties:[], disabled:true,
+              note:'age: never — a reading that was never taken has no age' },
+};
+
+const el = id => document.getElementById(id);
+let ticked = new Set(['bfast']);
+
+function renderSimple() {
+  const s = STATES[el('sState').value];
+  ticked = new Set(s.ticked);
+  el('sAnn').textContent = s.ann; el('sQueue').textContent = s.q;
+  el('sChrono').textContent = s.chrono; el('sChronoSub').textContent = s.chronoSub;
+  el('sEaten').textContent = s.eaten; el('sEatenSub').textContent = s.eatenSub;
+  el('sNote').textContent = s.note;
+
+  const keys = el('sKeys'); keys.textContent = '';
+  for (const slot of SLOTS) {
+    if (slot.cut) {
+      const span = document.createElement('span');
+      span.className = 's-note'; span.style.flexBasis = '100%';
+      span.textContent = slot.k + ' · cut — ' + slot.cut;
+      keys.appendChild(span); continue;
+    }
+    const b = document.createElement('button');
+    b.className = 's-key'; b.type = 'button'; b.textContent = slot.k;
+    b.setAttribute('aria-pressed', ticked.has(slot.k) ? 'true' : 'false');
+    if (s.loading) { b.disabled = true; b.textContent = slot.k + ' …'; }
+    b.onclick = () => {
+      if (ticked.has(slot.k)) ticked.delete(slot.k); else ticked.add(slot.k);
+      b.setAttribute('aria-pressed', ticked.has(slot.k) ? 'true' : 'false');
+      el('sNote').textContent = ticked.size + ' of 3 logged · 1 cut';
+    };
+    keys.appendChild(b);
+  }
+
+  const list = el('sDuties'); list.textContent = '';
+  const shown = s.limit ? s.duties.slice(0, s.limit) : s.duties;
+  if (!s.duties.length) {
+    const li = document.createElement('li');
+    li.innerHTML = '<span>nothing owed</span><span>0 rows</span>';
+    list.appendChild(li);
+  }
+  for (const [t, m] of shown) {
+    const li = document.createElement('li');
+    li.innerHTML = '<span></span><span></span>';
+    li.children[0].textContent = t; li.children[1].textContent = m;
+    list.appendChild(li);
+  }
+  if (s.limit && s.duties.length > s.limit) {
+    const li = document.createElement('li');
+    li.innerHTML = '<span></span><span></span>';
+    li.children[0].textContent = '';
+    li.children[1].textContent = (s.duties.length - s.limit) + ' more · in stores';
+    list.appendChild(li);
+  }
+}
+el('sState').onchange = renderSimple;
+renderSimple();
+
+/* ================= RUNG 2 · study B — the three density bands =========== */
+for (const [id] of [['pbA'],['pbB'],['pbC']]) {
+  const box = el(id); const ul = document.createElement('ul');
+  for (const [t, m] of DUTIES.concat([['use today · spinach','today']])) {
+    const li = document.createElement('li');
+    li.innerHTML = '<span></span><span></span>';
+    li.children[0].textContent = t; li.children[1].textContent = m;
+    ul.appendChild(li);
+  }
+  box.appendChild(ul);
+}
+
+/* ================= RUNG 2 · study D — the untransformed carrier ========== */
+const PITCH = 22.5, SEATS = 4, SWEEP = PITCH * (SEATS - 1);
+const seatAngle = i => -SWEEP / 2 + i * PITCH;
+let pdSeat = 0;
+function pdSet(next) {
+  pdSeat = Math.min(SEATS - 1, Math.max(0, next));
+  /* ONE property on the carrier. The cap and the rocker are its SIBLINGS and
+     each read it independently — neither is an ancestor of the other, so a
+     reversal can never compound 22.5° into 45°. */
+  el('pdAsm').style.setProperty('--pd-a', seatAngle(pdSeat) + 'deg');
+  el('pdRead').textContent = 'seat ' + pdSeat + ' · commit angle ' + seatAngle(pdSeat).toFixed(2) + '°';
+}
+el('pdUp').onclick = () => pdSet(pdSeat + 1);
+el('pdDown').onclick = () => pdSet(pdSeat - 1);
+pdSet(0);
+
+/* ================= RUNG 4 · SIGNATURE =================================== */
+const CH = [
+  { label:'kcal', title:'energy',   val:'426',  unit:'kcal', band:[916,1449],  max:2174, v:426 },
+  { label:'prot', title:'protein',  val:'27.5', unit:'g',    band:[81.8,102.2],max:153,  v:27.5 },
+  { label:'fat',  title:'fat',      val:'26.3', unit:'g',    band:[51.6,64.5], max:97,   v:26.3 },
+  { label:'carb', title:'net carb', val:'34.1', unit:'g',    band:[73.3,91.6], max:137,  v:34.1 },
+];
+const A0 = 135, SW = 270, R = 100;
+const polar = (f, r) => { const a = (A0 + SW * f) * Math.PI / 180; return [100 + r * Math.cos(a), 100 + r * Math.sin(a)]; };
+/* ticks: majors every 10% of scale, minors every 2% — II.3.18's own ratio */
+{
+  let d = '';
+  for (let i = 0; i <= 50; i++) {
+    const t = i / 50, major = i % 5 === 0;
+    const [x1,y1] = polar(t, 0.98 * R), [x2,y2] = polar(t, 0.98 * R - R * (major ? .12 : .06));
+    d += `<line x1="${x1.toFixed(2)}" y1="${y1.toFixed(2)}" x2="${x2.toFixed(2)}" y2="${y2.toFixed(2)}" stroke-width="${major?2:1}"/>`;
+  }
+  el('sigTicks').innerHTML = d;
+}
+function band(from, to, cls) {
+  if (to <= from) return '';
+  const [x0,y0] = polar(from, .91*R), [x1,y1] = polar(to, .91*R);
+  const big = (to-from)*SW > 180 ? 1 : 0;
+  return `<path d="M ${x0.toFixed(2)} ${y0.toFixed(2)} A ${.91*R} ${.91*R} 0 ${big} 1 ${x1.toFixed(2)} ${y1.toFixed(2)}" stroke="${cls}"/>`;
+}
+let sigSeat = 0, sigShown = -135;
+function sigRender(i, voiceGap) {
+  const c = CH[i];
+  const f = v => Math.min(1, Math.max(0, v / c.max));
+  el('sigZones').innerHTML =
+    band(f(c.band[0]), f(c.band[1]), 'var(--warn-zone)') +
+    band(f(c.band[1]), f(c.band[1]*1.15), 'var(--warn-zone)') +
+    band(f(c.band[1]*1.15), 1, 'var(--danger)');
+  let labs = '';
+  for (let k = 0; k <= 5; k++) {
+    const [x,y] = polar(k/5, .68*R);
+    labs += `<span style="left:${(x/2).toFixed(2)}%;top:${(y/2).toFixed(2)}%">${Math.round(c.max*k/5)}</span>`;
+  }
+  el('sigLabels').innerHTML = labs;
+  el('sigVal').textContent = c.val; el('sigUnit').textContent = c.unit;
+  el('sigBand').textContent = (c.v < c.band[0] ? 'under band' : c.v > c.band[1] ? 'over band' : 'in band')
+    + ' · band ' + c.band[0] + '–' + c.band[1];
+  /* the needle: distance sets time at 720°/s, floored at 80ms AS A RATE
+     REDUCTION — never a fixed-duration tween */
+  const to = -135 + 270 * f(c.v);
+  const ms = Math.max(80, Math.abs(to - sigShown) / 720 * 1000);
+  const n = el('sigNeedle');
+  n.style.setProperty('--sig-ms', ms.toFixed(0) + 'ms');
+  n.style.setProperty('--sig-a', to.toFixed(2) + 'deg');
+  sigShown = to;
+  el('sigSeats').innerHTML = CH.map((c,k)=>`<span class="sig-seat" data-on="${k===i}">${c.label}</span>`).join('');
+  const knob = el('sigKnob');
+  knob.setAttribute('aria-valuenow', i); knob.setAttribute('aria-valuetext', c.title);
+  /* The log states what actually happened, not what the claim wanted. Both the
+     disc and the needle LEAVE in the same task; the disc SEATS at 150ms (110ms
+     snap + the rocker's 40ms beat) and the needle takes 80-375ms at 720°/s. So
+     the mechanism finishes first only when the value moves far enough to cost
+     more than 150ms — about 108° of arc. Below that they are simultaneous, and
+     printing "0ms before" would have been a claim dressed as a measurement. */
+  if (voiceGap) {
+    const lead = ms - 150;
+    el('sigLog').textContent =
+      'seat ' + i + ' · commit ' + seatAngle(i).toFixed(2) + '° · porthole seats at 150ms · needle travels '
+      + ms.toFixed(0) + 'ms at 720°/s → '
+      + (lead > 0
+          ? 'the mechanism finishes ' + lead.toFixed(0) + 'ms before the needle'
+          : 'both land inside ' + Math.max(ms,150).toFixed(0) + 'ms — a move this short is simultaneous');
+  }
+}
+function sigSet(next) {
+  const i = Math.min(CH.length - 1, Math.max(0, next));
+  if (i === sigSeat && sigShown !== -135) return;
+  sigSeat = i;
+  /* ONE commit angle. Cap, rocker and the hero porthole's disc each read it. */
+  const deg = seatAngle(i);
+  el('sigCarrier').style.setProperty('--sig-k', deg + 'deg');
+  el('sigDisc').style.setProperty('--sig-p', deg + 'deg');
+  sigRender(i, true);
+}
+el('sigKnob').onclick = () => sigSet((sigSeat + 1) % CH.length);
+el('sigKnob').onkeydown = e => {
+  const map = { ArrowRight:1, ArrowUp:1, ArrowLeft:-1, ArrowDown:-1 };
+  if (e.key in map) { e.preventDefault(); sigSet(sigSeat + map[e.key]); }
+  else if (e.key === 'Home') { e.preventDefault(); sigSet(0); }
+  else if (e.key === 'End') { e.preventDefault(); sigSet(CH.length - 1); }
+};
+el('sigCarrier').style.setProperty('--sig-k', seatAngle(0) + 'deg');
+el('sigDisc').style.setProperty('--sig-p', seatAngle(0) + 'deg');
+sigRender(0, false);
+</script>
+</main>
+</body>
+</html>
