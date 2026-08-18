@@ -465,6 +465,14 @@
                                   (--cd-live-well, 5.00:1), never a printed word
                                   on epoxy. This is not a hex that wants
                                   improving — it is a property of the ground. */
+    --cd-well: var(--cd-void); /* ORCHESTRATOR REPAIR (LIST builder's finding).
+                                  This was the ONE scope of eight declaring no
+                                  --cd-well. Custom properties inherit, and the
+                                  chassis is an ancestor of every scene, so
+                                  BACK CHANNEL's #121212 flowed straight into
+                                  this world -- the foundry's `well` enclosure
+                                  rendered near-black inside a grey epoxy body.
+                                  Set to this chapter's own gauge-well value. */
     --cd-reg-6: #9b9c9e; /* regulator triad — installer tray only */
     --cd-reg-8: #e4e4e0;
     --cd-reg-10: #d9a61b;

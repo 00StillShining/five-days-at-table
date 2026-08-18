@@ -537,7 +537,16 @@
     box-shadow:
       0 0 0 calc(var(--cd-focus-offset) + var(--cd-focus-width) + var(--cd-focus-keyline-width))
         var(--cd-focus-keyline),
-      var(--cd-stack, none);
+      /* ORCHESTRATOR REPAIR (LIST builder's finding, confirmed by reading).
+         The fallback used to be `none`. A control that never sets --cd-stack --
+         which is EVERY control a screen builder writes without reading this
+         file -- then resolved to `box-shadow: 0 0 0 6px #141414, none`. That is
+         INVALID CSS, so the whole declaration is dropped and the keyline
+         disappears entirely. The rule written to guarantee the focus ring was
+         silently deleting it on exactly the controls least likely to be
+         audited. A transparent zero-shadow is a valid second layer and costs
+         nothing to paint. */
+      var(--cd-stack, 0 0 0 0 transparent);
   }
 
   @media (forced-colors: active) {
