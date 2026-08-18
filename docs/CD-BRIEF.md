@@ -245,6 +245,33 @@ are all declared this way (six surfaces). So:
    builders were mid-flight, since changing six shared surfaces under them was the worse
    risk. Repair it once the last screen lands, then re-run every screen's contrast sweep.
 
+## Rulings from the final review (2026-08-18)
+
+**The acknowledge verb is `ACK`, product-wide.** The review found four verbs for one act
+— "ACK" on TODAY, "address →" on STORES, "ACT" on SHOP, "ack" + "act →" on LIST. Per-
+language *voicing* is defensible, but the acknowledge act is the same act in every room,
+and this product already rules that semantics are engineering rather than taste (the five
+reserved roles are one hex each for exactly this reason). So: **one verb for the
+acknowledge act everywhere; the NAVIGATIONAL key stays per-room** and keeps its own
+language's voice. A room that both acknowledges and navigates prints both, in that order.
+
+**Contrast figures must name the WORST STOP, not "on cream".** The measured-repairs table
+below certifies the channel inks "on cream" without naming the plate's own darkest
+gradient stop, and that omission is the contrast trap in miniature. Measured: the macro
+ladder inks read 5.17+ against the flat token and **4.32 / 4.39 against the plate's
+darkest stop `rgb(220,211,191)`** — passing where the glyphs sit, but with the margin
+gone. Any contrast figure recorded anywhere in this project must state the ground it was
+measured against, and that ground must be the worst stop the painted surface can present.
+
+**Trophy Mode is one wall, not seven.** `useTrophy` exists in **seven** copies and they
+are no longer byte-identical: today/plan/stores/meal are code-equal, shop/list differ in
+formatting, and **COOK diverges semantically** — it wakes on `pointermove` and `focusin`
+and clears its idle timer on `visibilitychange`, where the other six wake only on
+pointerdown/keydown/wheel/touchstart. The consequence is lived, not theoretical: a dimmed
+TODAY ignores an approaching hand while COOK wakes to one. **COOK's behaviour is the
+correct one** — a wall that ignores an approaching hand reads as broken. Promote a single
+`useTrophy` carrying COOK's wake list and visibility guard, and delete the other six.
+
 ## Reporting requirements
 
 Every builder's final report must contain: the committed values used (hexes, springs, durations, sizes) with the chapter clause each came from · **your five-pass critique with every finding in defect–evidence–repair form, and what you repaired** · the §6.6 checklist, seven lines, each answered · confirmation you **rendered and looked at it**, with what you actually saw · measured contrast and target sizes · anything you could not meet, stated plainly (§6.5).
