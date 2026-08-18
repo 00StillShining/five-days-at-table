@@ -1,575 +1,1848 @@
 /*
-  LIST — till odometer (PLAN §6.9). Scoped entirely under .scr-list per
-  PHASE2-CONTRACT ("colocate your own screen CSS scoped by screen-root
-  class"). Uses only the real Sol/PHASE2-CONTRACT custom properties defined
-  in src/tokens.css (--sol-*, --fd-*, --fd5-target-list) — no new global
-  tokens invented here.
+  src/screens/list/list.css — 20 IRREDUCIBLE, on LIST.
 
-  Mobile-first (390x844 / 360x780 — PLAN: "design at 390x844 and 360x780;
-  desktop just centers the phone column"): .scr-list is an intrinsically
-  phone-shaped column at every viewport; desktop just gets more empty space
-  either side of it, never a distinct desktop layout.
+  Every value below is committed and names the clause it came from. Read the
+  declared deltas first: they are the places this file knowingly departs from
+  its chapter, and CORRECTIONARY 6.5 forbids doing that quietly.
 
-  Playful-technical lean with ONE borrowed precision object (PLAN §6.0: "the
-  till odometer's drum digits are the one precision object") — everything
-  else here (rows, dots, chips) stays flat silkscreen, no metal/gradients
-  (Phase 3 polish only).
+  ===========================================================================
+  DECLARED DELTAS (CORRECTIONARY 6.5 — stated, never silent)
+  ===========================================================================
+
+  1. LIGHT AXIS. IRREDUCIBLE section 2 seats its sun at 135 degrees. CD-BRIEF
+     product ruling 2 is "One sun at 138 degrees, shadow ratio 1:2, every
+     screen", and tokens/world.css ships --cd-light-axis: 138deg. The product
+     ruling wins; 135 appears nowhere in this file.
+
+  2. LIVE IS RED, NOT BLUE. The chapter's own live hues (#005BBB lit, #5994D3
+     hot, #5D82AA dim) are SUPERSEDED by CD-BRIEF ruling 3's product-wide
+     --cd-role-live #FF2B1A, so "a process is running" is one claim made once
+     across the product. Section 2's argument survives intact: live is the ONE
+     role that keeps a hue, its second channel is the flow gauge's own fill
+     HEIGHT rather than a breathing lamp, and hue count everywhere else on this
+     screen is zero.
+
+  3. THE 55% STALE INK CANNOT BE SPENT IN ALPHA HERE. II.3.18 and II.3.32 both
+     drop a stale value's ink to 55%. MEASURED on this world's own body: ink
+     #333435 at 55% over epoxy #9B9C9E composites to #626364 and reads 2.19:1;
+     even alert ink #1A1A1A at 55% reaches only 2.75:1, which IS the theoretical
+     ceiling of this ground (world.css: "epoxy has luminance 0.3321, so the best
+     ratio anything can reach on it is 2.75:1 against pure white"). So stale is
+     spent the way this world spends every other role — IN WEIGHT: the value
+     HOLDS, unmoved, at full 4.54:1 ink, its weight drops 700 -> 400, its state
+     word prints in alert-ink caps, and an alert-ink rule is struck beneath it.
+     Nothing is dimmed, because on this ground dimming is deleting.
+
+  4. THE IDENTITY SLOT IS DATA, NOT A LABEL. Section 2 fixes the LABEL register
+     at one size, uppercase, tracked wide — "every word on a plate, a rail, or a
+     station ID". A product name is none of those three: it is the content the
+     row exists to name, read at arm's length under 750-1500 lux in a shop. So
+     the label register (lids, seats, escutcheons, chips, key caps, units) is
+     exactly the chapter's 0.8125rem tracked caps, and the identity slot is the
+     UI voice at 0.875rem, sentence case as authored, tracked at body. Upper-
+     casing "Chipotles in adobo sauce, chopped" would have cost the one reading
+     this screen exists for.
+
+  5. THE REGULATOR IS ON THE FACEPLATE AND DOES NOT ROTATE. Section 3 puts the
+     regulator dial behind the maintenance latch. Which shop you are standing in
+     is a daily gesture, not an installer's, and screencraft/02's reach law puts
+     daily gestures on the plate. Its seat grammar is unchanged: hard stops,
+     never a wrap, 110ms snap on cubic-bezier(0.60,0,0.10,1), the Foundry's own
+     1800Hz detent through the 8/s coalescer. It runs in a LINE rather than an
+     arc for section 3's own reason: "a dial would rotate a fact that has no
+     rotation in it."
+
+  6. THE DWELL IS ZERO. Section 5's window is a 30000ms dwell followed by the
+     1800ms taper. Here the taper IS the whole window, because what it holds
+     open is an undo, and thirty seconds before a mistake becomes undoable is a
+     delay rather than a window. The taper's duration and curve are untouched.
+
+  7. THE RUN-OUT'S GAUGE IS A COLUMN, THE TILL'S IS A COLUMN, AND NEITHER
+     SEGMENTS. Section 3 removes the bar meter's segmentation and its peak-hold
+     ("water does not segment and this gauge never holds a peak"). The seat bar
+     DOES segment, because what it counts is discrete — forty-four lines, not a
+     level — and its segment count is derived from the envelope.
+
+  ===========================================================================
+  MEASURED, WITH THE WCAG FORMULA, ON THIS BUILD
+  ===========================================================================
+    ink        #333435 on epoxy #9B9C9E ............ 4.54 : 1   text
+    ink        #333435 on nickel channel #C7CBCD ... 7.63 : 1   instrument
+    alert ink  #1A1A1A on epoxy ..................... 6.33 : 1   text + keyline
+    alert ink  #1A1A1A on the void #7A7B7D .......... 4.11 : 1   keyline only
+    live       #FF2B1A in the live well #121213 ..... 5.00 : 1
+    live-hot   #FF756A in the live well ............. 7.14 : 1
+    live well  #121213 against the epoxy plate ...... 6.81 : 1   the object
+    focus keyline #141414 on epoxy .................. 6.70 : 1
+    focus ring #4C8FD1 vs its keyline #141414 ....... 5.40 : 1
+    focus ring #4C8FD1 in the live well ............. 5.49 : 1
+    ink        #333435 on the void #7A7B7D .......... 2.94 : 1   FAILS — and is
+      why NOTHING on this screen prints on the void. The ink-plate law
+      (CD-BRIEF ruling 5) is not a preference here; it is the only way text
+      reaches the Floor on this ground at all.
 */
 
-.scr-list {
-  --list-odo-h: 1.4rem;
-  max-width: 27rem; /* ~430px phone column */
-  margin-inline: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  /* Clearance for this screen's OWN always-fixed thumb bar (below) — on top
-     of whatever tokens.css's .fd5-scene already reserves for the chassis's
-     fixed loop rail on mobile (see ThumbBar.tsx's header doc). */
-  padding-bottom: 5.5rem;
-}
+@layer cd.screen {
+  /* =====================================================================
+     0 · THE WORLD'S OWN RECIPES, scoped to this screen
+     ===================================================================== */
 
-/* ---- header ------------------------------------------------------------- */
+  .lst {
+    /* --- geometry (II.3.2 — every value a multiple of the 0.5rem module) --- */
+    --lst-row: 3.5rem; /* 56px — one-thumb. 44px is the Floor, not the target. */
+    --lst-lid: 2.75rem; /* 44px — the Floor exactly, for a lid a hand only opens */
+    --lst-mark: 2.75rem; /* the mark's own cell */
+    --lst-gap: 0.5rem; /* the module */
+    --lst-pad: 0.75rem;
 
-.scr-list-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
+    /*
+      THE ZONE FENCE, CLOSED (CD-BRIEF: "No element may read tokens from two
+      language scopes").
 
-.scr-list-header-kicker {
-  margin: 0;
-  font-size: 1.1rem;
-  font-weight: 700;
-  text-transform: lowercase;
-}
+      MEASURED IN THE LIVE PAGE: seven BACK CHANNEL tokens were resolving on
+      this scene root by inheritance from the chassis, because custom properties
+      inherit and world.css's `[data-cd-language="irreducible"]` block is the one
+      scope of the eight that declares no --cd-well. The foundry's `well`
+      enclosure reads `var(--cd-well, var(--cd-field))`, so LIST's off-state
+      rendered in BACK CHANNEL's smoked glass #121212 — a near-black recess in a
+      grey epoxy world, and a fence breach rather than a taste slip.
 
-.scr-list-header-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
+      Section 3 already commits this world's own well by name: the flow gauge's
+      is "#7A7B7D — the well, empty at rest", which is the chassis void. So the
+      well is the void, declared here, and the five BACK CHANNEL glyph tokens
+      are neutralised so nothing downstream can read one by accident.
 
-.scr-list-market-toggle,
-.scr-list-close-trip {
-  padding-inline: 0.875rem;
-  font-size: var(--sol-text-label);
-  text-transform: lowercase;
-}
+      REPORTED UPWARD: the correct home for this line is world.css's own
+      irreducible block, which this builder may not write to.
+    */
+    --cd-well: var(--cd-void);
+    --cd-rim-catch: var(--cd-catch);
+    --cd-substrate: var(--cd-void);
+    --cd-glyph-off: var(--cd-ink);
+    --cd-glyph-dim: var(--cd-ink);
+    --cd-glyph-lit: var(--cd-ink);
+    --cd-label-ink: var(--cd-ink);
 
-/* ---- empty (no trip loaded) state ---------------------------------------- */
+    /* --- section 5's own taper curve, distinct from the house settle ------ */
+    --lst-ease-taper: cubic-bezier(0.22, 0.68, 0.32, 1);
+    --lst-snap: 110ms; /* section 3's detent seat, inside II.1.11's 80-160ms */
 
-.scr-list-empty {
-  background: var(--sol-panel);
-  border: 1px solid var(--sol-border);
-  padding: 2rem 1.5rem;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
+    /*
+      CERAMIC (II.2.13), re-valued by section 2: "the body itself pulls down
+      from the recipe's near-white #F4F5F4-#E3E5E4 to this world's own
+      #B7B8B9-#9B9C9E — precision reads through control, not brightness."
+      The DARKEST stop is the world's own body, never below it: every contrast
+      figure above is measured against #9B9C9E, and a gradient that ran past it
+      would quietly invalidate all of them (the STORES spike's own lesson).
+    */
+    --lst-ceramic:
+      radial-gradient(90% 70% at 30% 16%, #ffffff66 0%, #ffffff00 52%),
+      linear-gradient(var(--cd-light-axis), #b7b8b9 0%, #9b9c9e 100%);
 
-.scr-list-empty-title {
-  margin: 0;
-  font-size: 1.1rem;
-  font-weight: 700;
-  text-transform: lowercase;
-}
+    /*
+      HARD-MIRROR CHROME (II.2.8), re-valued by section 2: "the same 47%/48%
+      and 62%/63% stop pairs, RE-VALUED AGAINST A LIGHT FIELD rather than a
+      dark one, #8A8C8E to #ECECEA, so the trim reads as metal set into
+      aluminium rather than metal floating on void." Two hard stop pairs.
+      Nothing soft between them.
+    */
+    --lst-chrome-h: linear-gradient(
+      180deg,
+      #ececea 0%,
+      #c7cbcd 34%,
+      #a2a5a7 47%,
+      #8a8c8e 48%,
+      #9da0a2 62%,
+      #c0c4c6 63%,
+      #e4e4e2 100%
+    );
+    --lst-chrome-v: linear-gradient(
+      90deg,
+      #ececea 0%,
+      #c7cbcd 34%,
+      #a2a5a7 47%,
+      #8a8c8e 48%,
+      #9da0a2 62%,
+      #c0c4c6 63%,
+      #e4e4e2 100%
+    );
 
-.scr-list-empty-body {
-  margin: 0;
-  color: var(--sol-text-muted);
-}
+    /*
+      A control's own resting stack. It must never be `none`: the foundry's
+      focus rule composes `var(--cd-stack, none)` into a shadow LIST, and
+      `0 0 0 6px #141414, none` is invalid CSS that drops the whole ring. A
+      transparent zero-shadow is the valid way to say "this control's surface is
+      the plate it is milled into". Reported upward as a foundry hazard.
+    */
+    --lst-flush: 0 0 0 0 #00000000;
 
-.scr-list-empty-body--inline {
-  padding: 1rem 0;
-  text-align: center;
-}
+    /* trophy figures — screencraft/01's own two sizes, off the 7-step ladder
+       by that chapter's ruling rather than by this file's choice */
+    --lst-trophy-fig: 1.75rem;
+    --lst-trophy-age: 1.21875rem;
 
-/* ---- aisle sections ------------------------------------------------------- */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    /*
+      R7 — NO PAGE-LENGTH SCROLLING. The screen is exactly the box the chassis
+      hands it and never one pixel more: 100dvh less .fd5-scene's own 1rem on
+      each side. Everything that would have overflowed is confessed as a number
+      instead (the Register's own clip), so what a shopper cannot see is always
+      on screen as a figure.
+    */
+    block-size: calc(100dvh - 2rem);
+    overflow: hidden;
+    color: var(--cd-ink);
+    font-family: var(--cd-font-ui);
 
-.scr-list-body {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.scr-list-aisle-h {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin: 0 0 0.5rem;
-  padding-bottom: 0.25rem;
-  border-bottom: 1px solid var(--sol-border);
-  font-size: 1rem;
-}
-
-.scr-list-aisle[data-done] .scr-list-aisle-h {
-  opacity: 0.65;
-}
-
-.scr-list-aisle-shop {
-  color: var(--sol-text-muted);
-  text-transform: lowercase;
-  font-size: var(--sol-text-label);
-}
-
-.scr-list-aisle-name {
-  font-weight: 700;
-  text-transform: lowercase;
-}
-
-.scr-list-dots {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-}
-
-.scr-list-dot {
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
-  background: var(--sol-bg);
-  border: 1px solid var(--sol-border);
-}
-
-.scr-list-dot--on {
-  background: var(--sol-success);
-  border-color: var(--sol-success);
-}
-
-.scr-list-aisle-frac {
-  margin-left: auto;
-  font-family: var(--sol-font-data);
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-}
-
-/* ---- rows: the >=56px full-row tick target -------------------------------- */
-
-.scr-list-row-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.375rem;
-}
-
-.scr-list-row-item {
-  display: flex;
-  align-items: stretch;
-  gap: 0.375rem;
-}
-
-.scr-list-row {
-  flex: 1 1 auto;
-  min-width: 0;
-  min-block-size: var(--fd-target-list); /* 56px house target for LIST rows */
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-  padding-inline: 0.75rem;
-  text-align: left;
-  transition: transform var(--sol-motion-state) ease;
-}
-
-.scr-list-row-glyph {
-  flex: 0 0 auto;
-  font-size: 1.15rem;
-  line-height: 1;
-  width: 1.3em;
-  text-align: center;
-}
-
-.scr-list-row-main {
-  flex: 1 1 auto;
-  min-width: 0;
-  display: flex;
-  align-items: baseline;
-  gap: 0.5rem;
-  overflow: hidden;
-}
-
-.scr-list-row-label {
-  font-weight: 600;
-  overflow-wrap: anywhere;
-}
-
-.scr-list-row-qty {
-  flex: 0 0 auto;
-  font-family: var(--sol-font-data);
-  font-size: var(--sol-text-label);
-  color: var(--sol-text-muted);
-  white-space: nowrap;
-}
-
-.scr-list-row-price {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  font-family: var(--sol-font-data);
-  font-variant-numeric: tabular-nums;
-}
-
-.scr-list-row-check {
-  color: var(--sol-success);
-  font-weight: 700;
-}
-
-/* Ticked state: dim text + check glyph (already rendered) + a success-toned
-   edge — three independent cues, never color alone (Sol §5.1). Deliberately
-   NO strikethrough (PLAN §6.9: "no heavy strikethrough"). */
-.scr-list-row[aria-pressed="true"] {
-  border-left: 3px solid var(--sol-success);
-  padding-left: calc(0.75rem - 3px);
-}
-
-.scr-list-row[aria-pressed="true"] .scr-list-row-label,
-.scr-list-row[aria-pressed="true"] .scr-list-row-qty {
-  color: var(--sol-text-muted);
-}
-
-/* The single active verify nominee's chip (PLAN §6.9: "One [verify] nominee
-   active at a time"). Deliberately NOT --sol-accent-fill (PHASE2-CONTRACT:
-   that token is reserved for the shared ArbiterSlot only). */
-.scr-list-verify-chip {
-  flex: 0 0 auto;
-  width: 4.5rem;
-  min-block-size: var(--fd-target-list);
-  border: 2px solid var(--sol-accent);
-  color: var(--sol-accent);
-  background: var(--sol-panel);
-  font-weight: 700;
-  font-size: var(--sol-text-label);
-  text-transform: lowercase;
-}
-
-/* ---- the till odometer (hero) --------------------------------------------- */
-
-.scr-list-odo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.125rem;
-  min-width: 0;
-}
-
-.scr-list-odo-drums {
-  display: flex;
-  align-items: center;
-  background: var(--sol-bg);
-  border: 1px solid var(--sol-border);
-  padding: 0.25rem 0.4rem;
-  font-family: var(--sol-font-data);
-  font-weight: 700;
-  font-size: 1.05rem;
-  /* PHASE 3 polish (item 3): the whole housing reads as one recessed strip
-     the drum windows are set into. box-shadow auto-strips under
-     forced-colors (no forced-color-adjust set here), so this falls back to
-     the plain bordered box it already was. */
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
-}
-
-.scr-list-odo-currency,
-.scr-list-odo-dot {
-  height: var(--list-odo-h);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.scr-list-odo-digit {
-  height: var(--list-odo-h);
-  width: 0.65em;
-  overflow: hidden;
-  position: relative;
-}
-
-/* PHASE 3 polish (item 3): real drum digits — a recessed window with
-   top/bottom shading implying the drum's curvature, plus a faint horizontal
-   split-line (the seam between two half-drums on a real mechanical
-   counter). Both are decorative overlays (aria-hidden parent, see
-   Odometer.tsx) painted above the rolling digit strip; the roll transition
-   itself is untouched. Both use `background`, which is on the forced-colors
-   "computes to none" list by default (neither pseudo-element sets
-   forced-color-adjust), so they auto-fall-back to the plain flat window. */
-.scr-list-odo-digit::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.32) 0%, rgba(0, 0, 0, 0) 42%), linear-gradient(to top, rgba(0, 0, 0, 0.24) 0%, rgba(0, 0, 0, 0) 42%);
-}
-
-.scr-list-odo-digit::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  height: 1px;
-  background: rgba(0, 0, 0, 0.28);
-  pointer-events: none;
-}
-
-.scr-list-odo-strip {
-  display: flex;
-  flex-direction: column;
-}
-
-.scr-list-odo-face {
-  height: var(--list-odo-h);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.scr-list-odo-text {
-  margin: 0;
-  font-family: var(--sol-font-data);
-  font-size: 0.6875rem; /* 11px, nonessential-engraving band */
-  color: var(--sol-text-muted);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-/* ---- thumb bar (fixed bottom, above safe-area) ---------------------------- */
-
-.scr-list-thumbbar {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 21; /* above the chassis's own fixed rail (z-index: 20) on mobile */
-  max-width: 27rem;
-  margin-inline: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
-  border: 1px solid var(--sol-border);
-  border-bottom: none;
-  /* PHASE 3 polish (item 3): "a quiet brushed-instrument strip so the
-     odometer reads as mounted hardware" — very low-amplitude repeating
-     lines over the same --sol-panel base (D8: light surface stays light,
-     store legibility), plus a hairline top highlight for a mounted-plate
-     edge. Opacity is kept low enough that the effective background stays
-     within a hair of --sol-panel's own value, so every control/text inside
-     this bar keeps its existing contrast margin. Two background-image
-     layers + a background-color: forced-colors strips the whole
-     `background` shorthand by default (no forced-color-adjust here),
-     falling back to a flat system color automatically. */
-  background: repeating-linear-gradient(100deg, rgba(255, 255, 255, 0.35) 0 1px, rgba(0, 0, 0, 0) 1px 3px), var(--sol-panel);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
-}
-
-.scr-list-next {
-  flex: 0 0 auto;
-  min-block-size: var(--fd-target-list); /* 56px house target for LIST — was missing, fell back to the
-    generic 44px .fd5-control default (final review item 1) */
-  padding-inline: 1rem;
-  font-weight: 600;
-  text-transform: lowercase;
-}
-
-@media (max-width: 700px) {
-  .scr-list-thumbbar {
-    /* Stack ABOVE the chassis's own fixed loop rail — tokens.css's
-       --fd5-rail-footprint (LoopRail is fixed-bottom for every screen, LIST
-       included, even though "list" isn't a rail station — same as MEAL). */
-    bottom: var(--fd5-rail-footprint);
-    border-bottom: 1px solid var(--sol-border);
-    padding-bottom: 0.5rem;
+    /*
+      THE GROUND IS A MATERIAL (CORRECTIONARY 5.4). The chassis void — "the
+      mount behind the column" — lit from 138 degrees, with the ceramic lobe
+      and the grain over it. Its darkest stop is the void's own hex.
+    */
+    background: linear-gradient(var(--cd-light-axis), #8a8b8d 0%, #7a7b7d 100%);
   }
-}
 
-/* ---- numeric pad (verify price entry) ------------------------------------- */
-
-.scr-list-pad {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.scr-list-pad-item {
-  margin: 0;
-  font-size: 1.1rem;
-  font-weight: 700;
-}
-
-.scr-list-pad-was {
-  margin: 0;
-  color: var(--sol-text-muted);
-  font-size: var(--sol-text-label);
-}
-
-.scr-list-pad-readout {
-  margin: 0;
-  padding: 0.75rem;
-  text-align: center;
-  font-family: var(--sol-font-data);
-  font-size: 1.75rem;
-  font-weight: 700;
-  background: var(--sol-bg);
-  border: 1px solid var(--sol-border);
-  font-variant-numeric: tabular-nums;
-}
-
-.scr-list-pad-keys {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
-}
-
-.scr-list-pad-key {
-  min-block-size: var(--fd-target-list);
-  font-size: 1.25rem;
-  font-family: var(--sol-font-data);
-}
-
-.scr-list-pad-done {
-  min-block-size: var(--fd-target-list);
-  font-weight: 700;
-  text-transform: lowercase;
-  background: var(--sol-text);
-  color: var(--sol-bg);
-}
-
-.scr-list-pad-done:disabled {
-  background: var(--sol-panel);
-  color: var(--sol-text);
-}
-
-/* ---- trip summary / verify read-back -------------------------------------- */
-
-.scr-list-summary {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding-bottom: 1rem;
-}
-
-.scr-list-summary-kicker {
-  margin: 0;
-  color: var(--sol-text-muted);
-  text-transform: lowercase;
-  font-size: var(--sol-text-label);
-}
-
-.scr-list-summary-title {
-  margin: 0 0 0.25rem;
-  font-size: 1.4rem;
-  text-transform: lowercase;
-}
-
-.scr-list-summary-total {
-  margin: 0 0 1rem;
-  font-family: var(--sol-font-data);
-  font-size: 1.1rem;
-  font-weight: 700;
-}
-
-.scr-list-summary-h {
-  margin: 1rem 0 0.25rem;
-  font-size: var(--sol-text-label);
-  text-transform: lowercase;
-  color: var(--sol-text-muted);
-  /* PHASE 3 polish (item 5): silkscreen section-head, barely-there engraved
-     — opts into the shared token defined in tokens.css's PHASE 3 POLISH
-     section. */
-  text-shadow: var(--fd5-engrave);
-}
-
-.scr-list-summary-muted {
-  margin: 0 0 0.5rem;
-  color: var(--sol-text-muted);
-}
-
-.scr-list-summary-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 1.05rem;
-}
-
-.scr-list-summary-table th,
-.scr-list-summary-table td {
-  padding: 0.6rem 0.4rem;
-  border-bottom: 1px solid var(--sol-border);
-  text-align: left;
-  font-weight: 400;
-}
-
-.scr-list-summary-table thead th {
-  color: var(--sol-text-muted);
-  font-size: var(--sol-text-label);
-  text-transform: lowercase;
-  font-weight: 400;
-}
-
-.scr-list-summary-table td {
-  font-family: var(--sol-font-data);
-  font-variant-numeric: tabular-nums;
-}
-
-.scr-list-summary-back {
-  align-self: flex-start;
-  margin-top: 1rem;
-  padding-inline: 1rem;
-}
-
-/* ---- reduced-motion -------------------------------------------------------- */
-/* The odometer's rolling digits and row-settle FLIP transform both carry
-   data-motion, so tokens.css's global `.fd5 [data-motion]` rule already
-   collapses their transition-duration to ~0 under prefers-reduced-motion —
-   no screen-specific rule needed for that. useFlip.ts and Odometer.tsx also
-   gate their JS-side motion on the same media query independently
-   (belt-and-suspenders, not merely CSS-hidden motion). */
-
-/* ---- forced-colors --------------------------------------------------------- */
-
-@media (forced-colors: active) {
-  .scr-list-summary-h {
-    text-shadow: none;
+  .lst *,
+  .lst *::before,
+  .lst *::after {
+    box-sizing: border-box;
   }
-  .scr-list-row[aria-pressed="true"] {
-    border-left-color: Highlight;
-    forced-color-adjust: none;
-  }
-  .scr-list-dot--on {
-    background: Highlight;
-    border-color: ButtonText;
-    forced-color-adjust: none;
-  }
-  .scr-list-verify-chip {
-    border-color: Highlight;
-    color: Highlight;
-    forced-color-adjust: none;
-  }
-  .scr-list-pad-done:not(:disabled) {
-    background: Highlight;
-    color: HighlightText;
-    forced-color-adjust: none;
-  }
-}
 
-/* ---- zero horizontal scroll, all viewports -------------------------------- */
-/* Deliberately NOT `.scr-list` itself here — it has its own intentional
-   27rem phone-column cap up top (desktop centers the column, PLAN §6.9);
-   a same-specificity `max-width: 100%` this far down the cascade would
-   silently win by source order and erase that cap on wide viewports. */
+  /* section 2, on ceramic: "one wide soft lobe and a shadow cut tight and
+     hard, precise rather than atmospheric" */
+  .lst::before {
+    content: "";
+    position: absolute;
+    inset-inline-start: 6%;
+    inset-block-start: 3%;
+    inline-size: 34%;
+    block-size: 22%;
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(closest-side, #ffffff4d 0%, #ffffff1c 55%, #ffffff00 100%);
+  }
 
-.scr-list * {
-  max-width: 100%;
-}
+  /* CORRECTIONARY 3.3 — visible, felt texture, at the foundation's own 0.06.
+     It renders BENEATH every plate, never over type (II.2.21's surviving half). */
+  .lst::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: var(--cd-noise);
+    /* CORRECTIONARY 3.3 revoked the 1-3% cap outright: "visible, felt texture
+       ... at whatever strength reads as real material." On a mid-grey epoxy
+       ground the foundation's own 0.06 is invisible; this is the strength at
+       which the mount reads as sprayed 60-micron epoxy over aluminium. */
+    opacity: 0.14;
+    mix-blend-mode: overlay;
+    z-index: 0;
+  }
 
-.scr-list-row-list,
-.scr-list-summary-table {
-  overflow-wrap: anywhere;
+  /*
+    THE MOUNT'S OWN MACHINING. Section 2's field is "the exact finish sprayed
+    over vandal-proof aluminium at 60 microns" — a sprayed coat over a milled
+    plate, and the milling reads through it. II.2.7's brushed grain at this
+    world's own values, one pass, painted once.
+  */
+  .lst::after {
+    background-image:
+      repeating-linear-gradient(
+        90deg,
+        #ffffff00 0px,
+        #ffffff14 1px,
+        #00000014 2px,
+        #ffffff00 3px
+      ),
+      var(--cd-noise);
+  }
+
+  .lst-frame {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--lst-gap);
+    padding: var(--lst-pad);
+    min-block-size: 0;
+    /* the burn-in orbit moves the WHOLE composition as one rigid frame */
+    transform: translate(var(--lst-orbit-x, 0px), var(--lst-orbit-y, 0px));
+    transition: transform 4000ms linear;
+  }
+
+  /* the visually-hidden elaboration that trails every printed accessible name */
+  .lst-vh {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* =====================================================================
+     1 · THE LABEL REGISTER — one size, stamped caps (section 2)
+     ===================================================================== */
+  /*
+    "every word on a plate, a rail, or a station ID sets at 0.8125rem,
+    uppercase, tracked wide, engraved 20% darker than the epoxy body plus the
+    dual shadow the one light throws." --cd-ink IS that 20%-darker value,
+    derived in world.css and measured at 4.54:1.
+  */
+  .lst .cd-escutcheon {
+    background: none;
+    box-shadow: none;
+    padding: 0;
+    font-size: var(--cd-size-1);
+    letter-spacing: var(--cd-track-label);
+    color: var(--cd-ink);
+    text-shadow:
+      0 -1px 0 #00000047, /* the cut's shadowed shoulder — light comes from above */
+      0 1px 0 #ffffff33; /* the thrown edge below it, catching the same sun */
+  }
+
+  /* MUTED IS WEIGHT (section 2: roles are spent "in weight, never in hue").
+     world.css sets --cd-muted-ink to the SAME hex as --cd-ink deliberately,
+     because the chapter's #6B6C6E measures 1.91:1 on epoxy. */
+  .lst .cd-unit,
+  .lst .cd-register-count,
+  .lst .cd-overflow-count {
+    color: var(--cd-ink);
+    font-weight: 400;
+    letter-spacing: var(--cd-track-label);
+  }
+
+  /* =====================================================================
+     2 · THE HEAD PLATE — identity and the one duty competing for the hand
+     ===================================================================== */
+
+  .lst-head[data-cd-encl],
+  .lst-till[data-cd-encl],
+  .lst-seats[data-cd-encl],
+  .lst-thumb[data-cd-encl],
+  .lst-register .cd-register-head,
+  .lst-register .cd-register-rows {
+    /*
+      THE PLATE'S OWN EDGE. The chapter's palette separates the void #7A7B7D
+      from the epoxy body #9B9C9E by 1.54:1 — a machined part on this world is
+      told apart by its MACHINING, not by its value. So every plate carries the
+      nickel rim its own section 2 promises ("Nickel-chrome dresses every bezel
+      and collar") over a cast deepened past the foundation's tier-3 default,
+      which CORRECTIONARY 4 permits and encourages: intensities are floors.
+    */
+    --lst-cast:
+      inset 0 1px 0 #ececeacc, /* rim light — the nickel edge catching 138deg */
+      inset 0 -1px 0 #00000073, /* lip — the edge turning away */
+      0 1px 0 #00000080, /* contact — the plate is screwed down */
+      0 4px 8px #0000004d, /* core — the plate's own mass */
+      0 16px 32px #00000038; /* ambient — the throw onto the mount */
+  }
+
+  .lst-head[data-cd-encl] {
+    flex: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: calc(var(--lst-gap) / 2) var(--lst-gap);
+    padding: calc(var(--lst-gap) / 2) var(--lst-pad);
+    border-radius: var(--cd-chamfer-head) var(--cd-chamfer-head) var(--cd-chamfer-foot)
+      var(--cd-chamfer-foot);
+    background: var(--lst-ceramic);
+    box-shadow: var(--lst-cast);
+  }
+
+  .lst-head-id {
+    flex: 1 1 100%;
+    display: flex;
+    align-items: center;
+    gap: var(--lst-gap);
+    min-inline-size: 0;
+  }
+
+  /* the station bar rides the identity line and takes whatever it is left */
+  .lst-head-id .lst-stations[data-cd-encl] {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    max-inline-size: 26rem;
+    margin-inline-start: auto;
+  }
+
+  .lst-head-kind {
+    margin: 0;
+    font-size: var(--cd-size-1);
+  }
+
+  .lst-head-station::before,
+  .lst-head-variant::before {
+    content: "·";
+    margin-inline-end: var(--lst-gap);
+    opacity: 0.7;
+  }
+
+  .lst-ann {
+    flex: 1 1 100%;
+    display: flex;
+    align-items: center;
+    gap: var(--lst-gap);
+    min-inline-size: 0;
+  }
+
+  /*
+    THE CHEVRON. Section 2: "a chevron, a checkmark, a keyline, weight against
+    the field, never a wash of paint." Section 9's own repair for a missed alarm
+    names it by hand — "force the tritone and the ALERT-INK CHEVRON". It is
+    present in both states, because a vanishing indicator is indistinguishable
+    from a missing one (II.3.24).
+  */
+  .lst-ann-chevron {
+    inline-size: 0.75rem;
+    block-size: 0.75rem;
+    flex: none;
+    border-inline-end: 2px solid var(--cd-alert-ink);
+    border-block-end: 2px solid var(--cd-alert-ink);
+    transform: rotate(-45deg);
+    opacity: 0.35; /* dark: engraved, not lit — the tile still announces itself */
+  }
+
+  .lst-head[data-lst-ann="steady"] .lst-ann-chevron,
+  .lst-head[data-lst-ann="latched"] .lst-ann-chevron {
+    opacity: 1;
+  }
+
+  /* II.3.25 — 2Hz square, 250ms lit / 250ms dark, NO FADE, until acknowledged.
+     What flashes is the KEYLINE, because this world has no hue to flash. */
+  .lst-head[data-lst-ann="latched"] {
+    animation: lst-annunciate 500ms steps(1, end) infinite;
+  }
+
+  @keyframes lst-annunciate {
+    0% {
+      box-shadow:
+        inset 0 0 0 2px var(--cd-alert-ink),
+        var(--cd-shadow-t3);
+    }
+    50% {
+      box-shadow: var(--cd-shadow-t3);
+    }
+  }
+
+  .lst-ann-face[data-cd-surface] {
+    flex: 1;
+    min-inline-size: 0;
+    display: flex;
+    align-items: baseline;
+    gap: var(--lst-gap);
+    padding: calc(var(--lst-gap) / 2) var(--lst-gap);
+  }
+
+  .lst-ann-word {
+    font-size: var(--cd-size-1);
+    font-weight: 700;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .lst-ann-text {
+    flex: 1;
+    min-inline-size: 0;
+    font-size: var(--cd-size-2);
+    font-weight: 400;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .lst-ann-queue {
+    white-space: nowrap;
+    font-size: var(--cd-size-1);
+  }
+
+  .lst-ann-keys {
+    display: flex;
+    gap: calc(var(--lst-gap) / 2);
+  }
+
+  /* =====================================================================
+     3 · THE TILL — the flow gauge, and the one numeral at the top step
+     ===================================================================== */
+
+  .lst-cluster {
+    flex: none;
+    display: flex;
+    gap: var(--lst-gap);
+    align-items: stretch;
+    flex-wrap: wrap;
+  }
+
+  .lst-till[data-cd-encl] {
+    flex: 1 1 100%;
+    padding: calc(var(--lst-gap) / 2) var(--lst-pad);
+    border-radius: var(--cd-chamfer-head) var(--cd-chamfer-head) var(--cd-chamfer-foot)
+      var(--cd-chamfer-foot);
+    background: var(--lst-ceramic);
+    box-shadow: var(--lst-cast);
+  }
+
+  .lst-till-body {
+    display: flex;
+    gap: var(--lst-gap);
+    align-items: stretch;
+  }
+
+  .lst-till-band {
+    display: flex;
+    gap: var(--lst-pad);
+    flex-wrap: wrap;
+  }
+
+  .lst-till-band .lst-till-line {
+    flex: 1 1 auto;
+  }
+
+  /*
+    THE CHANNEL. A recess milled through the epoxy coat into the nickel beneath
+    it — II.2.3's inverted pair (shadow enters high, lit lip closes low), and
+    the one place the full 1:2 cast vector is spent. The fill reads 7.63:1
+    against that floor without spending a hue.
+  */
+  .lst-column {
+    position: relative;
+    flex: none;
+    inline-size: 1.25rem; /* section 3's own flow-gauge width */
+    /* section 3 casts the gauge at 7rem. On a phone it fills the housing it is
+       mounted in instead, never below 4rem, so the instrument keeps its column
+       proportion at every width this screen actually renders at. */
+    block-size: auto;
+    min-block-size: 4rem;
+    align-self: stretch;
+    border-radius: 0.375rem;
+    overflow: hidden;
+    background: var(--lst-chrome-v);
+    box-shadow:
+      inset 0 0 0 1px #8a8c8e, /* the nickel collar, its own machined edge */
+      inset 0 3px 5px #00000073, /* the well, cut deep */
+      inset 0 -1px 0 #ececea99; /* the lit lip closing it */
+  }
+
+  .lst-column-fill {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    block-size: calc(var(--lst-fill, 0) * 100%);
+    background: var(--cd-ink);
+    /* section 3: "transition: height 0ms; commit is instant, never eased" */
+    transition: none;
+  }
+
+  /* the plan's own printed line, engraved at full height */
+  .lst-column-index {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: 0;
+    block-size: 2px;
+    background: var(--cd-alert-ink);
+  }
+
+  .lst-till-read {
+    flex: 1;
+    min-inline-size: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .lst-till-name {
+    margin: 0;
+  }
+
+  .lst-till-figure {
+    margin: 0;
+  }
+
+  /* II.6.20 — the top step is RESERVED to one numeral per screen. This is it. */
+  .lst-hero {
+    display: inline-block;
+    color: var(--cd-ink);
+    font-weight: 500;
+    /* II.6.5 — the width is reserved for the widest legal rendering, so an
+       arriving digit never resizes its neighbours. £999.99 is seven characters. */
+    min-inline-size: 7ch;
+  }
+
+  .lst-till-line,
+  .lst-till-age {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: var(--lst-gap);
+    font-size: var(--cd-size-1);
+  }
+
+  .lst-till-key {
+    font-weight: 400;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    color: var(--cd-ink);
+  }
+
+  .lst-till-val {
+    font-weight: 700;
+    margin-inline-start: auto;
+  }
+
+  /* THE OVER-RUN. A reserved role, spent in WEIGHT: an alert-ink keyline under
+     the figure and the word at full weight. No hue — every role ink measures
+     2.04:1 on this body (world.css, the epoxy ceiling). */
+  .lst-till-line[data-lst-role="warning"] {
+    color: var(--cd-alert-ink);
+  }
+
+  .lst-till[data-lst-over="true"] .lst-till-line[data-lst-role="warning"] {
+    box-shadow: inset 0 -2px 0 var(--cd-alert-ink);
+  }
+
+  .lst-till[data-lst-over="true"] .lst-till-line[data-lst-role="warning"] .lst-till-key {
+    font-weight: 700;
+    color: var(--cd-alert-ink);
+  }
+
+  /* STALE — delta 3. The value HOLDS at full ink; the weight drops and the
+     word prints. Nothing is dimmed, because on this ground dimming is
+     deleting. */
+  .lst-till[data-lst-stale="true"] .lst-till-age .lst-till-val {
+    font-weight: 400;
+    box-shadow: inset 0 -1px 0 var(--cd-alert-ink);
+  }
+
+  .lst-till-word {
+    font-size: var(--cd-size-1);
+    font-weight: 700;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    color: var(--cd-alert-ink);
+  }
+
+  /* THE MILLED BLANK PLATE (owner ruling: Trophy privacy). A declared mask,
+     not a removal: the instrument is still there and still says what it is. */
+  .lst-mask {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    block-size: var(--cd-size-7);
+    border-radius: 0.25rem;
+    background:
+      repeating-linear-gradient(
+        var(--cd-light-axis),
+        #00000000 0,
+        #00000000 3px,
+        #00000014 3px,
+        #00000014 4px
+      ),
+      var(--lst-chrome-h);
+    box-shadow: var(--cd-shadow-well);
+  }
+
+  .lst-mask-word {
+    font-size: var(--cd-size-1);
+    font-weight: 700;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    color: var(--cd-ink);
+  }
+
+  /* =====================================================================
+     4 · THE SEAT BAR — one seat per line, the count derived
+     ===================================================================== */
+
+  .lst-seats[data-cd-encl] {
+    flex: 1 1 12rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.25rem;
+    padding: calc(var(--lst-gap) / 2) var(--lst-pad);
+    border-radius: var(--cd-chamfer-head) var(--cd-chamfer-head) var(--cd-chamfer-foot)
+      var(--cd-chamfer-foot);
+    background: var(--lst-ceramic);
+    box-shadow: var(--lst-cast);
+  }
+
+  .lst-seats-head {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--lst-gap);
+  }
+
+  .lst-seatbar {
+    position: relative;
+    block-size: 1.25rem; /* the bar meter's own base casting width, on its side */
+    border-radius: 0.25rem;
+    overflow: hidden;
+    background: var(--lst-chrome-h);
+    box-shadow:
+      inset 0 0 0 1px #8a8c8e,
+      inset 0 3px 5px #00000073,
+      inset 0 -1px 0 #ececea99;
+  }
+
+  /* the seats themselves — one repeating gradient, one paint, forty-four seats */
+  .lst-seatbar-track {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--cd-ink) 0,
+      var(--cd-ink) calc(100% / var(--lst-seat-count) - 1px),
+      #00000000 calc(100% / var(--lst-seat-count) - 1px),
+      #00000000 calc(100% / var(--lst-seat-count))
+    );
+  }
+
+  /*
+    THE UNLIT COVER (II.3.19). The zone geometry beneath never moves; the cover
+    is what travels. It is 88% epoxy rather than opaque, so the seats past the
+    level GHOST beneath it — II.3.20's own argument that a display's off state
+    is "the material truth of the glass, proof that the digit is an instrument
+    and not a font."
+  */
+  .lst-seatbar-cover {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: var(--lst-got, 0%);
+    inset-inline-end: 0;
+    background: #9b9c9ee0;
+    box-shadow: inset 1px 0 0 var(--cd-alert-ink);
+    transition: none; /* the level is a fact, not an animation */
+  }
+
+  .lst-seats-figure {
+    display: flex;
+    align-items: baseline;
+    gap: 0.375rem;
+  }
+
+  .lst-seats-got {
+    font-size: var(--cd-size-4);
+    font-weight: 700;
+    color: var(--cd-ink);
+  }
+
+  .lst-seats-of,
+  .lst-seats-total {
+    font-size: var(--cd-size-1);
+    font-weight: 400;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    color: var(--cd-ink);
+  }
+
+  .lst-seats[data-lst-masked="true"] .lst-seatbar,
+  .lst-seats[data-lst-masked="true"] .lst-seats-figure {
+    opacity: 1; /* the seat bar is a COUNT, not money — it is never masked */
+  }
+
+  /* =====================================================================
+     5 · THE STATION BAR — hard stops, never a wrap
+     ===================================================================== */
+
+  .lst-stations[data-cd-encl] {
+    padding: 2px;
+    border-radius: var(--cd-chamfer-foot);
+    background: none;
+    box-shadow: none;
+  }
+
+  .lst-station-track {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(var(--lst-station-count), minmax(0, 1fr));
+    gap: 0;
+    border-radius: 0.25rem;
+    background: var(--lst-chrome-h);
+    box-shadow:
+      inset 0 0 0 1px #8a8c8e,
+      inset 0 2px 4px #00000073,
+      inset 0 -1px 0 #ececea99;
+    padding: 2px;
+  }
+
+  /* THE SEATED WEDGE — the dial's own ink mark, rotated into a line. One
+     element, travelling, at section 3's own 110ms snap. */
+  .lst-station-mark {
+    position: absolute;
+    inset-block: 2px;
+    inset-inline-start: 2px;
+    inline-size: calc((100% - 4px) / var(--lst-station-count));
+    border-radius: 0.1875rem;
+    background: var(--lst-ceramic);
+    box-shadow:
+      inset 0 1px 0 #ececea99,
+      inset 0 -1px 0 var(--cd-alert-ink),
+      0 1px 0 #00000040;
+    transform: translateX(calc(var(--lst-station-index) * 100%));
+    transition: transform var(--lst-snap) var(--cd-ease-snap);
+  }
+
+  :where([dir="rtl"]) .lst-station-mark {
+    transform: translateX(calc(var(--lst-station-index) * -100%));
+  }
+
+  .lst-station {
+    --cd-stack: var(--lst-flush);
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    min-block-size: var(--cd-target-min);
+    min-inline-size: var(--cd-target-min);
+    padding: 0.25rem;
+    border: 0;
+    background: none;
+    box-shadow: var(--cd-stack);
+    color: var(--cd-ink);
+    cursor: pointer;
+  }
+
+  .lst-stations .lst-station-track {
+    padding: 2px;
+  }
+
+  .lst-station-word {
+    font-size: var(--cd-size-1);
+    font-weight: 400;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+  }
+
+  .lst-station[aria-checked="true"] .lst-station-word {
+    font-weight: 700;
+  }
+
+  .lst-station-count {
+    font-size: var(--cd-size-1);
+    font-weight: 400;
+    color: var(--cd-ink);
+  }
+
+  .lst-station[data-lst-clear="true"] .lst-station-count {
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+  }
+
+  /* =====================================================================
+     6 · THE REGISTER — one machined plate with rows milled into it
+     ===================================================================== */
+  /*
+    The STORES spike's proven thesis, kept: "A register is ONE MACHINED OBJECT
+    with rows milled into it, not sixty-five little cases." So the grooves
+    between rows are painted into the PLATE's own background — one repeating
+    gradient, one paint, every row — and the row itself carries no housing at
+    all. Its surface is the plate.
+  */
+
+  .lst-bay {
+    position: relative;
+    flex: 1 1 0;
+    min-block-size: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .lst-register-mount {
+    flex: 1;
+    min-block-size: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .lst-register-mount .lst-register {
+    flex: 0 1 auto;
+    min-block-size: 0;
+    overflow: hidden;
+  }
+
+  .lst-register {
+    gap: calc(var(--lst-gap) / 2);
+  }
+
+  /* the group is not a case: the LID is a machined part and the PLATE beneath
+     it is another, and neither is a box around the other */
+  .lst-register .cd-register-group {
+    background: none;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  .lst-register .cd-register-head {
+    --cd-stack: var(--cd-shadow-t1);
+    min-block-size: var(--lst-lid);
+    padding-inline: var(--lst-pad);
+    border-radius: var(--cd-chamfer-foot);
+    background: var(--lst-ceramic);
+    color: var(--cd-ink);
+    font-size: var(--cd-size-1);
+    font-weight: 400;
+    letter-spacing: var(--cd-track-label);
+    text-shadow:
+      0 -1px 0 #00000047,
+      0 1px 0 #ffffff33;
+  }
+
+  .lst-register .cd-register-group[data-cd-open="true"] > .cd-register-head {
+    --cd-stack: var(--cd-shadow-t2);
+    font-weight: 700;
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+  }
+
+  .lst-register .cd-register-label {
+    text-transform: uppercase;
+  }
+
+  /*
+    THE MILLED PLATE. Layer 1 is the engraving — one groove per row pitch, the
+    recess pair inverted per II.2.3 (shadow enters HIGH, lit lip closes LOW).
+    Layer 2 is the ceramic body. Both painted once, for every row, in one paint.
+  */
+  .lst-register .cd-register-rows {
+    padding: 0;
+    gap: 0;
+    border-radius: 0 0 var(--cd-chamfer-foot) var(--cd-chamfer-foot);
+    overflow: hidden;
+    background:
+      repeating-linear-gradient(
+        180deg,
+        #00000000 0,
+        #00000000 calc(var(--lst-row) - 2px),
+        #00000052 calc(var(--lst-row) - 2px), /* groove floor */
+        #00000052 calc(var(--lst-row) - 1px),
+        #ffffff8c calc(var(--lst-row) - 1px), /* lit lip closing it */
+        #ffffff8c var(--lst-row)
+      ),
+      var(--lst-ceramic);
+    box-shadow: var(--lst-cast);
+  }
+
+  .lst-register .cd-register-row {
+    display: block;
+  }
+
+  /* R7's second clip, confessed as a figure rather than as a cut edge */
+  /*
+    THE INK-PLATE LAW, CD-BRIEF ruling 5 — "a HARD FAIL BY RULE, not by measured
+    ratio". The first build printed this confession straight onto the mount:
+    measured, ink #333435 on the void #7A7B7D reads 2.94:1, under the text floor
+    and under the epoxy ceiling's own best case. It sits on a plate now, where
+    the same ink reads 4.54:1.
+  */
+  .lst-lid-overflow {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: var(--lst-gap);
+    padding: 0.25rem var(--lst-pad);
+    border-radius: 0 0 var(--cd-chamfer-foot) var(--cd-chamfer-foot);
+    background: var(--lst-ceramic);
+    box-shadow:
+      inset 0 1px 0 #00000047,
+      0 1px 0 #00000080,
+      0 3px 6px #0000003d;
+    font-size: var(--cd-size-1);
+  }
+
+  .lst-lid-overflow-word {
+    font-weight: 400;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    color: var(--cd-ink);
+  }
+
+  /* II.6.24's confession, engraved at the plate's foot */
+  .lst-register .cd-register-overflow {
+    min-block-size: var(--lst-lid);
+    padding-inline: var(--lst-pad);
+    justify-content: flex-end;
+    box-shadow: inset 0 1px 0 #00000038;
+  }
+
+  /* =====================================================================
+     7 · THE ROW — the press-return control, at the Signature rung
+     ===================================================================== */
+
+  .lst-row {
+    --cd-stack: var(--lst-flush);
+    display: grid;
+    grid-template-columns: var(--lst-mark) minmax(0, 1fr) auto;
+    grid-template-rows: auto auto;
+    align-items: center;
+    align-content: center;
+    column-gap: var(--lst-gap);
+    row-gap: 0.0625rem;
+    inline-size: 100%;
+    block-size: var(--lst-row); /* fixed pitch — the grooves are painted to it */
+    padding-inline: var(--lst-gap) var(--lst-pad);
+    border: 0;
+    /* THE PLATE IS THE SURFACE; the row is milled INTO it (the spike's thesis) */
+    background: none;
+    box-shadow: var(--cd-stack);
+    color: var(--cd-ink);
+    font-family: var(--cd-font-ui);
+    text-align: start;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .lst-row[aria-disabled="true"] {
+    cursor: default;
+  }
+
+  .lst-mark {
+    position: relative;
+    grid-column: 1;
+    grid-row: 1 / 3;
+    display: grid;
+    place-items: center;
+  }
+
+  /* THE SOCKET — the press's own seat, cut into the plate. */
+  .lst-mark::before {
+    content: "";
+    position: absolute;
+    inline-size: 2.75rem;
+    block-size: 1.75rem;
+    border-radius: 0.875rem;
+    background: var(--cd-live-well);
+    box-shadow:
+      inset 0 2px 3px #000000a6, /* the well — shadow enters HIGH (II.2.3) */
+      inset 0 -1px 0 #ececea4d, /* the lit lip closing it LOW */
+      0 1px 0 #ffffff40; /* the plate's own cut edge catching the sun */
+  }
+
+  /*
+    THE DOME — section 3's own fence, verbatim in structure, with the values it
+    commits. Oval and domed: "a paddle rather than a cylinder, catching the one
+    light as a soft ceramic lobe." It is the only curve this world spends and
+    the only surface on the plate still catching a highlight.
+  */
+  .lst-dome {
+    position: relative;
+    inline-size: 2.25rem;
+    block-size: 1.25rem;
+    border-radius: 0.625rem;
+    background: radial-gradient(120% 150% at 30% 18%, #ececea 0%, #b7b8b9 34%, #9b9c9e 62%, #7a7b7d 100%);
+    box-shadow:
+      inset 0 1px 0 #ececeacc, /* rim — the domed crown catching the one sun */
+      inset 0 -2px 2px #00000059, /* well — the paddle's underside */
+      0 1px 0 #00000073, /* contact */
+      0 3px 6px #0000004d; /* core */
+    transition:
+      transform 80ms var(--cd-ease-settle),
+      box-shadow 80ms var(--cd-ease-settle); /* Standard release settle, II.4.3 */
+  }
+
+  .lst-row:active .lst-dome,
+  .lst-row[data-lst-pressed="true"] .lst-dome {
+    transition:
+      transform 20ms linear,
+      box-shadow 20ms linear; /* down-stroke: no easing, II.2.6 */
+    transform: translateY(1px);
+    box-shadow:
+      inset 0 1px 2px #00000059,
+      0 1px 0 #00000033;
+  }
+
+  /*
+    THE SINGLE COMMITTED FRAME. II.2.12's enamel: "a near-flat body and one hard
+    reflection ellipse", rendered in live-hot, and "it is the only surface in
+    this language ever licensed to hold that intensity — everywhere else, blue
+    is not a material, it is an event." Cleared two frames later by ItemRow.tsx.
+  */
+  .lst-row[data-lst-commit="true"] .lst-dome {
+    background: radial-gradient(
+      120% 140% at 30% 20%,
+      var(--cd-role-live-hot) 0%,
+      var(--cd-role-live-hot) 55%,
+      var(--cd-role-live) 100%
+    );
+    box-shadow:
+      inset 0 1px 0 #ffffff8c,
+      0 0 var(--cd-bloom-r) color-mix(in srgb, var(--cd-role-live) 80%, transparent),
+      0 0 var(--cd-bloom-4r) color-mix(in srgb, var(--cd-role-live) 40%, transparent),
+      0 0 var(--cd-bloom-12r) color-mix(in srgb, var(--cd-role-live) 16%, transparent);
+  }
+
+  /* THE SUCCESS GLYPH — a reserved role in alert ink, hue count zero. */
+  .lst-row[data-lst-bought="true"] .lst-dome {
+    background: radial-gradient(120% 140% at 30% 20%, #a9aaac 0%, #949597 55%, #7a7b7d 100%);
+    box-shadow:
+      inset 0 2px 3px #00000059, /* seated home — the paddle is down */
+      inset 0 -1px 0 #ececea4d;
+  }
+
+  .lst-row[data-lst-bought="true"] .lst-dome::after {
+    content: "";
+    position: absolute;
+    inset-block-start: 0.1875rem;
+    inset-inline-start: 0.9375rem;
+    inline-size: 0.3125rem;
+    block-size: 0.625rem;
+    border-inline-end: 2px solid var(--cd-alert-ink);
+    border-block-end: 2px solid var(--cd-alert-ink);
+    transform: rotate(45deg);
+  }
+
+  /* IDENTITY — delta 4: data, not a label. */
+  .lst-id {
+    grid-column: 2;
+    grid-row: 1;
+    min-inline-size: 0;
+    font-size: var(--cd-size-2);
+    font-weight: 600;
+    letter-spacing: var(--cd-track-body);
+    line-height: 1.15;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .lst-sec {
+    grid-column: 2;
+    grid-row: 2;
+    min-inline-size: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--lst-gap);
+    overflow: hidden;
+  }
+
+  .lst-qty {
+    font-size: var(--cd-size-1);
+    font-weight: 400;
+    color: var(--cd-ink);
+    white-space: nowrap;
+  }
+
+  /* THE INK-ONLY STATE CHIP — section 4's trailing status lamp, with no lamp. */
+  .lst-chip {
+    font-size: var(--cd-size-1);
+    font-weight: 400;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--cd-ink);
+  }
+
+  .lst-chip[data-lst-chip="verify"] {
+    font-weight: 700;
+    color: var(--cd-alert-ink);
+    box-shadow: inset 0 -2px 0 var(--cd-alert-ink);
+  }
+
+  .lst-chip[data-lst-chip="checked"]::before {
+    content: "✓ ";
+  }
+
+  .lst-value {
+    grid-column: 3;
+    grid-row: 1 / 3;
+    display: flex;
+    align-items: center;
+    gap: var(--lst-gap);
+  }
+
+  .lst-price {
+    font-size: var(--cd-size-2);
+    font-weight: 700;
+    color: var(--cd-ink);
+    /* II.6.5 — reserved for the widest legal rendering, "£169.99", so an
+       arriving digit never resizes its neighbour. */
+    min-inline-size: 7ch;
+    text-align: end;
+  }
+
+  /*
+    THE SLIVER — the flow gauge nested in the value block (section 4). Its box
+    is RESERVED at rest and painted only while the window runs: section 9's
+    first failure mode is "any mark on a card not yet pressed", and a box that
+    only appears would shift the price left on every tick.
+  */
+  .lst-sliver {
+    position: relative;
+    flex: none;
+    inline-size: 1.25rem; /* section 3's own flow-gauge width */
+    block-size: 1.75rem;
+    overflow: hidden;
+  }
+
+  .lst-sliver[data-lst-running="true"] {
+    border-radius: 0.25rem;
+    background: var(--cd-live-well);
+    box-shadow: var(--cd-shadow-well);
+  }
+
+  .lst-sliver-fill {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    block-size: 100%;
+    background: var(--cd-role-live);
+    animation: lst-taper var(--lst-runout-ms) var(--lst-ease-taper) both;
+  }
+
+  /* section 5's taper: "one committed drop; the CSS transition does the rest",
+     the fill draining AND the colour fading toward the field it drains into */
+  @keyframes lst-taper {
+    from {
+      block-size: 100%;
+      background-color: var(--cd-role-live);
+    }
+    to {
+      block-size: 0%;
+      background-color: var(--cd-role-live-dim);
+    }
+  }
+
+  /*
+    DECLARED DELTA on CD-BRIEF repair 3, and the STORES spike made it first.
+    The repair commits "2px #4C8FD1 + 1px #141414 keyline, OFFSET 3px". A row is
+    full-bleed inside a plate that CLIPS (the plate is a milled billet with cut
+    edges, `overflow: hidden`), so an outset ring loses its left and right sides
+    and renders as two floating bars rather than a ring around a control. The
+    two tones, their widths and their measured pairing (5.40:1 against each
+    other; the keyline 6.70:1 on epoxy) are unchanged — only the offset is
+    inverted, so the whole ring lands inside the row and stays visible.
+  */
+  .lst .lst-row:focus-visible {
+    outline: none;
+    box-shadow:
+      inset 0 0 0 var(--cd-focus-keyline-width) var(--cd-focus-keyline),
+      inset 0 0 0 calc(var(--cd-focus-keyline-width) + var(--cd-focus-width))
+        var(--cd-role-focus);
+  }
+
+  /* hover is a hint, never a commit — one groove's worth of lift */
+  @media (hover: hover) {
+    .lst-row:hover:not([aria-disabled="true"]) {
+      --cd-stack: inset 0 0 0 1px #ffffff33;
+    }
+  }
+
+  /* =====================================================================
+     8 · THE THUMB PLATE — the three consequences, in a fixed place
+     ===================================================================== */
+
+  .lst-thumb[data-cd-encl] {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: var(--lst-gap);
+    padding: calc(var(--lst-gap) / 2) var(--lst-pad);
+    border-radius: var(--cd-chamfer-foot);
+    background: var(--lst-ceramic);
+    box-shadow: var(--lst-cast);
+  }
+
+  .lst-putback,
+  .lst-next,
+  .lst-close {
+    flex: 1 1 0;
+    min-inline-size: 0;
+    justify-content: flex-start;
+    gap: 0.375rem;
+    overflow: hidden;
+    min-block-size: var(--lst-row); /* one-thumb: 56px, not the 44px Floor */
+    padding-inline: 0.375rem;
+    background: var(--lst-ceramic);
+    color: var(--cd-ink);
+  }
+
+  .lst-putback {
+    position: relative;
+    flex: 1.3 1 0;
+  }
+
+  /* the cap and what it will do to, stacked — one key, one consequence, named */
+  .lst-key-stack {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-inline-size: 0;
+    text-align: start;
+  }
+
+  .lst-key-cap {
+    font-size: var(--cd-size-1);
+    font-weight: 700;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .lst-key-sub {
+    inline-size: 100%;
+    font-size: var(--cd-size-1);
+    font-weight: 400;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /*
+    THE WINDOW, ON THE KEY THAT CLOSES IT.
+
+    DECLARED DELTA. Section 3 casts the flow gauge as a 1.25rem COLUMN, and the
+    row's own sliver is exactly that. This one is II.3.16's visible LINEAR FILL
+    instead — the grammar the Foundry already gives a control for its own
+    progress, and the grammar the foundry's GuardedKey uses. Same clock, same
+    1800ms, same taper curve; the form follows where it is mounted. A 20px
+    column beside an 8-character cap left the cap 13px and clipped it mid-glyph,
+    measured at 390px; a control that cannot print its own consequence has
+    failed §1 harder than a geometry note.
+  */
+  .lst-runout {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    block-size: 0.25rem;
+    overflow: hidden;
+    background: var(--cd-live-well);
+    box-shadow: inset 0 1px 2px #000000a6;
+  }
+
+  .lst-runout-fill {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: 0%;
+    background: var(--cd-role-live);
+  }
+
+  .lst-runout[data-lst-running="true"] .lst-runout-fill {
+    animation: lst-runout-drain var(--lst-runout-ms) var(--lst-ease-taper) both;
+  }
+
+  @keyframes lst-runout-drain {
+    from {
+      inline-size: 100%;
+      background-color: var(--cd-role-live);
+    }
+    to {
+      inline-size: 0%;
+      background-color: var(--cd-role-live-dim);
+    }
+  }
+
+
+  /* =====================================================================
+     9 · THE TRAYS — the pad, and the close read
+     ===================================================================== */
+
+  .lst-pad-tray,
+  .lst-close-tray {
+    background: var(--lst-ceramic);
+    color: var(--cd-ink);
+    border-radius: var(--cd-chamfer-head) var(--cd-chamfer-head) 0 0;
+  }
+
+  .lst-pad-tray .cd-tray-head,
+  .lst-close-tray .cd-tray-head {
+    background: var(--lst-chrome-h);
+    box-shadow: var(--cd-shadow-well);
+  }
+
+  .lst-pad-tray .cd-tray-title,
+  .lst-close-tray .cd-tray-title {
+    margin: 0;
+    font-size: var(--cd-size-1);
+    color: var(--cd-ink);
+  }
+
+  .lst-pad {
+    display: flex;
+    flex-direction: column;
+    gap: var(--lst-gap);
+  }
+
+  .lst-pad-read[data-cd-surface] {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--lst-gap);
+    padding: var(--lst-gap) var(--lst-pad);
+  }
+
+  .lst-pad-was {
+    font-size: var(--cd-size-1);
+    font-weight: 400;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    display: flex;
+    align-items: baseline;
+    gap: var(--lst-gap);
+  }
+
+  .lst-pad-draft {
+    font-size: var(--cd-size-5);
+    font-weight: 700;
+    color: var(--cd-ink);
+    min-inline-size: 8ch;
+    text-align: end;
+  }
+
+  .lst-pad-keys {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--lst-gap);
+  }
+
+  .lst-pad-key {
+    min-block-size: var(--lst-row); /* PLAN §6.9 — large keys, >=56px */
+    background: var(--lst-ceramic);
+    color: var(--cd-ink);
+    font-size: var(--cd-size-4);
+  }
+
+  .lst-pad-key .cd-key-cap {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .lst-pad-done {
+    min-block-size: var(--lst-row);
+    background: var(--lst-ceramic);
+    color: var(--cd-ink);
+    font-size: var(--cd-size-1);
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+  }
+
+  .lst-close-total[data-cd-surface] {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: 0.25rem var(--lst-gap);
+    padding: var(--lst-gap) var(--lst-pad);
+  }
+
+  .lst-close-key {
+    font-size: var(--cd-size-1);
+    font-weight: 400;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+  }
+
+  .lst-close-val {
+    font-size: var(--cd-size-4);
+    font-weight: 700;
+    text-align: end;
+  }
+
+  .lst-close-table {
+    inline-size: 100%;
+    border-collapse: collapse;
+    font-size: var(--cd-size-2);
+  }
+
+  .lst-close-table th,
+  .lst-close-table td {
+    padding: 0.375rem var(--lst-gap);
+    text-align: start;
+    box-shadow: inset 0 -1px 0 #00000038;
+  }
+
+  .lst-close-table thead th {
+    font-size: var(--cd-size-1);
+    font-weight: 400;
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+  }
+
+  .lst-close-table td {
+    text-align: end;
+    font-weight: 700;
+  }
+
+  .lst-close-table-plate[data-cd-surface],
+  .lst-close-empty[data-cd-surface] {
+    padding: var(--lst-gap);
+  }
+
+  .lst-close-strip {
+    margin: 0;
+    font-size: var(--cd-size-1);
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+    color: var(--cd-ink);
+  }
+
+  /* =====================================================================
+     10 · OFF STATES — a blanked plate with the reason engraved on it
+     ===================================================================== */
+
+  .lst-off[data-cd-encl],
+  .lst-done[data-cd-encl] {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--lst-gap);
+    padding: var(--lst-pad);
+    border-radius: var(--cd-chamfer-foot);
+  }
+
+  .lst-off-face[data-cd-surface],
+  .lst-done-face[data-cd-surface] {
+    padding: var(--lst-gap) var(--lst-pad);
+  }
+
+  .lst-off-face .cd-prose,
+  .lst-done-face .cd-prose {
+    margin: 0;
+    font-size: var(--cd-size-2);
+    color: var(--cd-ink);
+  }
+
+  .lst-off-key,
+  .lst-done .cd-key {
+    background: var(--lst-ceramic);
+    color: var(--cd-ink);
+    font-size: var(--cd-size-1);
+    letter-spacing: var(--cd-track-label);
+    text-transform: uppercase;
+  }
+
+  /* =====================================================================
+     11 · TROPHY MODE
+     ===================================================================== */
+
+  .lst[data-lst-trophy="true"] .lst-register-mount,
+  .lst[data-lst-trophy="true"] .lst-done,
+  .lst[data-lst-trophy="true"] .lst-stations,
+  .lst[data-lst-trophy="true"] .lst-thumb {
+    /* "Every healthy station simply is not rendered." Hidden, not deleted, so
+       the bay keeps its measured height and the register is intact on wake. */
+    visibility: hidden;
+  }
+
+  .lst[data-lst-trophy="true"] .lst-frame {
+    /* screencraft/01 — 1.00 active / 0.55 ambient, 4000ms linear between. */
+    filter: brightness(0.55);
+    transition:
+      filter 4000ms linear,
+      transform 4000ms linear;
+  }
+
+  .lst-trophy[data-cd-encl] {
+    /* it stands in the bay the register vacated — never over the instruments */
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    gap: var(--lst-gap);
+    padding: var(--lst-pad);
+    border-radius: var(--cd-chamfer-head);
+    background: var(--lst-ceramic);
+    /* II.4.23 — 420ms settling into the wall, 240ms back to the hand */
+    animation: lst-trophy-enter 420ms var(--cd-ease-settle) both;
+  }
+
+  @keyframes lst-trophy-enter {
+    from {
+      opacity: 0;
+      transform: scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .lst-trophy-line,
+  .lst-trophy-age {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: var(--lst-gap);
+  }
+
+  .lst-trophy-fig {
+    font-size: var(--lst-trophy-fig);
+    font-weight: 700;
+    color: var(--cd-ink);
+  }
+
+  .lst-trophy-age .cd-data {
+    font-size: var(--lst-trophy-age);
+    font-weight: 700;
+    color: var(--cd-ink);
+  }
+
+  .lst-trophy-line[data-lst-role="warning"] .lst-trophy-fig {
+    color: var(--cd-alert-ink);
+    box-shadow: inset 0 -2px 0 var(--cd-alert-ink);
+  }
+
+  /* =====================================================================
+     12 · REDUCED MOTION — II.4.26, translate, never delete
+     ===================================================================== */
+  @media (prefers-reduced-motion: reduce) {
+    .lst {
+      /*
+        THE TAPER'S DURATION IS THE DATA, so it survives; only its drama is
+        translated. 1800ms of undo window with a linear fill states exactly the
+        same fact as 1800ms on the taper curve. Deleting it would delete the
+        window itself, which II.4.26 forbids: "position that carries meaning
+        still changes ... the semantic layer is not negotiable."
+      */
+      --lst-ease-taper: linear;
+    }
+
+    .lst-frame {
+      transition: none;
+    }
+
+    /* the annunciator's 2Hz square becomes a steady burn plus its printed word */
+    .lst-head[data-lst-ann="latched"] {
+      animation: none;
+      box-shadow:
+        inset 0 0 0 2px var(--cd-alert-ink),
+        var(--cd-shadow-t3);
+    }
+
+    .lst-trophy[data-cd-encl] {
+      animation-duration: var(--cd-reduced-fade);
+    }
+  }
+
+  /* =====================================================================
+     13 · FORCED COLOURS — the material argument is the OS's to discard
+     ===================================================================== */
+  @media (forced-colors: active) {
+    .lst,
+    .lst-frame {
+      background: Canvas;
+      color: CanvasText;
+    }
+
+    .lst::before,
+    .lst::after {
+      content: none;
+    }
+
+    .lst-column,
+    .lst-seatbar,
+    .lst-station-track,
+    .lst-runout,
+    .lst-sliver,
+    .lst-mask {
+      background: Canvas;
+      border: 1px solid CanvasText;
+      box-shadow: none;
+      forced-color-adjust: none;
+    }
+
+    .lst-column-fill,
+    .lst-seatbar-track,
+    .lst-runout-fill,
+    .lst-sliver-fill,
+    .lst-station-mark {
+      background: CanvasText;
+      forced-color-adjust: none;
+    }
+
+    .lst-seatbar-cover {
+      background: Canvas;
+      box-shadow: inset 1px 0 0 CanvasText;
+    }
+
+    .lst-row {
+      border: 1px solid CanvasText;
+      color: ButtonText;
+    }
+
+    .lst .lst-row:focus-visible {
+      outline: 2px solid Highlight;
+      outline-offset: -4px;
+      box-shadow: none;
+    }
+
+    .lst-dome {
+      background: ButtonFace;
+      border: 1px solid ButtonText;
+      box-shadow: none;
+      forced-color-adjust: none;
+    }
+
+    .lst-row[data-lst-bought="true"] .lst-dome {
+      background: Highlight;
+    }
+
+    .lst-row[data-lst-bought="true"] .lst-dome::after {
+      border-color: HighlightText;
+    }
+
+    .lst-ann-chevron {
+      border-color: CanvasText;
+      opacity: 1;
+    }
+
+    .lst-chip[data-lst-chip="verify"],
+    .lst-till-line[data-lst-role="warning"],
+    .lst-trophy-line[data-lst-role="warning"] {
+      /* the role survives as a real border rather than as a lost box-shadow */
+      box-shadow: none;
+      border-block-end: 2px solid CanvasText;
+    }
+  }
+
+  /* =====================================================================
+     14 · GEOMETRY BY VIEWPORT
+     ===================================================================== */
+  /*
+    THE PHONE IS THE REAL ONE. This screen arrives cold from a QR scan on
+    another device and is operated one-handed in a shop, so 390x844 is the
+    condition it lives in and 1280x800 is the desk it is inspected from.
+  */
+  @media (min-width: 48rem) {
+    .lst-frame {
+      display: grid;
+      /*
+        THE DESK IS A CONTROL COLUMN BESIDE A REGISTER, not a phone stretched.
+        The first build left the thumb plate across the foot and the left column
+        carried 460px of bare mount under the seat bar — CORRECTIONARY 5.5's
+        "default politeness applied everywhere". The keys move into the column
+        they belong to and the register takes the whole right side.
+      */
+      grid-template-columns: 22rem minmax(0, 1fr);
+      grid-template-rows: auto 1fr auto;
+      grid-template-areas:
+        "head    head"
+        "cluster bay"
+        "thumb   bay";
+    }
+
+    .lst-head[data-cd-encl] {
+      grid-area: head;
+    }
+
+    .lst-cluster {
+      grid-area: cluster;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-content: start;
+    }
+
+    /* (0,2,0) — the till and the seat bar each declare their own flex at that
+       specificity, so the desk's "do not stretch" has to match it. */
+    .lst-cluster > .lst-till[data-cd-encl],
+    .lst-cluster > .lst-seats[data-cd-encl] {
+      flex: 0 0 auto;
+    }
+
+    /* the column takes its chapter height where there is room for it */
+    .lst-till[data-cd-encl] .lst-column {
+      block-size: 7rem;
+    }
+
+    .lst-bay {
+      grid-area: bay;
+    }
+
+    .lst-thumb[data-cd-encl] {
+      grid-area: thumb;
+      align-self: end;
+      flex-direction: column;
+      align-items: stretch;
+      gap: calc(var(--lst-gap) / 2);
+      padding: var(--lst-gap);
+    }
+
+    .lst-thumb[data-cd-encl] .cd-key {
+      flex: none;
+    }
+
+    .lst-trophy[data-cd-encl] {
+      inset-inline: 12%;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .lst {
+      /* the chassis rail moves to the block-end edge below this breakpoint */
+      block-size: calc(100dvh - var(--fd5-rail-footprint, 3.5rem) - 2rem);
+    }
+
+    /* the arbiter's own duty is prose and gets a line of its own */
+    .lst-ann {
+      flex-wrap: wrap;
+      row-gap: 0.25rem;
+    }
+
+    .lst-ann-face[data-cd-surface] {
+      order: 2;
+      flex: 1 1 0;
+      min-inline-size: 0;
+    }
+
+    .lst-ann-keys {
+      order: 3;
+      flex: none;
+    }
+
+    /* the hero steps down one rung of the CLOSED ladder (II.6.19) at phone
+       width. The top step is RESERVED to one numeral per screen, not required
+       of one, and 4.25rem of "£170.44" is 287px of a 342px plate. */
+    .lst-hero {
+      font-size: var(--cd-size-6);
+    }
+
+    /* a block-end tray must not paint over the rail that leaves the room */
+    .lst-pad-tray,
+    .lst-close-tray {
+      --cd-tray-offset: var(--fd5-rail-footprint, 3.5rem);
+    }
+
+  }
+
+  /*
+    390px, MEASURED. The identity slot at this width is
+      390 - 24 (frame padding) - 8 (row start pad) - 44 (mark) - 8 (gap)
+          - 12 (row end pad) - 6ch price (~58px) - 8 (gap) - 20 (sliver gutter)
+      = 208px
+    which seats 26 characters of the 0.875rem UI voice. The longest real label
+    in the dataset is "Chipotles in adobo sauce, chopped" at 33, so it cuts at
+    the tail with an ellipsis and carries its full text in both the accessible
+    name and the title. II.6.22's grammar: prose cuts at the tail, identifiers
+    in the middle; a product name is prose.
+  */
+  @media (max-width: 24rem) {
+    .lst-frame {
+      padding: var(--lst-gap);
+    }
+
+    .lst-price {
+      min-inline-size: 5ch;
+    }
+  }
 }

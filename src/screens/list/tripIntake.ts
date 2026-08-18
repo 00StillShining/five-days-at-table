@@ -153,15 +153,40 @@ export function loadLastTrip(): TripEnvelope | null {
  * index.tsx needs to call.
  */
 export function resolveInitialTrip(query: string): TripEnvelope | null {
+  return resolveInitialTripResult(query).trip;
+}
+
+/**
+ * Why there is no trip is a different fact from there being none, and the
+ * screen prints the difference.
+ *
+ * CORRECTIONARY 4, honesty: "no invented data". "No trip loaded" and "that link
+ * did not decode" send a shopper standing in a doorway to two different places
+ * — the desk, or the person holding the other phone — so the off state has to
+ * be able to tell them apart. The three reasons below are exhaustive by
+ * construction: either a fragment decoded, or one arrived and failed, or none
+ * arrived at all.
+ */
+export type TripSource = "fragment" | "cache" | "decode-failed" | "none";
+
+export interface TripResolution {
+  trip: TripEnvelope | null;
+  source: TripSource;
+}
+
+export function resolveInitialTripResult(query: string): TripResolution {
   const fragment = extractTripPayload(query);
   if (fragment) {
     const decoded = decodeTrip(fragment);
     if (decoded) {
       saveTrip(decoded);
-      return decoded;
+      return { trip: decoded, source: "fragment" };
     }
     // Corrupt/foreign fragment: fall through to whatever was cached rather
     // than showing "no trip" when a perfectly good previous trip exists.
+    const cached = loadLastTrip();
+    return cached ? { trip: cached, source: "cache" } : { trip: null, source: "decode-failed" };
   }
-  return loadLastTrip();
+  const cached = loadLastTrip();
+  return cached ? { trip: cached, source: "cache" } : { trip: null, source: "none" };
 }

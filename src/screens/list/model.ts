@@ -1,111 +1,189 @@
-// Pure domain/presentation helpers for LIST (PLAN §6.9). No food facts of
-// its own — everything here operates on the trip envelope
-// (src/engine/tripCodec.ts, the real orchestrator-pinned contract) and the
-// contract-pinned shopTicks/priceChecks slices, never data/*.json directly
-// (this screen is deliberately decoupled from src/data: every field a row
-// needs — ingId, label, qty, packG, aisle, price — already lives on the row).
+/**
+ * src/screens/list/model.ts — LIST's pure arithmetic, in 20 IRREDUCIBLE.
+ *
+ * No DOM, no timers, no React. Everything here operates on the trip envelope
+ * (src/engine/tripCodec.ts, orchestrator-pinned) and the contract-pinned
+ * shopTicks / priceChecks slices — never on src/data directly, because every
+ * field a row needs already travels on the row.
+ *
+ * THE SHAPE OF THE SCREEN, AND WHY THE FUNCTIONS BELOW EXIST
+ * ---------------------------------------------------------------------------
+ * IRREDUCIBLE's Trophy clause is the structural idea the whole screen is built
+ * on: "Every healthy station simply is not rendered — a blank plate has nothing
+ * to report, and this language does not spend a pixel proving a fact already
+ * true by absence." On a shopping list that reads as: A ROW YOU HAVE BOUGHT IS
+ * NOT RENDERED. The register empties itself as the trolley fills, which is why
+ * `owedRows` and `boughtRows` are the two partitions everything else is
+ * derived from, and why nothing here needs a scroll position.
+ *
+ * The 1800ms run-out (§5, the exception II.1.15 sets aside for this one
+ * language) is the undo window. A row that has just been pressed is neither
+ * owed nor gone: it is IN FLIGHT, still rendered, its flow gauge draining. See
+ * `RunOut` below and useRunOut.ts.
+ */
+
 import type { TripEnvelope, TripKind, TripRow, TripShop } from "../../engine/tripCodec";
 import type { PriceChecks, ShopTicks } from "../../state/types";
 import { formatPackG } from "../../state/format";
 
+/* ------------------------------------------------------------------ */
+/* committed constants                                                 */
+/* ------------------------------------------------------------------ */
+
+/**
+ * §5 — "IRREDUCIBLE instead declares the named alternative: a long progressive
+ * taper, arriving over 1800ms on the taper curve."
+ *
+ * DECLARED DELTA (CORRECTIONARY 6.5). The chapter's window is a 30000ms dwell
+ * FOLLOWED BY the 1800ms taper, nominal to a tap's own factory run. Here the
+ * dwell is ZERO and the taper is the whole window, because the thing the window
+ * holds open is an undo, and a shopper who has to wait thirty seconds for a
+ * mistake to become undoable has been given a delay, not a window. The taper's
+ * own duration and curve are the chapter's, unchanged; only the dwell in front
+ * of it is dropped, and the drop is stated rather than smuggled.
+ */
+export const RUNOUT_MS = 1800;
+
+/** §5 — `--cd-dl400-ease-taper`, this language's own settle-family curve. */
+export const TAPER_EASE = "cubic-bezier(0.22, 0.68, 0.32, 1)";
+
+/** The market stall's shop code in the pinned envelope. */
 export const MARKET_SHOP_CODE = "X";
 
-/** The two aisle-grouped supermarket panes the thumb-bar paddle switches
- * between (PLAN §6.9: "Two-position shop paddle mor|sai"). The market shop
- * (code X, if present) is never one of these two — it renders as a separate
- * flat "ticket" view instead (see marketShop() below). */
-export function paddleShops(trip: TripEnvelope): TripShop[] {
-  return trip.shops.filter((s) => s.code !== MARKET_SHOP_CODE).slice(0, 2);
+/* ------------------------------------------------------------------ */
+/* stations                                                            */
+/* ------------------------------------------------------------------ */
+
+/**
+ * The station bar's seats. IRREDUCIBLE's regulator dial has "three seats only
+ * ... because the real object offers exactly three flow rates, and a dial
+ * pretending to finer resolution would be decorating an installer's decision
+ * with false precision." A trip offers exactly as many stations as it has
+ * shops — two, three, or one — so the bar has exactly that many seats, hard
+ * stops at both ends, never a wrap.
+ */
+export interface Station {
+  code: string;
+  /** The seat's stamped word. Three letters, the register's own one size. */
+  seat: string;
+  /** The full name, printed on the open station's own plate. */
+  name: string;
+  rows: TripRow[];
 }
 
-export function marketShop(trip: TripEnvelope): TripShop | null {
-  return trip.shops.find((s) => s.code === MARKET_SHOP_CODE) ?? null;
+const SEAT_WORD: Record<string, string> = { M: "mor", S: "sai", X: "mkt" };
+
+export function stationsOf(trip: TripEnvelope): Station[] {
+  return trip.shops.map((shop: TripShop) => ({
+    code: shop.code,
+    seat: SEAT_WORD[shop.code] ?? shop.code.slice(0, 3).toLowerCase(),
+    name: shop.name,
+    rows: shop.rows,
+  }));
 }
 
-/** Short paddle-face label for a shop, per PLAN §6.9's mock ("mor"/"sai"). */
-export function paddleLabel(shop: TripShop): string {
-  const byCode: Record<string, string> = { M: "mor", S: "sai" };
-  return byCode[shop.code] ?? shop.name.slice(0, 3).toLowerCase();
+/* ------------------------------------------------------------------ */
+/* ticks                                                               */
+/* ------------------------------------------------------------------ */
+
+export function isBought(ticks: ShopTicks[string] | undefined, ingId: string): boolean {
+  return Boolean(ticks?.[ingId]);
 }
 
 export function allRows(trip: TripEnvelope): TripRow[] {
   return trip.shops.flatMap((s) => s.rows);
 }
 
+/* ------------------------------------------------------------------ */
+/* aisle groups — R7's accordion, one section open at a time           */
+/* ------------------------------------------------------------------ */
+
 export interface AisleGroup {
+  id: string;
   aisle: string;
-  rows: TripRow[];
+  /** Still owed, PLUS anything still inside its own run-out window. */
+  owed: TripRow[];
+  /** Every row of this aisle, owed or not — the denominator on the lid. */
+  all: TripRow[];
 }
 
-/** Groups a shop's rows by aisle, preserving first-seen aisle order (the
- * trip's own row order is assumed to already walk the store layout — LIST
- * has no independent aisle-ordering data of its own). */
-export function groupByAisle(rows: TripRow[]): AisleGroup[] {
+/**
+ * Group one station's rows by aisle, preserving the trip's own row order (the
+ * envelope's order already walks the store layout; LIST has no aisle-ordering
+ * data of its own and must not invent one).
+ *
+ * `inFlight` keeps a just-pressed row in its group for the length of its
+ * run-out, so the undo window has something to undo.
+ */
+export function aisleGroups(
+  station: Station | null,
+  ticks: ShopTicks[string] | undefined,
+  inFlight: ReadonlySet<string>
+): AisleGroup[] {
+  if (!station) return [];
   const order: string[] = [];
-  const map = new Map<string, TripRow[]>();
-  for (const r of rows) {
-    if (!map.has(r.aisle)) {
-      map.set(r.aisle, []);
-      order.push(r.aisle);
+  const byAisle = new Map<string, TripRow[]>();
+  for (const row of station.rows) {
+    const aisle = row.aisle || "unaisled";
+    if (!byAisle.has(aisle)) {
+      byAisle.set(aisle, []);
+      order.push(aisle);
     }
-    map.get(r.aisle)!.push(r);
+    byAisle.get(aisle)!.push(row);
   }
-  return order.map((aisle) => ({ aisle, rows: map.get(aisle)! }));
-}
-
-export function isTicked(ticks: ShopTicks[string] | undefined, ingId: string): boolean {
-  return Boolean(ticks?.[ingId]);
-}
-
-/** Row order WITHIN one aisle: unticked (and just-ticked-but-not-yet-settled)
- * rows keep their original position; settled-ticked rows sink to the bottom,
- * in their original relative order (PLAN §6.9: "row settles below unticked
- * items within its aisle after a ~1s undo grace"). */
-export function orderRowsForDisplay(rows: TripRow[], ticks: ShopTicks[string] | undefined, settled: ReadonlySet<string>): TripRow[] {
-  const primary: TripRow[] = [];
-  const sunk: TripRow[] = [];
-  for (const r of rows) {
-    const ticked = isTicked(ticks, r.ingId);
-    if (ticked && settled.has(r.ingId)) sunk.push(r);
-    else primary.push(r);
+  const groups: AisleGroup[] = [];
+  for (const aisle of order) {
+    const all = byAisle.get(aisle)!;
+    const owed = all.filter((r) => !isBought(ticks, r.ingId) || inFlight.has(r.ingId));
+    // "Every healthy station simply is not rendered." An aisle with nothing
+    // left to fetch is not a lid with a zero on it — it is gone.
+    if (owed.length === 0) continue;
+    groups.push({ id: `${station.code}:${aisle}`, aisle, owed, all });
   }
-  return [...primary, ...sunk];
+  return groups;
 }
 
-/** 5-segment normalized progress bar (PLAN §6.9 mock: "●●○○○ 3/9" — 3/9 ≈
- * 33%, which rounds to 2 of 5 filled dots, exactly matching the mock). */
-export function progressDots(ticked: number, total: number, slots = 5): { filled: number; slots: number } {
-  if (total <= 0) return { filled: 0, slots };
-  return { filled: Math.round((ticked / total) * slots), slots };
+/** Trip-wide, newest tick first — the BOUGHT lid's own rows. */
+export function boughtRows(
+  trip: TripEnvelope,
+  ticks: ShopTicks[string] | undefined,
+  inFlight: ReadonlySet<string>
+): TripRow[] {
+  const rows = allRows(trip).filter((r) => isBought(ticks, r.ingId) && !inFlight.has(r.ingId));
+  return rows.sort((a, b) => {
+    const at = ticks?.[a.ingId]?.at ?? "";
+    const bt = ticks?.[b.ingId]?.at ?? "";
+    return at < bt ? 1 : at > bt ? -1 : 0;
+  });
 }
 
-export function countTicked(rows: TripRow[], ticks: ShopTicks[string] | undefined): number {
-  return rows.reduce((n, r) => n + (isTicked(ticks, r.ingId) ? 1 : 0), 0);
+/** The station a row belongs to, for the BOUGHT lid's own trailing chip. */
+export function stationCodeOf(trip: TripEnvelope, ingId: string): string {
+  for (const shop of trip.shops) if (shop.rows.some((r) => r.ingId === ingId)) return shop.code;
+  return "";
 }
 
-/** Effective (current) price for a row: a recorded price-check always wins
- * over the planned/estimated price — that IS what "verify" means (PLAN
- * §6.9's numeric pad writes priceChecks, which then supersedes the estimate
- * for both the odometer and the row's own display). */
+/** How many rows this station still owes. A zero here prints CLEAR on its seat. */
+export function owedCount(station: Station, ticks: ShopTicks[string] | undefined): number {
+  return station.rows.reduce((n, r) => n + (isBought(ticks, r.ingId) ? 0 : 1), 0);
+}
+
+/* ------------------------------------------------------------------ */
+/* price                                                               */
+/* ------------------------------------------------------------------ */
+
+/** A recorded shelf price always beats the planned one — that IS "verify". */
 export function effectivePrice(row: TripRow, priceChecks: PriceChecks): number {
   return priceChecks[row.ingId]?.price ?? row.price;
 }
 
-export function isResolvedEstimate(row: TripRow, priceChecks: PriceChecks): boolean {
-  return row.estimate && Boolean(priceChecks[row.ingId]);
-}
-
-/** Still shown with the EstimateMark (PLAN: "EstimateMark on estimate
- * rows") — flips off once verified, since verifying REPLACES the estimate
- * with a confirmed shelf price. */
 export function isStillEstimate(row: TripRow, priceChecks: PriceChecks): boolean {
   return row.estimate && !priceChecks[row.ingId];
 }
 
 /**
- * The single active verify nominee across the WHOLE trip (PLAN §6.9: "One
- * [verify] nominee active at a time"), deterministic: first shop in trip
- * order, first aisle in row order, first unresolved verify-flagged row.
+ * The one active verify nominee across the whole trip, deterministic: first
+ * shop in trip order, first row in aisle order, first unresolved flag.
  */
 export function activeVerifyIngId(trip: TripEnvelope, priceChecks: PriceChecks): string | null {
   for (const shop of trip.shops) {
@@ -120,10 +198,6 @@ export function outstandingVerifyCount(trip: TripEnvelope, priceChecks: PriceChe
   return allRows(trip).filter((r) => r.verify && !priceChecks[r.ingId]).length;
 }
 
-/** Locate a row (and its owning shop) anywhere in the trip by ingId — used
- * when the shared app-wide ArbiterSlot nominates a verify-nominee that may
- * belong to whichever shop pane ISN'T currently on screen (index.tsx's
- * handleArbiterActivate switches the pane to it before opening the pad). */
 export function findRowAndShop(trip: TripEnvelope, ingId: string): { row: TripRow; shop: TripShop } | null {
   for (const shop of trip.shops) {
     const row = shop.rows.find((r) => r.ingId === ingId);
@@ -132,72 +206,125 @@ export function findRowAndShop(trip: TripEnvelope, ingId: string): { row: TripRo
   return null;
 }
 
-/** Total spend so far, in integer pence (avoids float drift across many
- * ticks): sum of effectivePrice() over every TICKED row in the whole trip,
- * regardless of which shop pane is currently displayed — the odometer is a
- * whole-trip running total (PLAN §6.9's thumb bar shows it beside the
- * two-position paddle, implying it doesn't reset when the paddle flips). */
-export function spentSoFarPence(trip: TripEnvelope, ticks: ShopTicks[string] | undefined, priceChecks: PriceChecks): number {
-  let pence = 0;
+/* ------------------------------------------------------------------ */
+/* the till                                                            */
+/* ------------------------------------------------------------------ */
+
+export interface TillReading {
+  /** Spent so far, integer pence — no float drift across forty-four ticks. */
+  spentP: number;
+  /** What the whole trip is planned to cost, integer pence. */
+  plannedP: number;
+  /** spentP - plannedP when positive, else 0. The over-run, exactly. */
+  overP: number;
+  /** 0..1, clamped. The column's fill height — geometry, not colour. */
+  fill: number;
+  got: number;
+  total: number;
+}
+
+/**
+ * THE PLAN IS THE PLAN, AND IT DOES NOT MOVE.
+ *
+ * The envelope's own prices, never the in-store checks. The first build read
+ * `effectivePrice` here, which meant verifying a higher shelf price quietly
+ * raised the plan to meet the spend and the over-run could never fire —
+ * measured against the real 44-line trip with every price doubled: spend
+ * £340.88, plan £340.88, over £0.00. A budget that follows the till is not a
+ * budget; it is the till with a second name (CORRECTIONARY 4 — "no invented
+ * data, no fake progress").
+ */
+export function plannedPence(trip: TripEnvelope): number {
+  let p = 0;
+  for (const row of allRows(trip)) p += Math.round(row.price * row.qty * 100);
+  return p;
+}
+
+export function tillReading(
+  trip: TripEnvelope,
+  ticks: ShopTicks[string] | undefined,
+  priceChecks: PriceChecks
+): TillReading {
+  let spentP = 0;
+  let got = 0;
+  let total = 0;
   for (const row of allRows(trip)) {
-    if (isTicked(ticks, row.ingId)) pence += Math.round(effectivePrice(row, priceChecks) * 100);
+    total += 1;
+    if (!isBought(ticks, row.ingId)) continue;
+    got += 1;
+    spentP += Math.round(effectivePrice(row, priceChecks) * row.qty * 100);
   }
-  return pence;
+  const plannedP = plannedPence(trip);
+  const overP = Math.max(0, spentP - plannedP);
+  return {
+    spentP,
+    plannedP,
+    overP,
+    fill: plannedP <= 0 ? 0 : Math.min(1, spentP / plannedP),
+    got,
+    total,
+  };
 }
 
-export function gotCounts(trip: TripEnvelope, ticks: ShopTicks[string] | undefined): { got: number; total: number } {
-  const rows = allRows(trip);
-  return { got: countTicked(rows, ticks), total: rows.length };
+/* ------------------------------------------------------------------ */
+/* printing                                                            */
+/* ------------------------------------------------------------------ */
+
+/**
+ * The hero figure. II.6.5 reserves the WIDTH — 7ch, the width of "£999.99" —
+ * on the BOX, in list.css, and never by padding the value.
+ *
+ * The first build of this screen zero-padded the pounds to three digits so the
+ * string was always seven characters. Rendered, that printed "£000.00" for a
+ * basket with nothing in it: three digits that are not in the number. A drum
+ * counter may show a leading zero because a drum physically has one; printed
+ * type has no such excuse, and CORRECTIONARY 4's "no invented data" does not
+ * make an exception for digits that happen to be zero.
+ */
+export function formatPence(pence: number): string {
+  const safe = Math.max(0, Math.round(pence));
+  return `£${Math.floor(safe / 100)}.${String(safe % 100).padStart(2, "0")}`;
 }
 
-export function allTicked(trip: TripEnvelope, ticks: ShopTicks[string] | undefined): boolean {
-  const rows = allRows(trip);
-  return rows.length > 0 && rows.every((r) => isTicked(ticks, r.ingId));
+/** Plain money, for a row's own value block. Never zero-padded. */
+export function formatMoney(pence: number): string {
+  const safe = Math.max(0, Math.round(pence));
+  return `£${(safe / 100).toFixed(2)}`;
 }
 
-/** Maps the envelope's `kind` to arbiter.ts's ArbiterContext.tripDay
- * (verify-nominee scoping) — TripKind is "full" | "day7" (src/engine/
- * tripCodec.ts); state/selectors.ts's own TripDay is 0 | 7, where 0 is the
- * "full" shop (tripBuild's day-0 case buys buy-once/freeze-day0/buy-frozen
- * for BOTH passes of the a-twice fortnight) and 7 is the day-7 top-up —
- * "day0" was this screen's own pre-integration guess and is wrong. */
-export function inferTripDayFromKind(kind: TripKind): 0 | 7 {
-  return kind === "full" ? 0 : 7;
+export function rowPence(row: TripRow, priceChecks: PriceChecks): number {
+  return Math.round(effectivePrice(row, priceChecks) * row.qty * 100);
+}
+
+/**
+ * The secondary slot. Buying one pack is more useful as that pack's size (what
+ * you are looking for on the shelf); buying more than one is more useful as a
+ * count (how many times you pick one up).
+ */
+export function formatQty(qty: number, packG: number): string {
+  return qty > 1 ? `× ${qty}` : formatPackG(packG);
 }
 
 export function kindLabel(kind: TripKind): string {
   return kind === "full" ? "full shop" : "day-7 top-up";
 }
 
-/**
- * "× 4" vs "1kg" style row quantity (PLAN §6.9 mock), derived from the wire
- * fields alone — `qty` is packs-to-buy, `packG` is grams per pack (src/engine/
- * tripCodec.ts's pinned shape; SHOP deliberately doesn't bake a pre-formatted
- * string into the envelope so it isn't inventing LIST's row copy on LIST's
- * behalf, per SHOP's own build report). Buying exactly one pack is more
- * useful shown as that pack's size ("1kg", "400g" — what you're looking for
- * on the shelf); buying more than one is more useful shown as a count
- * ("× 4" — how many times you pick one up), matching the mock's own two
- * examples exactly (frozen spinach: qty 1, packG 1000 -> "1kg"; avocado:
- * qty 5 -> "× 5").
- */
-export function formatQty(qty: number, packG: number): string {
-  if (qty > 1) return `× ${qty}`;
-  return formatPackG(packG);
+/* ------------------------------------------------------------------ */
+/* the state chip — an ink-only trailing lamp (§4, List/Browser)        */
+/* ------------------------------------------------------------------ */
+
+export type RowState = "plain" | "estimate" | "verify" | "checked";
+
+export function rowState(row: TripRow, priceChecks: PriceChecks, activeVerify: string | null): RowState {
+  if (priceChecks[row.ingId]) return "checked";
+  if (activeVerify === row.ingId) return "verify";
+  if (row.estimate) return "estimate";
+  return "plain";
 }
 
-/** "£042.35" style split for the odometer's rolling digit drums — 3
- * zero-padded integer digits minimum (PLAN §6.9 mock), more if the total
- * ever exceeds £999.99 (never truncated). */
-export function formatPence(pence: number): { poundsDigits: string; penceDigits: string; plain: string } {
-  const safe = Math.max(0, Math.round(pence));
-  const pounds = Math.floor(safe / 100);
-  const pennies = safe % 100;
-  const poundsDigits = String(pounds).padStart(3, "0");
-  const penceDigits = String(pennies).padStart(2, "0");
-  return { poundsDigits, penceDigits, plain: `£${poundsDigits}.${penceDigits}` };
-}
-
-export function formatPrice(amount: number): string {
-  return `£${amount.toFixed(2)}`;
-}
+export const ROW_STATE_WORD: Record<RowState, string> = {
+  plain: "",
+  estimate: "est",
+  verify: "verify",
+  checked: "checked",
+};

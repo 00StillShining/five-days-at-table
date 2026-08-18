@@ -1,0 +1,609 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FD-5 LIST — the escalation ladder</title>
+<!--
+  docs/ladder/list-ladder.html — 20 IRREDUCIBLE on LIST, four rungs kept.
+
+  EVERY RUNG ON THIS PAGE RUNS. The Simple rung's state selector really drives
+  it — eleven states, not eleven drawings of states. The Pushed studies really
+  animate and really respond. The Refined rung is the subtraction ledger with
+  the survivors' own geometry. The Signature rung is the shipped control: press
+  a row and it commits at once, the enamel core fires for one frame, the flow
+  gauge fills whole and then tapers to zero over 1800ms, and the row stops
+  being rendered.
+
+  REAL DATA THROUGHOUT, built from the frozen dataset through SHOP's own
+  envelope builder on 2026-08-18 — every row below is a row the codec would
+  actually carry:
+    full day-0 shop ...... 44 costed lines, GBP 170.44, three stations
+                           (Morrisons 28 / Sainsbury's 15 / market 1)
+    tester basket ........ 39 costed lines, GBP 69.83, one station, no estimates
+    day-7 top-up ......... 7 costed lines, GBP 11.03
+    longest name ......... "Chipotles in adobo sauce, chopped" (33 chars)
+    estimate lines ....... 9 in the full shop, 0 in the tester
+    verify nominees ...... jerk paste, chipotles in adobo, egusi
+
+  DECLARED: CD-BRIEF's real-data list names "the 49-line basket". Against the
+  dataset as it stands today the full day-0 trip is FORTY-FOUR costed lines,
+  not 49; the figure in the brief is stale, and this page uses the real one.
+  It also names "a pantry-optional line": the pinned TripEnvelope carries no
+  pantry flag — that classification lives in the variant's own coverage audit
+  and never crosses the wire — so the nearest real thing LIST can show is an
+  ESTIMATE line, and the states below use one.
+
+  No image assets, no WebGL, no network. Open it in a browser.
+-->
+<style>
+  :root {
+    color-scheme: dark;
+    --ui: "Space Grotesk", system-ui, sans-serif;
+    --data: "JetBrains Mono", ui-monospace, monospace;
+    /* the Simple rung's entire palette — the doctrine's own grayscale ramp */
+    --g0:#141414; --g1:#1f1f1f; --g2:#2c2c2c; --g3:#4a4a4a; --g4:#6d6d6d;
+    --g5:#8f8f8f; --g6:#b4b4b4; --g7:#dcdcdc; --g8:#F2F2F2;
+    /* IRREDUCIBLE's committed section-2 registry, for every rung above Simple */
+    --void:#7A7B7D; --epoxy:#9B9C9E; --catch:#B7B8B9;
+    --chrome:#C7CBCD; --chrome-hot:#ECECEA; --chrome-lo:#8A8C8E;
+    --ink:#333435; --alert:#1A1A1A;
+    /* product-wide reserved roles (world.css) — they supersede ch.20's own */
+    --live:#FF2B1A; --live-hot:#FF756A; --live-dim:#76211C; --live-well:#121213;
+    --focus:#4C8FD1; --keyline:#141414;
+    --axis:138deg; --module:.5rem;
+    --settle:cubic-bezier(.16,1,.30,1); --snap:cubic-bezier(.60,0,.10,1);
+    --taper:cubic-bezier(0.22,0.68,0.32,1);
+    --ceramic:
+      radial-gradient(90% 70% at 30% 16%, #ffffff66 0%, #ffffff00 52%),
+      linear-gradient(var(--axis), var(--catch) 0%, var(--epoxy) 100%);
+    --chrome-h: linear-gradient(180deg,#ECECEA 0%,#C7CBCD 34%,#A2A5A7 47%,#8A8C8E 48%,#9DA0A2 62%,#C0C4C6 63%,#E4E4E2 100%);
+    --chrome-v: linear-gradient(90deg,#ECECEA 0%,#C7CBCD 34%,#A2A5A7 47%,#8A8C8E 48%,#9DA0A2 62%,#C0C4C6 63%,#E4E4E2 100%);
+    --cast:
+      inset 0 1px 0 #ececeacc, inset 0 -1px 0 #00000073,
+      0 1px 0 #00000080, 0 4px 8px #0000004d, 0 16px 32px #00000038;
+  }
+  * { box-sizing:border-box }
+  body { margin:0; background:#0c0c0c; color:var(--g7); font-family:var(--ui); line-height:1.55 }
+  main { max-width:76rem; margin:0 auto; padding:2rem 1.25rem 6rem }
+  h1 { font-size:1.5rem; letter-spacing:.02em; margin:0 0 .25rem }
+  h2 { font-size:1.05rem; letter-spacing:.12em; text-transform:uppercase; margin:3.5rem 0 .25rem; color:var(--g8) }
+  h3 { font-size:.8125rem; letter-spacing:.12em; text-transform:uppercase; margin:1.75rem 0 .5rem; color:var(--g5) }
+  p { max-width:62ch; color:var(--g6); font-size:.9375rem }
+  .claim { border-left:2px solid var(--g4); padding-left:.75rem; font-size:.875rem; color:var(--g7); max-width:64ch }
+  .vs { font-family:var(--data); font-size:.8125rem; color:var(--g5); margin:.35rem 0 0; max-width:66ch }
+  .bench { display:flex; gap:1.25rem; flex-wrap:wrap; align-items:flex-start; margin-top:1rem }
+  .plinth { background:#101010; border:1px solid var(--g2); border-radius:.5rem; padding:1rem }
+  .plinth > figcaption { font-family:var(--data); font-size:.75rem; color:var(--g5); margin-bottom:.75rem }
+  table { border-collapse:collapse; font-size:.8125rem; margin-top:.75rem }
+  td,th { border:1px solid var(--g2); padding:.35rem .6rem; text-align:left; vertical-align:top }
+  th { color:var(--g8); font-weight:600 }
+  td.k { color:#9ec98a } td.x { color:#d98f88 }
+  code { font-family:var(--data); font-size:.8125rem; color:var(--g6) }
+  select,button { font-family:var(--ui); font-size:.8125rem }
+  .ctl { display:flex; gap:.5rem; flex-wrap:wrap; align-items:center; margin:.75rem 0 }
+  .ctl label { font-family:var(--data); font-size:.75rem; color:var(--g5) }
+  .ctl select,.ctl button { background:var(--g2); color:var(--g7); border:1px solid var(--g4); padding:.3rem .55rem; border-radius:.25rem; cursor:pointer }
+
+  /* ==================== RUNG 1 · SIMPLE ==================== */
+  /* Grayscale ramp only. No gradient, no shadow stack, no bloom, no texture,
+     no spring. Values snap frame to frame. The TASK must still complete:
+     know what to pick up next, know what the till will say, undo a mistake. */
+  .s { width:23rem; max-width:100%; background:var(--g1); border:1px solid var(--g3); padding:.6rem; font-size:.8125rem }
+  .s-head { display:flex; justify-content:space-between; gap:.5rem; border:1px solid var(--g3); padding:.3rem .45rem; margin-bottom:.4rem }
+  .s-till { display:flex; justify-content:space-between; align-items:baseline; border:1px solid var(--g3); padding:.35rem .45rem; margin-bottom:.4rem }
+  .s-till b { font-family:var(--data); font-size:1.375rem; color:var(--g8); font-weight:400 }
+  .s-lbl { color:var(--g5); font-size:.6875rem; text-transform:uppercase; letter-spacing:.1em }
+  .s-lid { display:flex; justify-content:space-between; border:1px solid var(--g3); padding:.35rem .45rem; margin-bottom:2px; cursor:pointer; background:var(--g2); color:var(--g7); width:100%; text-align:left }
+  .s-lid[aria-expanded="true"] { background:var(--g6); color:var(--g0) }
+  .s-rows { list-style:none; margin:0 0 .4rem; padding:0; font-family:var(--data) }
+  .s-row { display:flex; gap:.5rem; align-items:center; width:100%; border:1px solid var(--g3); border-top:0; background:var(--g1); color:var(--g7); padding:.3rem .45rem; text-align:left; cursor:pointer; font-family:var(--data); font-size:.75rem }
+  .s-row[data-bought="1"] { color:var(--g4) }
+  .s-row .nm { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+  .s-note { color:var(--g5); font-family:var(--data); font-size:.6875rem; margin:.25rem 0 }
+  .s-keys { display:flex; gap:.35rem; margin-top:.4rem }
+  .s-key { border:1px solid var(--g4); background:var(--g2); color:var(--g7); padding:.35rem .6rem; cursor:pointer }
+  .s-key[disabled] { color:var(--g4); cursor:default }
+
+  /* ==================== RUNG 2 · PUSHED ==================== */
+  /* Four studies, ONE axis each. Everything not on that study's axis stays at
+     the Simple rung, so each claim is testable on its own. */
+
+  /* study A — THE PLATE (material only; geometry and motion as Simple) */
+  .pa { display:flex; gap:1rem; flex-wrap:wrap }
+  .pa-tile { width:11rem; height:6rem; display:grid; place-items:center; font-family:var(--data); font-size:.75rem; color:var(--ink) }
+  .pa-flat { background:var(--epoxy) }
+  .pa-ceramic { background-image:var(--ceramic); box-shadow:var(--cast) }
+  .pa-chrome { background-image:var(--chrome-h); box-shadow:inset 0 0 0 1px var(--chrome-lo), inset 0 3px 5px #00000073, inset 0 -1px 0 #ececea99 }
+  .pa-void { background:linear-gradient(var(--axis),#8a8b8d,var(--void)); color:var(--g8) }
+
+  /* study B — THE SEATED PRESS (geometry only; still flat grey ink) */
+  .pb { display:flex; gap:1.5rem; align-items:center; flex-wrap:wrap; background:var(--epoxy); padding:1rem; border-radius:.5rem }
+  .pb-cell { display:grid; place-items:center; width:4rem; height:3.5rem; position:relative }
+  .pb-flat { width:1.25rem; height:1.25rem; border:2px solid var(--ink) }
+  .pb-socket::before { content:""; position:absolute; width:2.75rem; height:1.75rem; border-radius:.875rem; background:var(--live-well);
+    box-shadow: inset 0 2px 3px #000000a6, inset 0 -1px 0 #ececea4d, 0 1px 0 #ffffff40 }
+  .pb-dome { position:relative; width:2.25rem; height:1.25rem; border-radius:.625rem;
+    background:radial-gradient(120% 150% at 30% 18%, #ECECEA 0%, #B7B8B9 34%, #9B9C9E 62%, #7A7B7D 100%);
+    box-shadow: inset 0 1px 0 #ececeacc, inset 0 -2px 2px #00000059, 0 1px 0 #00000073, 0 3px 6px #0000004d }
+  .pb-cap { font-family:var(--data); font-size:.6875rem; color:var(--ink); text-align:center }
+
+  /* study C — THE RUN-OUT (motion only; flat grey plate, no material) */
+  .pc { background:var(--g1); border:1px solid var(--g3); padding:1rem; width:26rem; max-width:100% }
+  .pc-gauge { position:relative; width:1.25rem; height:5rem; background:var(--live-well); border-radius:.25rem; overflow:hidden; display:inline-block; vertical-align:bottom }
+  .pc-fill { position:absolute; inset-inline:0; bottom:0; height:0; background:var(--live) }
+  .pc-gauge[data-run="cut"] .pc-fill { animation:pc-cut 1800ms steps(1,end) both }
+  .pc-gauge[data-run="linear"] .pc-fill { animation:pc-drain 1800ms linear both }
+  .pc-gauge[data-run="taper"] .pc-fill { animation:pc-drain 1800ms var(--taper) both }
+  @keyframes pc-cut { 0%{height:100%;background-color:var(--live)} 99.9%{height:100%;background-color:var(--live)} 100%{height:0} }
+  @keyframes pc-drain { from{height:100%;background-color:var(--live)} to{height:0;background-color:var(--live-dim)} }
+  .pc-legend { font-family:var(--data); font-size:.6875rem; color:var(--g5); text-align:center; width:5rem; display:inline-block }
+
+  /* study D — THE REGISTER (density only; flat grey, no material) */
+  .pd { background:var(--g1); border:1px solid var(--g3); padding:.75rem; width:26rem; max-width:100% }
+  .pd ul { margin:0; padding:0; list-style:none; font-family:var(--data); font-size:.75rem }
+  .pd li { display:flex; justify-content:space-between; gap:1rem; align-items:center; border-top:1px solid var(--g2); padding-inline:.35rem }
+  .pd[data-band="dense"] li { height:2rem }
+  .pd[data-band="standard"] li { height:2.75rem }
+  .pd[data-band="thumb"] li { height:3.5rem }
+  .pd-cap { font-family:var(--data); font-size:.6875rem; color:var(--g5); margin-top:.4rem }
+
+  /* ==================== RUNG 3 · REFINED ==================== */
+  .led { width:100%; max-width:60rem }
+  .led td:first-child { font-family:var(--data); color:var(--g7) }
+
+  /* ==================== RUNG 4 · SIGNATURE ==================== */
+  .sig { width:23rem; max-width:100%; padding:.75rem; border-radius:1.5rem 1.5rem .5rem .5rem;
+    background-image:linear-gradient(var(--axis),#8a8b8d 0%,var(--void) 100%); color:var(--ink) }
+  .sig-plate { border-radius:.5rem; overflow:hidden; background-image:
+      repeating-linear-gradient(180deg,#00000000 0,#00000000 54px,#00000052 54px,#00000052 55px,#ffffff8c 55px,#ffffff8c 56px),
+      var(--ceramic);
+    box-shadow:var(--cast) }
+  .sig-row { display:grid; grid-template-columns:2.75rem minmax(0,1fr) auto; grid-template-rows:auto auto;
+    align-items:center; align-content:center; column-gap:.5rem; row-gap:1px; width:100%; height:56px;
+    padding-inline:.5rem .75rem; border:0; background:none; color:var(--ink); text-align:start; cursor:pointer; font-family:var(--ui) }
+  .sig-mark { position:relative; grid-row:1/3; display:grid; place-items:center }
+  .sig-mark::before { content:""; position:absolute; width:2.75rem; height:1.75rem; border-radius:.875rem; background:var(--live-well);
+    box-shadow: inset 0 2px 3px #000000a6, inset 0 -1px 0 #ececea4d, 0 1px 0 #ffffff40 }
+  .sig-dome { position:relative; width:2.25rem; height:1.25rem; border-radius:.625rem;
+    background:radial-gradient(120% 150% at 30% 18%, #ECECEA 0%, #B7B8B9 34%, #9B9C9E 62%, #7A7B7D 100%);
+    box-shadow: inset 0 1px 0 #ececeacc, inset 0 -2px 2px #00000059, 0 1px 0 #00000073, 0 3px 6px #0000004d;
+    transition:transform 80ms var(--settle), box-shadow 80ms var(--settle) }
+  .sig-row:active .sig-dome { transition:transform 20ms linear, box-shadow 20ms linear; transform:translateY(1px);
+    box-shadow: inset 0 1px 2px #00000059, 0 1px 0 #00000033 }
+  .sig-row[data-commit="1"] .sig-dome {
+    background:radial-gradient(120% 140% at 30% 20%, var(--live-hot) 0%, var(--live-hot) 55%, var(--live) 100%);
+    box-shadow: inset 0 1px 0 #ffffff8c, 0 0 2px #ff2b1acc, 0 0 8px #ff2b1a66, 0 0 24px #ff2b1a29 }
+  .sig-id { grid-column:2; grid-row:1; min-width:0; font-size:.875rem; font-weight:600; letter-spacing:.02em; line-height:1.15;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+  .sig-sec { grid-column:2; grid-row:2; display:flex; gap:.5rem; align-items:center; font-family:var(--data); font-size:.8125rem;
+    letter-spacing:.12em; text-transform:uppercase; overflow:hidden }
+  .sig-chip[data-c="verify"] { font-weight:700; color:var(--alert); box-shadow:inset 0 -2px 0 var(--alert) }
+  .sig-val { grid-column:3; grid-row:1/3; display:flex; align-items:center; gap:.5rem }
+  .sig-price { font-family:var(--data); font-weight:700; font-size:.875rem; min-width:7ch; text-align:end }
+  .sig-sliver { position:relative; width:1.25rem; height:1.75rem; overflow:hidden; flex:none }
+  .sig-sliver[data-run="1"] { border-radius:.25rem; background:var(--live-well); box-shadow:inset 1px 2px 4px #00000047 }
+  .sig-sfill { position:absolute; inset-inline:0; bottom:0; height:100%; background:var(--live);
+    animation:pc-drain 1800ms var(--taper) both }
+  .sig-thumb { display:flex; gap:.5rem; margin-top:.5rem; padding:.25rem .75rem; border-radius:.5rem; background-image:var(--ceramic); box-shadow:var(--cast) }
+  .sig-key { position:relative; flex:1 1 0; min-width:0; overflow:hidden; display:flex; flex-direction:column; align-items:flex-start; justify-content:center;
+    min-height:56px; padding-inline:.375rem; border:0; background-image:var(--ceramic); color:var(--ink); cursor:pointer; border-radius:.25rem;
+    box-shadow:inset 0 1px 0 #ffffff40, inset 0 -1px 0 #00000052, 0 1px 0 #00000066, 0 3px 6px #0000003d }
+  .sig-key[disabled] { cursor:default; box-shadow:inset 0 1px 0 #ffffff14, 0 1px 0 #00000038 }
+  .sig-key b { font-family:var(--data); font-size:.8125rem; letter-spacing:.12em; text-transform:uppercase; white-space:nowrap }
+  /* NOTE, and it is the same trap the shipped screen documents: `.sig-key span`
+     would be (0,1,1) and would beat `.sig-runfill` at (0,1,0) — measured, it
+     silently overrode the gauge's `width:0` and painted a full red bar on an
+     idle key. The sub-line gets its own class. */
+  .sig-key .sig-sub { font-family:var(--data); font-size:.8125rem; font-weight:400; letter-spacing:.12em; text-transform:uppercase;
+    width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+  .sig-run { position:absolute; inset-inline:0; bottom:0; height:.25rem; background:var(--live-well); overflow:hidden }
+  .sig-runfill { position:absolute; inset-block:0; left:0; width:0; background:var(--live) }
+  .sig-run[data-run="1"] .sig-runfill { animation:sig-drain 1800ms var(--taper) both }
+  @keyframes sig-drain { from{width:100%;background-color:var(--live)} to{width:0;background-color:var(--live-dim)} }
+  .sig-lid { display:flex; justify-content:space-between; align-items:center; width:100%; min-height:44px; padding:.25rem .75rem; border:0;
+    border-radius:.5rem; background-image:var(--ceramic); color:var(--ink); font-family:var(--ui); font-size:.8125rem; letter-spacing:.12em;
+    text-transform:uppercase; cursor:pointer; box-shadow:inset 0 1px 0 #ffffff14, 0 1px 0 #00000038;
+    text-shadow:0 -1px 0 #00000047, 0 1px 0 #ffffff33 }
+  .sig-lid[aria-expanded="true"] { font-weight:700; border-end-start-radius:0; border-end-end-radius:0;
+    box-shadow:inset 0 1px 0 #ffffff40, inset 0 -1px 0 #00000052, 0 1px 0 #00000066, 0 3px 6px #0000003d }
+  .sig-conf { display:flex; justify-content:flex-end; gap:.5rem; padding:.25rem .75rem; font-family:var(--data); font-size:.8125rem;
+    letter-spacing:.12em; text-transform:uppercase; color:var(--ink) }
+  @media (prefers-reduced-motion: reduce) {
+    :root { --taper: linear }
+  }
+</style>
+</head>
+<body>
+<main>
+
+<h1>FD-5 · LIST — the escalation ladder</h1>
+<p><code>20 IRREDUCIBLE</code> · the PRESTO DL 400 language, on the screen a shopper holds in one
+hand under 750–1500 lux. Four rungs, every one of them running against the real trip the codec
+carries. Grey is not restraint here: this world's hue count is <b>zero except live</b>, by its own
+section 2, and live is spent on exactly one thing — a window that is genuinely open.</p>
+
+<h2>Rung 1 · Simple</h2>
+<p>The doctrine's grayscale ramp, real data, no gradient, no shadow stack, no texture, no spring,
+no sound. Values snap frame to frame. Every state below is <b>driven</b>, not drawn: pick one and
+the rung really enters it.</p>
+<div class="ctl">
+  <label for="s-state">state</label>
+  <select id="s-state">
+    <option value="full">full — 44 lines, three stations</option>
+    <option value="partial">partial — 12 bought</option>
+    <option value="overflow">overflowing — 13 rows, 3 seats</option>
+    <option value="empty">empty — no trip on this device</option>
+    <option value="error">error — the link did not decode</option>
+    <option value="firstrun">first run — never scanned</option>
+    <option value="loading">loading — declared absent</option>
+    <option value="stale">stale — priced 20 days ago</option>
+    <option value="disabled">disabled — nothing in the window</option>
+    <option value="tester">tester — 39 lines, one station</option>
+    <option value="bought">fully bought — the trolley is full</option>
+  </select>
+</div>
+<figure class="plinth" style="max-width:26rem">
+  <figcaption>SIMPLE · grayscale #141414 → #F2F2F2</figcaption>
+  <div class="s" id="s-rig"></div>
+</figure>
+
+<h2>Rung 2 · Pushed</h2>
+<p>Four studies, one axis each. Everything not on a study's axis stays exactly at Simple, so each
+claim can be falsified on its own.</p>
+
+<h3>Study A — the plate (material only)</h3>
+<p class="claim"><b>Claim:</b> on a world whose whole palette spans <code>#7A7B7D</code> to
+<code>#ECECEA</code>, a plate is told apart from its mount by its <i>machining</i>, not by its
+value. Measured, the void and the epoxy body sit 1.54:1 apart — below every threshold there is.
+The ceramic recipe plus a nickel rim and a real cast is what makes the same two hexes read as two
+objects.</p>
+<div class="bench">
+  <figure class="plinth"><figcaption>flat fill — the enemy's ground</figcaption><div class="pa"><div class="pa-tile pa-flat">EPOXY</div></div></figure>
+  <figure class="plinth"><figcaption>ceramic II.2.13 + nickel rim + cast</figcaption><div class="pa"><div class="pa-tile pa-ceramic">EPOXY</div></div></figure>
+  <figure class="plinth"><figcaption>hard-mirror chrome II.2.8, re-valued</figcaption><div class="pa"><div class="pa-tile pa-chrome">CHANNEL</div></div></figure>
+  <figure class="plinth"><figcaption>the mount</figcaption><div class="pa"><div class="pa-tile pa-void">VOID</div></div></figure>
+</div>
+<p class="vs">vs Simple: the Simple rung's plate is <code>background:#1f1f1f</code> and reads as a
+box. Same information, same ink, same geometry — the second tile reads as a part.</p>
+
+<h3>Study B — the seated press (geometry only)</h3>
+<p class="claim"><b>Claim:</b> the tick target is not a checkbox; it is section 3's domed oval
+paddle, and it has to sit <i>in</i> something. The socket is the live well
+(<code>#121213</code>, 6.81:1 against the plate) — the one near-black value this world owns, and
+the reason forty-four rows read as a machined register rather than a list of rows.</p>
+<div class="bench">
+  <figure class="plinth"><div class="pb">
+    <div><div class="pb-cell"><span class="pb-flat"></span></div><div class="pb-cap">a box</div></div>
+    <div><div class="pb-cell"><span class="pb-dome"></span></div><div class="pb-cap">a paddle</div></div>
+    <div><div class="pb-cell pb-socket"><span class="pb-dome"></span></div><div class="pb-cap">seated</div></div>
+  </div></figure>
+</div>
+<p class="vs">vs Simple: the box and the paddle carry identical semantics. Only the third one
+answers §5.7 — “controls look operable … mistakable for a static icon = failed.”</p>
+
+<h3>Study C — the run-out (motion only)</h3>
+<p class="claim"><b>Claim:</b> the undo window has to be <i>visible as a quantity</i>, and how it
+arrives at zero is the difference between a report and a slam. Section 9's third failure mode is
+“slam-shut — the run-out ends in a single frame instead of the 1800ms taper”. Press each and
+watch: same 1800ms, three different truths about what is happening inside it.</p>
+<div class="bench">
+  <figure class="plinth"><div class="pc">
+    <div style="display:flex;gap:1.5rem;align-items:flex-end">
+      <div><div class="pc-gauge" data-g="cut"><span class="pc-fill"></span></div><div class="pc-legend">cut at zero</div></div>
+      <div><div class="pc-gauge" data-g="linear"><span class="pc-fill"></span></div><div class="pc-legend">linear</div></div>
+      <div><div class="pc-gauge" data-g="taper"><span class="pc-fill"></span></div><div class="pc-legend">taper</div></div>
+    </div>
+    <div class="ctl"><button id="pc-fire">fire all three</button>
+      <span class="s-note">1800ms · cubic-bezier(0.22, 0.68, 0.32, 1)</span></div>
+  </div></figure>
+</div>
+<p class="vs">vs Simple: Simple has no window at all — an untick is a second press with no clock
+behind it, so a mis-tap in a shop is only recoverable by hunting for the row again.</p>
+
+<h3>Study D — the register band (density only)</h3>
+<p class="claim"><b>Claim:</b> II.6.13's band table gives a working list Standard, 2rem. This
+screen is operated one-handed with a trolley in the other, so the Floor's 44px is a floor and
+<b>56px is the target</b>. The cost is real and it is paid in rows-on-screen: at 390×844 the same
+bay seats 6 rows Dense, 4 Standard, 3 at 56px.</p>
+<div class="bench">
+  <figure class="plinth"><div class="pd" id="pd-rig" data-band="thumb"></div>
+    <div class="ctl"><label for="pd-band">band</label>
+      <select id="pd-band"><option value="dense">dense 2rem</option><option value="standard">standard 2.75rem</option><option value="thumb" selected>one-thumb 3.5rem</option></select>
+      <span class="pd-cap" id="pd-count"></span></div>
+  </figure>
+</div>
+<p class="vs">vs Simple: Simple's rows are whatever the text needs, which measured 26px — under
+the Floor on the one axis a thumb actually uses.</p>
+
+<h2>Rung 3 · Refined — the re-authored rung</h2>
+<p>CD-BRIEF ruling 4: <i>“subtract jobless elements; keep every survivor at full material
+strength.”</i> The ledger asks one question of each element — <b>does it state a value, or let the
+hand do something?</b> — never “is it the hero?”.</p>
+<table class="led">
+  <thead><tr><th>element</th><th>verdict</th><th>why</th></tr></thead>
+  <tbody>
+    <tr><td>shop paddle (mor|sai)</td><td class="x">cut</td><td>two of three stations, chosen by a control that hid the third. Replaced by the station bar's own hard-stopped seats — one seat per shop the trip actually has.</td></tr>
+    <tr><td>market-ticket pane mode</td><td class="x">cut</td><td>a second whole view for one row. The market is a station like any other.</td></tr>
+    <tr><td>odometer digit drums</td><td class="x">cut</td><td>a drum states nothing the printed figure does not, and money has no rotation in it (§3's own argument against a dial for the gauge).</td></tr>
+    <tr><td>zero-padded pounds (£000.00)</td><td class="x">cut</td><td>three digits that are not in the number. II.6.5 reserves the BOX; padding the value is invented data.</td></tr>
+    <tr><td>progress dots ●●○○○</td><td class="x">cut</td><td>a five-slot rounding of a figure printed exactly two lines away.</td></tr>
+    <tr><td>FLIP re-order on tick</td><td class="x">cut</td><td>a bought row does not sink; it stops being rendered. Motion spent moving a thing that is about to leave.</td></tr>
+    <tr><td>the 1s settle grace</td><td class="x">cut</td><td>superseded by the run-out, which is the same idea with a clock the operator can see.</td></tr>
+    <tr><td>summary as a second view mode</td><td class="x">cut</td><td>became a tray. “Close trip” was a door; it is a report.</td></tr>
+    <tr><td>per-row verify chip as a control</td><td class="x">cut</td><td>one nominee at a time means one place to act on it — the annunciator. The row keeps the WORD as a report.</td></tr>
+    <tr><td>the till column + hero figure</td><td class="k">kept</td><td>states what the till will say, and how far through the plan it is.</td></tr>
+    <tr><td>the seat bar</td><td class="k">kept</td><td>states how much walking is left, one seat per line, derived from the envelope.</td></tr>
+    <tr><td>the station bar</td><td class="k">kept</td><td>lets the hand say which building it is standing in, on hard stops.</td></tr>
+    <tr><td>the register</td><td class="k">kept</td><td>lets the hand pick the next thing up. The whole screen exists for this.</td></tr>
+    <tr><td>the run-out key</td><td class="k">kept</td><td>lets the hand take a press back, in a fixed place, for exactly as long as the clock holds it.</td></tr>
+    <tr><td>the head plate / annunciator</td><td class="k">kept</td><td>states which trip this is and the one duty competing for the hand.</td></tr>
+  </tbody>
+</table>
+<p>Six survivors, each with a job in one sentence. Nine subtractions. Nothing that survived was
+weakened to pay for them.</p>
+
+<h2>Rung 4 · Signature</h2>
+<p class="claim"><b>The one move only this language would make:</b> §7 removes the button's own
+outline and makes the whole plate the press — <i>“the object that presses and the object that
+reports are the same shape”</i> — and §4's Trophy clause removes the row itself once it has
+nothing to report. Press a row below. It commits at once, the enamel core fires for one frame,
+the flow gauge fills whole and tapers to zero over 1800ms on the taper curve, and then the row is
+simply not rendered. The lid's count is derived, and the clip confesses its remainder as a
+number.</p>
+<div class="bench">
+  <figure class="plinth">
+    <figcaption>SIGNATURE · the shipped control, at 390px</figcaption>
+    <div class="sig" id="sig-rig"></div>
+    <div class="ctl"><button id="sig-reset">reset the trolley</button></div>
+  </figure>
+</div>
+<h3>What this rung is not allowed to do</h3>
+<p>Live appears nowhere except a window that is genuinely open — not on the till, not on a chip,
+not on an idle plate (§9, <i>live creep</i>). The run-out never ends in a single frame (§9,
+<i>slam-shut</i>). A press against a running window does nothing (§9, <i>forced hold</i>). And
+nothing renders on an unpressed row but its own dome and its own facts (§9, <i>the
+over-decorated plate</i>).</p>
+
+</main>
+<script>
+/* ------------------------------------------------------------------ */
+/* REAL DATA — built from the frozen dataset through SHOP's own        */
+/* envelope builder. Rows are [label, qty, packG, price, est, verify,  */
+/* aisle], exactly the fields the pinned TripEnvelope carries.         */
+/* ------------------------------------------------------------------ */
+const TRIP =
+{"full":[{"c":"M","n":"Morrisons","r":[["Fat-free Greek yoghurt",3,1000,2.1,0,0,"Dairy & chilled"],["Porridge oats",1,1000,0.85,0,0,"Cupboard"],["Brown rice",2,1000,1.85,0,0,"Cupboard"],["Salmon fillets",2,220,4.35,0,0,"Protein counter"],["Black beans",3,240,0.5,0,0,"Cupboard"],["Red kidney beans",2,240,0.37,0,0,"Cupboard"],["Chickpeas",4,240,0.37,0,0,"Cupboard"],["Peanut butter",1,1000,3.99,0,0,"Cupboard"],["Frozen mixed berries",1,1000,2.99,1,0,"Produce"],["Frozen sweetcorn",1,800,1.5,0,0,"Freezer"],["Frozen cauliflower florets",3,1000,1.5,0,0,"Produce"],["Frozen leaf spinach",4,950,1.5,0,0,"Produce"],["Frozen broccoli florets",1,900,1.5,0,0,"Produce"],["Frozen okra",1,900,3.5,0,0,"Produce"],["Chestnut mushrooms",1,465,1.5,0,0,"Produce"],["Courgettes",1,1000,2.8,0,0,"Produce"],["Passata",4,500,0.45,0,0,"Cupboard"],["Red onions",2,1000,0.95,0,0,"Produce"],["Carrots",2,1000,0.69,0,0,"Produce"],["Red cabbage",2,700,0.85,1,0,"Produce"],["Tomato salsa",1,300,1.5,0,0,"Cupboard"],["Extra virgin olive oil",1,910,6.5,1,0,"Cupboard"],["Sweetheart cabbage",2,500,0.75,1,0,"Produce"],["Frozen sliced peppers",4,500,1.25,1,0,"Produce"],["Rapeseed oil",1,910,2.75,0,0,"Cupboard"],["Jerk seasoning, dry rub",1,65,1.6,1,0,"Cupboard"],["Jerk paste, wet marinade",1,195,2.1,1,1,"Cupboard"],["Chipotles in adobo sauce, chopped",1,200,1.8,1,1,"Cupboard"]]},{"c":"S","n":"Sainsbury's","r":[["Reduced-fat cheddar",1,400,2.95,0,0,"Dairy & chilled"],["Parmesan",1,120,3.1,0,0,"Dairy & chilled"],["Mozzarella",1,250,2.95,0,0,"Dairy & chilled"],["Eggs",5,600,3.35,0,0,"Protein counter"],["Panko breadcrumbs",1,100,1.4,0,0,"Cupboard"],["Red lentil penne",1,250,1.9,0,0,"Cupboard"],["Low-carb wraps",2,200,1.6,0,0,"Cupboard"],["Seeded low-carb loaf",1,750,1.5,0,0,"Cupboard"],["Chicken breast",2,1000,7.5,0,0,"Protein counter"],["Chicken breast mince",1,500,3,0,0,"Protein counter"],["Beef mince, 5%",2,500,5.19,0,0,"Protein counter"],["Rump or sirloin steak",2,225,4,0,0,"Protein counter"],["Turkey breast mince",1,500,4.95,0,0,"Protein counter"],["Basa fillets",1,500,5.5,0,0,"Protein counter"],["King prawns",2,180,2.64,0,0,"Protein counter"]]},{"c":"X","n":"Lewisham market / Caribbean grocer","r":[["Egusi",1,250,3.5,1,1,"Cupboard"]]}],"tester":[{"c":"M","n":"Morrisons","r":[["Chicken breast",1,630,4.85,0,0,"Protein counter"],["Beef mince, 5%",1,500,5.19,0,0,"Protein counter"],["Rump or sirloin steak",1,200,4,0,0,"Protein counter"],["Chicken breast mince",1,500,2.59,0,0,"Protein counter"],["Salmon fillets",1,220,4.35,0,0,"Protein counter"],["Eggs",1,600,3.3,0,0,"Protein counter"],["Reduced-fat cheddar",1,100,1.5,0,0,"Dairy & chilled"],["Mozzarella",1,100,0.55,0,0,"Dairy & chilled"],["Parmesan",1,80,1.65,0,0,"Dairy & chilled"],["Fat-free Greek yoghurt",1,1000,2.1,0,0,"Dairy & chilled"],["Avocados",1,560,1.5,0,0,"Produce"],["Salad tomatoes",1,750,1.79,0,0,"Produce"],["Little gem lettuce",1,250,0.77,0,0,"Produce"],["Sweetheart cabbage",1,500,0.75,0,0,"Produce"],["Red onions",1,1000,0.95,0,0,"Produce"],["Carrots",1,1000,0.69,0,0,"Produce"],["Chestnut mushrooms",1,465,1.5,0,0,"Produce"],["Red cabbage",1,700,0.85,0,0,"Produce"],["Cucumber",1,300,0.99,0,0,"Produce"],["Spring onions",1,100,0.69,0,0,"Produce"],["Pineapple chunks",1,260,1.1,0,0,"Produce"],["Red peppers",1,450,1.79,0,0,"Produce"],["Frozen leaf spinach",1,950,1.5,0,0,"Produce"],["Frozen cauliflower florets",2,1000,1.5,0,0,"Produce"],["Frozen broccoli florets",1,900,1.5,0,0,"Produce"],["Frozen mixed berries",1,1000,2.99,0,0,"Produce"],["Frozen sweetcorn",1,800,1.5,0,0,"Freezer"],["Brown rice",1,1000,1.85,0,0,"Cupboard"],["Passata",1,500,0.45,0,0,"Cupboard"],["Black beans",1,240,0.5,0,0,"Cupboard"],["Red kidney beans",1,240,0.37,0,0,"Cupboard"],["Chickpeas",1,240,0.37,0,0,"Cupboard"],["Porridge oats",1,1000,0.85,0,0,"Cupboard"],["Peanut butter",1,340,1.8,0,0,"Cupboard"],["Tomato salsa",1,300,1.5,0,0,"Cupboard"],["Extra virgin olive oil",1,230,3.4,0,0,"Cupboard"],["Seeded low-carb loaf",1,800,1.75,0,0,"Cupboard"],["Low-carb wraps",1,200,1.5,0,0,"Cupboard"],["Panko breadcrumbs",1,180,1.55,0,0,"Cupboard"]]}],"fullTotal":170.44,"testerTotal":69.83};
+
+const FULL = TRIP.full, TESTER = TRIP.tester;
+const money = p => '£' + Math.floor(p/100) + '.' + String(p%100).padStart(2,'0');
+const packG = g => g >= 1000 ? (g/1000) + 'kg' : g + 'g';
+const qtyOf = (q,g) => q > 1 ? '× ' + q : packG(g);
+const rowP = r => Math.round(r[3] * r[1] * 100);
+const flat = t => t.flatMap(s => s.r.map(r => ({ r, shop: s.c })));
+const plannedOf = t => flat(t).reduce((n,x) => n + rowP(x.r), 0);
+
+/* ================= RUNG 1 · SIMPLE — driven, not drawn ============== */
+const sRig = document.getElementById('s-rig');
+const sSel = document.getElementById('s-state');
+let sBought = new Set(), sOpen = 0;
+
+function sData(state) {
+  if (state === 'tester') return TESTER;
+  return FULL;
+}
+function sRender() {
+  const state = sSel.value;
+  if (state === 'empty' || state === 'error' || state === 'firstrun' || state === 'loading') {
+    const word = { empty: 'NO TRIP', error: 'NO TRIP', firstrun: 'NO TRIP', loading: 'NO TRIP' }[state];
+    const body = {
+      empty: 'no trip has reached this device. build one at the desk and send it to this phone.',
+      error: 'the link this screen was opened with did not decode, and no earlier trip is cached on this device. scan the code again from the desk.',
+      firstrun: 'no trip has reached this device. build one at the desk and send it to this phone.',
+      loading: 'there is no loading state. decodeTrip is a pure function over a string and the cache is synchronous, so this screen is either holding a trip or it is not. inventing a spinner here would be progress theatre.'
+    }[state];
+    sRig.innerHTML = '<div class="s-head"><span class="s-lbl">' + word + '</span></div>'
+      + '<p class="s-note" style="font-family:var(--ui);font-size:.8125rem;color:var(--g6);max-width:none">' + body + '</p>'
+      + (state === 'loading' ? '' : '<div class="s-keys"><button class="s-key">build one at the desk</button></div>');
+    return;
+  }
+  const trip = sData(state);
+  const rows = flat(trip);
+  const total = rows.length;
+  if (state === 'bought') sBought = new Set(rows.map(x => x.r[0]));
+  const got = rows.filter(x => sBought.has(x.r[0])).length;
+  const spent = rows.filter(x => sBought.has(x.r[0])).reduce((n,x) => n + rowP(x.r), 0);
+  const planned = plannedOf(trip);
+  const stale = state === 'stale';
+
+  const station = trip[0];
+  const byAisle = [];
+  for (const r of station.r) {
+    const a = r[6] || 'unaisled';
+    let g = byAisle.find(x => x.a === a);
+    if (!g) byAisle.push(g = { a, rows: [] });
+    g.rows.push(r);
+  }
+  const owed = byAisle.map(g => ({ a: g.a, rows: g.rows.filter(r => !sBought.has(r[0])) })).filter(g => g.rows.length);
+  const limit = state === 'overflow' ? 3 : 6;
+  const open = Math.min(sOpen, Math.max(0, owed.length - 1));
+
+  let html = '';
+  html += '<div class="s-head"><span class="s-lbl">' + (state === 'tester' ? 'morrisons starter' : 'full shop') + '</span>'
+       +  '<span class="s-lbl">' + trip.map(s => s.c + ' ' + s.r.filter(r => !sBought.has(r[0])).length).join(' · ') + '</span></div>';
+  html += '<div class="s-till"><span class="s-lbl">till</span><b>' + money(spent) + '</b></div>';
+  html += '<div class="s-till"><span class="s-lbl">plan</span><span class="s-lbl">' + money(planned)
+       +  ' · over ' + money(Math.max(0, spent - planned)) + '</span></div>';
+  html += '<div class="s-till"><span class="s-lbl">price · 14d</span><span class="s-lbl">'
+       +  (stale ? '20d UNPRICED' : '0s') + '</span></div>';
+  html += '<div class="s-till"><span class="s-lbl">picked up</span><span class="s-lbl">' + got + ' of ' + total + '</span></div>';
+
+  if (owed.length === 0) {
+    html += '<p class="s-note" style="font-family:var(--ui);font-size:.8125rem;color:var(--g6)">every line on this trip is in the trolley. the close read has the figures to type back in at the desk.</p>';
+  } else {
+    owed.forEach((g, i) => {
+      html += '<button class="s-lid" data-lid="' + i + '" aria-expanded="' + (i === open) + '"><span>' + g.a
+           +  '</span><span>' + g.rows.length + (g.rows.length === 1 ? ' row' : ' rows') + '</span></button>';
+      if (i === open) {
+        html += '<ul class="s-rows">';
+        g.rows.slice(0, limit).forEach(r => {
+          const st = sBought.has(r[0]) ? 1 : 0;
+          const chip = r[5] ? ' [verify]' : r[4] ? ' [est]' : '';
+          html += '<li><button class="s-row" data-row="' + encodeURIComponent(r[0]) + '" data-bought="' + st + '">'
+               +  '<span>' + (st ? '[x]' : '[ ]') + '</span>'
+               +  '<span class="nm">' + r[0] + ' ' + qtyOf(r[1], r[2]) + chip + '</span>'
+               +  '<span>' + money(rowP(r)) + '</span></button></li>';
+        });
+        html += '</ul>';
+        if (g.rows.length > limit) html += '<p class="s-note">' + (g.rows.length - limit) + ' still owed</p>';
+      }
+    });
+  }
+  const dis = state === 'disabled' || sPending === null;
+  html += '<div class="s-keys">'
+       +  '<button class="s-key" id="s-put"' + (dis ? ' disabled' : '') + '>put back' + (sPending ? ' · ' + sPending : '') + '</button>'
+       +  '<button class="s-key">next</button><button class="s-key">close</button></div>';
+  sRig.innerHTML = html;
+}
+let sPending = null;
+sRig.addEventListener('click', e => {
+  const lid = e.target.closest('[data-lid]');
+  if (lid) { sOpen = Number(lid.dataset.lid); return sRender(); }
+  const row = e.target.closest('[data-row]');
+  if (row) {
+    const name = decodeURIComponent(row.dataset.row);
+    if (sBought.has(name)) sBought.delete(name); else { sBought.add(name); sPending = name; setTimeout(() => { sPending = null; sRender(); }, 1800); }
+    return sRender();
+  }
+  if (e.target.id === 's-put' && sPending) { sBought.delete(sPending); sPending = null; return sRender(); }
+});
+sSel.addEventListener('change', () => {
+  sBought = new Set(); sOpen = 0; sPending = null;
+  if (sSel.value === 'partial') flat(FULL).slice(0, 12).forEach(x => sBought.add(x.r[0]));
+  sRender();
+});
+sRender();
+
+/* ================= RUNG 2 · study C — the run-out =================== */
+document.getElementById('pc-fire').addEventListener('click', () => {
+  document.querySelectorAll('.pc-gauge').forEach(g => {
+    g.removeAttribute('data-run');
+    void g.offsetWidth;                       /* restart the animation honestly */
+    g.setAttribute('data-run', g.dataset.g);
+  });
+});
+
+/* ================= RUNG 2 · study D — the band ====================== */
+const pdRig = document.getElementById('pd-rig');
+const pdBand = document.getElementById('pd-band');
+const pdCount = document.getElementById('pd-count');
+const CUPBOARD = FULL[0].r.filter(r => r[6] === 'Cupboard');
+function pdRender() {
+  pdRig.dataset.band = pdBand.value;
+  pdRig.innerHTML = '<ul>' + CUPBOARD.map(r =>
+    '<li><span>' + r[0] + ' ' + qtyOf(r[1], r[2]) + '</span><span>' + money(rowP(r)) + '</span></li>').join('') + '</ul>';
+  const px = { dense: 32, standard: 44, thumb: 56 }[pdBand.value];
+  /* the bay measured on the shipped screen at 390x844, less five lids and the
+     confession plate — the same arithmetic budgetFor() runs */
+  const bay = 362, lids = 5 * 48, conf = 28;
+  pdCount.textContent = 'at 390×844 this band seats ' + Math.floor((bay - lids - conf) / px) + ' rows of ' + CUPBOARD.length;
+}
+pdBand.addEventListener('change', pdRender);
+pdRender();
+
+/* ================= RUNG 4 · SIGNATURE — the shipped control ========= */
+const sigRig = document.getElementById('sig-rig');
+let sigBought = new Set(), sigRunning = new Map(), sigOpen = 'Cupboard', sigPending = null;
+const RUNOUT = 1800;
+
+function sigRender() {
+  const station = FULL[0];
+  const byAisle = [];
+  for (const r of station.r) {
+    const a = r[6] || 'unaisled';
+    let g = byAisle.find(x => x.a === a);
+    if (!g) byAisle.push(g = { a, rows: [] });
+    g.rows.push(r);
+  }
+  const groups = byAisle
+    .map(g => ({ a: g.a, rows: g.rows.filter(r => !sigBought.has(r[0]) || sigRunning.has(r[0])) }))
+    .filter(g => g.rows.length);
+  if (!groups.some(g => g.a === sigOpen)) sigOpen = groups[0] ? groups[0].a : null;
+
+  let html = '';
+  const shown = groups.slice(0, 3);
+  shown.forEach(g => {
+    const open = g.a === sigOpen;
+    html += '<button class="sig-lid" data-lid="' + g.a + '" aria-expanded="' + open + '"><span>' + g.a
+         +  '</span><span>' + g.rows.length + (g.rows.length === 1 ? ' row' : ' rows') + '</span></button>';
+    if (open) {
+      html += '<div class="sig-plate">';
+      g.rows.slice(0, 3).forEach(r => {
+        const run = sigRunning.has(r[0]);
+        const chip = r[5] ? '<span class="sig-chip" data-c="verify">verify</span>' : r[4] ? '<span class="sig-chip">est</span>' : '';
+        html += '<button class="sig-row" data-row="' + encodeURIComponent(r[0]) + '"'
+             +  (run ? ' data-running="1" aria-disabled="true"' : '') + ' aria-pressed="' + run + '">'
+             +  '<span class="sig-mark"><span class="sig-dome"></span></span>'
+             +  '<span class="sig-id">' + r[0] + '</span>'
+             +  '<span class="sig-sec"><span>' + qtyOf(r[1], r[2]) + '</span>' + chip + '</span>'
+             +  '<span class="sig-val"><span class="sig-price">' + money(rowP(r)) + '</span>'
+             +  '<span class="sig-sliver"' + (run ? ' data-run="1"' : '') + '>' + (run ? '<span class="sig-sfill"></span>' : '') + '</span>'
+             +  '</span></button>';
+      });
+      if (g.rows.length > 3) html += '<div class="sig-conf">' + (g.rows.length - 3) + ' still owed</div>';
+      html += '</div>';
+    }
+  });
+  if (groups.length > shown.length) {
+    const hid = groups.slice(shown.length);
+    html += '<div class="sig-conf">' + hid.length + ' aisles not shown · ' + hid.reduce((n,g)=>n+g.rows.length,0) + ' rows</div>';
+  }
+  if (groups.length === 0) html += '<div class="sig-conf">trolley full</div>';
+
+  html += '<div class="sig-thumb">'
+       +  '<button class="sig-key" id="sig-put"' + (sigPending ? '' : ' disabled') + '>'
+       +  '<b>put back</b><span class=\"sig-sub\">' + (sigPending || '1.8s window') + '</span>'
+       +  '<span class="sig-run"' + (sigPending ? ' data-run="1" key="' + sigPending + '"' : '') + '><span class="sig-runfill"></span></span></button>'
+       +  '<button class="sig-key"><b>next</b><span class=\"sig-sub\">' + (groups[0] ? groups[0].a : 'clear') + '</span></button>'
+       +  '<button class="sig-key"><b>close</b><span class=\"sig-sub\">read-back</span></button>'
+       +  '</div>';
+  sigRig.innerHTML = html;
+}
+
+sigRig.addEventListener('click', e => {
+  const lid = e.target.closest('[data-lid]');
+  if (lid) { sigOpen = lid.dataset.lid; return sigRender(); }
+  if (e.target.closest('#sig-put') && sigPending) {
+    const t = sigRunning.get(sigPending);
+    if (t) clearTimeout(t);
+    sigRunning.delete(sigPending);
+    sigBought.delete(sigPending);
+    sigPending = null;
+    return sigRender();
+  }
+  const row = e.target.closest('[data-row]');
+  if (!row) return;
+  const name = decodeURIComponent(row.dataset.row);
+  if (sigRunning.has(name)) return;             /* Système S — a press against a running window does nothing */
+  /* 1 · the ack, this task: the enamel core, one frame, cleared two frames on */
+  row.dataset.commit = '1';
+  requestAnimationFrame(() => requestAnimationFrame(() => { if (row.isConnected) row.dataset.commit = '0'; }));
+  /* 2 · the semantic commit */
+  sigBought.add(name);
+  sigPending = name;
+  sigRunning.set(name, setTimeout(() => {
+    sigRunning.delete(name);
+    if (sigPending === name) sigPending = null;
+    sigRender();
+  }, RUNOUT));
+  sigRender();
+});
+document.getElementById('sig-reset').addEventListener('click', () => {
+  sigRunning.forEach(t => clearTimeout(t));
+  sigRunning = new Map(); sigBought = new Set(); sigPending = null; sigOpen = 'Cupboard';
+  sigRender();
+});
+sigRender();
+</script>
+</body>
+</html>
