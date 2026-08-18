@@ -1,9 +1,13 @@
 # BUILD-STATE — resume point
 
-> **HALTED 2026-08-18. Development resumes Saturday 2026-08-22.**
-> **Read `docs/RESUME-2026-08-22.md` FIRST** — it is self-contained and names the one
-> thing to fix before anything else (the tree is tsc-RED by a single error, so
-> `npm run build` fails; tests are 674/674 green). Last fully green commit: `a48bd8d`.
+> **ACTIVE again 2026-08-18** — the owner received free usage credits, so the halt was
+> lifted the same day rather than waiting for Saturday. **The MEAL and SHOP builders are
+> resumed from their transcripts.** `docs/RESUME-2026-08-22.md` remains accurate as a
+> cold-start briefing and as the ordered list of what still has to happen; only its
+> "halted until Saturday" framing is superseded.
+> The tree is still tsc-RED by one error (`src/screens/shop/index.tsx:510`) until the
+> SHOP builder supplies the real `onRecover`; tests are 674/674. Last fully green
+> commit: `a48bd8d`.
 *Updated 2026-08-17 (session 3, CD redesign). Read this + `git log --oneline` to resume cold.*
 
 ## SESSION 3 — Council Defiance redesign (CURRENT PHASE, supersedes everything below)
