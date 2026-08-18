@@ -64,7 +64,16 @@
 
   /* --- pod: tier 2, a raised housing a hand may operate ----------------- */
   .cd-encl[data-cd-encl="pod"] {
-    background: linear-gradient(
+    /* ORCHESTRATOR REPAIR — the contrast-audit trap. The `background`
+       shorthand resets background-color to transparent, so any audit reading
+       computed backgroundColor measures an ANCESTOR, not this painted ground.
+       Confirmed twice: STORES read two inks at 4.98:1 that were really 3.63
+       and 3.91; MEAL read five labels as passing that were 3.68 and 3.75 once
+       composited. Declaring the gradient's own base stop makes a walker
+       measure the real surface. A rigorous audit still composites for the
+       extreme stop — see CD-BRIEF, Contrast-audit integrity. */
+    background-color: var(--cd-field);
+    background-image: linear-gradient(
       var(--cd-encl-axis),
       color-mix(in srgb, #ffffff 11%, var(--cd-field)) 0%,
       var(--cd-field) 58%,
@@ -75,7 +84,16 @@
 
   /* --- hero: tier 3. NOT rationed to one per screen (CORRECTIONARY 3.1) -- */
   .cd-encl[data-cd-encl="hero"] {
-    background: linear-gradient(
+    /* ORCHESTRATOR REPAIR — the contrast-audit trap. The `background`
+       shorthand resets background-color to transparent, so any audit reading
+       computed backgroundColor measures an ANCESTOR, not this painted ground.
+       Confirmed twice: STORES read two inks at 4.98:1 that were really 3.63
+       and 3.91; MEAL read five labels as passing that were 3.68 and 3.75 once
+       composited. Declaring the gradient's own base stop makes a walker
+       measure the real surface. A rigorous audit still composites for the
+       extreme stop — see CD-BRIEF, Contrast-audit integrity. */
+    background-color: var(--cd-field);
+    background-image: linear-gradient(
       var(--cd-encl-axis),
       color-mix(in srgb, #ffffff 14%, var(--cd-field)) 0%,
       var(--cd-field) 58%,
@@ -182,7 +200,8 @@
   }
 
   .cd-lamp[data-cd-lit="true"] {
-    background: radial-gradient(
+    background-color: var(--cd-lamp-hue, var(--cd-role-live));
+    background-image: radial-gradient(
       closest-side,
       color-mix(in srgb, #ffffff 45%, var(--cd-lamp-hue, var(--cd-role-live))) 0%,
       var(--cd-lamp-hue, var(--cd-role-live)) 34%,
@@ -249,7 +268,8 @@
     padding: calc(var(--cd-module) / 2) var(--cd-module);
     border: 0;
     border-radius: var(--cd-chamfer, 0.25rem);
-    background: linear-gradient(
+    background-color: var(--cd-field);
+    background-image: linear-gradient(
       var(--cd-light-axis),
       color-mix(in srgb, #ffffff 11%, var(--cd-field)) 0%,
       var(--cd-field) 58%,
@@ -440,7 +460,8 @@
     padding: calc(var(--cd-module) / 2) var(--cd-module);
     border: 0;
     border-radius: var(--cd-module);
-    background: linear-gradient(
+    background-color: var(--cd-field);
+    background-image: linear-gradient(
       var(--cd-light-axis),
       color-mix(in srgb, #ffffff 8%, var(--cd-field)) 0%,
       var(--cd-field) 100%
@@ -468,7 +489,8 @@
   /* OPEN: the one group at full material — tier 2, the drawer pulled out. */
   .cd-register-group[data-cd-open="true"] > .cd-register-head {
     --cd-stack: var(--cd-shadow-t2);
-    background: linear-gradient(
+    background-color: var(--cd-field);
+    background-image: linear-gradient(
       var(--cd-light-axis),
       color-mix(in srgb, #ffffff 14%, var(--cd-field)) 0%,
       var(--cd-field) 58%,
@@ -581,6 +603,8 @@
     .cd-register-head,
     .cd-register-group,
     .cd-tray,
+    .cd-tray-head,
+    .cd-tray-title,
     .cd-escutcheon,
     .cd-plate-mount {
       /* every gradient and shadow above is decoration; the OS palette owns
