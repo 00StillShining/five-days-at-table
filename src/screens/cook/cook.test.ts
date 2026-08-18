@@ -36,7 +36,7 @@ import {
   flushMerged,
 } from "../../cd/sound/coalescer";
 import { FONT } from "./glyphs";
-import { lampBreathes, lampLit, reelSpins, transportWord } from "./reelState";
+import { alarmSounds, lampBreathes, lampLit, reelSpins, transportWord } from "./reelState";
 
 /*
   Reading the stylesheet as TEXT, and the two false starts that got here.
@@ -109,6 +109,16 @@ describe("the reel reports the process, and only the process", () => {
     expect(lampLit("paused")).toBe(false);
     expect(lampLit("idle")).toBe(false);
     expect(lampLit("complete")).toBe(false);
+  });
+
+  it("sounds the alarm for a fact and never for a look-ahead", () => {
+    // MEASURED: 1.6s of held scrub forward fired 65 tritone bursts at a step
+    // that was not due, because the audible warning read the same preview-
+    // shifted boolean the pixels did.
+    expect(alarmSounds(true, 0)).toBe(true);
+    expect(alarmSounds(true, 16)).toBe(false); // peeking ahead
+    expect(alarmSounds(true, -3)).toBe(false); // and behind
+    expect(alarmSounds(false, 0)).toBe(false);
   });
 
   it("breathes only for a process actually running (II.4.11)", () => {
@@ -352,5 +362,67 @@ describe("the motor whir is made of ticks (II.5.11, and the chapter's section 6)
       );
       expect(/createOscillator|new AudioContext|webkitAudioContext/.test(src)).toBe(false);
     }
+  });
+});
+
+
+describe("THE REEL IS NEVER GRABBED — the constraint that is load-bearing product-wide", () => {
+  /*
+    This is not a COOK rule. It is the single reason the FACETED VOLUME x REEL
+    LOGIC curdle does not exist in this product:
+
+      "both fuse a rotary and its own readout into one control, but one earns
+       coast through traversal and the other refuses coast on principle"
+
+    Its diagnostic is two adjacent grabbable rotary+readout fusions with
+    contradictory coast law. MEAL's wheel is grabbable and coasts; if COOK's
+    disc ever becomes grabbable, the product carries two contradictory laws and
+    the language assignment that was checked against 28 pairs stops holding.
+
+    A future edit that adds a pointer handler to the disc would be a one-line
+    change with a product-wide consequence and no local symptom at all. So it
+    is pinned here rather than left to a comment.
+  */
+  const reel: string = readFileSync(
+    fileURLToPath(new URL("./Reel.tsx", import.meta.url)),
+    "utf8"
+  );
+
+  it("puts no pointer, drag or wheel handler on the disc", () => {
+    const body = reel.replace(/\/\*[\s\S]*?\*\//g, ""); // strip the comments that DISCUSS it
+    for (const forbidden of [
+      "onPointerDown",
+      "onPointerMove",
+      "onMouseDown",
+      "onTouchStart",
+      "onWheel",
+      "setPointerCapture",
+      "draggable",
+    ]) {
+      expect(body.includes(forbidden), `Reel.tsx must not use ${forbidden}`).toBe(false);
+    }
+  });
+
+  it("keeps the disc out of the tab order and out of the accessibility tree", () => {
+    const body = reel.replace(/\/\*[\s\S]*?\*\//g, "");
+    expect(body.includes("tabIndex")).toBe(false);
+    // arc, collar and disc are all hidden — the strip and the plates speak
+    expect((body.match(/aria-hidden="true"/g) || []).length).toBeGreaterThanOrEqual(3);
+  });
+
+  it("gives the disc no coast, no glide and no momentum of any kind", () => {
+    const body = reel.replace(/\/\*[\s\S]*?\*\//g, "");
+    for (const forbidden of ["coastFrom", "grabReel", "beginDrag", "releaseGateOpen", "glide"]) {
+      expect(body.includes(forbidden), `Reel.tsx must not use ${forbidden}`).toBe(false);
+    }
+  });
+
+  it("leaves the only pointer handlers on the discrete stepper", () => {
+    const instruments: string = readFileSync(
+      fileURLToPath(new URL("./Instruments.tsx", import.meta.url)),
+      "utf8"
+    );
+    // the rocker's two ends, and nothing else in the folder
+    expect((instruments.match(/onPointerDown/g) || []).length).toBe(2);
   });
 });

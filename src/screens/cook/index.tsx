@@ -85,7 +85,7 @@ import { CompletionTally } from "./CompletionTally";
 import { Trophy, type TrophySurvivor } from "./Trophy";
 import { useTrophy } from "./useTrophy";
 import { formatMinutesAsClock } from "./format";
-import { lampBreathes, lampLit, reelSpins, transportWord } from "./reelState";
+import { alarmSounds, lampBreathes, lampLit, reelSpins, transportWord } from "./reelState";
 import { prepProgramDisplayName, prepWeekForProgramId } from "./programGroups";
 import "./cook.css";
 
@@ -149,8 +149,28 @@ export default function CookScene(_props: SceneProps) {
   }, []);
 
   const dueNow = derived?.dueNow ?? false;
+
+  /*
+    THE ALARM SOUNDS FOR A FACT, NEVER FOR A LOOK-AHEAD.
+
+    `derived` is deliberately preview-shifted, so scrubbing forward shows what a
+    due alarm WILL look like before it happens — that is the whole purpose of
+    the preview, and it is honest on screen because the preview plate is up
+    beside it saying how far ahead the operator is peeking.
+
+    Sound carries no such label. MEASURED, holding the scrub rocker forward for
+    1.6 seconds: the deck fired SIXTY-FIVE tritone bursts at a step that was not
+    due, because the audible warning was reading the same preview-shifted
+    boolean the pixels were. An operator with their hands in a pan does not know
+    the alert was hypothetical — they look up. That is the alert spending its
+    one credit on a guess, and II.5.7's rule for confirm is the same rule here:
+    a cue reports a consequence that is REAL.
+
+    So the sound is gated on the UNSHIFTED condition and the picture is not.
+  */
+  const dueForReal = alarmSounds(dueNow, scrubOffset);
   const dueRef = useRef(false);
-  dueRef.current = dueNow;
+  dueRef.current = dueForReal;
 
   /*
     II.5.8 — the warning. ONE GLOBAL CUE, byte-identical across chapters: 620Hz
@@ -160,7 +180,7 @@ export default function CookScene(_props: SceneProps) {
     condition clears — the annunciator goes dark and the sound stops with it.
   */
   useEffect(() => {
-    if (!dueNow) return;
+    if (!dueForReal) return;
     // The pair below is the permissive one on purpose: the warning is the ONE
     // cue that survives Trophy Mode, so it is admitted in both modes rather
     // than switched between them.
@@ -181,7 +201,7 @@ export default function CookScene(_props: SceneProps) {
       window.removeEventListener("pointerdown", onGesture, { capture: true });
       window.removeEventListener("keydown", onGesture, { capture: true });
     };
-  }, [dueNow]);
+  }, [dueForReal]);
 
   const stepScrub = useCallback(
     (delta: number) => {

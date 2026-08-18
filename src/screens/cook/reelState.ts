@@ -64,3 +64,20 @@ export function lampLit(status: CookStatus): boolean {
 export function lampBreathes(status: CookStatus, dueNow: boolean): boolean {
   return reelSpins(status, dueNow);
 }
+
+/**
+ * Does the AUDIBLE alarm fire?
+ *
+ * The picture and the sound do NOT share this answer, and that is deliberate.
+ * The whole deck is preview-shifted while the operator scrubs, so the alarm's
+ * visual state is a legitimate look-ahead — the preview plate is on screen
+ * saying how far ahead they are peeking. A tritone carries no such caption, so
+ * it is gated on the unshifted condition: a cue reports a consequence that is
+ * real (II.5.7's rule for confirm, applied to the one cue that outranks it).
+ *
+ * MEASURED before this existed: 1.6s of held scrub forward fired 65 bursts at
+ * a step that was not due.
+ */
+export function alarmSounds(dueNow: boolean, previewOffsetMinutes: number): boolean {
+  return dueNow && previewOffsetMinutes === 0;
+}
