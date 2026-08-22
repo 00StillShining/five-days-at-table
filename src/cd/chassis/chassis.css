@@ -178,6 +178,20 @@
     background: color-mix(in srgb, #000000 34%, var(--cd-well));
     box-shadow: var(--cd-shadow-well);
     /*
+      II.2.21's surviving clause: "no grain under numerals, plots, or any read
+      surface. Texture is for the hand's targets and the hero's body; the
+      READING EYE GETS BARE FIELD." The rail wears .cd-grain, whose ::after is
+      an absolutely-positioned overlay across the whole strip — including the
+      station words, which are the most-read text in the product.
+      Measured, that overlay was lifting the ground behind the label by about
+      one level per pixel and spreading it across 88 distinct values, which is
+      what pinned the worst composited stop under the 4.5:1 floor. Raising the
+      station channel above the grain layer takes the texture off the read
+      surface and leaves it on the rail's own exposed material, where it belongs.
+    */
+    position: relative;
+    z-index: 1;
+    /*
       A short viewport scrolls the STATION COLUMN, never the page. R7's "no
       page-length scrolling" is about the workspace; a rail that could not
       reach its last station on a 480px-tall window would be a cage of a
@@ -236,11 +250,23 @@
     padding-block: calc(var(--cd-module) / 4);
     border: 0;
     border-radius: 0.25rem; /* II.3.2 — half the module */
+    /*
+      THE RIM CATCH IS AN EDGE, NOT A FACE. The field stop was at 62%, which put
+      the label band on the lifted half of the gradient: measured off rendered
+      pixels in the glyph-free rows of the label's own line box, 79.6% of that
+      ground failed the 4.5:1 text floor against --cd-label-ink #828486 (modal
+      rgb(31,31,31) = 4.39:1, worst rgb(38,38,38) = 4.03:1). The original audit
+      recorded 4.59:1 — correct for the flat --cd-field token, and the wrong
+      surface: the token is not the ground once a gradient and a 0.06 grain
+      overlay sit on top of it.
+      Pulling the field stop to 22% keeps the catch on the machined top edge,
+      where a real one is, and puts the whole word back on --cd-field or darker.
+    */
     background: linear-gradient(
       var(--cd-light-axis),
       color-mix(in srgb, #ffffff 7%, var(--cd-field)) 0%,
-      var(--cd-field) 62%,
-      color-mix(in srgb, #000000 22%, var(--cd-field)) 100%
+      var(--cd-field) 16%,
+      color-mix(in srgb, #000000 22%, var(--cd-field)) 72%
     );
     color: var(--cd-label-ink);
     text-align: start;
@@ -973,12 +999,78 @@
       box-shadow: none;
     }
 
+    /*
+      THE SEATED STATE, AND WHY IT IS NOT A HIGHLIGHT FILL.
+
+      In forced-colors mode Chrome paints a BACKPLATE behind inline text, in
+      `Canvas`. Text therefore never sits on its own element's background — it
+      sits on that plate. So `background: Highlight` + `color: HighlightText`,
+      which reads as obviously correct, paints HighlightText onto Canvas.
+
+      MEASURED (real Blink forced-palette paint path over CDP, pixel-decoded at
+      16x, dark forced palette where Canvas #000 / CanvasText #fff /
+      HighlightText #000): the seated key's full line box — including the band
+      ABOVE the capitals, where no glyph exists — came back rgb(0,0,0) x161,
+      while the rows just above and below the line box came back cyan
+      rgb(0,184,204). Black glyphs on a black plate: 1.00:1, the word gone.
+      Stations 2-5 survived only because ButtonText #fff on that same plate is
+      21:1.
+
+      So the ground matches the plate the glyphs will actually land on, and the
+      STATE moves entirely into channels a forced palette cannot flatten: a 2px
+      Highlight keyline, and the seat point below. Both are non-text, so both
+      survive the backplate; and the state still travels in more than one
+      channel, which is II.7.7 restated for a palette we do not control.
+    */
     .cd-station[aria-current="page"],
     .cd-cap[aria-expanded="true"],
     .cd-seat[data-cd-seated="true"] {
+      background: Canvas;
+      color: CanvasText;
+      border: 2px solid Highlight;
+    }
+
+    /*
+      The seat point is the second state channel and the redundant one. Unlit it
+      is still a lamp (II.3.24), so it keeps a fill in both states rather than
+      disappearing — GrayText is a distinct system colour in every forced
+      palette (measured rgb(63,242,63) in Chrome's dark default), not a dimmed
+      CanvasText, so the two states stay separable without relying on luminance.
+    */
+    .cd-station-seat,
+    .cd-seat-point {
+      background: GrayText;
+    }
+
+    .cd-station[aria-current="page"] .cd-station-seat,
+    .cd-seat[data-cd-seated="true"] .cd-seat-point {
       background: Highlight;
-      color: HighlightText;
-      border-color: HighlightText;
+      box-shadow: none;
+    }
+
+    /*
+      THE SUGGESTED STATION, found by verifying the repair above rather than by
+      the review. `.cd-station[data-cd-suggested="true"] .cd-station-seat` is
+      specificity (0,2,1) and sets --cd-glyph-dim; the plain `.cd-station-seat`
+      rule above is (0,1,0), so the suggested rule won and its author hue was
+      force-adjusted to Canvas — MEASURED rgb(0,0,0) on a rgb(0,0,0) key, an
+      invisible dot.
+
+      The suggestion is a THIRD state, and this world spends its three states as
+      duty-cycle steps of one white (section 2: "escalation is spent as area and
+      duty cycle, never as a second hue"). A forced palette has no luminance
+      ramp to spend, and inventing a fourth system colour for it would be a hue
+      where the design has none. So the seat point rejoins the unseated step and
+      the suggestion moves to a channel a palette cannot flatten: a DASHED
+      keyline. The accessible "suggested today" text in the DOM is unchanged and
+      carries it for assistive tech either way.
+    */
+    .cd-station[data-cd-suggested="true"] .cd-station-seat {
+      background: GrayText;
+    }
+
+    .cd-station[data-cd-suggested="true"]:not([aria-current="page"]) {
+      border-style: dashed;
     }
 
     .cd-station-label,

@@ -37,6 +37,21 @@
  * navigating to SHOP and returning finds TIMING still open.
  */
 
+/**
+ * THE ANNUNCIATOR QUEUE (Fable review F2). One queue, one selector, one figure.
+ * Every room's alarm strip derives its count from here and from nowhere else —
+ * `arbiterFor(...).queued` is NOT a queue count and must not be printed as one.
+ * See annunciator.ts's header for the two measured causes of the divergence.
+ */
+export {
+  annunciatorQueue,
+  useAnnunciator,
+  caption as annunciatorCaption,
+  captionSplit as annunciatorCaptionSplit,
+  addressableIn,
+  type AnnunciatorQueue,
+} from "./annunciator";
+
 export {
   OpenPanelProvider,
   useOpenPanel,
