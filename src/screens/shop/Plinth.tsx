@@ -38,8 +38,6 @@ export interface PlinthProps {
   kind: string;
   census: Census;
   indices: TrackIndex[];
-  /** Trip identity. II.6.11: micro-etch REPEATS, it never carries a fact alone. */
-  etch: string;
   /** The price sheet's own age — the total is computed from those prices. */
   age: Age;
   pricedOn: string | null;
@@ -51,7 +49,7 @@ export interface PlinthProps {
 }
 
 export const Plinth = forwardRef<TrackWindowHandle, PlinthProps>(function Plinth(
-  { total, kind, census, indices, etch, age, pricedOn, wasted, onRecover, trophy },
+  { total, kind, census, indices, age, pricedOn, wasted, onRecover, trophy },
   ref
 ) {
   return (
@@ -153,11 +151,6 @@ export const Plinth = forwardRef<TrackWindowHandle, PlinthProps>(function Plinth
         )}
       </Enclosure>
 
-      {!trophy && (
-        <p className="shop-etch" aria-hidden="true">
-          {etch}
-        </p>
-      )}
     </div>
   );
 });

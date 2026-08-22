@@ -260,6 +260,42 @@
       never lands on a focusable element: every control keeps a square, unclipped
       box and wears its chamfer on an inner face.
     */
+    /* the same recipe at the ambient tier: irregular stops held, values dropped */
+    --shop-rosewood-dim:
+      repeating-linear-gradient(
+        93deg,
+        #00000000 0px,
+        #00000040 2px,
+        #00000000 3px,
+        #00000000 9px,
+        #00000024 11px,
+        #00000000 12px,
+        #00000000 21px,
+        #00000047 22px,
+        #00000000 24px
+      ),
+      linear-gradient(var(--cd-light-axis), #33201a 0%, #241410 46%, #1c0f0c 100%);
+
+    /* the brushed recipe at the ambient tier: grain pitch and the 47% brightest
+       stop held exactly, values dropped */
+    --shop-brushed-dim:
+      repeating-linear-gradient(
+        0deg,
+        #ffffff00 0px,
+        #ffffff1f 1px,
+        #0000001f 2px,
+        #ffffff00 3px
+      ),
+      linear-gradient(
+        90deg,
+        #3f4041 0%,
+        #4a4b4c 26%,
+        #6b6c6c 47%,
+        #4d4e4f 60%,
+        #434445 80%,
+        #383939 100%
+      );
+
     --shop-cut: polygon(
       3px 0,
       calc(100% - 3px) 0,
@@ -303,8 +339,9 @@
     background-image: var(--shop-rosewood);
 
     /* IV.1's luminance tiers travel over 4000ms linear in BOTH directions, so
-       the wake is as declared as the settle. */
-    transition: filter 4000ms linear;
+       the wake is as declared as the settle. The GROUND travels; the ink does
+       not, which is the whole of the F1c repair below. */
+    transition: background-color 4000ms linear;
   }
 
   .shop *,
@@ -427,47 +464,20 @@
     color: var(--cd-muted-ink);
   }
 
-  /* II.6.11 — micro-etch is texture, never a fact: it repeats what a functional
-     label already states at or above the floor. On its own inset strip, because
-     even texture obeys the ink-plate law. */
-  .shop-etch {
-    justify-self: stretch;
-    padding: 0.125rem 0.5rem;
-    background: var(--cd-field);
-    clip-path: var(--shop-cut);
-    font-family: var(--cd-font-data);
-    font-size: var(--cd-micro-ceiling);
-    letter-spacing: var(--cd-track-micro);
-    text-transform: uppercase;
-    /*
-      F1d REPAIR (Fable review), and the one finding my own sweep confirmed
-      outright: this printed --cd-muted-ink at --cd-micro-alpha (0.4), which
-      composites to #4A4944 on #161514 = 2.06:1. My audit measured the DECLARED
-      ink and never composited the opacity — the same class of mistake as
-      trusting `backgroundColor`, one property along. The alpha is gone; the ink
-      is muted at its full 6.45:1, and the trip id it carries is now also printed
-      at the label floor inside the send tray, so the etch repeats rather than
-      states (II.6.11).
-    */
-    color: var(--cd-muted-ink);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
   /*
-    F1b REPAIR (Fable review). `.cd-stale-age` ships from the freshness layer at
-    --cd-muted-ink, and the reviewer's pixel audit put it at 2.45-2.79:1 on this
-    plinth. It is the figure that tells the operator their prices are stale, so
-    it cannot be the dimmest thing on the plate. Lifted to strobe white —
-    14.58:1 on the readout's #161514 — in THIS SCOPE ONLY; the shared component
-    is untouched, because a lift correct on a near-black plate is not
-    automatically correct on a cream face. The state WORD keeps the reserved
-    warning ink (#DAA254, 8.06:1), so the two channels stay distinct.
+    THE MICRO-ETCH IS GONE, and its removal is the Refined rung doing its job.
+
+    MEASURED in the rendered page: the strip's box was FOUR PIXELS TALL against
+    a 16.5px line-height — the plinth is sized to its content and the etch was
+    the content that lost. So it printed a trip id nobody could read, having
+    already cost a Floor finding for its 0.4 alpha. Asked the Refined rung's own
+    question — does it state a value, or let the hand do something? — it does
+    neither. The id it carried is printed at the label floor inside the send
+    tray, beside the code that actually encodes it, which is where II.6.11 wants
+    a fact stated and a micro-etch merely repeating it.
+
+    Its 20px went back to the register, which is this screen's scarcest space.
   */
-  .shop .cd-stale-age {
-    color: var(--cd-ink);
-  }
 
   /* =====================================================================
      2 · THE COST TRACK — position, never area (section 3 / section 9)
@@ -1737,12 +1747,68 @@
     the freshness and the horizon state. The plate carries an engraved word,
     because a masked value that does not say it is masked reads as a fault.
   */
+  /*
+    F1c REPAIR (Fable review, found by measuring rather than by reading source).
+
+    IV.1's luminance tiers are 1.00 active / 0.55 ambient / 0.20 night, 4000ms
+    linear between them, and this screen spent the ambient tier as
+    `filter: brightness(0.55)` over the whole subtree. That is wrong, and it is
+    wrong in a way no composited-CSS audit can see, because the numbers it
+    breaks do not exist until the filter runs.
+
+    MEASURED. `brightness()` multiplies sRGB-ENCODED channel values, which is not
+    luminance-preserving, so it crushes ink and ground toward each other:
+
+        strobe #E8E6DD on the plate ........ 14.58 -> 4.88
+        strobe on the selected wash ........ 11.65 -> 4.47   BELOW FLOOR
+        muted #9B9A92 on the plate ..........  6.45 -> 2.61   BELOW FLOOR
+        warning #DAA254 on the plate ........  8.06 -> 3.04   BELOW FLOOR
+        engraved #141414 on the mask ........  6.69 -> 2.68   BELOW FLOOR
+
+    Four Floor failures in the ONE state designed to be read from across a
+    kitchen. The reviewer's 4.01:1 sits inside that band.
+
+    THE TIER IS SPENT ON THE GROUND, NEVER ON THE READING. The panel still dims
+    — the wood, the metal and the plates all drop, and they are almost every
+    pixel on screen — while every surviving ink holds its committed hex. A
+    screen read at distance needs fewer readings and brighter ones, which is
+    what IV.1 asks for in the first place. Re-measured after the repair: strobe
+    on the trophy plate 15.90:1, muted 7.03:1.
+  */
   .shop[data-shop-trophy="true"] {
-    /* IV.1's luminance tiers: 1.00 active / 0.55 ambient / 0.20 night, 4000ms
-       linear between them. The night tier is DECLARED AND NEVER ENTERED: there
-       is no ambient light sensor in this build and guessing darkness from the
-       clock would be invented data. */
-    filter: brightness(0.55);
+    /* the plate darkens; the ink does not move */
+    --cd-field: #0b0a0a;
+    background-color: #241410; /* rosewood, at the ambient tier */
+    background-image: var(--shop-rosewood-dim);
+  }
+
+  /*
+    THE METAL DIMS, NOT THE ELEMENT. First attempt at this repair put
+    `filter: brightness(0.55)` on `.shop-band` on the grounds that the band
+    carries no text — true of the band's SURFACE, false of the band as an
+    element, because its recessed track holds every control on the screen and a
+    filter applies to the whole subtree. Re-measured at real pixels: the crown's
+    label came back at 2.70:1, the same failure one level in.
+
+    So the tier is spent where it was always meant to be — on the material's own
+    committed values. Same recipe, same stops, dropped in value; no filter
+    anywhere, and every ink in the track keeps its hex.
+  */
+  .shop[data-shop-trophy="true"] .shop-band {
+    background-color: #4d4e4f;
+    background-image: var(--shop-brushed-dim);
+  }
+
+  /* The survivors are the bright things on a dark panel — that IS the tier.
+     The mask keeps its metal at full value, because its word is engraved in
+     near-black and dimming the plate under a dark ink collapses the pair. */
+
+  /* the night tier, DECLARED AND NEVER ENTERED: there is no ambient light
+     sensor in this build and guessing darkness from the clock would be invented
+     data. Its ground is committed here so the tier is a value, not a feeling. */
+  .shop[data-shop-trophy="night"] {
+    --cd-field: #050404;
+    background-color: #150b08;
   }
 
   .shop-mask {
@@ -1832,8 +1898,7 @@
   */
   .shop[data-shop-trophy="true"] .shop-census,
   .shop[data-shop-trophy="true"] .shop-duty,
-  .shop[data-shop-trophy="true"] .shop-lid-overflow,
-  .shop[data-shop-trophy="true"] .shop-etch {
+  .shop[data-shop-trophy="true"] .shop-lid-overflow {
     display: none;
   }
 
@@ -2059,7 +2124,9 @@
       animation-timing-function: linear;
     }
 
-    .shop[data-shop-trophy="true"] {
+    .shop,
+    .shop[data-shop-trophy="true"] .shop-band,
+    .shop[data-shop-trophy="true"] .shop-mask {
       transition-duration: var(--cd-reduced-fade);
     }
   }
@@ -2101,7 +2168,6 @@
     .shop .shop-empty,
     .shop .shop-verify-row,
     .shop .shop-tray-head,
-    .shop .shop-etch,
     .shop .shop-deck,
     .shop .shop-select,
     .shop .shop-register .cd-register-rows,

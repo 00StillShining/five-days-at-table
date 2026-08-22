@@ -536,12 +536,6 @@ export default function ShopScene(_props: SceneProps) {
           pricedOn={pricedOn}
           wasted={wasteTotal}
           onRecover={openRecovery}
-          /* II.6.11 — micro-etch is TEXTURE: it repeats what a functional label
-             already states at or above the floor and never carries a fact alone.
-             The sheet's date, its age, its threshold and the month's binned
-             value moved onto the plate at the label step; what is left here is
-             the trip's own id, which the send tray prints at 0.8125rem. */
-          etch={`fd-5 · shop · ${tripMeta.tripId}`}
           trophy={trophy}
         />
 
