@@ -63,6 +63,16 @@
      DOES segment, because what it counts is discrete — forty-four lines, not a
      level — and its segment count is derived from the envelope.
 
+  8. THE AMBIENT TIER IS 0.75, NOT 0.55, AND IT IS SPENT ON THE GROUND.
+     screencraft/01 commits 1.00 active / 0.55 ambient. On this world 0.55 is
+     arithmetically unavailable: world.css's EPOXY CEILING caps every reading
+     at 7.64:1 against pure black, so the tier and the Floor draw on one
+     budget, and a true 0.55-luminance ground fails the Floor even with pure
+     black ink (3.93:1 on a key's darkest stop, 3.87:1 on nickel). The tier is
+     committed at 0.75 of the panel's own LINEAR luminance and the reading
+     steps to #000000 rather than fading with the ground. The full arithmetic,
+     the before/after measurements and the cost are in section 11a.
+
   ===========================================================================
   MEASURED, WITH THE WCAG FORMULA, ON THIS BUILD
   ===========================================================================
@@ -80,6 +90,14 @@
       why NOTHING on this screen prints on the void. The ink-plate law
       (CD-BRIEF ruling 5) is not a preference here; it is the only way text
       reaches the Floor on this ground at all.
+
+  AT THE AMBIENT TIER (section 11a), ink #000000, worst painted stop:
+    epoxy body        #88898B .......................  6.00 : 1
+    the key's darkest stop  #7A7B7D .................  4.96 : 1
+    nickel's darkest stop   #797B7C .................  4.94 : 1   the milled
+      blank plate's own printed word sits here
+    chassis void      #6B6C6D .......................  3.99 : 1   and nothing
+      prints on it, at either tier.
 */
 
 @layer cd.screen {
@@ -166,6 +184,22 @@
       #c0c4c6 63%,
       #e4e4e2 100%
     );
+
+    /*
+      THE NICKEL RIM, as a token rather than a literal, so the ambient tier can
+      drop it with the rest of the nickel (section 11). Section 2's hard-mirror
+      specular #ECECEA, at the cast's own 80% — the plate's top edge catching
+      the one sun.
+    */
+    --lst-rim: #ececeacc;
+
+    /* the hard-mirror recipe's own DARKEST stop, named once so a surface can
+       declare it as its background-color and a measurement can quote it */
+    --lst-mirror-dark: #8a8c8e;
+
+    /* screencraft/01's ramp between power tiers — 4000ms linear, both ways.
+       Spent on the painted ground now, never on a filter over the reading. */
+    --lst-tier-ms: 4000ms;
 
     /*
       A control's own resting stack. It must never be `none`: the foundry's
@@ -337,7 +371,7 @@
       which CORRECTIONARY 4 permits and encourages: intensities are floors.
     */
     --lst-cast:
-      inset 0 1px 0 #ececeacc, /* rim light — the nickel edge catching 138deg */
+      inset 0 1px 0 var(--lst-rim), /* rim light — the nickel edge catching 138deg */
       inset 0 -1px 0 #00000073, /* lip — the edge turning away */
       0 1px 0 #00000080, /* contact — the plate is screwed down */
       0 4px 8px #0000004d, /* core — the plate's own mass */
@@ -537,7 +571,9 @@
     inset-block-end: 0;
     block-size: calc(var(--lst-fill, 0) * 100%);
     background: var(--cd-ink);
-    /* section 3: "transition: height 0ms; commit is instant, never eased" */
+    /* section 3: "transition: height 0ms; commit is instant, never eased".
+       Section 11a's tier ramp names colour properties only and never a
+       geometry one, so the LEVEL still lands in the frame the hand releases. */
     transition: none;
   }
 
@@ -630,7 +666,23 @@
   }
 
   /* THE MILLED BLANK PLATE (owner ruling: Trophy privacy). A declared mask,
-     not a removal: the instrument is still there and still says what it is. */
+     not a removal: the instrument is still there and still says what it is.
+
+     THE TOOL MARK IS LIT, NOT CUT — MEASURED. The blank is centred on
+     --lst-chrome-h, and that recipe's hard-stop pair (#A2A5A7 at 47% /
+     #8A8C8E at 48%) lands exactly under a vertically centred word. The first
+     build laid a further 8% BLACK tool mark over it, taking the word's own
+     ground to #7F8183: the printed word measured 3.19:1 there at FULL
+     luminance, before the ambient tier touched it — a Floor failure and an
+     ink-plate-law breach (CD-BRIEF ruling 5: a word on brushed grain), both
+     older than the tier and both invisible to a walker reading
+     backgroundColor, because this surface is declared with the `background`
+     shorthand and therefore reports `transparent`.
+
+     A face-milled blank under a 138deg sun shows its tool marks as LIGHT on
+     the near lip, not as shadow. So the mark is the same 8%, thrown the other
+     way: the plate's worst stop is now the mirror's own #8A8C8E and nothing
+     darker, and the word is measured against that. */
   .lst-mask {
     margin: 0;
     display: flex;
@@ -638,13 +690,17 @@
     justify-content: center;
     block-size: var(--cd-size-7);
     border-radius: 0.25rem;
-    background:
+    /* declared alongside the gradient at its DARKEST stop, so the declared
+       case and the worst case are the same case (CD-BRIEF, contrast-audit
+       integrity, rule 2) */
+    background-color: var(--lst-mirror-dark);
+    background-image:
       repeating-linear-gradient(
         var(--cd-light-axis),
-        #00000000 0,
-        #00000000 3px,
-        #00000014 3px,
-        #00000014 4px
+        #ffffff00 0,
+        #ffffff00 3px,
+        #ffffff14 3px,
+        #ffffff14 4px
       ),
       var(--lst-chrome-h);
     box-shadow: var(--cd-shadow-well);
@@ -720,9 +776,15 @@
     inset-block: 0;
     inset-inline-start: var(--lst-got, 0%);
     inset-inline-end: 0;
-    background: #9b9c9ee0;
+    /* the epoxy body at the cast's own 88%, taken through the token rather
+       than as a literal so the ambient tier drops the cover with the plate it
+       is cut from — a cover left at full value over a dimmed track would be
+       the brightest thing on a wall that is supposed to be going quiet. */
+    background: color-mix(in srgb, var(--cd-field) 88%, transparent);
     box-shadow: inset 1px 0 0 var(--cd-alert-ink);
-    transition: none; /* the level is a fact, not an animation */
+    /* the level is a fact, not an animation — and section 11a's tier ramp
+       names colour properties only, so the level still never eases. */
+    transition: none;
   }
 
   .lst-seats-figure {
@@ -888,12 +950,20 @@
     border-radius: 0;
   }
 
+  /*
+    THE LID'S OWN PAINT, DECLARED AT ITS DARKEST STOP (CD-BRIEF, contrast-audit
+    integrity, rule 2). Split out of the `background` shorthand so the declared
+    case and the worst case are the same case — the shorthand leaves
+    background-color TRANSPARENT, which is the exact trap that section's
+    warning is about.
+  */
   .lst-register .cd-register-head {
     --cd-stack: var(--cd-shadow-t1);
     min-block-size: var(--lst-lid);
     padding-inline: var(--lst-pad);
     border-radius: var(--cd-chamfer-foot);
-    background: var(--lst-ceramic);
+    background-color: var(--cd-field);
+    background-image: var(--lst-ceramic);
     color: var(--cd-ink);
     font-size: var(--cd-size-1);
     font-weight: 400;
@@ -903,8 +973,30 @@
       0 1px 0 #ffffff33;
   }
 
+  /*
+    THE OPEN LID, REPAINTED — MEASURED, AWAKE STATE, A SECOND FINDING.
+
+    foundry.css gives the OPEN head its own gradient at
+    `.cd-register-group[data-cd-open="true"] > .cd-register-head` — (0,3,0) —
+    whose bottom stop is `color-mix(in srgb, #000000 10%, var(--cd-field))`.
+    This screen's own paint above is (0,2,0) and LOST to it, so the open lid
+    was never rendering in the ceramic recipe at all: its darkest stop was
+    #8C8C8E and the stamped ink measured 3.72:1 there, UNDER THE FLOOR, while
+    every walker reported the head as passing. The lid's own label sits high on
+    that gradient and reads; its ROW COUNT and the word "rows" sit low on it
+    and measured 4.06:1 and 3.95:1 at real decoded pixels.
+
+    The world's own body is the darkest this lid may go (world.css: "The
+    DARKEST stop is the world's own body, never below it"), so the recipe is
+    restated here at the specificity the foundry's own rule uses. Open still
+    reads as open the way this file always said it did — tier-2 cast, weight
+    700, squared foot — never by being a darker plate. Measured after: 4.54:1,
+    the same figure every other reading on this screen runs at.
+  */
   .lst-register .cd-register-group[data-cd-open="true"] > .cd-register-head {
     --cd-stack: var(--cd-shadow-t2);
+    background-color: var(--cd-field);
+    background-image: var(--lst-ceramic);
     font-weight: 700;
     border-end-start-radius: 0;
     border-end-end-radius: 0;
@@ -1543,12 +1635,167 @@
     visibility: hidden;
   }
 
-  .lst[data-lst-trophy="true"] .lst-frame {
-    /* screencraft/01 — 1.00 active / 0.55 ambient, 4000ms linear between. */
-    filter: brightness(0.55);
+  /* =====================================================================
+     11a · THE AMBIENT TIER — spent on the GROUND, never on the reading
+     =====================================================================
+
+     THE DEFECT THIS REPLACES. This screen dimmed with
+     `filter: brightness(0.55)` on .lst-frame. brightness() multiplies
+     sRGB-ENCODED channel values, which is not a luminance operation, so it
+     dragged the ink down with the ground instead of dimming the ground
+     beneath a fixed ink. MEASURED at real decoded pixels on the Trophy wall,
+     31 readings, 31 FLOOR FAILURES:
+
+       ink   #333435 -> #1C1D1D   epoxy #9B9C9E -> #555657   4.54 -> 2.30
+       alert #1A1A1A -> #0E0E0E   epoxy                      6.33 -> 2.62
+       "PRIVATE" on the milled blank                         3.19 -> 2.26
+
+     It did not even deliver the tier it declared: brightness(0.55) took the
+     epoxy body's LUMINANCE from 0.3321 to 0.0927 — 0.279 of awake, not 0.55.
+
+     WHY 0.55 IS NOT AVAILABLE ON THIS WORLD, AND THE DEPARTURE IS DECLARED.
+     world.css states THE EPOXY CEILING: epoxy #9B9C9E has luminance 0.3321,
+     so the best ratio ANY ink can reach on it is 7.64:1 against pure black.
+     The tier and the Floor therefore draw on ONE budget. Solved for a true
+     0.55-luminance ground with PURE BLACK ink — nothing left to spend —
+     the three grounds a Trophy reading actually sits on measure:
+
+       epoxy body        #767778   4.68 : 1   passes
+       the key's own darkest stop  #6A6B6C   3.93 : 1   FAILS
+       nickel's darkest stop       #686A6C   3.87 : 1   FAILS
+
+     So 0.55 fails the Floor here with the darkest ink that exists. The Floor
+     outranks the tier (CORRECTIONARY 4, non-negotiable), and this is the
+     state read from across a kitchen — the last place a reading may go dim.
+
+     COMMITTED: T = 0.75. The panel throws three-quarters of its awake light,
+     every stop dropped to 0.75 of its own LINEAR luminance — same recipes,
+     same stops, same hues, dropped in value — and the reading steps to the
+     bottom of the material rather than fading with it. Measured, worst stop
+     of each painted surface, ink #000000:
+
+       epoxy body         #88898B   6.00 : 1
+       key darkest stop   #7A7B7D   4.96 : 1
+       nickel darkest     #797B7C   4.94 : 1
+       chassis void       #6B6C6D   3.99 : 1  — and NOTHING prints on the
+                                    void, by this file's own header rule.
+
+     THE INK LADDER FLATTENS, AND THAT IS THE COST (CORRECTIONARY 6.5, said
+     out loud). Awake, this world separates stamped ink (4.54:1) from alert
+     ink (6.33:1) by VALUE — that is how it spends four of its five reserved
+     roles with hue count zero. At the ambient tier there is no value left
+     below black to spend, so both registers sit at #000000 and the roles are
+     carried by GEOMETRY AND WEIGHT alone: the struck alert-ink rule under the
+     over-run and the unpriced figure, the chevron, the checkmark, the printed
+     state word. Section 2 licenses exactly that pairing — "a chevron, a
+     checkmark, a keyline, weight against the field, never a wash of paint" —
+     but the value step is genuinely gone while the wall is up, and it comes
+     back the instant a hand does.
+  */
+  .lst[data-lst-trophy="true"] {
+    /* ---- the ground, dropped to 0.75 of its own linear luminance -------- */
+    --cd-void: #6b6c6d; /* chassis void #7A7B7D */
+    --cd-field: #88898b; /* epoxy body  #9B9C9E */
+    --cd-catch: #a1a2a3; /* epoxy catch #B7B8B9 */
+    --cd-mirror: #afb2b4; /* nickel      #C7CBCD */
+    --cd-mirror-hot: #d0d0ce; /* nickel specular #ECECEA */
+    --lst-mirror-dark: #797b7c; /* the mirror's darkest stop #8A8C8E */
+    --lst-rim: #d0d0cecc;
+
+    /* ---- the reading, cut to the bottom of the material ----------------- */
+    --cd-ink: #000000;
+    --cd-muted-ink: #000000; /* still the same hex as the ink, still by weight */
+    --cd-plate-ink: #000000;
+    --cd-alert-ink: #000000;
+
+    /* CERAMIC (II.2.13) — the same one wide soft lobe, the same two stops,
+       every one of them at 0.75 linear. The darkest stop is still the body's
+       own hex and never runs past it. */
+    --lst-ceramic:
+      radial-gradient(90% 70% at 30% 16%, #e1e1e166 0%, #e1e1e100 52%),
+      linear-gradient(var(--cd-light-axis), #a1a2a3 0%, #88898b 100%);
+
+    /* HARD-MIRROR CHROME (II.2.8) — the same 47%/48% and 62%/63% stop pairs,
+       nothing soft between them, all seven stops at 0.75 linear. */
+    --lst-chrome-h: linear-gradient(
+      180deg,
+      #d0d0ce 0%,
+      #afb2b4 34%,
+      #8e9193 47%,
+      #797b7c 48%,
+      #8a8c8e 62%,
+      #a9acae 63%,
+      #c9c9c7 100%
+    );
+    --lst-chrome-v: linear-gradient(
+      90deg,
+      #d0d0ce 0%,
+      #afb2b4 34%,
+      #8e9193 47%,
+      #797b7c 48%,
+      #8a8c8e 62%,
+      #a9acae 63%,
+      #c9c9c7 100%
+    );
+
+    /* the mount behind the column, at the same tier */
+    background: linear-gradient(var(--cd-light-axis), #797a7b 0%, #6b6c6d 100%);
+  }
+
+  /* the one wide soft lobe on the mount, at the tier */
+  .lst[data-lst-trophy="true"]::before {
+    background: radial-gradient(closest-side, #e1e1e14d 0%, #e1e1e11c 55%, #e1e1e100 100%);
+  }
+
+  /*
+    THE RAMP. screencraft/01's 4000ms linear between tiers, unchanged — it
+    just has somewhere honest to live now. The ground crossfades between two
+    committed sets of stops; the ink crossfades between two committed hexes.
+    No filter anywhere above a reading.
+  */
+  .lst,
+  .lst::before,
+  .lst-head[data-cd-encl],
+  .lst-till[data-cd-encl],
+  .lst-seats[data-cd-encl],
+  .lst-thumb[data-cd-encl],
+  .lst-trophy[data-cd-encl],
+  .lst-ann-face[data-cd-surface],
+  .lst-mask,
+  .lst-column,
+  .lst-column-fill,
+  .lst-column-index,
+  .lst-seatbar,
+  .lst-seatbar-track,
+  .lst-seatbar-cover,
+  .lst-register .cd-register-head,
+  .lst-register .cd-register-rows,
+  .lst-lid-overflow {
     transition:
-      filter 4000ms linear,
-      transform 4000ms linear;
+      background-color var(--lst-tier-ms) linear,
+      background-image var(--lst-tier-ms) linear,
+      color var(--lst-tier-ms) linear;
+  }
+
+  /* the annunciator's keys keep their own 80ms release and take the ramp on
+     top of it — one transition property, so the contact grammar has to be
+     restated rather than replaced (II.4.3) */
+  .lst .lst-ann-keys .cd-key {
+    transition:
+      transform var(--cd-contact-release) var(--cd-ease-settle),
+      box-shadow var(--cd-contact-release) var(--cd-ease-settle),
+      background-color var(--lst-tier-ms) linear,
+      background-image var(--lst-tier-ms) linear,
+      color var(--lst-tier-ms) linear;
+  }
+
+  /* the key's own down-stroke, restated. foundry.css sets transition-duration
+     on `.cd-key[data-cd-pressed="true"]` at (0,2,0); the rule above is (0,3,0)
+     and would otherwise leave the press easing at the tier's own 4000ms —
+     II.4.3's one-frame linear down-stroke, lost to a cascade accident. */
+  .lst .lst-ann-keys .cd-key[data-cd-pressed="true"] {
+    transition-duration: var(--cd-contact-down);
+    transition-timing-function: linear;
   }
 
   .lst-trophy[data-cd-encl] {
@@ -1616,6 +1863,15 @@
         still changes ... the semantic layer is not negotiable."
       */
       --lst-ease-taper: linear;
+
+      /*
+        THE TIER ARRIVES, IT JUST DOES NOT TRAVEL. II.4.26 — translate, never
+        delete: the ambient tier is a POWER STATE, not a piece of drama, so the
+        wall still goes to 0.75 and the reading still steps to the bottom of
+        the material. Only the 4000ms crossfade between the two is dropped,
+        exactly as the old filter's own transition was dropped here.
+      */
+      --lst-tier-ms: 0ms;
     }
 
     .lst-frame {
@@ -1639,13 +1895,18 @@
      13 · FORCED COLOURS — the material argument is the OS's to discard
      ===================================================================== */
   @media (forced-colors: active) {
+    /* section 11a's tier paints a real ground at (0,2,0) and would otherwise
+       out-specify this reset — the ambient tier is a luminance argument, and
+       luminance is exactly what the OS has taken over here. */
     .lst,
+    .lst[data-lst-trophy="true"],
     .lst-frame {
       background: Canvas;
       color: CanvasText;
     }
 
     .lst::before,
+    .lst[data-lst-trophy="true"]::before,
     .lst::after {
       content: none;
     }

@@ -8,8 +8,19 @@
  *   both retarget in flight — nothing finishes an obsolete transition
  *   burn-in ............... 2px, 8 positions, 240 000ms per step, the whole
  *                           composition moving AS ONE RIGID FRAME
- *   luminance ............. 1.00 active / 0.55 ambient / 0.20 night,
- *                           4000ms linear between tiers
+ *   luminance ............. 1.00 active / 0.75 ambient, 4000ms linear between
+ *                           tiers. THE AMBIENT FIGURE IS THIS SCREEN'S OWN,
+ *                           NOT THE OWNER'S 0.55, and the departure is
+ *                           measured rather than preferred: on IRREDUCIBLE's
+ *                           epoxy ground the best ratio ANY ink can reach is
+ *                           7.64:1 (world.css, THE EPOXY CEILING), so the tier
+ *                           and the 4.5:1 Floor spend one budget. At a true
+ *                           0.55-luminance ground, PURE BLACK ink — nothing
+ *                           left to spend — still measures 3.93:1 on a key's
+ *                           darkest stop and 3.87:1 on nickel. The Floor
+ *                           outranks the tier. The arithmetic, the before/
+ *                           after figures and the cost are in list.css
+ *                           section 11a, which is where the tier is spent.
  *
  * IRREDUCIBLE's own Trophy clause is what the mode MEANS here: "Every healthy
  * station simply is not rendered — a blank plate has nothing to report, and this
@@ -30,8 +41,12 @@
  *
  * THE NIGHT TIER IS DECLARED AND NEVER ENTERED. There is no ambient light
  * sensor available to this build; guessing darkness from the clock would be
- * invented data. The tier is declared, its token is committed, its rule is in
- * the stylesheet, and nothing drives it.
+ * invented data. The tier survives as a name in `PowerTier` and nothing else:
+ * nothing drives it and — corrected here, because the sentence that used to
+ * stand in this place claimed otherwise — THERE IS NO NIGHT RULE IN
+ * list.css. A comment that certifies a stylesheet it has not been checked
+ * against is the same defect as an audit that certifies a ratio it has not
+ * measured.
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
