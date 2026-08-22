@@ -53,7 +53,7 @@ import { memo, useEffect, useRef } from "react";
 import type { KeyboardEvent } from "react";
 import type { Ingredient } from "../../data/types";
 import type { InventoryEntry, InventoryLevel } from "../../state/types";
-import { ageOf, FRESHNESS, STALE_INK_ALPHA } from "../../cd/freshness/classes";
+import { ageOf, FRESHNESS } from "../../cd/freshness/classes";
 import { countdownForIngredient, type CountdownStatus } from "./countdown";
 import { registerDisambiguator, registerNameSuffix } from "./registerName";
 import { LEVEL_WORD, levelPx, lifePxOf, sweepMs } from "./model";
@@ -247,7 +247,19 @@ function RegisterRowBase({
         6.46:1 on the plate's own face. A tint over type lowers contrast at every
         intensity; there is no tuning that fixes it.
       */}
-      <span className="str-row__figure" aria-hidden="true" style={{ opacity: age.stale && counted ? STALE_INK_ALPHA : 1 }}>
+      {/*
+        THE STALE DROP IS AN INK, NOT AN ALPHA — and the row's own
+        `data-stale` attribute already carries the condition, so the drop is
+        declared once, in stores.css, rather than inlined here.
+
+        MEASURED, and it was a real Floor failure: `opacity: STALE_INK_ALPHA`
+        (0.55) on this span composited #4A453C down to #948F86 over the plate's
+        own face and printed the held level word at 2.68-2.71:1 at 1280x800 and
+        2.10:1 at 390x844. The ground was never the problem — the plate declares
+        #EDE8DE and paints #EFEAE1-#F0ECE3 under this column — the ALPHA was.
+        See stores.css section 7 for the ink and its measured figures.
+      */}
+      <span className="str-row__figure" aria-hidden="true">
         {levelText}
       </span>
 

@@ -27,7 +27,7 @@ import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState } from 
 import type { KeyboardEvent, PointerEvent as ReactPointerEvent, ReactNode } from "react";
 import { Enclosure, Escutcheon, Lamp, Plate, PressKey } from "../../cd/foundry";
 import { quantise } from "../../cd/physics/detent";
-import { ageOf, STALE_INK_ALPHA } from "../../cd/freshness/classes";
+import { ageOf } from "../../cd/freshness/classes";
 import { texture } from "../../cd/material/textures";
 import { cue } from "../../cd/sound/cues";
 import type { InventoryLevel } from "../../state/types";
@@ -386,7 +386,18 @@ function LarderGaugeBase({
       />
 
       <Plate className="str-gauge__face" surface="data">
-        <span className="str-gauge__value cd-data" style={{ opacity: age.stale ? STALE_INK_ALPHA : 1 }}>
+        {/*
+          THE DENOMINATOR IS LOAD-BEARING, so it is never decoration and never
+          inherits a dim. `/65` sits INSIDE this span, so the stale alpha this
+          element used to carry (`opacity: STALE_INK_ALPHA`) fell on it too and
+          printed the register's own size at 2.29:1 — measured on real pixels,
+          awake, in the never-counted state. The numerator failed with it: "0"
+          at 28px measured 2.96:1 against large text's own 3:1.
+          The drop is an INK now (stores.css section 9), and the hierarchy
+          between "65" and "/65" is carried by SIZE — 1.75rem against 0.875rem —
+          which is where it always belonged.
+        */}
+        <span className="str-gauge__value cd-data" data-stale={age.stale ? "true" : "false"}>
           {counted}
           <span className="str-gauge__of">/{total}</span>
         </span>

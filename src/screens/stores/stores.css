@@ -551,9 +551,26 @@
     color: var(--cd-ink);
   }
 
+  /*
+    A STALE STOCKTAKE DROPS ITS INK, IT DOES NOT GO TRANSPARENT.
+    Same repair, same reason as the register's own held figure (section 7): the
+    alpha this element used to carry printed the count at 2.96:1 and dragged the
+    denominator nested inside it down to 2.29:1. #5F5A50 measures 5.61:1 on the
+    world's face and the drop from #3A362E (9.84:1) still reads as a drop.
+  */
+  .str-gauge__value[data-stale="true"] {
+    color: var(--cd-muted-ink); /* #5F5A50 — 5.61:1 on #EDE8DE, measured */
+  }
+
+  /*
+    THE DENOMINATOR IS PART OF THE READING, NOT A LABEL. "/65" states what the
+    count is out of, so it prints at the same 4.5:1 floor every other figure on
+    this plate does, and its rank is carried by SIZE alone (0.875rem under the
+    value's 1.75rem) — never by a lighter ink and never by an inherited alpha.
+  */
   .str-gauge__of {
     font-size: var(--cd-size-2);
-    color: var(--cd-muted-ink);
+    color: var(--cd-muted-ink); /* #5F5A50 — 5.61:1 on #EDE8DE, measured */
   }
 
   .str-gauge__meta {
@@ -1275,6 +1292,35 @@
   .str-row[data-counted="false"] .str-row__figure {
     color: var(--cd-muted-ink);
     font-style: italic;
+  }
+
+  /*
+    THE STALE DROP IS AN INK, NOT AN ALPHA.
+
+    II.3.18/II.3.32 say a stale reading HOLDS its value and "the ink drops to
+    55%", and src/cd/freshness/classes.ts commits that as STALE_INK_ALPHA. Built
+    literally, as `opacity: 0.55` on this span, it is a Floor failure:
+
+      MEASURED on real pixels, awake, at 1280x800 -- ink #4A453C composited
+      through 0.55 onto the plate's own painted face (#EFEAE1-#F0ECE3) renders
+      #948F86-#959087 and the held level word prints at 2.68-2.71:1.
+      At 390x844 the same span renders #A7A29A on #EEE9E1 -- 2.10:1.
+
+    The GROUND was never at fault and no band paints over this column: the plate
+    declares `background-color: #ede8de` and paints no lower. The failing
+    channel was `opacity`, which no ground-compositing audit can see -- exactly
+    the contrast-audit trap one property further along.
+
+    So the drop is expressed as the drop it always was: a real ink step, from
+    the figure's own #4A453C (8.07:1 measured) to this world's second-rank ink
+    #5F5A50 (5.61:1 on the declared floor #EDE8DE; 5.77:1 on the painted
+    ground). The value still visibly recedes, it still holds, the age cell still
+    prints the exact age in warning ink and the word UNCOUNTED still prints on
+    the gauge -- and the reading stays readable, which is the point of printing
+    it at all. CORRECTIONARY 4: "meet the floor inside the richness."
+  */
+  .str-row[data-stale="true"] .str-row__figure {
+    color: var(--cd-muted-ink); /* #5F5A50 — 5.77:1 measured on the painted plate */
   }
 
   /* the life MARKER — an engraved index on the printed life zone. A marker over
