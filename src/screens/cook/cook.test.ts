@@ -188,7 +188,11 @@ describe("reduced motion is a translation, never a deletion (II.4.26)", () => {
       "ck-ann-flash": /\.ck-ann\[data-ck-firing="true"\]\s*\{[^}]*animation:\s*none/.test(
         selectorsInReduced
       ),
-      "ck-trophy-dim": /\.ck-trophy-face\s*\{[^}]*animation:\s*none/.test(selectorsInReduced),
+      // the tier moved from .ck-trophy-face onto .ck-trophy when it stopped
+      // being a filter and became a ground-token swap
+      "ck-trophy-dim": /\.ck-trophy\[data-ck-open="true"\]\s*\{[^}]*animation:\s*none/.test(
+        selectorsInReduced
+      ),
     };
     for (const name of declared) {
       expect(handled[name as keyof typeof handled], `@keyframes ${name} is unhandled`).toBe(true);
@@ -424,5 +428,102 @@ describe("THE REEL IS NEVER GRABBED — the constraint that is load-bearing prod
     );
     // the rocker's two ends, and nothing else in the folder
     expect((instruments.match(/onPointerDown/g) || []).length).toBe(2);
+  });
+});
+
+
+describe("the standby deck shows hardware and reports NOTHING live", () => {
+  /*
+    The Fable review found COOK standby the flattest room in the product, so the
+    deck's own materials now show at rest. That is only legitimate while every
+    LIVE channel reads empty — the moment the idle deck spins, lights a lamp, or
+    prints a figure, it is claiming a program that is not loaded.
+
+    Pinned at source, because the difference between "an unloaded deck" and "a
+    lie about state" is four props, and nothing on screen would look wrong if
+    one of them changed.
+  */
+  const picker: string = readFileSync(
+    fileURLToPath(new URL("./ProgramPicker.tsx", import.meta.url)),
+    "utf8"
+  );
+  const face = picker.slice(picker.indexOf("<ReelFace"), picker.indexOf("</ReelFace>"));
+
+  it("never spins the idle disc", () => {
+    expect(face.includes("spinning={false}")).toBe(true);
+    expect(/spinning=\{(?!false)/.test(face)).toBe(false);
+  });
+
+  it("lights no arc cell: elapsed 0 of 0 is a fraction of zero", () => {
+    expect(face.includes("elapsedMin={0}")).toBe(true);
+    expect(face.includes("totalMin={0}")).toBe(true);
+    expect(face.includes("overrun={false}")).toBe(true);
+  });
+
+  it("prints no elapsed figure — the hub is off and the window reads --:--", () => {
+    // "00:00" would invent a reading that was never taken, the same way an
+    // uncounted shelf gets NEVER rather than an age of zero.
+    expect(face.includes("hub={false}")).toBe(true);
+    expect(picker.includes("--:--")).toBe(true);
+    expect(face.includes("00:00")).toBe(false);
+  });
+
+  it("keeps the standby lamp dark", () => {
+    expect(picker.includes("<Lamp lit={false}")).toBe(true);
+  });
+});
+
+
+describe("Trophy's ambient tier is spent on the ground, never on the reading", () => {
+  /*
+    DEFECT (SHOP builder, verified by the orchestrator; worst here because COOK
+    carries the deepest tier in the product): `filter: brightness()` multiplies
+    sRGB-ENCODED channels, which is not luminance-preserving, so it dims INK AND
+    GROUND TOGETHER and every reading crushes toward its own background.
+
+    MEASURED on this screen's own wall face, 15 readings, modelling both:
+      tier 0.55   filter: 6 of 15 below the Floor    ground swap: 0 of 15
+      tier 0.20   filter: 15 of 15 below the Floor   ground swap: 0 of 15
+      worst single reading — the exact figure, `.ck-drum-face`:
+                  16.53:1 -> 1.56:1 under the filter
+                  16.53:1 -> 18.32:1 under the ground swap
+    The owner's Trophy ruling says the exact figure and the age are ALWAYS
+    VISIBLE. At the deepest tier the filter took both to nothing.
+
+    SHOP's first repair moved the filter to a narrower element and the same
+    failure returned one level in, because that element still contained the
+    readings. A FILTER ANYWHERE ABOVE A READING IS THE BUG, so this test bans
+    the property outright rather than policing where it sits.
+  */
+  it("uses no brightness filter anywhere in this screen's stylesheet", () => {
+    const decls = css
+      .split("\n")
+      .filter((line: string) => /^\s*filter\s*:/.test(line));
+    for (const d of decls) {
+      expect(/brightness\s*\(/.test(d), `a brightness filter survives: ${d.trim()}`).toBe(false);
+    }
+  });
+
+  it("drives the tier through registered colour tokens so the stops interpolate", () => {
+    for (const t of ["field", "well", "rim", "mirror", "mirror-hot", "mirror-floor"]) {
+      expect(css.includes(`@property --ck-tier-${t}`), `--ck-tier-${t} is not registered`).toBe(true);
+    }
+    // three committed stops, 4000ms, linear
+    expect(/@keyframes ck-trophy-dim/.test(css)).toBe(true);
+    expect(/animation: ck-trophy-dim 4000ms linear both/.test(css)).toBe(true);
+  });
+
+  it("leaves every INK token out of the dimmed set", () => {
+    const kf = css.slice(css.indexOf("@keyframes ck-trophy-dim"));
+    const body = kf.slice(0, kf.indexOf("\n  }\n") + 5);
+    // grounds only — no ink, and above all no reserved role
+    for (const ink of ["--cd-ink", "--cd-muted-ink", "--cd-role-live", "--cd-role-danger", "--cd-role-warning"]) {
+      expect(body.includes(ink), `${ink} must not be dimmed by the tier`).toBe(false);
+    }
+  });
+
+  it("suppresses the tier entirely while an alarm exists", () => {
+    // "alerts pierce at wall scale the instant they exist"
+    expect(/\.ck-trophy\[data-ck-alert="true"\]\s*\{[^}]*animation:\s*none/.test(css)).toBe(true);
   });
 });

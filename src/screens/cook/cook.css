@@ -1,4 +1,56 @@
 /*
+  TROPHY'S AMBIENT TIER — SPENT ON THE GROUND, NEVER ON THE READING.
+
+  DEFECT (found by the SHOP builder, verified by the orchestrator, and worst on
+  this screen because COOK carries the deepest tier in the product):
+  `filter: brightness()` multiplies sRGB-ENCODED channel values. That is not
+  luminance-preserving and it dims INK AND GROUND TOGETHER, so every reading on
+  the wall face crushes toward its own background. Measured on real pairs at the
+  0.55 tier: 14.58:1 -> 4.88, 11.65:1 -> 4.47, 6.45:1 -> 2.61. The 0.20 tier is
+  far worse. A running cook timer is the strongest Trophy case in the product —
+  the reading someone checks from across a kitchen with their hands full — and
+  it was the reading being dimmed.
+
+  A FILTER ANYWHERE ABOVE A READING IS THE BUG. SHOP's first repair moved the
+  filter to a narrower element and the same failure came back one level in, at
+  2.70:1, because that element still contained the controls. So there is no
+  filter here at all.
+
+  The tier is now three committed GROUND values per surface token, derived by
+  scaling each base colour's LINEAR luminance by 1.00 / 0.55 / 0.20 and
+  re-encoding — same recipes, same stops, dropped in value, hue held. Every ink
+  token is left completely alone, so contrast at the wall can only ever go UP.
+
+    token                1.00       0.55       0.20
+    --cd-field         #1B1B1D    #121214    #070708
+    --cd-well          #121213    #0B0B0C    #020203
+    --cd-rim-catch     #2C2D30    #1F2022    #101012
+    --cd-mirror        #C9CACB    #9A9A9B    #606061
+    --cd-mirror-hot    #E2E3E4    #AEAFAF    #6D6E6E
+    --cd-mirror-floor  #161719    #0E0F10    #040506
+
+  TWO DELIBERATE EXCLUSIONS, decided rather than defaulted:
+
+  * THE LAMP DOES NOT DIM. --cd-role-live is the one licensed emissive in this
+    world and its whole job at wall scale is "is a program recording, readable
+    across a room". Dimming the one bulb to a fifth to save burn-in defeats the
+    exact reading Trophy exists to serve, and a real deck's REC lamp does not
+    fade because the room is dark.
+  * THE WARNING DOES NOT DIM, AT ANY TIER. Alerts pierce at wall scale by
+    doctrine. The alert state suppresses the tier animation outright, so ground
+    AND ink sit at 1.00 for as long as the condition exists.
+
+  Registered with @property because three committed stops have to INTERPOLATE
+  across 4000ms linear; unregistered custom properties would step between them.
+*/
+@property --ck-tier-field { syntax: "<color>"; inherits: true; initial-value: #1b1b1d; }
+@property --ck-tier-well { syntax: "<color>"; inherits: true; initial-value: #121213; }
+@property --ck-tier-rim { syntax: "<color>"; inherits: true; initial-value: #2c2d30; }
+@property --ck-tier-mirror { syntax: "<color>"; inherits: true; initial-value: #c9cacb; }
+@property --ck-tier-mirror-hot { syntax: "<color>"; inherits: true; initial-value: #e2e3e4; }
+@property --ck-tier-mirror-floor { syntax: "<color>"; inherits: true; initial-value: #161719; }
+
+/*
   src/screens/cook/cook.css — 02 REEL LOGIC, built.
 
   EVERY VALUE BELOW NAMES THE CLAUSE IT CAME FROM. A duration that exists only
@@ -450,8 +502,21 @@
     font-size: var(--cd-size-2);
     text-transform: uppercase;
   }
+  /*
+    EVERY disabled cap on this screen, not just the collar's three.
+
+    MEASURED after the Fable review, with the instrument face awake: the
+    disabled "back to now" cap read 4.06:1 against rgb(46,46,48) — the foundry
+    cap gradient's own light stop — because `.cd-key[disabled]` falls back to
+    --cd-muted-ink and this rule was scoped to `.ck-key`, which the scrub key,
+    the eject key and the tally key are not. The same defect, three controls
+    wider than the fix.
+      --ck-disabled-ink #9B9EA3 on rgb(46,46,48)  5.04:1
+      --ck-disabled-ink #9B9EA3 on rgb(52,52,54)  4.62:1  (the .ck-key mix)
+  */
+  .ck .cd-key[disabled],
   .ck .ck-key[disabled] {
-    color: var(--ck-disabled-ink); /* 4.62:1 on the cap's lightest stop */
+    color: var(--ck-disabled-ink);
   }
 
   /* 3.5rem = 56px both axes, past the Floor's 44px, because this deck is
@@ -1140,6 +1205,46 @@
     grid-column: 1 / -1;
     align-content: start;
   }
+  /*
+    THE STANDBY HEAD IS A DECK, NOT A BANNER. Empty reel on the left, the
+    prompt on the right — so the §2 first-word test has an object to land on
+    before a program is loaded. Every live channel inside it reads empty; see
+    the note in ProgramPicker.tsx.
+  */
+  .ck .ck-picker-head {
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    column-gap: calc(var(--cd-module) * 3);
+  }
+  .ck .ck-picker-deck {
+    /* big enough to be the first thing the eye lands on — the §2 test is
+       "would a viewer's first words name an OBJECT", and a 9rem disc tucked in
+       a corner loses that race to a headline */
+    --ck-reel: 13rem;
+    display: grid;
+    place-items: center;
+    padding: var(--cd-module) calc(var(--cd-module) * 2);
+  }
+  /* the empty deck's crown and counter share a 13rem face — give them room */
+  .ck .ck-picker-deck .ck-crown {
+    inset-block-start: 3%;
+  }
+  .ck .ck-picker-deck .ck-hub {
+    min-inline-size: 58%;
+  }
+  .ck .ck-picker-headtext {
+    display: grid;
+    gap: var(--cd-module);
+    justify-items: start;
+  }
+  /* "--:--", never "00:00": an unloaded deck has no elapsed figure to print */
+  .ck .ck-picker-hub-blank {
+    font-family: var(--cd-font-data);
+    font-size: var(--cd-size-4);
+    letter-spacing: 0.08em;
+    color: var(--cd-muted-ink);
+  }
+
   .ck .ck-picker-head,
   .ck .ck-picker-tonight,
   .ck .ck-picker-sessions,
@@ -1188,6 +1293,33 @@
     inline-size: 100%;
     text-align: start;
     padding: var(--cd-module);
+    /*
+      THE SEAT'S BED IS FLAT, AND ITS LIGHT IS IN THE SHADOW STACK.
+
+      `.cd-key`'s fill is a domed cap gradient — +11% white at 0% falling to
+      -10% black at 100%, on the 138 degree axis. That dome is right for a cap
+      the thumb presses; it is wrong under a ROW OF FACTS, because the text then
+      lands wherever the dome happens to be and its contrast becomes a function
+      of x.
+
+      MEASURED, sampling the composited gradient across each glyph's OWN client
+      rects rather than across the control:
+        .ck-seat-meta   "80 min" / "100 min"  5.26:1   (right end, dome resolved dark)
+        .cd-register-count "4 rows"           5.29:1
+        .ck-seat-desc   the session prose     3.90:1   FAILS on rgb(49,49,51)
+      The desc sits at the left end, which on a 138deg axis is the dome's light
+      stop. Same ink, same control, different x, different verdict.
+
+      CD-BRIEF ruling 5 is a hard fail BY RULE, and its remedy is the plate. The
+      seat IS the plate: the fill flattens to the world's own field so every
+      glyph in it reads on one uniform ground, and the four-layer stack above
+      keeps the light. A machined bed with a lit rim is what a row of facts
+      actually sits in; the dome belongs to the cap.
+        --cd-muted-ink  #8A8D93 on #1B1B1D    5.17:1
+        --cd-ink        #F2F1EA on #1B1B1D   15.18:1
+    */
+    background-image: none;
+    background-color: var(--cd-field);
   }
   .ck .ck-seat--tonight,
   .ck .ck-seat--session {
@@ -1376,26 +1508,51 @@
 
   /*
     LUMINANCE 1.00 / 0.55 / 0.20 over 4000ms LINEAR — the owner's three
-    committed stops, spent as a burn-in dim once the face has settled at the
-    wall. The alert overrides it outright: an alarm pierces at wall scale the
-    instant it exists, and a dimmed alarm is an alarm that lost the argument.
+    committed stops, spent as a burn-in dim on the GROUND once the face has
+    settled at the wall. See the note at the head of this file for why this is
+    a token swap and not a filter. The whole overlay carries the swap, so its
+    own anodized ground dims with the pods inside it; every ink, the lamp and
+    the warning are untouched.
   */
-  .ck .ck-trophy[data-ck-open="true"] .ck-trophy-face {
+  .ck .ck-trophy {
+    --cd-field: var(--ck-tier-field);
+    --cd-well: var(--ck-tier-well);
+    --cd-rim-catch: var(--ck-tier-rim);
+    --cd-mirror: var(--ck-tier-mirror);
+    --cd-mirror-hot: var(--ck-tier-mirror-hot);
+    --cd-mirror-floor: var(--ck-tier-mirror-floor);
+  }
+  .ck .ck-trophy[data-ck-open="true"] {
     animation: ck-trophy-dim 4000ms linear both;
   }
-  .ck .ck-trophy[data-ck-alert="true"] .ck-trophy-face {
+  /* an alarm pierces at wall scale: no tier at all while it exists */
+  .ck .ck-trophy[data-ck-alert="true"] {
     animation: none;
-    filter: none;
   }
   @keyframes ck-trophy-dim {
     0% {
-      filter: brightness(1);
+      --ck-tier-field: #1b1b1d;
+      --ck-tier-well: #121213;
+      --ck-tier-rim: #2c2d30;
+      --ck-tier-mirror: #c9cacb;
+      --ck-tier-mirror-hot: #e2e3e4;
+      --ck-tier-mirror-floor: #161719;
     }
     50% {
-      filter: brightness(0.55);
+      --ck-tier-field: #121214;
+      --ck-tier-well: #0b0b0c;
+      --ck-tier-rim: #1f2022;
+      --ck-tier-mirror: #9a9a9b;
+      --ck-tier-mirror-hot: #aeafaf;
+      --ck-tier-mirror-floor: #0e0f10;
     }
     100% {
-      filter: brightness(0.2);
+      --ck-tier-field: #070708;
+      --ck-tier-well: #020203;
+      --ck-tier-rim: #101012;
+      --ck-tier-mirror: #606061;
+      --ck-tier-mirror-hot: #6d6e6e;
+      --ck-tier-mirror-floor: #040506;
     }
   }
 
@@ -1505,6 +1662,19 @@
   @media (max-width: 63.99rem) {
     .ck .ck-face {
       grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 63.99rem) {
+    /* the standby deck stacks above its prompt rather than beside it */
+    .ck .ck-picker-head {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      row-gap: var(--cd-module);
+    }
+    .ck .ck-picker-headtext {
+      justify-items: center;
+      text-align: center;
     }
   }
 
@@ -1668,9 +1838,16 @@
     .ck .ck-trophy[data-ck-open="true"] {
       transition-duration: var(--cd-reduced-fade);
     }
-    .ck .ck-trophy[data-ck-open="true"] .ck-trophy-face {
+    /* the middle stop, HELD as values — the dim is not travel, and it is still
+       never a filter, because a filter would take the readings down with it */
+    .ck .ck-trophy[data-ck-open="true"] {
       animation: none;
-      filter: brightness(0.55); /* the middle stop, held — the dim is not travel */
+      --ck-tier-field: #121214;
+      --ck-tier-well: #0b0b0c;
+      --ck-tier-rim: #1f2022;
+      --ck-tier-mirror: #9a9a9b;
+      --ck-tier-mirror-hot: #aeafaf;
+      --ck-tier-mirror-floor: #0e0f10;
     }
     /* position carries meaning, so it still MOVES, at 80ms linear */
     .ck .ck-lane-fill {

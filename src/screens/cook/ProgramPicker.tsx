@@ -23,7 +23,8 @@
  */
 
 import { useOpenSection } from "../../cd/chassis";
-import { Enclosure, Escutcheon, Plate, PressKey, Register, type RegisterGroup } from "../../cd/foundry";
+import { Enclosure, Escutcheon, Lamp, Plate, PressKey, Register, type RegisterGroup } from "../../cd/foundry";
+import { ReelFace } from "./Reel";
 import { mealMacros } from "../../state/selectors";
 import type { AppState } from "../../state/types";
 import { activeVariant } from "../../data/variant";
@@ -103,14 +104,69 @@ export function ProgramPicker({ state, now, onLoad }: ProgramPickerProps) {
 
   return (
     <div className="ck-picker">
+      {/*
+        THE EMPTY DECK — and it is not a lie about state.
+
+        The Fable review found COOK standby the flattest room in the product and
+        the first one a viewer meets. It was: dark panels, white text, no light,
+        no object. Nothing on it said "tape deck", so nothing distinguished COOK
+        from a settings list.
+
+        The objection to fixing that is 02 REEL LOGIC section 1 — "a REEL LOGIC
+        screen at rest reads as a SHUT-DOWN MACHINE, because at rest is exactly
+        what it is". Read closely, that clause governs MOTION and EMISSION: its
+        own sentence is "No ambient shimmer runs behind the glass to prove the
+        product is alive." A still chrome collar shimmers nothing and proves
+        nothing. Section 2 is explicit the other way: "the chassis is a FACT OF
+        RECORD" — and a fact of record is true whether or not a tape is loaded.
+        Pigment does not switch off. CORRECTIONARY 5.6: "If nothing visibly
+        catches light, fix that before anything else."
+
+        So the deck's HARDWARE shows at rest and every LIVE CHANNEL reads empty:
+
+          disc      still. `spinning={false}` — no animation runs at all
+          arc       all 60 cells at the unlit value; elapsed 0 of 0 lights none
+          counter   "--:--", never "00:00". An unloaded deck has no elapsed
+                    figure, and printing a zero would invent a reading that was
+                    never taken — the same rule that gives an uncounted shelf
+                    NEVER rather than an age
+          lamp      dark, captioned OFF
+
+        That reports "there is a machine here and there is no tape in it", which
+        is exactly true, and it is MORE honest than the panel it replaces: that
+        one did not report the deck at all.
+      */}
       <Enclosure variant="faceplate" grain className="ck-picker-head">
-        <Escutcheon>cook · standby</Escutcheon>
-        <Plate className="ck-picker-plate">
-          <h1 className="ck-picker-title">no program loaded</h1>
-          <p className="ck-picker-sub">
-            the deck is stopped. load tonight's dinner, a sunday session, or any meal.
-          </p>
-        </Plate>
+        <div className="ck-picker-deck" aria-hidden="true">
+          <ReelFace
+            elapsedMin={0}
+            totalMin={0}
+            spinning={false}
+            overrun={false}
+            seedSeconds={0}
+            hub={false}
+          >
+            <div className="ck-hub cd-plate" data-cd-surface="data">
+              <span className="ck-picker-hub-blank cd-printed">--:--</span>
+              <span className="ck-hub-total cd-printed">no tape</span>
+            </div>
+            <div className="ck-crown">
+              <span className="ck-lamp">
+                <Lamp lit={false} word={{ on: "rec", off: "off" }} label="cook program" showWord={false} />
+              </span>
+              <span className="ck-crown-word cd-engraved">off</span>
+            </div>
+          </ReelFace>
+        </div>
+        <div className="ck-picker-headtext">
+          <Escutcheon>cook · standby</Escutcheon>
+          <Plate className="ck-picker-plate">
+            <h1 className="ck-picker-title">no program loaded</h1>
+            <p className="ck-picker-sub">
+              the deck is stopped. load tonight's dinner, a sunday session, or any meal.
+            </p>
+          </Plate>
+        </div>
       </Enclosure>
 
       {tonight && duty && (
