@@ -443,6 +443,7 @@ export default function ShopScene(_props: SceneProps) {
         <span>
           <b>{group.costed}</b>/{group.rows.length} costed
         </span>
+        {/* II.6.15's header unit, for the bare numerals in the column below */}
         <span>
           £<b>{money(group.subtotal)}</b>
         </span>

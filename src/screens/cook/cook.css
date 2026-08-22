@@ -125,19 +125,6 @@
     z-index: 1;
   }
 
-  /*
-    THE UNIT FLOOR. II.6.6 sets a unit at 40% of its value's size, which is
-    right for a hero: 2.75rem x 0.4 = 1.1rem. Applied to a 0.8125rem label it
-    gives 0.325rem — 5px — and II.6.11 is explicit that "below 0.6875rem type is
-    TEXTURE, NEVER INFORMATION". MEASURED on the standby deck: the session's
-    "100 min" and the register lid's "10 rows" both rendered their unit at 5.2px
-    and read as an ellipsis. The ratio still governs; the floor stops it
-    producing a unit nobody can read.
-  */
-  .ck .cd-unit {
-    font-size: max(calc(1em * var(--cd-unit-scale)), var(--cd-micro-ceiling));
-  }
-
   /* ===================================================================== */
   /* 1 · THE FACE — II.4/IV.1's unequal thirds, 62fr hero / 38fr evidence   */
   /* ===================================================================== */

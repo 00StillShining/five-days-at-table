@@ -47,11 +47,11 @@ export const CostRow = memo(function CostRow({ el, reading }: CostRowProps) {
         {line.product}
       </span>
 
+      {/* II.6.15 — a uniform column prints its unit ONCE, in the header, and the
+          cells carry bare numerals. The lid above this column prints £ on its
+          own subtotal; the plinth prints it at the top step. */}
       <span className="shop-price">
-        <span>
-          {"£"}
-          {money(reading.lineTotal)}
-        </span>
+        <span>{money(reading.lineTotal)}</span>
         {line.estimate && <EstimateMark className="shop-est" />}
       </span>
 

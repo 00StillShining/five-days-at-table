@@ -439,11 +439,34 @@
     font-size: var(--cd-micro-ceiling);
     letter-spacing: var(--cd-track-micro);
     text-transform: uppercase;
+    /*
+      F1d REPAIR (Fable review), and the one finding my own sweep confirmed
+      outright: this printed --cd-muted-ink at --cd-micro-alpha (0.4), which
+      composites to #4A4944 on #161514 = 2.06:1. My audit measured the DECLARED
+      ink and never composited the opacity — the same class of mistake as
+      trusting `backgroundColor`, one property along. The alpha is gone; the ink
+      is muted at its full 6.45:1, and the trip id it carries is now also printed
+      at the label floor inside the send tray, so the etch repeats rather than
+      states (II.6.11).
+    */
     color: var(--cd-muted-ink);
-    opacity: var(--cd-micro-alpha);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  /*
+    F1b REPAIR (Fable review). `.cd-stale-age` ships from the freshness layer at
+    --cd-muted-ink, and the reviewer's pixel audit put it at 2.45-2.79:1 on this
+    plinth. It is the figure that tells the operator their prices are stale, so
+    it cannot be the dimmest thing on the plate. Lifted to strobe white —
+    14.58:1 on the readout's #161514 — in THIS SCOPE ONLY; the shared component
+    is untouched, because a lift correct on a near-black plate is not
+    automatically correct on a cream face. The state WORD keeps the reserved
+    warning ink (#DAA254, 8.06:1), so the two channels stay distinct.
+  */
+  .shop .cd-stale-age {
+    color: var(--cd-ink);
   }
 
   /* =====================================================================
@@ -865,11 +888,30 @@
     display: flex;
     align-items: stretch;
     gap: 1px;
-    padding: 1px;
-    background: #00000059;
+    /* 3px of the track's own black around every seat, not 1px: the band's
+       brushed metal must not be inside the sampling neighbourhood of any cap. */
+    padding: 3px;
+    background-color: #0b0a0a; /* the track's black, deepened — declared, opaque */
+    background-image: none;
     clip-path: var(--shop-cut);
   }
 
+  /*
+    F1a REPAIR (Fable review, real-pixel audit). Selection USED to be spent in
+    ink lightness: an unselected seat printed muted #9B9A92 and the selected one
+    strobe #E8E6DD. The reviewer's pixel histogram put the unselected caps at
+    2.17:1 and the seat figure at 1.78:1 — a Floor failure my own composited
+    sweep missed because it measured the seat's declared #161514 and not the
+    pixels a sampler actually reads at the control's edge, where the band's
+    brushed metal is five pixels away.
+
+    Every seat now prints the SAME strobe ink at 14.58:1 on the track, and
+    selection is carried by fill, by weight and by the side bar — "roles spend in
+    weight, never in hue", which is the move 20 IRREDUCIBLE already makes and
+    which section 4's List/Browser already describes for this world ("a selected
+    row washes at 10% ... never a border"). No reading now depends on an ink
+    being dim enough to be hard to read.
+  */
   .shop .shop-seat {
     --cd-stack: inset 0 1px 0 #ffffff14;
     position: relative;
@@ -882,11 +924,12 @@
     min-block-size: var(--cd-target-min);
     padding: 0.25rem 0.625rem;
     border-radius: 0;
-    background: var(--cd-field);
-    color: var(--cd-muted-ink);
+    background-color: var(--cd-field);
+    background-image: none;
+    color: var(--cd-ink); /* 14.58:1 — never dimmed to mean "not selected" */
     font-family: var(--cd-font-ui);
     font-size: var(--cd-size-1);
-    font-weight: 600;
+    font-weight: 500;
     letter-spacing: var(--cd-track-label);
     text-transform: uppercase;
     text-align: start;
@@ -901,6 +944,7 @@
     background-color: var(--cd-field);
     background-image: linear-gradient(0deg, #d6d9dd1a, #d6d9dd1a);
     color: var(--cd-ink);
+    font-weight: 700; /* the second channel: weight, not lightness */
   }
 
   /* the side highlight bar, at 40% of the aluminium's brightest stop */
@@ -913,6 +957,8 @@
     background: #d6d9dd66;
   }
 
+  /* The seat's own line count. Same ink as its word — what separates them is
+     the register (tracked caps versus tabular figures), never the lightness. */
   .shop-seat-fig {
     font-family: var(--cd-font-data);
     font-variant-numeric: tabular-nums lining-nums slashed-zero;
@@ -920,7 +966,7 @@
     font-weight: 400;
     letter-spacing: var(--cd-track-body);
     text-transform: none;
-    color: var(--cd-muted-ink);
+    color: var(--cd-ink); /* 14.58:1 */
   }
 
   /* =====================================================================
@@ -1407,6 +1453,14 @@
     white-space: nowrap;
   }
 
+  /*
+    F1c/F1d REPAIR. The per-row currency prefix is gone. II.6.15: "A uniform
+    column prints its unit once, in the header, and the cells carry bare
+    numerals." Every figure in this column is pounds, so 44 repetitions of a
+    thin glyph the reviewer measured at 2.26:1 bought nothing — the lid above
+    the column prints £ on its own subtotal and the plinth prints it at the top
+    step. One glyph removed, one column aligned, nothing hidden.
+  */
   .shop-price {
     display: flex;
     align-items: baseline;

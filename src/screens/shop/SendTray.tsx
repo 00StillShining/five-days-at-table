@@ -48,6 +48,12 @@ export interface SendTrayProps {
   id: string;
 }
 
+/**
+ * II.6.11 — micro-etch may only REPEAT what a functional label already states.
+ * The plinth's etch carries the trip id; this is where that id is stated at the
+ * label floor, beside the code that actually encodes it.
+ */
+
 async function copyText(text: string, fallbackArea: HTMLTextAreaElement | null): Promise<boolean> {
   try {
     if (navigator.clipboard && window.isSecureContext) {
@@ -133,6 +139,13 @@ export function SendTray({ envelope, open, onClose, id }: SendTrayProps) {
       className="shop-tray"
     >
       <div className="shop-tray-body">
+        {envelope && (
+          <p className="shop-note">
+            trip <b className="cd-data">{envelope.tripId}</b> · {envelope.shops.length} retailer
+            {envelope.shops.length === 1 ? "" : "s"} ·{" "}
+            {envelope.shops.reduce((n, sh) => n + sh.rows.length, 0)} lines
+          </p>
+        )}
         {empty ? (
           <p className="shop-note">nothing to buy this trip — nothing to send.</p>
         ) : (
