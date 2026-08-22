@@ -176,8 +176,20 @@ describe("the printed figures", () => {
     for (const c of CHANNELS) expect(c.valueCh).toBeGreaterThanOrEqual(4);
   });
 
-  it("gives only the three macro channels a cream-face ink — kcal carries no hue", () => {
+  it("gives only the three macro channels an ink — kcal carries no hue at all", () => {
     expect(CHANNELS[0].ink).toBeNull();
-    for (const c of CHANNELS.slice(1)) expect(c.ink).toMatch(/^var\(--cd-ch-/);
+    for (const c of CHANNELS.slice(1)) expect(c.ink).toMatch(/^var\(--/);
+  });
+
+  /**
+   * These point at SCREEN-scoped tokens, not at `--cd-ch-*-ink`, and the test
+   * pins that on purpose: the world tokens are certified against cream's middle
+   * stop, while these labels sit on the selector cap whose SEATED state carries
+   * a cognac wash beneath the glyph and measures #D5C7AF. The world inks read
+   * 3.86-4.03 there. If someone repoints these back at `--cd-ch-*` to "use the
+   * shared token", this fails and says why.
+   */
+  it("reads its channel inks from the screen's own scope, for the seated cap", () => {
+    for (const c of CHANNELS.slice(1)) expect(c.ink).toMatch(/^var\(--tdy-ch-/);
   });
 });

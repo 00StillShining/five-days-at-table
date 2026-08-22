@@ -29,10 +29,15 @@ export interface ChannelSpec {
   /** II.6.6 — the unit trails the value at 40% of its size. */
   unit: string;
   /**
-   * CD-BRIEF repair 2. `ink` is legal ONLY on a cream face (5.17-5.39:1);
-   * `lift` is the anthracite/carbon set (4.53-4.58:1). kcal is the day total
-   * rather than one of the four macro channels, so it carries no hue at all
-   * and reads by position, engraved label and segment fill alone.
+   * CD-BRIEF repair 2: `ink` is legal only on a cream face, `lift` is the
+   * anthracite/carbon set (4.53-4.58:1). kcal is the day total rather than one
+   * of the four macro channels, so it carries no hue at all and reads by
+   * position, engraved label and segment fill alone.
+   *
+   * `ink` points at this SCREEN's own tokens, not at `--cd-ch-*-ink`. The world
+   * tokens are certified against cream's MIDDLE stop; these labels sit on the
+   * selector cap, whose SEATED state carries a cognac wash beneath the label
+   * and measures #D5C7AF. The world inks read 3.86-4.03 there. See today.css.
    */
   ink: string | null;
   lift: string;
@@ -66,7 +71,7 @@ export const CHANNELS: readonly ChannelSpec[] = [
     label: "prot",
     title: "protein",
     unit: "g",
-    ink: "var(--cd-ch-protein-ink)",
+    ink: "var(--tdy-ch-protein)",
     lift: "var(--cd-ch-protein-lift)",
     valueCh: 5,
     decimals: 1,
@@ -77,7 +82,7 @@ export const CHANNELS: readonly ChannelSpec[] = [
     label: "fat",
     title: "fat",
     unit: "g",
-    ink: "var(--cd-ch-fat-ink)",
+    ink: "var(--tdy-ch-fat)",
     lift: "var(--cd-ch-fat-lift)",
     valueCh: 5,
     decimals: 1,
@@ -88,7 +93,7 @@ export const CHANNELS: readonly ChannelSpec[] = [
     label: "carb",
     title: "net carb",
     unit: "g",
-    ink: "var(--cd-ch-carb-ink)",
+    ink: "var(--tdy-ch-carb)",
     lift: "var(--cd-ch-carb-lift)",
     valueCh: 5,
     decimals: 1,
