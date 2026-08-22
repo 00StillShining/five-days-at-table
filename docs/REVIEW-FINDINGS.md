@@ -164,3 +164,72 @@ Recorded because whoever re-runs an audit will hit them:
 3. **Trophy Mode dimming the page mid-audit** — its first sweep measured a 0.55-lux
    screen. **Wake the page, then measure.** Same-URL navigations do not reload, so state
    survives.
+
+
+---
+
+# POST-REVIEW: a FLOOR failure the review itself dismissed
+
+*Added 2026-08-22 by the orchestrator, after the SHOP builder found it during repairs and
+I verified the mechanism independently.*
+
+The review wrote of Trophy Mode: *"the 0.55-lux contrast dip is doctrine-sanctioned idle
+behaviour and exits on any input — **not a finding**."* It considered the tier and **never
+measured contrast under it**. That dismissal is wrong, and the defect is product-wide.
+
+```
+DEFECT    Trophy's ambient tier collapses contrast on every reading.
+EVIDENCE  filter: brightness(0.55) multiplies sRGB-ENCODED channel values,
+          which is NOT luminance-preserving. Ink and ground crush TOWARD EACH
+          OTHER rather than the ground dimming beneath a fixed ink.
+          Verified independently at 0.55:
+            14.58:1 -> 4.88      11.65:1 -> 4.47  BELOW FLOOR
+             6.45:1 -> 2.61  BELOW FLOOR
+          SHOP measured four separate Floor failures this way.
+REPAIR    Spend the tier on the GROUND, never on the reading. Commit dimmed
+          ground values -- same recipes, same stops, dropped in value -- and
+          leave every ink unmoved. NO filter anywhere above a reading.
+```
+
+**Affected, all using the same pattern:** SHOP `filter: brightness(0.55)` (**repaired**,
+`1b214cf`) · TODAY `today.css:774` `grayscale(1) brightness(0.55)` · PLAN `plan.css:202`
+`brightness(var(--pln-lux))` · LIST `list.css:1548` `brightness(0.55)` · COOK
+`cook.css:1472/1475/1478/1766` `brightness(1)/(0.55)/(0.2)` — **COOK carries the deepest
+tier in the product.**
+
+**The trap inside the repair.** SHOP's first fix was also wrong: it moved the filter to a
+narrower element, but that element *contained* the controls, so the subtree still dimmed
+and a label came back at **2.70:1** — the same failure one level in. **A filter anywhere
+above a reading is the bug.**
+
+**Two screens carry extra hazard.** LIST is bound by THE EPOXY CEILING (epoxy tops out at
+2.75:1 vs white / 7.64:1 vs black; stamped ink sits at 4.54:1 with almost no margin), so
+dimming its ground may not be sufficient on its own and the departure must be declared.
+PLAN's needle `#E8590C` is only 2.89:1 on ivory and reads by its `#1B1B1B` keyline —
+under a filter the orange and its keyline crush together, degrading the one channel
+carrying the needle exactly when it is read from furthest away.
+
+**The principle, worth carrying past this project: the Floor is not waived by a doctrinal
+tier.** Trophy is the state read from across a room; it is the last place a reading may go
+dim. A dimmed panel with a few bright readings is what the trophy chapter actually asks
+for — SHOP's post-repair panel still visibly dims while every reading passes (seat 13.18,
+crown label 7.00, row name 15.52).
+
+## And the review's F1c was misdiagnosed
+
+Its prescribed repair — floor the key gradient's darkest stop at `#5E5F60` — would have
+been **actively harmful**: dropping a mid-grey plate into SHOP's near-black inset track
+takes strobe white from 14.58:1 to 5.12:1, a **3x loss**. No mid-grey ground exists under
+any control-band cap in the active state (selected seats measure 11.65:1, unselected
+14.58:1).
+
+**Probable cause of the review's numbers**, per the SHOP builder: its screenshot returned
+at **2x device pixels while the page reported rects in CSS pixels**. Sampling one against
+the other lands every box at quarter size in the wrong place, and for 11px text that
+samples the **antialiased ramp between glyph and ground** — producing ratios in exactly
+the 1.7-4.0 band, on exactly the de-emphasised inks. Recorded as a fourth artifact class
+for anyone re-running an audit: **derive the image scale from the image, never assume it.**
+
+This does not discredit the review — F1a/F1b/F1d were real, and chasing F1c is what
+uncovered four genuine Floor failures. But it is why a finding's *repair* must be
+verified against the real ground rather than applied on authority.
