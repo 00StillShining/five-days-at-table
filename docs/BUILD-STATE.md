@@ -291,3 +291,47 @@ page-length scrolling — grouped accordion, one section open at a time.
 - **Review ordering changed deliberately:** the approved plan said deploy *then* review,
   written when findings were not to be actioned. Since the owner lifted that, the review
   runs **first** so that what goes live already incorporates it.
+
+
+## Review-repair round (2026-08-18 → 2026-08-22)
+
+The single Fable review ran and **its findings are preserved in full at
+`docs/REVIEW-FINDINGS.md`** — read that, not this summary, before acting on any of them.
+
+**Verdict: the product reads as ONE OBJECT.** The §2 first-word test passes in every
+room and room-to-room transitions read as rooms of one instrument — the one risk no
+per-screen verification could catch. Six findings, ranked FLOOR / HONESTY / COHERENCE /
+CRAFT.
+
+**Landed so far** (`542f25f`): SHOP's F1a (selection spent in weight, not ink lightness),
+F1b (the stale-price age lifted in scope only), F1d (the currency prefix **subtracted**
+rather than lifted); COOK's local `.cd-unit` floor removed now that it is floored
+centrally.
+
+**THE NEW DEFECT CLASS, and the most valuable thing to come out of this round.** SHOP
+found a Floor failure its own *composited* audit had missed, because it composited the
+ground but **not `opacity`**: an etch printing `--cd-muted-ink` at `--cd-micro-alpha`
+(0.4) measured **2.06:1** while its declared ink read 6.45:1. In its own words, *"the
+same class of mistake as trusting `backgroundColor`, one property along."*
+**A contrast audit must composite every channel that can dim a glyph — ground, gradient
+stop, AND opacity.** This is now the third distinct way this product has hidden a Floor
+failure inside a passing audit, and it generalises past this project.
+
+**Outstanding, with five builders resumed on them:**
+- **chassis** — F2 (the annunciator queue reporting 2/1/3/3 behind in four rooms at one
+  instant; one queue, one selector, exported by the chassis) and F4 (the seated rail
+  station losing its label under forced colors).
+- **STORES** — F1a/b/c. The diagnosis is the hard part: `.cd-register-rows` declares
+  `background-color: #ede8de` and the inks are correct on *that* ground, so something
+  paints over it. **The opacity hypothesis above is the cheapest explanation and fits an
+  L≈0.34–0.40 composite over a plate declared at `#EDE8DE`.**
+- **SHOP** — F1c only. Not guessed at by the orchestrator: `.shop-key` is a flat fill, so
+  the 4.01:1 caps are a surface that could not be identified from source with confidence.
+- **TODAY** — F1a (`#675E53`), F1b margin (`#9E2F00` / `#0044CC`), F6 (the 83px scroll).
+- **COOK** — F1 adjudication (does the seat sheen cross the glyphs, or sit beside them?)
+  and F6 (standby is the flattest room; its loaded state was called the strongest screen
+  in the product).
+
+**Orchestrator-owned, after the screens land:** promote one `useTrophy` to `src/cd/`
+carrying **COOK's** wake list (it is the only one that wakes to an approaching hand);
+implement the `ACK` verb ruling; then deploy.
