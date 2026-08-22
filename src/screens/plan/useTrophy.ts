@@ -19,8 +19,15 @@
  * dark. No such sensor is available to this build — `AmbientLightSensor` ships
  * in no browser this product targets, and `prefers-color-scheme` reports a user
  * preference, not a room. Guessing darkness from the clock would be invented
- * data. So the tier is declared, its token is committed, its rule is in the
- * stylesheet, and NOTHING DRIVES IT. Stated rather than quietly dropped.
+ * data. So the tier is declared, its rule is in the stylesheet, and NOTHING
+ * DRIVES IT. Stated rather than quietly dropped.
+ *
+ * What that rule now does is worth stating too. There is no --pln-lux token any
+ * more — the power tier is a set of committed COLOURS, not a filter — and
+ * plan.css selects the AMBIENT palette for `night`, because measured, a deeper
+ * drop cannot clear the Floor on this light-polarity world: at the nominal 0.20
+ * the nickel bezel reads 2.84:1 on its own chassis and the OLED digits 3.95:1
+ * against a 4.5 floor. The deepest legal drop IS the ambient palette.
  *
  * ---------------------------------------------------------------------------
  * PROMOTION CANDIDATE — reported, not imported (CD-BRIEF zone fence)

@@ -132,6 +132,19 @@
      only, no labels", and everything else disappears rather than shrinks.
 */
 
+/*
+  Registered so the power tier's 4000ms ramp can INTERPOLATE its committed
+  colours. Deliberately screen-local names (--pln-*) rather than registering
+  --cd-field and friends: a global <color> registration would change how every
+  other screen's cascade treats those tokens, and three other builders are live
+  in their own folders.
+*/
+@property --pln-field { syntax: "<color>"; inherits: true; initial-value: #1b1b1b; }
+@property --pln-nickel { syntax: "<color>"; inherits: true; initial-value: #c7c8ca; }
+@property --pln-gold { syntax: "<color>"; inherits: true; initial-value: #c9a46a; }
+@property --pln-oled { syntax: "<color>"; inherits: true; initial-value: #e9f6ec; }
+@property --pln-spec { syntax: "<number>"; inherits: true; initial-value: 1; }
+
 @layer cd.screen {
   /* ===================================================================== */
   /* 1 · THE GROUND — crackle-finish black enamel, under one sun            */
@@ -157,7 +170,24 @@
     printed behind a read surface: every plate and every dial face sits on top
     of it with its own opaque ground.
   */
+  /*
+    THE POWER TIER IS A SET OF COMMITTED COLOURS, NOT A FILTER.
+    Registered as <color> above so the ruling's 4000ms linear ramp can
+    interpolate them; the --cd-* tokens are mapped onto these, so one ramp moves
+    the whole finish. See the ambient block in section 9 for the measurement.
+  */
   .pln {
+    --pln-field: #1b1b1b;
+    --pln-nickel: #c7c8ca;
+    --pln-gold: #c9a46a;
+    --pln-oled: #e9f6ec;
+    --pln-spec: 1; /* specular and bloom strength, 0..1 */
+
+    --cd-field: var(--pln-field);
+    --cd-nickel: var(--pln-nickel);
+    --cd-gold: var(--pln-gold);
+    --cd-oled-white: var(--pln-oled);
+
     --pln-gutter: 1rem;
     /*
       THE ONE HAIRLINE SEPARATOR (ch.17 section 4: "one hairline separator —
@@ -168,7 +198,6 @@
       hairline rather than a rule.
     */
     --pln-hair: #00000073;
-    --pln-lux: 1;
     --pln-mode-ms: 240ms; /* Trophy EXIT, on any input */
 
     position: relative;
@@ -187,19 +216,41 @@
     color: var(--cd-green-lit);
     font-family: var(--cd-font-ui);
     background-color: var(--cd-field);
+    /*
+      The two stops are DERIVED from the field so the web tracks it. They were
+      absolute (#171717 / #1F1F1F behind alphas) and would have LIGHTENED the
+      crackle against a dimmed chassis — a finish that gets louder as the room
+      gets darker. At the active field these resolve to #1A1A1A and #1C1C1C,
+      which is exactly what the alpha stops already composited to.
+
+      MEASUREMENT CORRECTED: this comment previously claimed 0.87% luminance
+      travel, computed off the RAW stops. The raw-stop travel is 0.513% and the
+      COMPOSITED travel — what the eye actually receives — is 0.128%. Both are
+      far inside the 3% ceiling section 9's "crackle overreach" polices; the
+      number published here was simply wrong in both directions.
+    */
+    --pln-crackle-lo: color-mix(in srgb, #000000 3.7%, var(--cd-field));
+    --pln-crackle-hi: color-mix(in srgb, #ffffff 0.44%, var(--cd-field));
     background-image:
-      repeating-linear-gradient(23deg, #00000000 0 37px, #17171740 37px 38px),
-      repeating-linear-gradient(-64deg, #00000000 0 53px, #1f1f1f4d 53px 54px),
-      repeating-linear-gradient(111deg, #00000000 0 71px, #17171733 71px 72px),
-      repeating-linear-gradient(-7deg, #00000000 0 89px, #1f1f1f40 89px 90px);
+      repeating-linear-gradient(23deg, #00000000 0 37px, var(--pln-crackle-lo) 37px 38px),
+      repeating-linear-gradient(-64deg, #00000000 0 53px, var(--pln-crackle-hi) 53px 54px),
+      repeating-linear-gradient(111deg, #00000000 0 71px, var(--pln-crackle-lo) 71px 72px),
+      repeating-linear-gradient(-7deg, #00000000 0 89px, var(--pln-crackle-hi) 89px 90px);
     /* II.2.14's paper response: contact and ambient only, no rim, no gradient. */
     box-shadow: inset 0 0 0 1px #00000059;
     /* The burn-in orbit, applied to ONE node so the whole composition moves as
        a rigid frame — a hero that drifts against its own evidence has turned a
        burn-in guard into a layout bug. */
     transform: translate3d(var(--pln-orbit-x, 0px), var(--pln-orbit-y, 0px), 0);
-    transition: transform 4000ms linear, filter 4000ms linear;
-    filter: brightness(var(--pln-lux));
+    /* NO FILTER, ANYWHERE ABOVE A READING. brightness() multiplies sRGB-
+       ENCODED channels, so ink and ground crush toward each other. */
+    transition:
+      transform 4000ms linear,
+      --pln-field 4000ms linear,
+      --pln-nickel 4000ms linear,
+      --pln-gold 4000ms linear,
+      --pln-oled 4000ms linear,
+      --pln-spec 4000ms linear;
   }
 
   .pln::after {
@@ -435,6 +486,11 @@
     block-size: var(--cd-lacquer-window-h);
     border-radius: 50%;
     background: var(--cd-lacquer-window);
+    /* the wet window is a LIGHT SOURCE, so it follows the tier. It only ever
+       LIGHTENS the face, and the face's lit stop is its highest-margin one
+       (green-hot 10.74 there against 9.93 on the base), so dimming it can only
+       move each pair toward the value it was measured at. */
+    opacity: var(--pln-spec);
     pointer-events: none;
     z-index: 4;
   }
@@ -572,7 +628,20 @@
     z-index: 6;
     pointer-events: none;
     mix-blend-mode: screen;
-    background: linear-gradient(138deg, #ffffff00 47%, #ffffff66 50%, #ffffff00 53%);
+    opacity: var(--pln-spec);
+    /*
+      #FFFFFF33, not the #FFFFFF66 first committed here. This layer SCREENS
+      ABOVE the needle (z-index 6 over 5), which is a compositing operation
+      above a reading — the exact class of defect the power tier was just
+      repaired for. Measured at the band's centre: at 0x66 the catch lifts the
+      keyline #1B1B1B to #767676 and the needle #E8590C to #F19B6D, and the
+      pair that carries the needle's legibility falls to 2.09:1, under the 3:1
+      graphical floor, inside the band's own 3% of dial width.
+      Solved: 0x3B is the largest alpha that holds 3.0:1. 0x33 is committed for
+      margin — needle/keyline 3.19, keyline/face 7.60. The catch is still a
+      catch; it just no longer washes out the thing it is lighting.
+    */
+    background: linear-gradient(138deg, #ffffff00 47%, #ffffff33 50%, #ffffff00 53%);
   }
 
   .pln-needle-boss {
@@ -656,10 +725,12 @@
     /* II.2.17's three bloom shells at r / 4r / 12r, alpha 80 / 40 / 16, hue
        held constant across all three. The hue is WHITE: no reserved role is
        spent on a derived figure (declared departure 1). */
+    /* the three shells keep their r / 4r / 12r radii and their 80/40/16 alpha
+       ratio; the tier scales the whole emission, hue held (II.2.17). */
     text-shadow:
-      0 0 var(--cd-bloom-r) #e9f6eccc,
-      0 0 var(--cd-bloom-4r) #e9f6ec66,
-      0 0 var(--cd-bloom-12r) #e9f6ec29;
+      0 0 var(--cd-bloom-r) color-mix(in srgb, var(--cd-oled-white) calc(var(--pln-spec) * 80%), transparent),
+      0 0 var(--cd-bloom-4r) color-mix(in srgb, var(--cd-oled-white) calc(var(--pln-spec) * 40%), transparent),
+      0 0 var(--cd-bloom-12r) color-mix(in srgb, var(--cd-oled-white) calc(var(--pln-spec) * 16%), transparent);
   }
 
   .pln-inset-unit {
@@ -1877,14 +1948,69 @@
      and the four survivors rendered two-up and overlapping on the wall.
      Measured, then moved: the MODE outranks the width.
   */
-  .pln[data-pln-power="ambient"] {
-    --pln-lux: 0.55;
+  /*
+    ==========================================================================
+    THE AMBIENT TIER, MEASURED — Floor repair
+    ==========================================================================
+    WHAT WAS HERE: `filter: brightness(var(--pln-lux))` on the scene root.
+    CSS brightness() is feComponentTransfer slope=k over sRGB-ENCODED channels,
+    so it does not preserve luminance: ink and ground crush TOWARD each other
+    instead of the ground dimming beneath a fixed ink. Measured on this screen's
+    own pairs at 0.55, THIRTEEN OF SEVENTEEN fell below the Floor — including
+    pairs with enormous margin (green-hot on ivory 9.93 -> 4.24) and, worst,
+    THE NEEDLE AGAINST ITS OWN KEYLINE, 4.81 -> 2.15. That keyline is the only
+    channel carrying the needle, because the livery orange is 2.89:1 on ivory by
+    design, so the filter broke the needle in precisely the state that is read
+    from across a kitchen.
+
+    WHY THE IVORY FACE DOES NOT MOVE. This is a LIGHT-POLARITY world — the
+    reading surface IS the light source. Measured, the face cannot drop by even
+    0.5% of its luminance with the inks unmoved, because this world's inks were
+    derived to sit EXACTLY at 4.5:1 on it (muted 4.56, success 4.53, warning
+    4.52, danger 4.52). Re-deriving them at a dimmed face was tried and is
+    worse: at the nominal 55% the ink ceiling is L=0.0586, FIVE of the six inks
+    pin to that one luminance and are separated by hue alone — which CD-BRIEF
+    repair 2 exists to forbid — while the "ivory" face itself resolves to
+    #CDAC6A, which is the champagne gold hex. A face that has become the case
+    ring is not a dimmed face.
+
+    SO THE TIER IS SPENT ON EVERY SURFACE THAT IS NOT A READING: the crackle
+    chassis, the nickel bezels, the champagne case rings, the OLED phosphor and
+    every specular. The ivory faces and every ink on them hold their committed
+    values, so ALL ELEVEN ink-on-face pairs are BYTE-IDENTICAL between tiers.
+
+    Each value is a scale of LINEAR RADIANCE — the same material under less
+    light — which preserves chromaticity exactly. An HSL-lightness walk was
+    tried first and drove OLED white #E9F6EC to #45A75B, which is green.
+
+      --cd-field   #1B1B1B -> #0C0C0C   L 0.0110 -> 0.0037   34% of its light
+      --cd-nickel  #C7C8CA -> #6C6C6D   L 0.5771 -> 0.1502   26%
+      --cd-gold    #C9A46A -> #7D653F   L 0.4001 -> 0.1403   35%
+      --cd-oled-white #E9F6EC -> #8F9791  L 0.8929 -> 0.3002  34%
+
+    All 21 pairs the tier presents clear their Floor. The tightest: nickel on
+    chassis 3.73, champagne ring on chassis 3.54, focus keyline on the ring
+    3.34, hairline on ivory 3.25 (unchanged from active).
+  */
+  .pln[data-pln-power="ambient"],
+  .pln[data-pln-power="night"] {
+    --pln-field: #0c0c0c;
+    --pln-nickel: #6c6c6d;
+    --pln-gold: #7d653f;
+    --pln-oled: #8f9791;
+    --pln-spec: 0.45;
   }
 
-  .pln[data-pln-power="night"] {
-    /* declared and never entered: no ambient sensor exists (useTrophy.ts) */
-    --pln-lux: 0.2;
-  }
+  /*
+    NIGHT IS DECLARED AND RESOLVES TO THE AMBIENT PALETTE (CORRECTIONARY 6.5).
+    Nothing drives it — there is no ambient light sensor (see useTrophy.ts) —
+    and a further drop cannot clear the Floor: at the nominal 0.20 the nickel
+    bezel reads 2.84:1 on its own chassis, the champagne ring 2.67:1, the focus
+    keyline 2.59:1 on nickel and 2.45:1 on the ring, and the OLED digits 3.95:1
+    against a 4.5 floor — five failures. The deepest legal drop on this world IS
+    the ambient palette, so night selects it rather than a palette that would
+    fail the Floor if it could ever be entered.
+  */
 
   /*
     THE INK-PLATE LAW APPLIES AT WALL SCALE TOO (CD-BRIEF ruling 5: a HARD FAIL
@@ -2083,8 +2209,22 @@
       reading says is unchanged. The crown's guarded FILL is not motion — it is
       progress, which is data — so it stays.
     */
+    /*
+      The TRAVEL goes; the LUMINANCE RAMP stays at its full 4000ms.
+      II.4.26 translates rather than deletes, and a 4s brightness ramp is not
+      motion — collapsing it to 120ms would turn the power tier into a
+      brightness FLASH between two palettes, which is precisely what the
+      population this query serves does not want. Only the burn-in orbit's
+      transform is reduced.
+    */
     .pln {
-      transition-duration: var(--cd-reduced-fade);
+      transition:
+        transform var(--cd-reduced-fade) linear,
+        --pln-field 4000ms linear,
+        --pln-nickel 4000ms linear,
+        --pln-gold 4000ms linear,
+        --pln-oled 4000ms linear,
+        --pln-spec 4000ms linear;
     }
 
     .pln-scope-flash {
