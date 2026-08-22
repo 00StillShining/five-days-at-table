@@ -1038,6 +1038,13 @@
     font-size: var(--cd-size-6);
     line-height: var(--cd-leading-tight);
     color: var(--cd-ink);
+    transition: color var(--cd-reduced-fade) linear;
+  }
+
+  /* ORCHESTRATOR REPAIR — the stale drop is an ink, never an alpha.
+     4.71:1 under the old alpha (passing, thin) -> 6.12:1. */
+  .mea-stock-figure[data-mea-stale="true"] {
+    color: var(--cd-stale-ink, var(--cd-muted-ink));
   }
 
   .mea-stock-word {

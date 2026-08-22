@@ -20,7 +20,17 @@
 
   /* The reading itself. Held, at full size and full position, always. */
   .cd-stale-value {
-    transition: opacity var(--cd-reduced-fade) linear;
+    transition: color var(--cd-reduced-fade) linear;
+  }
+
+  /*
+    ORCHESTRATOR REPAIR — see Stale.tsx. The drop is an INK, never an alpha.
+    --cd-muted-ink is declared by every language scope and already measured
+    against that world's own ground, so this cannot drift and cannot cross the
+    Floor. A world needing a distinct stale ink declares --cd-stale-ink.
+  */
+  .cd-stale[data-cd-stale="true"] .cd-stale-value {
+    color: var(--cd-stale-ink, var(--cd-muted-ink));
   }
 
   /* The age. Printed at the label step, and deliberately NOT dimmed: when a

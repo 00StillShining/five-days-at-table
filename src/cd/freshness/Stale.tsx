@@ -22,7 +22,6 @@
 
 import type { ReactElement, ReactNode } from "react";
 import type { Age } from "./classes";
-import { STALE_INK_ALPHA } from "./classes";
 import "./stale.css";
 
 export interface StaleProps {
@@ -42,11 +41,26 @@ export interface StaleProps {
 }
 
 /**
- * Ink alpha is applied with `opacity` on an inner wrapper rather than by
- * swapping a colour token, for one reason: every language keys its own ink, and
- * a stale variant per language would be eight more hexes to keep in agreement
- * with eight fresh ones. 55% of whatever the world's committed ink already is
- * cannot drift out of step with it.
+ * ORCHESTRATOR REPAIR. This used to dim the value with `opacity: 0.55`, and the
+ * reasoning above it was half right: an alpha cannot drift out of step with a
+ * world's committed ink, which is true, and it also cannot be stopped from
+ * crossing the Floor, which is fatal.
+ *
+ * MEASURED, on three consumers of this very component:
+ *   PLAN  DayRegister "logged"   #1F5C3D -> #7C997F   2.52:1
+ *   PLAN  SwapDeck coverage %    #143C28 -> #768874   3.06:1
+ *   PLAN  SwapDeck the % unit    #6F6659 -> #A89F8F   2.11:1
+ * and independently on STORES, where the held level word printed at 2.68:1 and
+ * rendered as a visible ghost beside its neighbour.
+ *
+ * The fix keeps the original concern and drops the alpha: `--cd-muted-ink` is
+ * ALREADY declared per language and ALREADY verified against that world's own
+ * ground, so it cannot drift either — and it is a colour, not a veil over one.
+ * A world that wants a distinct stale ink declares `--cd-stale-ink`; the
+ * default is the muted ink it already keeps in agreement.
+ *
+ * The alpha remains exported from ./classes for the reduced-motion transition
+ * and for anything that dims a NON-READING, but no reading may wear it.
  *
  * The age line is NOT dimmed. When a reading is stale, its age is the most
  * load-bearing thing on the row.
@@ -58,12 +72,7 @@ export function Stale({ children, age, action, label, className }: StaleProps): 
       className={["cd-stale", className].filter(Boolean).join(" ")}
       data-cd-stale={stale ? "true" : "false"}
     >
-      <span
-        className="cd-stale-value"
-        style={{ opacity: stale ? STALE_INK_ALPHA : 1 }}
-      >
-        {children}
-      </span>
+      <span className="cd-stale-value">{children}</span>
 
       {/* The age, always printed. Honesty is not a stale-only courtesy. */}
       <span className="cd-stale-age cd-printed" aria-label={label ? `${label} age` : undefined}>

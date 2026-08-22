@@ -25,7 +25,7 @@
 
 import { forwardRef, useImperativeHandle, useRef } from "react";
 import { Enclosure, Escutcheon, Plate, PressKey } from "../../cd/foundry";
-import { STALE_INK_ALPHA, type Age } from "../../cd/freshness/classes";
+import { type Age } from "../../cd/freshness/classes";
 import { STOCK_SEGMENTS, STOCK_ZONE_WORD, stockZone } from "./model";
 
 export interface StockMeterHandle {
@@ -133,7 +133,18 @@ export const StockMeter = forwardRef<StockMeterHandle, StockMeterProps>(function
           <span
             className="mea-stock-figure cd-value"
             ref={figureRef}
-            style={{ "--cd-value-ch": 3, opacity: age.stale ? STALE_INK_ALPHA : 1 } as React.CSSProperties}
+            /* ORCHESTRATOR REPAIR, and the figure stated honestly: unlike PLAN
+               and STORES, this one did NOT cross the Floor. Measured on this
+               world's own well, the figure went 11.85:1 awake to 4.71:1 under
+               `opacity: STALE_INK_ALPHA` -- passing, but with 0.21 of margin on
+               a dark-polarity world where the ink is unusually bright. It is
+               repaired for the same reason the others were: the drop is an INK,
+               not a veil over one. --cd-muted-ink is declared by this scope and
+               already verified against this ground (6.12:1), so the reading
+               cannot drift and cannot be dimmed under the Floor by a future
+               change to the ground beneath it. */
+            data-mea-stale={age.stale ? "true" : "false"}
+            style={{ "--cd-value-ch": 3 } as React.CSSProperties}
           >
             {pct}
           </span>
